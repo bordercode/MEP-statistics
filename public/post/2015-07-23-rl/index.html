@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Regresion Lineal</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta name="generator" content="Hugo 0.54.0" />
+	<meta property="og:title" content="Regresion Lineal" />
+<meta property="og:description" content="True knowledge is knowledge of why things are as they are, and not merely what they are. Isaiah Berlin. Samprit Chatterjee (2012)
+Conceptos preliminares y Notación utilizada en el curso.Conocimientos previos deseables para llevar este curso: Vectores y matrices, Intervalos de confianza, Momentos estadísticos, Pruebas de hipótesis, Distribción Normal. Ej.
+\[\bar{x}=\frac{1}{n} (\sum_{i=1}^{n} x_i) =\frac{x_1 &#43;x_2&#43;...&#43;x_n}{n}\]
+\[E(\bar{x})= \mu\]
+\[V(X)= Var(X)=\sigma^2_{X}\] \[\sigma^2 = \frac{1}{n}\sum_{i=1}^{n}(x_i - \bar{X})^2\] \[\sigma^2_{X}=E[(X-\mu)^2]\]
+Las bases de datos analizados en el curso tiene la siguiente estructura general con n renglones (observaciones) por p columnas (variables)." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/2015-07-23-rl/" />
+<meta property="article:published_time" content="2018-12-28T21:13:14-05:00"/>
+<meta property="article:modified_time" content="2018-12-28T21:13:14-05:00"/>
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-124338825-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="Estadística II" rel="home">
+				<div class="logo__title">Estadística II</div>
+				<div class="logo__tagline">Semestre II MEP 2019</div>
+			</a>
+		</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">Maestría en estudios de población</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/syllabus/">Syllabus</a>
+		</li>
+		<li class="menu__item menu__item--active">
+			<a class="menu__link" href="/post/2015-07-23-rl/">Regresion Lineal</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-01-11-rl2/">RL-Simple</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-01-15-rl3/">RL-Modelo</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-01-25-rl4/">RL-Hipótesis</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-01-25-rl5/">RL-Muiltiple</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-02-05-rl6/">RL-Diagnóstico</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-20-01-rl7-models/">RL-Multiple Cross-Section</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/recursos-adicionales/">Recursos Adicionales</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2018-12-30-ejercicios/">Ejercicios</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Regresion Lineal</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 16 16"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
+	<time class="meta__text" datetime="2018-12-28T21:13:14">December 28, 2018</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/r" rel="category">R</a></span>
+</div>
+</div>
+		</header><div class="content post__content clearfix">
+			
+
+
+<p><em>True knowledge is knowledge of why things are as they are, and not merely what they are.</em> <strong>Isaiah Berlin.</strong> Samprit Chatterjee (2012)</p>
+<div id="conceptos-preliminares-y-notacion-utilizada-en-el-curso." class="section level2">
+<h2>Conceptos preliminares y Notación utilizada en el curso.</h2>
+<p>Conocimientos previos deseables para llevar este curso: Vectores y matrices, Intervalos de confianza, Momentos estadísticos, Pruebas de hipótesis, Distribción Normal. Ej.</p>
+<p><span class="math display">\[\bar{x}=\frac{1}{n} (\sum_{i=1}^{n} x_i) =\frac{x_1 +x_2+...+x_n}{n}\]</span></p>
+<p><span class="math display">\[E(\bar{x})= \mu\]</span></p>
+<p><span class="math display">\[V(X)= Var(X)=\sigma^2_{X}\]</span> <span class="math display">\[\sigma^2 = \frac{1}{n}\sum_{i=1}^{n}(x_i - \bar{X})^2\]</span> <span class="math display">\[\sigma^2_{X}=E[(X-\mu)^2]\]</span></p>
+<p>Las bases de datos analizados en el curso tiene la siguiente estructura general con <strong>n</strong> renglones (observaciones) por <strong>p</strong> columnas (variables).</p>
+<div class="figure">
+<img src="/img/m.jpg" />
+
+</div>
+<p>Con una variable por columna y una observación por renglón tal como tradicionalmente se estructura la información en una hoja de cálculo. Note que el elemento <span class="math inline">\(x_{ij}\)</span> de la matriz <span class="math inline">\(X\)</span> muestra la <strong>observación</strong> <strong>i</strong> que va de <span class="math inline">\(i=1,2,3,...,n\)</span></p>
+<p>Y la <strong>variable</strong> <strong>j</strong> que va <span class="math inline">\(j=1,2,3,...,p\)</span></p>
+<div class="figure">
+<img src="/img/m2.jpg" />
+
+</div>
+<p>Así la estructura de los datos analizados se integra por pares ordenados <span class="math inline">\({(x_1,y_1),(x_2,y_2),...,(x_n,y_n)}\)</span></p>
+<p>Para el producto entre matrices la notación usada sigue la convención usual, por ejemplo sea <span class="math inline">\(A \in \mathbb{R}^{r d}\)</span> y <span class="math inline">\(B \in \mathbb{R}^{d s}\)</span> Entonces el producto de <span class="math inline">\(A\)</span> y <span class="math inline">\(B\)</span> es denotado <span class="math inline">\(AB\)</span>.</p>
+<p>Y el elemento <span class="math inline">\((i,j)\)</span> de <span class="math inline">\(AB\)</span> se obtiene multiplicando cada elemento del renglón i de <span class="math inline">\(A\)</span> por cada elemento de la columna j de <span class="math inline">\(B\)</span> y sumando el resultado. Esto es <span class="math inline">\((AB)_{ij}\)</span> <span class="math inline">\(\sum_{k=1}^{d} a_{ik}b_{kj}\)</span></p>
+<p>Ejemplo</p>
+<div class="figure">
+<img src="/img/m3.jpg" />
+
+</div>
+<p>Vemos que el resultado es una matriz con dimensiones <strong>r x s</strong>.</p>
+<p>Y el producto sólo es posible ya que el número de renglones de <span class="math inline">\(A\)</span> es el mismo que el número de columnas de <span class="math inline">\(B\)</span></p>
+</div>
+<div id="estructura-de-datos." class="section level2">
+<h2>Estructura de datos.</h2>
+<p><strong>Corte transversal.</strong> Datos organizados con relación a una unidad de análisis, por ejemplo: una <strong>muestra</strong> de individuos, familias, empresas, ciudades, estados, paises, tomados para un punto determinado en el tiempo. Ejemplo: ENIGH, ENGASTO.ENSANUT, ENOE, SINAIS, DENUE. En algunos casos los datos corresponden a encuestas realizadas a lo largo de un perido en distintas semanas, estos datos se consieran de corte transversal.</p>
+<p>Este es el tipo de datos que estudiaremos en este curso principalmente.</p>
+<p>Pregunta, la siguiente base contiene datos de corte transversal.</p>
+<pre><code>##    Sexo Tasa              Estado
+## 1     1  145             Sinaloa
+## 2     1  138              Sonora
+## 3     1  111             Nayarit
+## 4     1  109 Baja California Sur
+## 5     1  109     Baja California
+## 6     1  104           Chihuahua
+## 7     1  102          Nuevo León
+## 8     1   93            Coahuila
+## 9     1   88          Tamaulipas
+## 10    1   84      Aguascalientes
+## 11    1   78           Zacatecas
+## 12    1   76           Michoacán
+## 13    1   75              Colima
+## 14    1   75             Jalisco
+## 15    1   69             Durango
+## 16    2   67      Aguascalientes
+## 17    1   63          Guanajuato
+## 18    2   62           Chihuahua
+## 19    1   60        Quintana Roo
+## 20    1   59                CDMX
+## 21    2   58              Sonora
+## 22    2   56             Jalisco
+## 23    1   54           Querétaro
+## 24    2   53        Quintana Roo
+## 25    1   53             Tabasco
+## 26    1   51             Morelos
+## 27    1   50             Chiapas
+## 28    1   49            Campeche
+## 29    1   49            Guerrero
+## 30    1   48            Veracruz
+## 31    1   48     San Luis Potosí
+## 32    2   48            Coahuila
+## 33    2   47     Baja California
+## 34    2   46             Sinaloa
+## 35    2   46             Nayarit
+## 36    1   45              México
+## 37    2   44          Nuevo León
+## 38    2   44 Baja California Sur
+## 39    2   43           Zacatecas
+## 40    2   42              Colima
+## 41    1   41              Puebla
+## 42    2   40          Tamaulipas
+## 43    2   40                CDMX
+## 44    1   40            Tlaxcala
+## 45    2   37           Michoacán
+## 46    2   37            Tlaxcala
+## 47    1   37              Oaxaca
+## 48    2   36             Tabasco
+## 49    1   36             Yucatán
+## 50    2   36           Querétaro
+## 51    2   35             Durango
+## 52    2   34     San Luis Potosí
+## 53    1   32             Hidalgo
+## 54    2   32          Guanajuato
+## 55    2   30              México
+## 56    2   28            Guerrero
+## 57    2   27            Veracruz
+## 58    2   27             Chiapas
+## 59    2   26             Morelos
+## 60    2   25              Puebla
+## 61    2   24              Oaxaca
+## 62    2   24             Yucatán
+## 63    2   24            Campeche
+## 64    2   23             Hidalgo</code></pre>
+<pre><code>##    Sexo Tasa              Estado
+## 1     2   67      Aguascalientes
+## 2     2   62           Chihuahua
+## 3     2   58              Sonora
+## 4     2   56             Jalisco
+## 5     2   53        Quintana Roo
+## 6     2   48            Coahuila
+## 7     2   47     Baja California
+## 8     2   46             Sinaloa
+## 9     2   46             Nayarit
+## 10    2   44          Nuevo León
+## 11    2   44 Baja California Sur
+## 12    2   43           Zacatecas
+## 13    2   42              Colima
+## 14    2   40          Tamaulipas
+## 15    2   40                CDMX
+## 16    2   37           Michoacán
+## 17    2   37            Tlaxcala
+## 18    2   36             Tabasco
+## 19    2   36           Querétaro
+## 20    2   35             Durango
+## 21    2   34     San Luis Potosí
+## 22    2   32          Guanajuato
+## 23    2   30              México
+## 24    2   28            Guerrero
+## 25    2   27            Veracruz
+## 26    2   27             Chiapas
+## 27    2   26             Morelos
+## 28    2   25              Puebla
+## 29    2   24              Oaxaca
+## 30    2   24             Yucatán
+## 31    2   24            Campeche
+## 32    2   23             Hidalgo</code></pre>
+<p><strong>Nota:</strong> Un supuesto importante para el análisis de datos en estructura de corte transversal es que provienen de una <strong>muestra aleatoria</strong>. Algunos sesgos de selección comúnes ocurren por ejemplo en encuestas que preguntan sobre los ingresos, generalmente es un dato que algunas familias (sobre todo de altos ingresos) no proporcionan.</p>
+<p><strong>Series de tiempo</strong> Contienen datos de una unidad de análisis para varios momentos del tiempo, de periodicidad generalmente homogénea (diaria, mensual, trimestral, anual, etc.,).</p>
+<div id="comportamiento-del-precio-de-la-mezcla-mexicana-de-petroleo-11202018." class="section level4">
+<h4>Comportamiento del precio de la Mezcla Mexicana de Petróleo 11/20/2018. <img src="/img/oil.jpg" /></h4>
+</div>
+<div id="comportamiento-de-la-temperatura-mundial-1880-2000-c." class="section level4">
+<h4>Comportamiento de la Temperatura Mundial 1880-2000 (°C). <img src="/img/tseries.png" /></h4>
+<p>Otras estructuras incluyen <strong>datos de panel</strong> que básicamente agrupan series de corte transversal para diferentes momentos en el tiempo (ej. varios años).</p>
+</div>
+<div id="cociente-de-localizacion-para-diabetes-1998-2015-frontera-norte-y-frontera-sur-mexico." class="section level4">
+<h4>Cociente de localización para Diabetes 1998-2015 Frontera Norte y Frontera Sur, México.</h4>
+<div class="figure">
+<img src="/img/panel.jpg" />
+
+</div>
+<pre><code>## # A tibble: 50 x 7
+##    country     continent  year lifeExp      pop gdpPercap year1950
+##    &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+##  1 Afghanistan Asia       1952    28.8  8425333      779.        2
+##  2 Afghanistan Asia       1957    30.3  9240934      821.        7
+##  3 Afghanistan Asia       1962    32.0 10267083      853.       12
+##  4 Afghanistan Asia       1967    34.0 11537966      836.       17
+##  5 Afghanistan Asia       1972    36.1 13079460      740.       22
+##  6 Afghanistan Asia       1977    38.4 14880372      786.       27
+##  7 Afghanistan Asia       1982    39.9 12881816      978.       32
+##  8 Afghanistan Asia       1987    40.8 13867957      852.       37
+##  9 Afghanistan Asia       1992    41.7 16317921      649.       42
+## 10 Afghanistan Asia       1997    41.8 22227415      635.       47
+## # ... with 40 more rows</code></pre>
+<p>Note la variable que distingue la unidad de análisis <strong>(country)</strong> y la variable que incorpora la dimensión temporal para la estructura de panel <strong>(year)</strong>.</p>
+<p>En el ejemplo siguiente la unidad de análisis es la ciudad y la dimensión temporal se consigna por la variable año, en este caso sólo dos años 1982 y 1987.</p>
+<pre><code>## # A tibble: 15 x 6
+## # Groups:   año [2]
+##    ciudad crimes pcinc  unem officers   año
+##     &lt;int&gt;  &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;    &lt;int&gt; &lt;int&gt;
+##  1      1  17136  8532  8.20      326    82
+##  2      1  17306 12155  3.70      321    87
+##  3      2  75654  7551  8.10     1621    82
+##  4      2  83960 11363  5.40     1803    87
+##  5      3  31352  8343  9         633    82
+##  6      3  31364 11729  5.90      685    87
+##  7      4  15698  7592 12.6       245    82
+##  8      4  16953 10802  5.70      259    87
+##  9      5  31202  7558 12.6       504    82
+## 10      5  34355 10627  7.40      563    87
+## 11      6  16806  6411 13.9       186    82
+## 12      6  15931  8876  5.70      232    87
+## 13      7  65545  8016  9.30     1395    82
+## 14      7  88227 11766  5.40     1674    87
+## 15      8  68598  9265  8.40     1971    82</code></pre>
+<p>Note la estructura en este caso solo tenemos dos años, y como unidad de análisis la ciudad.</p>
+<p>También note que la dimensión que denota tiempo (año) se encuentra registrada en una varible.</p>
+<p>Así tenemos un data frame de 92 observaciones a lo largo del 2 años para 46 ciudades.</p>
+<p>Una estructura de este tipo, donde la dimensión tiempo se extiende por un periodo corto (ej, comparación ente 2 años). También se denomina comumnente como <em>pooled cross-section</em>.</p>
+<p>Una ventaja importante de la estructura de datos de panel sobre cross-section es que nos permite <strong>controlar por características no observadas</strong> en un sólo período de tiempo entre las unidades de análisis.</p>
+</div>
+<div id="tipo-de-variables." class="section level3">
+<h3>Tipo de variables.</h3>
+<p>Las variables utilizadas serán de dos tipos: <strong>numéricas</strong> ó <strong>categoricas</strong>. A su vez estas corresponden con los siguientes tipos de datos identificados en los programas utilizadso en el curso <strong>Rstudio</strong> y <strong>STATA</strong>: <em>doubles, integers, characters, logicals.</em></p>
+<p>Los dos primeros son valores numéricos, decimales o enteros, mientras el tipo characters puede representar <strong>factores</strong> (fct), ej. categorias como hombre, mujer, estado: BC, Jalisco, Sonora,etc.</p>
+<p>Principalmente los modelos que estudiaremos consideran la relación entre variables numéricas.</p>
+<p><strong>Ejemplo</strong> base de datos <strong>Salarios</strong> que contiene Datos sobre salario por hora, años de experiencia, años de educación, sexo y estatus marital.</p>
+<p><strong>Note</strong> la estructura de los datos (tipo de datos, número de observaciones y variables).</p>
+<pre><code>##     wage educ exper female married
+## 1   3.10   11     2      1       0
+## 2   3.24   12    22      1       1
+## 3   3.00   11     2      0       0
+## 4   6.00    8    44      0       1
+## 5   5.30   12     7      0       1
+## 6   8.75   16     9      0       1
+## 7  11.25   18    15      0       0
+## 8   5.00   12     5      1       0
+## 9   3.60   12    26      1       0
+## 10 18.18   17    22      0       1
+## 11  6.25   16     8      1       0
+## 12  8.13   13     3      1       0
+## 13  8.77   12    15      0       1
+## 14  5.50   12    18      0       0
+## 15 22.20   12    31      0       1</code></pre>
+<pre><code>## &#39;data.frame&#39;:    15 obs. of  5 variables:
+##  $ wage   : num  3.1 3.24 3 6 5.3 ...
+##  $ educ   : int  11 12 11 8 12 16 18 12 12 17 ...
+##  $ exper  : int  2 22 2 44 7 9 15 5 26 22 ...
+##  $ female : Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 2 2 1 1 1 1 1 2 2 1 ...
+##  $ married: Factor w/ 2 levels &quot;0&quot;,&quot;1&quot;: 1 2 1 2 2 2 1 1 1 2 ...</code></pre>
+<p><strong>Note</strong> que el orden de las observaciones en un <strong>data frame</strong> de corte transversal es irrelevante para la utilización de los datos en el proceso de estimación del modelo. En este caso ordenados en forma descendente por la variable Tasa.</p>
+<p><strong>Ejemplo:</strong> Datos sobre tasa de mortalidad por cáncer pulmón y gasto en tabaco por hogar a escala estatal.</p>
+<pre><code>##           gasto Tasa              Estado
+## 1  0.0025273233  145             Sinaloa
+## 2  0.0041378643  138              Sonora
+## 3  0.0026834461  111             Nayarit
+## 4  0.0031240127  109 Baja California Sur
+## 5  0.0028434236  109     Baja California
+## 6  0.0040707264  104           Chihuahua
+## 7  0.0032936647  102          Nuevo León
+## 8  0.0030328895   93            Coahuila
+## 9  0.0022843883   88          Tamaulipas
+## 10 0.0046600244   84      Aguascalientes
+## 11 0.0026224650   78           Zacatecas
+## 12 0.0030560532   76           Michoacán
+## 13 0.0024347714   75              Colima
+## 14 0.0037406735   75             Jalisco
+## 15 0.0022106053   69             Durango
+## 16 0.0024945779   63          Guanajuato
+## 17 0.0009427404   60        Quintana Roo
+## 18 0.0025014598   59                CDMX
+## 19 0.0019134592   54           Querétaro
+## 20 0.0002058734   53             Tabasco
+## 21 0.0014907851   51             Morelos
+## 22 0.0002619205   50             Chiapas
+## 23 0.0011181667   49            Campeche
+## 24 0.0006055314   49            Guerrero
+## 25 0.0013939013   48            Veracruz
+## 26 0.0021488711   48     San Luis Potosí
+## 27 0.0016858610   45              México
+## 28 0.0011485218   41              Puebla
+## 29 0.0010517844   40            Tlaxcala
+## 30 0.0002092071   37              Oaxaca
+## 31 0.0009646043   36             Yucatán
+## 32 0.0009700849   32             Hidalgo</code></pre>
+<p>Otro punto a tener en cuenta sobre la estructura de corte transversal es que no necesariamente todas las variables consideradas corresponden al mismo momento del tiempo, en ocasiones una variable representa el promedio de los valores en un periodo de tiempo determinado. Este rasgo dependerá del análisis realizado.</p>
+</div>
+<div id="actividad-1" class="section level3">
+<h3>Actividad 1</h3>
+<p>1.- Para la siguiente <a href="https://drive.google.com/file/d/1zpRbIB75iv0wwcKQECgmRue589UlZXBd/view?usp=sharing">base de datos</a> sobre tasas de mortalidad por suicidio en México en 2015, determine.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>La tasa promedio para los 32 estados del país para el sexo masculino.</p></li>
+<li><p>El valor máximo de google trends score (GTS) ¿En qué Estado ocurre? y el mínimo?</p></li>
+<li><p>¿Cúal es el valor promedio del GTS?</p></li>
+<li><p>La tasa promedio de sucidio para las mujeres en México.</p></li>
+</ol>
+<p>2.- Considere la siguiente base de datos sobre condiciones de <a href="https://drive.google.com/file/d/1sapYFuoLUI1hmZ_Sn0RPI4wJeVyozcCe/view?usp=sharing">obesidad y prevalencia de diabetes</a> en México 2015.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Comente sobre la estructura de los datos, número de variables, observaciones ¿Qué variables son cuantitativas y cuáles son factores o categóricas?</p></li>
+<li><p>Estime la tasa de morbilidad promedio, la máxima y la mínima así como la variaza <span class="math inline">\(\sigma^2\)</span> y desviación estándar <span class="math inline">\(\sigma\)</span> para ambos sexos.</p></li>
+<li><p>Determine si la diferencia entre la tasa promedio de morbilidad de ambos sexos es estadísticamente significativa. (realice prueba de hipótesis a partir del estadístico <em>t</em> ).</p></li>
+<li><p>La variable tasa se distribuye a corde con los supuestos de normalidad?</p></li>
+<li><p>Estime el coeficeinte de correlación entre tasa de diabetes y la variable sobrepeso (imc promedio por estado segÚn ENSANUT).</p></li>
+</ol>
+</div>
+</div>
+<div id="tarea" class="section level2">
+<h2>Tarea</h2>
+<p>Leer Capítulo 1. <a href="https://drive.google.com/file/d/1zaKc1XWvELsUgZrS32QdpHoM4-w0y7Qx/view?usp=sharing">An Introduction to Statistical Learning</a></p>
+<p>Y comente en disqus los siguientes puntos.</p>
+<p>1.-Comente dos motivos por los cuales nos interesa estimar la forma funcional <span class="math inline">\(f\)</span> en el proceso de construcción de un modelo estadístico.</p>
+<p>2.-Rasgos principales de la estimacion paramétrica en contraste con la estimación no parametrica. Mencione un ejemplo de modelo basasdo en estimacion paramétrica y uno no-paramétrica.</p>
+<p>Tiempo estimado 30 minutos</p>
+<div id="terminos-clave" class="section level3">
+<h3>Términos Clave</h3>
+<p><strong>Variable categórica</strong> o factorial: Qualitative variables take on values in one of <span class="math inline">\(K\)</span> different classes, or categories.</p>
+</div>
+<div id="referencias" class="section level3">
+<h3>Referencias</h3>
+<p>Box, G. E. P. (1979). Robustness in the strategy of scientific model building. In R. Launer &amp; G. Wilkinson (Eds.), Robustness in statistics (pp. 201–235). New York, NY: Academic Press.</p>
+</div>
+</div>
+
+		</div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 16 16"><path d="M16 9.5c0 .373-.24.74-.5 1l-5 5c-.275.26-.634.5-1 .5-.373 0-.74-.24-1-.5L1 8a2.853 2.853 0 0 1-.7-1C.113 6.55 0 5.973 0 5.6V1.4C0 1.034.134.669.401.401.67.134 1.034 0 1.4 0h4.2c.373 0 .95.113 1.4.3.45.187.732.432 1 .7l7.5 7.502c.26.274.5.632.5.998zM3.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/regresi%C3%B3n-lineal/" rel="tag">Regresión Lineal</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/mco/" rel="tag">MCO</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/regression/" rel="tag">regression</a></li>
+	</ul>
+</div>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="José Luis Manzanares Rivera avatar" src="/img/aavatar.jpg" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About José Luis Manzanares Rivera</span>
+	</div>
+	<div class="authorbox__description">
+		José Luis is a data scientist. He is currently conducting applied research at El Colegio de la Frontera Norte.
+	</div>
+</div>
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/post/syllabus/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">Syllabus</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/post/2019-01-11-rl2/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">RL-Simple</p></a>
+	</div>
+</nav>
+
+<section class="comments">
+	<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "4insight" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+			</div>
+			<aside class="sidebar"><div class="widget-search widget">
+	<form class="widget-search__form" role="search" method="get" action="https://google.com/search">
+		<label>
+			<input class="widget-search__field" type="search" placeholder="SEARCH..." value="" name="q" aria-label="SEARCH...">
+		</label>
+		<input class="widget-search__submit" type="submit" value="Search">
+		<input type="hidden" name="sitesearch" value="/" />
+	</form>
+</div>
+<div class="widget-recent widget">
+	<h4 class="widget__title">Recent Posts</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/post/2019-02-05-rl6/">RL-Diagnóstico</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/2019-01-25-rl5/">RL-Multiple</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/2019-01-25-rl4/">RL-Hipótesis</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/2019-01-15-rl3/">RL-Modelo</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/recursos-adicionales/">Recursos Adicionaes</a></li>
+		</ul>
+	</div>
+</div>
+<div class="widget-categories widget">
+	<h4 class="widget__title">Categories</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/categories/development">Development</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/r">R</a></li>
+		</ul>
+	</div>
+</div>
+<div class="widget-taglist widget">
+	<h4 class="widget__title">Tags</h4>
+	<div class="widget__content">
+		<a class="widget-taglist__link widget__link btn" href="/tags/basic-elements" title="Basic elements">Basic elements</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/css" title="Css">Css</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/html" title="Html">Html</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/mco" title="Mco">Mco</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/regresi%c3%b3n-lineal" title="Regresión lineal">Regresión lineal</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/regression" title="Regression">Regression</a>
+	</div>
+</div>
+</aside>
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2019 Estadística II.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

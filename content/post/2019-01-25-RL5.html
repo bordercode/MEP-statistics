@@ -1,0 +1,702 @@
+---
+title: "RL-Multiple"
+author: "José Luis Manzanarees Rivera"
+date: 2019-01-26T21:11:11-05:00
+categories: ["R"]
+tags: ["Regresión Lineal", "MCO", "regression"]
+mathjax : true
+menu:
+  main:
+    name: RL-Muiltiple
+    weight: 7
+---
+
+
+
+<div id="regresion-multiple." class="section level2">
+<h2>Regresión Multiple.</h2>
+<p>La estimación de modelos bajo esta estructura permite incorporar <strong>p variables independientes</strong>, lo que contribuye para explicar una mayor parte de la variación en <span class="math inline">\(Y\)</span> al controla por determiantes de interés.</p>
+<span class="math display" id="eq:mult">\[\begin{align}
+Y=\beta_0+\beta_1 X_1+\beta_2 X_2+...+\beta_p X_p+\epsilon
+\tag{1}
+\end{align}\]</span>
+<p>Donde <span class="math inline">\(\beta_j\)</span> indica el efecto promedio sobre Y de un cambio de una unidad en <span class="math inline">\(X_j\)</span> manteniendo los otros parámetros constantes. Esta estructura del modelo nos permite controlar por <span class="math inline">\(X_j\)</span> variables explicativas de Y.</p>
+<div class="figure">
+<img src="/img/lm3d.jpg" />
+
+</div>
+<p>En el contexto multivariado, la relación se convierte en un plano, este se elige tal que minimiza la suma cuadrada de la distancia vertical entre cada observación y el plano.</p>
+<div id="preguntas-importantes-que-nos-interesa-abordar-en-un-modelo-de-regresion-lineal-multiple." class="section level3">
+<h3>Preguntas importantes que nos interesa abordar en un modelo de regresión lineal múltiple.</h3>
+<ul>
+<li><p>1- Al menos uno de los regresores <span class="math inline">\(X_1, X_2, ...,X_p\)</span>es útil para predecir la variable dependiente?</p></li>
+<li><p>2.- ¿Todos los regresores ayudan a explicar <span class="math inline">\(Y\)</span>? o ¿es sólo un subconjunto de estos útil?</p></li>
+<li><p>3.-¿Qué tan bien el modelo se ajsuta a los datos?</p></li>
+<li><p>4 .- ¿Qué tan precisas son nuestras predicciones?</p></li>
+</ul>
+</div>
+<div id="existe-una-relacion-entre-entre-la-variable-dependiente-y-los-regresores" class="section level3">
+<h3>1. Existe una relación entre entre la variable dependiente y los regresores?</h3>
+<p><span class="math display">\[H0: \beta_1=\beta_2=...=\beta_p=0\]</span> <span class="math display">\[Ha: B_j \neq 0 \]</span></p>
+<p>Por lo menos un parámetro en el modelo es distinto de cero. La prueba se estima con el estadístico <strong>F</strong><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> <span class="math display">\[F=\frac{(TSS-RSS)/p}{RSS/(n-1-p)}\]</span> Donde: <span class="math inline">\(TSS=\sum(y_i-\bar y_i)^2\)</span>, <span class="math inline">\(RSS=\sum(y_i-\hat y_i)^2\)</span></p>
+<p>Si los supuestos del modelo se cumplen <span class="math inline">\(E[RSS/(n-1-p)=\sigma^2]\)</span> y Si H0. es verdad <span class="math inline">\(E[(TSS-RSS)/p]=\sigma^2\)</span></p>
+<p>Por lo que en ausencia de relación entre la variable dependiente y los regresores, el estadístico <span class="math inline">\(F\approx1\)</span>.</p>
+<p>Por el contrario si <strong>Ha</strong> es verdad, tendremos <span class="math inline">\(E[(TSS-RSS)/p&gt;\sigma^2]\)</span> y por lo tanto esperamos F&gt;1.</p>
+<p>La interpretación cuando el estadistico F&gt;1 y es estadisticamente significativo (recordemos la prueba de hipótesis mediante el <strong>p-value</strong>) indica que al menos uno de los regresores es distinto de cero. Evidencia en favor del modelo propuesto.</p>
+<p>Note que el estadístico F ajusta por el número de variables independientes <strong>p</strong> y el número de observaciones <strong>n</strong>, este ajuste ofrece una ventaja respecto a las pruebas de significancia individaual con el estadístico t.</p>
+<p>Note que cuando p&gt;n, entonces no es válido utilizar el modelo de regresión lineal con MCO, en consecuencia el F-statistic en este caso no es de utilidad.</p>
+<div id="ejemplo-1" class="section level4">
+<h4>Ejemplo 1</h4>
+<p><span class="math inline">\(salario=\beta_0+\beta_1 educ +\beta_2 exper+\epsilon\)</span></p>
+<p>Efecto sobre salario por hora controlando por dos variables explicativas: años de educación y años de exeriencia.</p>
+<pre><code>## 
+## Call:
+## lm(formula = wage ~ educ + exper, data = wage1)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.5532 -1.9801 -0.7071  1.2030 15.8370 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -3.39054    0.76657  -4.423 1.18e-05 ***
+## educ         0.64427    0.05381  11.974  &lt; 2e-16 ***
+## exper        0.07010    0.01098   6.385 3.78e-10 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.257 on 523 degrees of freedom
+## Multiple R-squared:  0.2252, Adjusted R-squared:  0.2222 
+## F-statistic: 75.99 on 2 and 523 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div id="ejemplo-1.2" class="section level4">
+<h4>Ejemplo 1.2</h4>
+<p>Consideremos ahora el escenario de la <em>General Social Survey GSS</em> con datos de ingreso familiar como variable dependiente, edad, educación (años de estudio máximo) e ingreso de la persona que responde la encuesnta como variables explicativas. La base de datos de la GSS 2012 contiene 1974 observaciones para 10 variables.</p>
+<p>¿Puede predecirse el ingreso familiar a partir del ingreso de la persona que responde la encuesta, su nivel de estudios y su edad?</p>
+<p><span class="math inline">\(FIncome=\beta_0+\beta_1 age +\beta_2 educ +\beta_3 realrinc+\epsilon\)</span></p>
+<pre><code>## 
+## Call:
+## lm(formula = realinc ~ age + educ + realrinc, data = income)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -43592 -16623  -7759   5185 129010 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -2.030e+04  5.274e+03  -3.849 0.000125 ***
+## age          9.205e+01  6.739e+01   1.366 0.172226    
+## educ         3.181e+03  3.190e+02   9.971  &lt; 2e-16 ***
+## realrinc     3.798e-01  1.661e-02  22.864  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 30850 on 1107 degrees of freedom
+##   (863 observations deleted due to missingness)
+## Multiple R-squared:  0.4268, Adjusted R-squared:  0.4252 
+## F-statistic: 274.7 on 3 and 1107 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div id="ejemplo-2." class="section level4">
+<h4>Ejemplo 2.</h4>
+<p><span class="math inline">\(cons=\beta_0+\beta_1 inc +\beta_2 inc^2+\epsilon\)</span></p>
+<p>El modelo relaciona el Consumo con el nivel de ingreso y la forma cuadrática de esta variable.</p>
+<p>Note que el modelo de regresión multiple permite una mayor flexibilidad al incluir diversas formas funcionales para los regresores como en este caso con una variable cuadrática, note que el modelo sigue siendo de regresión lineal en los parámetros.</p>
+</div>
+<div id="ejemplo-3" class="section level4">
+<h4>Ejemplo 3</h4>
+<p><span class="math inline">\(log(sueldo)=\beta_0+\beta_1 log(ventas)+\beta_2 ceoten+\beta_3 ceoten^2+\epsilon\)</span></p>
+<p>El modelo relaciona el cambio porcentual en el sueldo de los ejecutivos (ceo) con las variables explicativas: ventas, experiencia con el mismo empleador (tenure) así como un efecto no lineal (cuadrático para la variable tenure), que refleja el hecho de que años adicionales de experiencia podrán tener un efecto progresivamente mayor en el sueldo de los ejecutivos.</p>
+</div>
+<div id="ejemplo-4." class="section level4">
+<h4>Ejemplo 4.</h4>
+<p>Ecuación de salario.</p>
+<p><span class="math inline">\(\hat {log( wage)}=\beta_0+\beta_1educ+\beta_2 exper +\beta_3tenure\)</span></p>
+<p><img src="/post/2019-01-25-RL5_files/figure-html/unnamed-chunk-3-1.png" width="960" /></p>
+<pre><code>## 
+## Call:
+## lm(formula = lwage ~ educ + exper + tenure, data = wage1)
+## 
+## Coefficients:
+## (Intercept)         educ        exper       tenure  
+##    0.284360     0.092029     0.004121     0.022067</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = lwage ~ educ + exper + tenure, data = wage1)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.05802 -0.29645 -0.03265  0.28788  1.42809 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 0.284360   0.104190   2.729  0.00656 ** 
+## educ        0.092029   0.007330  12.555  &lt; 2e-16 ***
+## exper       0.004121   0.001723   2.391  0.01714 *  
+## tenure      0.022067   0.003094   7.133 3.29e-12 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.4409 on 522 degrees of freedom
+## Multiple R-squared:  0.316,  Adjusted R-squared:  0.3121 
+## F-statistic: 80.39 on 3 and 522 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Note que un incremento de un año adicional de educación se relaciona con un incremento de 9.2% en el salario.</p>
+<p>Mientras un incremento de un año adicional en la experiencia se asocia con solo un incremento del .4% en salario.</p>
+<p>Y el incremento de un año con el empleador se asocia con un incremento de 2.2% en el salario.</p>
+<p>Note la significancia estadística de los parámetros con el contrsate de la hipotesis Nula <span class="math inline">\(\beta_j=0\)</span> mediante los valores del t-statistic y el p-value.</p>
+<p>Note adicionalmente el estimado de la bondad de ajuste del modelo, un <span class="math inline">\(R^2\)</span> relativamente bajo, pues solo explica el 31.6% de la varianza en Y.</p>
+</div>
+<div id="ejemplo-5" class="section level4">
+<h4>Ejemplo 5</h4>
+<p>Considermos ahora un modelo para la relación entre la participación en el plan de pensiones <em>401k</em> de 1534 empresas como variable dependiente expresada en porcentaje y dos variables explicativas: edad del plan de pensiones: variable <strong>age</strong> (expresada en años) y la fracción correspondiente a la aportación patronal por cada peso que el trabajador aporta a la cuenta: (<strong>mrate</strong>). ejemplo un mrate= .57 implica que por cada peso del trabajador, el empleador aporta 57 centavos.</p>
+<pre class="r"><code>data(k401k)
+
+lm(prate ~ mrate + age, data = k401k)%&gt;%
+summary()</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = prate ~ mrate + age, data = k401k)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -81.162  -8.067   4.787  12.474  18.256 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  80.1191     0.7790  102.85  &lt; 2e-16 ***
+## mrate         5.5213     0.5259   10.50  &lt; 2e-16 ***
+## age           0.2432     0.0447    5.44 6.21e-08 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 15.94 on 1531 degrees of freedom
+## Multiple R-squared:  0.09225,    Adjusted R-squared:  0.09106 
+## F-statistic: 77.79 on 2 and 1531 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>El incremento de una unidad adicional en el match rate (mrate) se asocia con un incremento de 5.5% en la participación de los trabajadores en el fondo de pensiones 401K. El caso de la variable age (la edad del plan en la empresa) es también estadísticamente significativa.</p>
+<p>Note en este caso la magnitud del <span class="math inline">\(R^2\)</span> es considerablemente pequeño lo que indica una área de oportunidad para mejorar el modelo.</p>
+<p>Un rasgo importante sobre el <span class="math inline">\(R^2\)</span> es que usualmente se incrementa al añadir un regresor adicional, sin embargo, la prueba de hipótesis sobre cada regresor nos permite determinar si estos son estadísticamente significativos o no y por lo tanto tenemos un criterio para decidir sobre su inclusión en el modelo independientemente de que el <span class="math inline">\(R^2\)</span> “mejore” con su inclusión.</p>
+</div>
+<div id="ejemplo-6" class="section level4">
+<h4>Ejemplo 6</h4>
+<p>Consideremos ahora el modelo sobre el impacto de los gastos de publicidad en diversos medios (T.V. Radio, Newspaper) sobre el nivel de ventas.(Recuerde ventas en miles de unidades y gastos en miles de USD). Estime el modelo y determine el valor de los parámetros de la pendiente para cada variable independiente. ¿Son estadísticamente significativos? Qué proporción de la varianza es explicada por el modelo?</p>
+<pre><code>## [1] &quot;X&quot;         &quot;TV&quot;        &quot;radio&quot;     &quot;newspaper&quot; &quot;sales&quot;</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = sales ~ TV + radio + newspaper, data = a)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -8.8277 -0.8908  0.2418  1.1893  2.8292 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  2.938889   0.311908   9.422   &lt;2e-16 ***
+## TV           0.045765   0.001395  32.809   &lt;2e-16 ***
+## radio        0.188530   0.008611  21.893   &lt;2e-16 ***
+## newspaper   -0.001037   0.005871  -0.177     0.86    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.686 on 196 degrees of freedom
+## Multiple R-squared:  0.8972, Adjusted R-squared:  0.8956 
+## F-statistic: 570.3 on 3 and 196 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Note en este caso la interpretación de los coeficientes: Por ejemplo para la variable <strong>TV</strong> un incremento de una unidad ($1000 USD) tiene un impacto en la positivo en las ventas de 48 unidades, <strong>conrolando por las otras dos variables</strong> (los gastos en radio y prensa escrita).</p>
+<p>Note un punto interesante: ¿Tendrá sentido indicar que <strong>NO HAY</strong> relación entre la variable ventas y los gastos en prensa escrita. <strong>(p-value=.86)?</strong>. Aún a pesar de que el modelo de regresión simple indica lo contrario.</p>
+<pre><code>## [1] &quot;TV&quot;        &quot;radio&quot;     &quot;newspaper&quot; &quot;sales&quot;</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = sales ~ newspaper, data = a)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -11.2272  -3.3873  -0.8392   3.5059  12.7751 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 12.35141    0.62142   19.88  &lt; 2e-16 ***
+## newspaper    0.05469    0.01658    3.30  0.00115 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5.092 on 198 degrees of freedom
+## Multiple R-squared:  0.05212,    Adjusted R-squared:  0.04733 
+## F-statistic: 10.89 on 1 and 198 DF,  p-value: 0.001148</code></pre>
+<p>De hecho si tiene sentido, observe la siguiente matriz de correlación entre las variables.</p>
+<pre class="r"><code>res &lt;- cor(a)
+round(res, 4)</code></pre>
+<pre><code>##               TV  radio newspaper  sales
+## TV        1.0000 0.0548    0.0566 0.7822
+## radio     0.0548 1.0000    0.3541 0.5762
+## newspaper 0.0566 0.3541    1.0000 0.2283
+## sales     0.7822 0.5762    0.2283 1.0000</code></pre>
+<p>Note que la correlación entre las variables newspaper y TV es positiva (.35). Lo que revela una tendencia a gastar más en publicidad direigida en newspaers en mercados donde se gasta más en publicidad por radio.</p>
+<p>Ahora suponga que de hecho el resultado del modelo de regresión multiple es correcto y los gastos en radio tienen efecto en las ventas, mientras los gastos en publicidad dirigida a newspapers no tienen impacto en las ventas.</p>
+<p>Entonces en los mercados en los que incrementamos el gasto en radio nuestras ventas se incrementan, pero de hecho, acorde a la matriz de correlación también tendemos a gastar mas en publicidad en newspapers en esos mercados.</p>
+<p>Por este motivo en una regresión simple en donde solo consideramos la relación entre ventas y gasto en publicidad en newspapers vemos que se tiene una relación positiva cuando en realidad los gastos en newspapers de hecho no impactan el nivel de ventas!</p>
+<p>Es como si la variable newspapers refleja la influencia de los otros gastos en publicidad (variables radio y T.V).</p>
+<p>Este ejemplo revela la importancia de controlar mediante la regresión múltiple los efectos de variables consideradas por la teoría como determinantes probables.</p>
+<p>Respecto al estimado de bondad de ajuste del modelo <span class="math inline">\(R^2\)</span>, note que si únicamente el modelo se estima con las variables TV y radio, el valor del <span class="math inline">\(R^2=0.8972\)</span> no se modifica. Por lo que la contribución de la variable <em>newspaper</em> prácticamente <strong>NO</strong> aporta en la explicación de la variación de las <em>ventas</em> en el modelo, de hecho se confirma que la variable no es estadisticametne significativa (t, p-value=.86).</p>
+<p>El contraste es evidente cuando comparamos el modelo solo con la variable TV. (<span class="math inline">\(R^2=.61\)</span>) y cuando añadimos la variable radio <span class="math inline">\(R^2=89.72\)</span>, variable que contribuye a la explicación de la varianza de la variable dependiente <em>ventas</em> (mejora la especificación del modelo).</p>
+<p>Note también el cambio el <strong>RSE</strong> de las diferentes especificaciones. El RSE decrece con la inclusión de las variables estadisticamente significativas y se incrementa con el uso de regresores no relevantes estadisticamente como la variale <em>newspapers</em> en este caso.</p>
+<pre><code>## [1] &quot;TV&quot;        &quot;radio&quot;     &quot;newspaper&quot; &quot;sales&quot;</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = sales ~ TV + radio, data = a)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -8.7977 -0.8752  0.2422  1.1708  2.8328 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  2.92110    0.29449   9.919   &lt;2e-16 ***
+## TV           0.04575    0.00139  32.909   &lt;2e-16 ***
+## radio        0.18799    0.00804  23.382   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.681 on 197 degrees of freedom
+## Multiple R-squared:  0.8972, Adjusted R-squared:  0.8962 
+## F-statistic: 859.6 on 2 and 197 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</div>
+<div id="actividad-5" class="section level2">
+<h2>Actividad 5</h2>
+<div id="ejercicio-1" class="section level4">
+<h4>Ejercicio 1:</h4>
+<p>Considere la relación del peso al nacimiento (gramos) y las variables explicativas sobre el número de cigarros consumidos por día por la madre durante su embarazo y el nivel de ingreso familiar Fuente de los datos: J. Mullahy (1997), “Instrumental-Variable Estimation of Count Data Models: Applications to Models of Cigarette Smoking Behavior,” Review of Economics and Statistics 79, 596-593.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Estime el modelo de regresión lineal y determine los parametros <span class="math inline">\(\hat \beta\)</span> correspondientes a cada regresor. (Exprese la variable independiente bwght en gramos). Cúal es el efecto esperado en el peso del bebé si la madre fuma 7 cigarros por dia?</p></li>
+<li><p>Indique si las variables explicativas son estadisticamente significativas al 5%.</p></li>
+<li><p>¿Qué porporción de la varianza es explicada por el modelo? <span class="math inline">\(R^2\)</span> Explique posibels razones de la magnitud del <span class="math inline">\(R^2\)</span>.</p></li>
+<li><p>Explica el modelo en su conjunto la variable dependiente? Tip: F-statistic p-value.</p></li>
+</ol>
+</div>
+<div id="ejericio-2" class="section level4">
+<h4>Ejericio 2</h4>
+<p>Considere el escenario en que se relaciona el valor medio de las viviendas por CENSUS TRACT con las siguientes características: número promedio de habitaciones (rooms), Distancia promedio en millas hacia los 5 principales centros de empleo (dist), la proporción de alumnos a maestros (stratio) en la sescuelas detro del census tract, incluidos determinates como la calidad del aire en la comunidad, apoximada por las mediciones de óxidos de nigrógeno <span class="math inline">\(NO_x\)</span> (<span class="math inline">\(NO_x\)</span> medido en partes por millón), incluidos determinates sobre las condiciones de seguridad de la localidad como la cantidad de delitos per capita (crime). Base de datos con 506 observaciones (cada observación representa un census tract (AGEB) Standard Metropolitan Statistical Area (SMSA) en el area de Boston, MA, EUA.).</p>
+<p><a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.926.5532&amp;rep=rep1&amp;type=pdf">Fuente del datos:</a> “Hedonic Housing Prices and the Demand for Clean Air,” by Harrison, D. and D.L.Rubinfeld, Journal of Environmental Economics and Management 5, 81-102.</p>
+<p>En ocasiones es conveniente reportar los resultados de la regresión lineal utilizando coeficientes estandarizados, calculando los <em>z-scores</em> de cada variable -independientes y dependiente- (lo que se logra restando la media (<span class="math inline">\(\bar x\)</span>) de cada observación y dividiendo sobre la desviación standard <span class="math inline">\(\sigma\)</span>).</p>
+<p>Este efoque en la estimación de los coeficientes permite interpretar las variaciones en función del número de desviaciones estándard. Por ejemplo, podemos responder la pregunta: ¿Cuál es el cambio en el valor de viviendas (variable dependiente en este ejemplo) ante un incremento de una desviacion estándard de <span class="math inline">\(x_j\)</span> (por ejemplo NO_x).</p>
+<p>Este enfoque nos permite una interpretación independiente de las unidades de medida de cada regresor lo cual ofrece una ventaja sobre la estiamación en niveles para detectar la importancia relativa de las variables independientes, incluso en los casos en los que cada regresor se expresa por unidades de medida heterogéneas. Importante en esta especificación el intercepto <span class="math inline">\(\beta_0\)</span> toma el valor de cero.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Estime el modelo <span class="math inline">\(price=\beta_0+\beta_1 nox+\beta_2 crime+\beta_3 rooms+\beta_4 dist+\beta_5 stratio\)</span> en niveles. Interprete los resultados.</p></li>
+<li><p>Estime el modelo usando las variables estandarizadas (z-scores). Interprete los coeficientes (cambio de una desviación estándard) respecto a los cambios en la variable dependiente. ¿Qué variable tiene el mayor impacto sobre el valor promedio de las viviendas en las localidades del estudio?</p></li>
+<li><p>Estime el modelo considerando la expresión logarítmica para la variable dependiente y las variables independientes NO_x y dist.</p></li>
+</ol>
+<p>Interprete los resutlados (Tip: Elasticidades.)</p>
+<ol start="4" style="list-style-type: lower-alpha">
+<li>Existe alguna diferencia entre los estadísticos estimados <span class="math inline">\(R^2\)</span> y <strong>F</strong> entre los tres modelos?</li>
+</ol>
+<pre class="r"><code>data(hprice2)
+
+## Estimación en niveles 
+
+lm(price ~ nox + crime + rooms + dist + stratio, data = hprice2)%&gt;%
+summary()</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = price ~ nox + crime + rooms + dist + stratio, data = hprice2)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -13914  -3201   -662   2110  38064 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 20871.13    5054.60   4.129 4.27e-05 ***
+## nox         -2706.43     354.09  -7.643 1.09e-13 ***
+## crime        -153.60      32.93  -4.665 3.97e-06 ***
+## rooms        6735.50     393.60  17.112  &lt; 2e-16 ***
+## dist        -1026.81     188.11  -5.459 7.57e-08 ***
+## stratio     -1149.20     127.43  -9.018  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 5586 on 500 degrees of freedom
+## Multiple R-squared:  0.6357, Adjusted R-squared:  0.632 
+## F-statistic: 174.5 on 5 and 500 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>## Estimación en z-scores
+
+lm(scale(price) ~ 0 + scale(nox) + scale(crime) + scale(rooms) + scale(dist) + scale(stratio), data = hprice2)%&gt;% 
+summary()</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = scale(price) ~ 0 + scale(nox) + scale(crime) + scale(rooms) + 
+##     scale(dist) + scale(stratio), data = hprice2)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.5110 -0.3476 -0.0719  0.2291  4.1334 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## scale(nox)     -0.34045    0.04450  -7.651 1.03e-13 ***
+## scale(crime)   -0.14328    0.03069  -4.669 3.89e-06 ***
+## scale(rooms)    0.51389    0.03000  17.129  &lt; 2e-16 ***
+## scale(dist)    -0.23484    0.04298  -5.464 7.35e-08 ***
+## scale(stratio) -0.27028    0.02994  -9.027  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.606 on 501 degrees of freedom
+## Multiple R-squared:  0.6357, Adjusted R-squared:  0.632 
+## F-statistic: 174.8 on 5 and 501 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>## Estimación elasticidades
+
+hprice2log&lt;-mutate(hprice2,lprice=log(price), lnox=log(nox),ldist=log(dist))
+lm(lprice ~ lnox + crime + rooms + ldist + stratio, data = hprice2log)%&gt;%
+summary()</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = lprice ~ lnox + crime + rooms + ldist + stratio, 
+##     data = hprice2log)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.88628 -0.12856 -0.00188  0.11111  1.23548 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 11.005202   0.289504  38.014  &lt; 2e-16 ***
+## lnox        -0.900736   0.106331  -8.471 2.73e-16 ***
+## crime       -0.014839   0.001446 -10.263  &lt; 2e-16 ***
+## rooms        0.246468   0.016876  14.604  &lt; 2e-16 ***
+## ldist       -0.214767   0.039989  -5.371 1.20e-07 ***
+## stratio     -0.042209   0.005457  -7.735 5.75e-14 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.2411 on 500 degrees of freedom
+## Multiple R-squared:  0.6564, Adjusted R-squared:  0.653 
+## F-statistic:   191 on 5 and 500 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div id="modelar-variables-cualitativas." class="section level2">
+<h2>Modelar Variables cualitativas.</h2>
+<p>Ej. Variables cualitativas (factores) como sexo, género, raza, etc.,</p>
+<div id="ejmeplo-1" class="section level4">
+<h4>Ejmeplo 1</h4>
+<p>Consideremos ahora el escenario de un estudio sobre el saldo (variable Balance) de la tarjeta de crédito en relación a diversas características del usuario: Edad, calificación de crediticia, Educación, ingreso, limite de crédito de la tarjeta, grupo étnico, sexo y estutus marital.</p>
+<p><img src="/post/2019-01-25-RL5_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>El objetivo es modelar la variable dependiente <strong>saldo</strong> en función de las diversas características del inidviduo.</p>
+<p>Note que las variables Sexo (Gender) y grupo étnico son categóricas (factores). Podemos incluirlas en el modeo creando variables <em>dummy</em>:</p>
+<div class="figure">
+<img src="/img/dummy.jpg" />
+
+</div>
+<pre><code>## 
+## Call:
+## lm(formula = Balance ~ Gender, data = Credit)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -529.54 -455.35  -60.17  334.71 1489.20 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   509.80      33.13  15.389   &lt;2e-16 ***
+## Gender         19.73      46.05   0.429    0.669    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 460.2 on 398 degrees of freedom
+## Multiple R-squared:  0.0004611,  Adjusted R-squared:  -0.00205 
+## F-statistic: 0.1836 on 1 and 398 DF,  p-value: 0.6685</code></pre>
+<p>El saldo promedio de la tarjeta de crédito para los hombre es de $509.80. Mientras para las mujeres=529.53 ó 509.80+ 19.73. Note que la variable Gender no es estadisticamente significativa p-value=.66 , por lo no hay evidencia estadística sobre el impacto del género sobre la vvariable dependiente saldo.</p>
+<pre><code>## 
+## Call:
+## lm(formula = Balance ~ Asian + Caucasian, data = Credit)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -531.00 -457.08  -63.25  339.25 1480.50 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   531.00      46.32  11.464   &lt;2e-16 ***
+## Asian         -18.69      65.02  -0.287    0.774    
+## Caucasian     -12.50      56.68  -0.221    0.826    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 460.9 on 397 degrees of freedom
+## Multiple R-squared:  0.0002188,  Adjusted R-squared:  -0.004818 
+## F-statistic: 0.04344 on 2 and 397 DF,  p-value: 0.9575</code></pre>
+<p>El resultado indica que la para los individuos Afroamericanos el balance promedio es de <span class="math inline">\(\$521.00\)</span>, para los asiaticos <span class="math inline">\(\$512.31\)</span> ó 531-18.69 y para los caucásicos <span class="math inline">\(\$518.5\)</span> ó 531-12.50.</p>
+<p>Note que si tenemos <strong>k</strong> factores, entonces tenemos <strong>k-1</strong> variables dummy dejando la variable sin recodificar como la variable base, en este caso la población afroamericana.</p>
+<p>Finalmente note que las variables que representan el grupo étnico no son estadísticamente significativas.</p>
+</div>
+<div id="ejemplo-2" class="section level4">
+<h4>Ejemplo 2</h4>
+<p>Considere ahora la relación entre salarios y los atributos del individuo, incluimos ahora la variable cualitativa <strong>sexo</strong> para determinar si existe impacto alguno en el nivel salarial entre hombres o mujeres, un contraste de interés desde la perspectiva de política pública. La base de datos contiene 526 observaciones (individuos). La variable dependiente es <em>wage</em> (dólares por hora ajustados s precios de 2018). Fuente de datos. <em>Current Population Survey</em>.</p>
+<pre><code>##  [1] &quot;wage&quot;     &quot;educ&quot;     &quot;exper&quot;    &quot;tenure&quot;   &quot;nonwhite&quot; &quot;female&quot;  
+##  [7] &quot;married&quot;  &quot;numdep&quot;   &quot;smsa&quot;     &quot;northcen&quot; &quot;south&quot;    &quot;west&quot;    
+## [13] &quot;construc&quot; &quot;ndurman&quot;  &quot;trcommpu&quot; &quot;trade&quot;    &quot;services&quot; &quot;profserv&quot;
+## [19] &quot;profocc&quot;  &quot;clerocc&quot;  &quot;servocc&quot;  &quot;lwage&quot;    &quot;expersq&quot;  &quot;tenursq&quot;</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = wage ~ female, data = wage1)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -24.708  -8.161  -4.358   6.292  78.897 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  31.3263     0.9267  33.806  &lt; 2e-16 ***
+## female      -11.0834     1.3388  -8.279 1.04e-15 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 15.34 on 524 degrees of freedom
+## Multiple R-squared:  0.1157, Adjusted R-squared:  0.114 
+## F-statistic: 68.54 on 1 and 524 DF,  p-value: 1.042e-15</code></pre>
+<p>Los hombres en promedio perciben un salario de <span class="math inline">\(\$31.3\)</span> USD/hr mientras la Mujeres <span class="math inline">\(\$20.2\)</span>. Recuerde los parámetros <span class="math inline">\(\beta_0 +\beta_1\)</span> en este caso indica el valor promedio de la variable dependiente cuando <span class="math inline">\(X_1=1\)</span> (Mujeres) según la codificación Mujeres=1, Hombres=0.Note además que la variable sexo es estadisticametne significativa. <a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>.</p>
+</div>
+<div id="ejemplo-2a." class="section level4">
+<h4>Ejemplo 2a.</h4>
+<p>Ahora consideremos el model cuando controlamos por variables explicativas adicionales como educación (<em>educ</em>), años de experiencia<em>, (exper</em>) y años de antigüedad con el mismo empleador (<em>tenure</em>). El modelo de regresión lineal multipe a estimar es:</p>
+<p><span class="math display">\[wage=\beta_0+\beta_1 sex+\beta_2 educ+\beta_3 exper +\beta_4 tenure+\epsilon\]</span></p>
+<pre><code>## 
+## Call:
+## lm(formula = wage ~ female + educ + exper + tenure, data = wage1)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -34.274  -7.978  -1.866   4.619  61.808 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -6.91850    3.19707  -2.164   0.0309 *  
+## female      -7.99035    1.16854  -6.838 2.26e-11 ***
+## educ         2.52175    0.21770  11.584  &lt; 2e-16 ***
+## exper        0.11206    0.05105   2.195   0.0286 *  
+## tenure       0.62218    0.09338   6.663 6.83e-11 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 13.05 on 521 degrees of freedom
+## Multiple R-squared:  0.3635, Adjusted R-squared:  0.3587 
+## F-statistic:  74.4 on 4 and 521 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Note en la interpretación de los parámetros de la pendiente en este caso: <span class="math inline">\(\beta_0\)</span> corresponde al valor promedio de la variable salario para los hombres cuando <span class="math inline">\(X_2,X_3,X_4=0\)</span> por lo que en este caso el parámetro no resulta informativo (no tiene sentido ya que no existe en la muestra personas con cero escolaridad, experiencia y antigüedad) sin embargo, el parámetro <span class="math inline">\(\beta_1\)</span> indica el diferencial de salarios entre Hombres y Mujeres.</p>
+<p>En este caso las mujeres perciben en promedio 8 USD/hr menos que los hombres, una vez que se controla por educación, experiencia, antigüedad, es decir, Si elegimos un hombre y una mujer de la muestra con los mismos niveles de educación, experiencia y antigüedad, entonces la mujer percibe 8 usd/hr menos en promedio que el hombre.</p>
+<p>Concluimos que la diferencia estimada se atribuye a la variable <strong>sexo</strong>, (ya hemos controlado por el resto de las variables), se tiene evidencia estadísticamente significativa de que las mujeres ganan menos en esta muestra, resultado que tiene implicacaiones de política pública en cuanto a la discriminación por género.</p>
+</div>
+<div id="ejemplo-3-1" class="section level4">
+<h4>Ejemplo 3</h4>
+<p>Consideremos ahora la interpretación de los parámetros cuando la variable dependiente se expresa mediante una <strong>transformación logarítmica</strong>. El modelo a estimar es:</p>
+<p><span class="math display">\[log(wage)=\beta_0+\beta_1 female +\beta_2 educ+\beta_3 exper +\beta_4 exper^2+\beta_5 tenure + \beta_6 tenure^2 +\epsilon \]</span></p>
+<pre><code>##  [1] &quot;wage&quot;     &quot;educ&quot;     &quot;exper&quot;    &quot;tenure&quot;   &quot;nonwhite&quot; &quot;female&quot;  
+##  [7] &quot;married&quot;  &quot;numdep&quot;   &quot;smsa&quot;     &quot;northcen&quot; &quot;south&quot;    &quot;west&quot;    
+## [13] &quot;construc&quot; &quot;ndurman&quot;  &quot;trcommpu&quot; &quot;trade&quot;    &quot;services&quot; &quot;profserv&quot;
+## [19] &quot;profocc&quot;  &quot;clerocc&quot;  &quot;servocc&quot;  &quot;lwage&quot;    &quot;expersq&quot;  &quot;tenursq&quot;</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = lwage ~ female + educ + exper + expersq + tenure + 
+##     tenursq, data = wage1)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.83160 -0.25658 -0.02126  0.25500  1.13370 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  0.4166910  0.0989279   4.212 2.98e-05 ***
+## female      -0.2965110  0.0358055  -8.281 1.04e-15 ***
+## educ         0.0801967  0.0067573  11.868  &lt; 2e-16 ***
+## exper        0.0294324  0.0049752   5.916 6.00e-09 ***
+## expersq     -0.0005827  0.0001073  -5.431 8.65e-08 ***
+## tenure       0.0317139  0.0068452   4.633 4.56e-06 ***
+## tenursq     -0.0005852  0.0002347  -2.493    0.013 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.3998 on 519 degrees of freedom
+## Multiple R-squared:  0.4408, Adjusted R-squared:  0.4343 
+## F-statistic: 68.18 on 6 and 519 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Los resultados indican que considerando los mismos niveles de educación, experiencia y antigüedad (incluido el efecto no lineal de estas últimas variables), las mujeres promedian un salario 29.6% inferior al de los hombres. Nuevamente enfatizar que la interpretación <span class="math inline">\(\beta_0\)</span> carece de interés.</p>
+</div>
+<div id="ejemplo-4" class="section level4">
+<h4>Ejemplo 4</h4>
+<p>Consideremos ahora la inclusión de dos variables cualitativas, por ejemplo el <strong>estado civil</strong> y si el individuo es hombre o mujer.</p>
+<p>Buscamos estimar las diferencias salariales dadas las características del individuo controlando por sexo (dummy), estado civil (dummy), educación, experiencia y antigüedad (incluidos los efectos no lineales de estas variables.)</p>
+<p>Para la estimación únicamente es necesario decidir por la categoria base, en este caso seleccionamos hombre y soltero.</p>
+<p>De modo que necesitamos generar 3 variables dummy una para hombre-casado (hca), mujer-casada (mca) y mujer-soltera (msol). Note que la categoria hombre-soltero es nuestra selección para categoria base.</p>
+<p>El modelo a estimar es:</p>
+<p><span class="math display">\[log(wage)=\beta_0+\beta_1 hca +\beta_2 mca+\beta_3 msol+\beta_4 educ+\beta_5 exper +\beta_6 exper^2+\beta_7 tenure + \beta_8 tenure^2 +\epsilon \]</span></p>
+<pre><code>##  [1] &quot;wage&quot;     &quot;educ&quot;     &quot;exper&quot;    &quot;tenure&quot;   &quot;nonwhite&quot; &quot;female&quot;  
+##  [7] &quot;married&quot;  &quot;numdep&quot;   &quot;smsa&quot;     &quot;northcen&quot; &quot;south&quot;    &quot;west&quot;    
+## [13] &quot;construc&quot; &quot;ndurman&quot;  &quot;trcommpu&quot; &quot;trade&quot;    &quot;services&quot; &quot;profserv&quot;
+## [19] &quot;profocc&quot;  &quot;clerocc&quot;  &quot;servocc&quot;  &quot;lwage&quot;    &quot;expersq&quot;  &quot;tenursq&quot;</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = lwage ~ hca + mca + msol + educ + exper + expersq + 
+##     tenure + tenursq, data = wage1)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.89697 -0.24060 -0.02689  0.23144  1.09197 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  0.3213781  0.1000090   3.213 0.001393 ** 
+## hca          0.2126757  0.0553572   3.842 0.000137 ***
+## mca         -0.1982676  0.0578355  -3.428 0.000656 ***
+## msol        -0.1103502  0.0557421  -1.980 0.048272 *  
+## educ         0.0789103  0.0066945  11.787  &lt; 2e-16 ***
+## exper        0.0268006  0.0052428   5.112 4.50e-07 ***
+## expersq     -0.0005352  0.0001104  -4.847 1.66e-06 ***
+## tenure       0.0290875  0.0067620   4.302 2.03e-05 ***
+## tenursq     -0.0005331  0.0002312  -2.306 0.021531 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.3933 on 517 degrees of freedom
+## Multiple R-squared:  0.4609, Adjusted R-squared:  0.4525 
+## F-statistic: 55.25 on 8 and 517 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>La estimación nos permite observar las diferencias promedio respecto a la categoria base (hombre-soltero), y dado que estamos haciendo una estimación de la forma log(Y), la interpretación es como diferencias porcentuales.</p>
+<p>Así, vemos que respecto a la categoria base (y considerando individuos con los mismos atributos) los hombres casados perciben en promedio sueldos superiores en 21.26%; las mujeres casadas perciben 19.8% menos que los hombres solteros, y las mujeres solteras un 11.03% menos que la categoria base.</p>
+<p>Interesante el hecho de que controrio al caso de los hombres, las mujeres casadas perciben menores salarios respecto a su contraparte solteras!. De hecho la diferencia es de 8.8% (19.8-11.03) y favorece a las solteras respecto a las casadas ¿? ¿Alguna hipótesis?</p>
+<p>¿Es la diferencia estadisticamente significativa?, bueno intuitivamtene es una brecha considerable pero es necesario hacer formalmente la estimación para lo cual construimos el modelo con la variable mujer-casada como la base.</p>
+<pre><code>##  [1] &quot;wage&quot;     &quot;educ&quot;     &quot;exper&quot;    &quot;tenure&quot;   &quot;nonwhite&quot; &quot;female&quot;  
+##  [7] &quot;married&quot;  &quot;numdep&quot;   &quot;smsa&quot;     &quot;northcen&quot; &quot;south&quot;    &quot;west&quot;    
+## [13] &quot;construc&quot; &quot;ndurman&quot;  &quot;trcommpu&quot; &quot;trade&quot;    &quot;services&quot; &quot;profserv&quot;
+## [19] &quot;profocc&quot;  &quot;clerocc&quot;  &quot;servocc&quot;  &quot;lwage&quot;    &quot;expersq&quot;  &quot;tenursq&quot;</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = lwage ~ hca + hsol + msol + educ + exper + expersq + 
+##     tenure + tenursq, data = wage1)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.89697 -0.24060 -0.02689  0.23144  1.09197 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  0.1231105  0.1057937   1.164 0.245089    
+## hca          0.4109433  0.0457709   8.978  &lt; 2e-16 ***
+## hsol         0.1982676  0.0578355   3.428 0.000656 ***
+## msol         0.0879174  0.0523481   1.679 0.093664 .  
+## educ         0.0789103  0.0066945  11.787  &lt; 2e-16 ***
+## exper        0.0268006  0.0052428   5.112 4.50e-07 ***
+## expersq     -0.0005352  0.0001104  -4.847 1.66e-06 ***
+## tenure       0.0290875  0.0067620   4.302 2.03e-05 ***
+## tenursq     -0.0005331  0.0002312  -2.306 0.021531 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.3933 on 517 degrees of freedom
+## Multiple R-squared:  0.4609, Adjusted R-squared:  0.4525 
+## F-statistic: 55.25 on 8 and 517 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Note que la diferencia salarial entre Mujeres casadas y Solteras es de hecho estadísticamente significativa (al <span class="math inline">\(10\%\)</span>) (p-value=0.09). Equivalente al porcentaje ya estimado <span class="math inline">\(8.79\%\)</span>.</p>
+</div>
+<div id="ejemplo-5-1" class="section level4">
+<h4>Ejemplo 5</h4>
+<p>Consideremos ahora el escenario en que buscamos predecir los precios de las viviendas en función de atributos como el tamaño del terreno (lotsize), tamaño de cosntrucción (sqrft), número de dormitorios (bdrms) y una variable factorial (dicotómica: 1,0) para indicar si la casa es de estilo colonial o no (colonial).</p>
+<p>El modelo se plantea utilizando la transformación logarítmica de la variable dependiente para observar cambios porcentuales en el precio.</p>
+<p><span class="math inline">\(log(price)=\beta_0+\beta_1 bdrms+log(lotsize)+ \beta_2 log(sqrft)+\beta_3 colonial\)</span></p>
+<pre><code>## 
+## Call:
+## lm(formula = lprice ~ bdrms + llotsize + lsqrft + colonial, data = hprice1)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.69479 -0.09750 -0.01619  0.09151  0.70228 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -1.34959    0.65104  -2.073   0.0413 *  
+## bdrms        0.02683    0.02872   0.934   0.3530    
+## llotsize     0.16782    0.03818   4.395 3.25e-05 ***
+## lsqrft       0.70719    0.09280   7.620 3.69e-11 ***
+## colonial     0.05380    0.04477   1.202   0.2330    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.1841 on 83 degrees of freedom
+## Multiple R-squared:  0.6491, Adjusted R-squared:  0.6322 
+## F-statistic: 38.38 on 4 and 83 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Los resultados indican que las casas estilo colonial (<span class="math inline">\(X_{colonial}=1\)</span>) tienen un diferencial de 5.3% en el precio promedio respecto a las casas de otros estilos. (El signo es positivo lo que corresponde a un incremento en el precio para las casas de estilo colonial).</p>
+<p>Adicionalmente las variables <span class="math inline">\(llotsize\)</span> y <span class="math inline">\(lsqrft\)</span> muestran los comabios porcentuales de la variable dependiente <em>log(precio)</em> ante el cambio de <span class="math inline">\(1\%\)</span>. POr lo que estos coeficientes <span class="math inline">\(\hat \beta\)</span> de hecho permiten conocer la tradicional elasticidad. En abos casos el precios es enalastico sin emabrgo es relativamente más sensible respecto a el tamaño de la construcción (variable <em>sqrft</em>).</p>
+<p>Note la interpretación del coeficiente <span class="math inline">\(\hat \beta_{colonial}\)</span> como la expresión porcentual en la diferencia entre los grupos de la variable dummy controlando por el resto de atributos. Note finalmente que la variable colonial no es estadísticamente significativa, <strong>NO se rechaza</strong> <span class="math inline">\(H_0: \beta_{colonial}=0\)</span></p>
+</div>
+<div id="tarea" class="section level4">
+<h4>Tarea</h4>
+<p>Considere el siguiente escenario en el que se busca explicar la relación entre la esperanza de vida de la población en una muestra de 194 paises (la variable dependiente) y una serie de caracteristicas sintetizadas por las sigueintes variables explicativas: Producto Interno Bruto per capita 2005-2009 (miles de USD constantes a 2005) (<em>gdp</em>), años promedio de escolaridad escolaridad (<em>school</em>), tasa de fertilidad en pobalción adolescente nacimientos por cada 1000 (<em>adfert</em>: Adolescent fertility: births/1000 births 2005/2009). Mortalidad infantil (<em>chldmort</em>: tasa de mortalidad infantil (antes de 5 años por cada 1000 nacimientos). <a href="http://hdr.undp.org/en/data">Fuente</a></p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Represente graficamente la variación en la esperanza de vida en los paises de la muestra por región. Tip: Utilice un Boxplot.</p></li>
+<li><p>Represente graficamente la relación entre la variable esperanza de vida y años de escolaridad. (variable que mide los años promedio de escolaridad de los adultos en cada país en el periodo 2005/2010). Tip (Utilice un scatterplot con la linea de tendencia)</p></li>
+<li><p>Construya una matriz de correlación para las siguientes variables esperanza de vida (<em>life</em>), Producto Interno Bruto per capita 2005-2009 (miles de USD constantes a 2005) (<em>gdp</em>), años promedio de escolaridad (<em>school</em>), tasa de fertilidad en pobalción adolescente nacimientos por cada 1000 (<em>adfert</em>: Adolescent fertility: births/1000 births 2005/2009). Mortalidad infantil (<em>chldmort</em>: tasa de mortalidad infantil (antes de 5 años por cada 1000 nacimientos). Grafique la matriz de correlación.</p></li>
+<li><p>Estime el modelo <span class="math inline">\(life=\beta_0 +\beta_1gdp+\beta_2school+\beta_3 adfert +\beta_4 chldmort+\epsilon\)</span></p></li>
+</ol>
+<p>Comente los resultados para los parámetros <span class="math inline">\(\hat\beta_p\)</span> incluidos los parámetros sobre el ajuste del modelo <span class="math inline">\(R^2\)</span> (¿Qué proporción de la varianza en la esperanza de vida se explica por el modelo? ). El estadístico <strong>F</strong> para la prueba de hipótesis <span class="math inline">\(H0:\beta_1,=\beta_2=...\beta_j=0\)</span> Que podemos decir de la validez del modelo en su conjunto.</p>
+<ol start="5" style="list-style-type: lower-alpha">
+<li><p>Según los parámetros del modelo, ¿cuantos años puede mejorar la esperanza de vida en un pais de la muestra si el GDP tiene un incremento de 10,000 USD per capita.</p></li>
+<li><p>Considerando los parámetros estimados del modelo, ¿Qué efecto tendría la reducción de 10 individuos en al tasa de mortablidad infantil por cada 1000 nacimientos, sobre la esperanza de vida promedio para esta muestra de países?</p></li>
+<li><p>Estime el modelo de regresión incluyendo como regresor la variable <em>dummy</em> para región en la que se ubica el país, con la binaria Africa=1, O=otras.</p></li>
+</ol>
+<p>¿Es esta variable estadísticamente significativa? ¿Cúal es el estimado para esperanza de vida en un país de la región Africa? Y el estimado para aquellos paises fuera de esa región?</p>
+</div>
+<div id="efectos-por-interacciones-entre-regresores." class="section level3">
+<h3>Efectos por Interacciones entre regresores.</h3>
+<p>Considere ahora el siguiente escenario en donde se busca predecir el nivel de glucosa en sangre para un grupo de pacientes en función de una serie de marcadores biológicos, caracteristicas personales como: índice de masa corporal <strong>bmi</strong>, edad, género (factor), y diagnóstico de hipertensión (factor). <a href="https://www.kaggle.com/asaumya/healthcare-dataset-stroke-data">Datos</a>.</p>
+<p>Primero estimamos el modelo considerando cada variable explicativa de manera independiente con la especificación: <span class="math display">\[avg_glucose_level=\beta_0 +\beta_1 bmi+\beta_2 age+\beta_3 hypert + \beta_4 gender +\epsilon\]</span></p>
+<pre><code>## 
+## Call:
+## lm(formula = avg_glucose_level ~ bmi + age + hypertension + gender, 
+##     data = bmi)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -100.83  -26.39   -9.89   12.26  178.02 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   69.793147   0.791216  88.210  &lt; 2e-16 ***
+## bmi            0.637623   0.027391  23.278  &lt; 2e-16 ***
+## age            0.311711   0.009702  32.127  &lt; 2e-16 ***
+## hypertension1 14.174208   0.730046  19.416  &lt; 2e-16 ***
+## genderMale     3.254559   0.404015   8.056 8.12e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 40.57 on 41926 degrees of freedom
+##   (1458 observations deleted due to missingness)
+## Multiple R-squared:  0.0773, Adjusted R-squared:  0.07721 
+## F-statistic: 878.1 on 4 and 41926 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Note que las varioables explicativas seleccionadas son estadisticamente significativas y los niveles de glucosa promedio estimados son mayores ante incrementos en el bmi, incrementan con la edad, con el dignóstico de hipertensión y para los hombres (en esta muestra). Ahora podemos medir la interacción entre edad y el diagnostico de hipertensión, un hipotesis emn este sentido es que podrían presentarse diferencias en los niveles de glucosa promedio a medida que avanza la edad del individuo dependientdo si este tiene diagnóstico de hipertesión o no.</p>
+<p>Para implementar la estimación en R únicamente usamos el operador de interacciones *. A continuación el resultado para la interacción entre edad y el diagnóstico de hipertensión.</p>
+<pre><code>## 
+## Call:
+## lm(formula = avg_glucose_level ~ bmi + age * hypertension + gender, 
+##     data = bmi)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -98.139 -26.372  -9.891  12.262 178.322 
+## 
+## Coefficients:
+##                    Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)       69.657155   0.792249  87.923  &lt; 2e-16 ***
+## bmi                0.652768   0.027788  23.491  &lt; 2e-16 ***
+## age                0.304206   0.009976  30.493  &lt; 2e-16 ***
+## hypertension1      4.340916   3.133890   1.385  0.16601    
+## genderMale         3.276006   0.404024   8.108 5.27e-16 ***
+## age:hypertension1  0.161843   0.050161   3.226  0.00125 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 40.56 on 41925 degrees of freedom
+##   (1458 observations deleted due to missingness)
+## Multiple R-squared:  0.07753,    Adjusted R-squared:  0.07742 
+## F-statistic: 704.7 on 5 and 41925 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>El estadístico F sigue una distribución F<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>Note que el ajuste con el CPI tiende a sobre estimar los salarios ya que el cálculo asume que estos se han incrementado a corde con la evolución general de precios, lo cual evidentemetne no es el caso. Como recomendación práctica, el caso del modelo de regresión simple que incorpora una variable dummy y la constante, es de gran utilidad pra llevar a cabo un contraste entre medias con dos grupos<a href="#fnref2">↩</a></p></li>
+</ol>
+</div>

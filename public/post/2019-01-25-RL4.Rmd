@@ -1,0 +1,300 @@
+---
+title: "RL-Hipótesis"
+author: "José Luis Manzanarees Rivera"
+date: 2019-01-25T21:11:11-05:00
+categories: ["R"]
+tags: ["Regresión Lineal", "MCO", "regression"]
+mathjax : true
+menu:
+  main:
+    name: RL-Hipótesis
+    weight: 6
+---
+
+
+```{r set-global-options, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(eval = TRUE, 
+                      echo = TRUE, 
+                      cache = FALSE,
+                      include = TRUE,
+                      collapse = FALSE,
+                      dependson = NULL,
+                      engine = "R", # Chunks will always have R code, unless noted
+                      error = FALSE)                     
+
+```
+
+
+
+```{r silent-packages, echo = FALSE, eval = TRUE, message=FALSE, include = FALSE}
+library(tidyverse)
+library(wooldridge)
+library(ISLR)
+```
+
+
+### Parámetros estimados y su precisión.
+
+
+¿Qué tan preciso es un parámetro estimado mediante el modelo de regresión lineal?
+
+Una manera de medir su precisión es  mediante el cálculo del **error estándar**  **SE** este nos indica el monto promedio en el que el parámetro $\hat \beta$ estimado difiere del valor poblacional $\beta$ 
+
+Note que nos interesa determinar la precisión del parámetro muestral con relación al poblacional en este caso tomamos el ejemplo de la estimación de media muestral $\hat \mu$  con relación a su correspondiente  valor poblacional  $/mu$
+
+El *SE* se basa en el concepto de la varianza $var(\hat \mu)=SE(\hat \mu)=\frac{\sigma^2}{n}$   Y esta dado por:
+
+\begin{align}
+SE(\hat \beta_0)^2= \sigma^2 [\frac{\bar{1}}{n}+\frac{\bar{x}^2}{\sum_{i=1}^{n}(x_i-\bar{x})^2}]
+(\#eq:se)
+\end{align}
+
+$$SE(\hat \beta_1)^2=  \frac{\sigma^2}{\sum_{i=1}^{n}(x_i-\bar{x})^2}$$
+Donde $\sigma^2$=Var($\epsilon$).^[La validez de esta definición  bajo el supuesto de que los errores $\epsilon_i$ no estan correlacionados con $\sigma^2$ ]  
+
+El estimado de la varianza $\sigma$ se denomina *Residual Standard Error*  **RSE**.  $RSE=\sqrt{\frac {RSS}{(n-2)}}$
+
+Los **Errores Standard** son útiles en la estimación de los intervalos de confianza. 
+
+Un intervalo de confianza del $95\%$ se define como aquel rango tal que con el $95\%$ de probabilidad contiene el valor verdadero del parámetro. 
+
+El intervalo se compone por **limites superior** e **inferior** de la muestra de datos.
+
+Para la regresión lineal el intervalo $95\%$ toma la especificación:  
+
+$$\hat \beta_1\pm2\cdot SE(\hat \beta_1)$$
+
+
+La misma lógica para estimar  el intervalo para $\hat \beta_0$
+
+Note que cuando el intervalo de confianza incluye **0** tenemos evidencia adicional de que el parámetro en cuestión no es  estadisticamente significativo.
+
+Quiz: Indentifique el intervalo de confianza de $95\%$ para $\hat \beta_0$, $\hat \beta_1$ para los ejemplos 1-3.
+
+
+
+## Prueba de Hipótesis y significancia estadística  sobre parámetros
+
+##### Valores criticos para contraste. Relación entre *Z-score* y *t*-statistic.
+
+Para determinar si la relación entre la variable explicativa $x$ y la dependiente $y$ es estadisticamente significativa, la práctca estándard es probar **la hipótesis Nula** de que un coeficiente particular $\beta_j=0$. Comencemos por estudiar la relación que tiene la distribuciòn normal y la distribución t estas permiten comprender el criterio para hacer el contraste sobre la signifiancia estadística.  
+El contraste de la hipotesis nula es posible al utilizar el  coeficiente estandard denominado $Z-score:$    denfinido como:
+
+$z_j=\frac{\hat \beta_j}{\sigma\sqrt{v_j}}$
+
+Donde $v_j$ es el $j-esimo$  elemento $(X^TX)^{-1}$
+
+Bajo la hipótesis nula $\beta_j=0, z_j$ se distribuye como $t-N-p-1$ una distribución $t$ con  N-p-1 grados de libertad.
+
+Considerando el parámetro muestral de la varianza, $z_j$ tendrá una **distribución normal estandard**. La diferencia entre los cuantiles de una distribución $t$ y la estandard normal, de hecho resulta infima, a  medida que el tamaño muestral aumenta, $N \rightarrow  \infty$ si bien utilizar los cuantiles de la distribución normal es un práctica común con muestras $n \geqslant30$. 
+
+
+Si el estadístico $t$ estimado (en valor absoluto) > $t$ crítico, el coeficiente $\hat \beta$ puede considerse como estadisticamente signficativo (y podemos rechazar la  hipótesis  $H_0:\hat \beta=0$). 
+
+
+La siguiente figura muestra esta relación.
+
+#####  Probabilidades (de la cola en la distribución t)  Pr(|Z| > z)
+![](/img/z-prob.jpg)
+
+Note el valor de referencia del $z-score$ a medida que se incrementa el tamaño de muestra y la convergencia entre distribuciòn $t$
+
+
+Note que $z^{(1-\alpha)}$ con el percentil $(1-\alpha)$ de la distribcuiòn normal. 
+
+##### Prueba de hipótesis, valores criticos y  areas de rechazo de la hipótesis nula.
+
+![](/img/t.jpg){width=70%}
+
+Definimos el cálculo del estadístico $t$ como $$t=\frac{\hat \beta_1}{SE(\hat \beta_1)}$$
+
+
+En consecuencia al calcular la probabilidad de que observemos un valor $\geqslant |t|$ podemos establecer la existencia de la relación estadística entre la variable dependiente y explicativa. 
+
+Esta probalbilidad  la identificamos como **p-value**  (ver resultados de la estimación ej. en R, Stata, etc.,)
+
+Los valores usuales del *p-value* para el contraste de la hipótesis nula son $ 1\% 5\%$ $10\%$. 
+
+```{r, echo=FALSE}
+data(wage1)
+log_wage_model <- lm(lwage ~ educ, data = wage1)
+summary(log_wage_model)
+```
+
+
+```{r, echo=FALSE}
+library(gcookbook)
+data(heightweight)
+
+H<-heightweight%>%
+  filter(sex=="m")
+
+lm(heightIn~ ageYear, data = H)%>%
+summary()
+```
+
+
+Note en ambos casos que las probabilidades de observar los parámetros estimados si $H_0$ es verdad, son prácticamente cero!! Por lo tanto podemos concluir que $\beta_0\neq0, \beta_1\neq0 $^[Donde el p-value indica que podemos rechazar la hipótesis nula de que $\beta=0$]
+
+
+### Precisión del modelo. 
+
+Una vez que hemos rechazado la hipótesis nula, es importante cuantificar hasta que grado el modelo se ajusta a los datos, para lograr esto, dos estimados son considerados imortantes: El primero es *Residual Standard Error*  **RSE**.  $RSE=\sqrt{\frac {RSS}{(n-2)}}$ y el estadístico $R^2$  
+
+### Residual Standard Error  RSE.
+
+
+Recordemos que, asociado con cada observación tenemos en término de error $\epsilon$, por lo que no es posible predecir con total predicción $Y$ a partir de $X$.
+
+El **RSE** es un estimado de la desviación de $\epsilon$. Este indicador muestra el monto promedio en el que la variable dependiente se desvia de **la verdadera linea de regresión**.   
+
+$$RSE=\sqrt{\frac {RSS}{(n-2)}}$$ 
+Recordemos  que $$RSS=\sum_{i=1}^{n}(y_i-\hat y_i)^2$$
+
+En el caso del modelo sobre votaciones y gastos de campaña, por ejemplo el $RSE=6.385$ lo que implica que las votaciones en cada distrito difieren (se desvian) de la verdadera linea de regresión en promedio en $6.385\%$,  **RSE=6.385**
+
+Veamos el caso del modelo sobre ventas y gastos en publicidad (Ejemplo 3). 
+```{r, echo=FALSE}
+
+ad<-read.csv("Advertising.csv")
+
+lm( sales~ TV, data = ad)%>%
+summary()
+
+```
+
+El $RSE=3.259$  lo que implica que la ventas en promedio difieren de la linea verdadera de regresión en 3,259 unidades. 
+
+Note que el indicador RSE nos aporta una medida de preción que depende del contexto, por ejemplo en este caso sabemos que el nivel de ventas medio es de 14,000 unidades por lo que la magnitud relativa de la desviación del es de $23\%=3259/14000$ 
+
+
+Veamos el modelo sobre estatura y edad (ejemplo 2).  
+
+```{r, echo=FALSE}
+
+heightweight<-readRDS("heightweight.rds")
+
+H<-heightweight%>%
+  filter(sex=="m")
+
+lm( heightIn~ ageYear, data = H)%>%
+summary()
+```
+
+El **RSE** estimado es  $2.721$, lo que se traduce en una desviación promedio de 2.7 pulgadas de la linea estimada de regresión. 
+
+En este caso la magnitud que representa la desviación respecto a la estatura media es de $4.38\%= 2.72/62.06$
+
+
+En conclusión el **RSE** nos permite contar con una medida para contrastar la precisión (en el ajuste) entre varios modelos, esta **expresado en las mismas unidades de la variable dependiente**, es una medida absoluta, que puede ser útil para elegir el modelo más adecuado considerando los datos disponibles. 
+
+Una desventaja del RSE es que se expresa en las mismas unidades de $Y$ por lo que determinar cuando se tiene el mejor **RSE** puede ser confuso.
+
+###Estadístico $R^2$
+
+El coeficiente de terminación $R^2$ mide la  fracción de la varianza explicada. Permite una medida de ajuste alternativa. El R^2, es una medida independiente de las unidades de medida de Y,  expresada como proporción de la **varianza explicada** (siempre en el rango $0 \leq R^2  \leq 1$).
+
+De manera similar,  el *adjusted* $R^2$ únicamente difiere en que "ajusta" por los grados de libertad en el modelo, si bien este prácticamente aporta la misma información al $R^2$ sin ajuste. 
+
+\begin{align}
+R^2=\frac{TSS-RSS}{TSS}=1-\frac{RSS}{TSS}
+(\#eq:r2)
+\end{align}
+
+Donde $TSS=\sum (y_i-\bar y)^2$  Suma total de cuadrados (*Total Sum of Squares*)
+
+El estadistico $R^2$ mide la proporción de la variación en $Y$ que es explicada por la regresión. 
+
+Note que el TSS mide la varianza total en la variable dependiente antes de estimar la regresión. mientras que $\frac{RSS}{TSS}$ indica la proporción de la variación que no es explicada. 
+
+
+Así, un  valor cercano a cero indica que la regresión explica una prporción pequeña de la variación de $Y$.
+
+En el modelo sobre estatura y edad (ejemplo 2) el $R^2=0.5964$ por lo que prácticamente dos tercios de la variabilidad de $Y$ se explica por la regresión sobre la edad.
+
+
+La magnitud del $R^2$ depende del problema estudiado y de la estructra del modelo y en general un valor cercano a 1 es considerado indicativo de un modelo robusto.
+
+Por el otro lado  un valor pequeño  cercano a cero, indica la existencia de problemas con el modelo. 
+
+En aplicaciones en ciencias sociales por ejemplo, el modelo lineal es  una aproximación muy general de la relación entre las variables por lo que los errores residuales debidos a las características no observadas son de gran magnitud lo que se refleja en valores de $R^2$, generalmente por debajo de 1. 
+
+
+
+
+## Actividad 4
+
+#### Ejercicio 1.
+
+Considere una [muestra](http://gattonweb.uky.edu/sheather/book/docs/datasets/prostateAlldata.txt) de 97 pacientes en un estudio sobre cáncer de prostata. El objetivo es determinar la relación entre el estado del cáncer de prostata en individuos con diferentes niveles de riesgo y estado de diagnóstico y   marcadores clínicos considerados como posibles determinantes. 
+
+La variable dependiente es un marcador para detectar la severidad, dada la presencia de la enfermedad: el antígeno prostático específico (**lpsa** log prostate specific antigen). Las variables explicativas son: 
+
+El volumen del tumor (**lcavol**: log cáncer volume), Peso de la próstata. (log prostate weight **lweight** ) y  edad del paciente (**age**) 
+
+a) Represente mediante un diagrama de dispersión la relación entre la variable dependiente y las explicativas.
+
+b) Considerado la  exploración visual sobre relación  entre las variables, seleccione una variable explicativa para la estimación del modelo de regresión lineal simple y estime los parámetros $\hat \beta_0, \hat \beta_1$
+
+
+c) Identifique el valor estimado del **RSE** 
+
+d) A partir de los valores estimados del error estándard **SE**  de los parámetros correspondientes al intercepto y la pendiente  en el modelo lineal ($\hat \beta_0, \hat \beta_1$), estime el intervalo de confianza del $95\%$ (límite superior e inferior). 
+
+e) Indique el valor del estadístico  estimado sobre la precisión del modelo ($R^2$) . 
+
+```{r,  echo=FALSE, include=FALSE}
+pc<-read.table("http://gattonweb.uky.edu/sheather/book/docs/datasets/prostateAlldata.txt", header =TRUE )
+
+str(pc)
+
+pairs(lpsa~lcavol+lweight+age, data=pc)
+
+lm(lpsa~lcavol,data=pc)%>%
+summary()
+```
+
+#### Supuesto de varianza constante en el término de error.  Homocedasticidad.
+
+Un supuesto importante sobre el comportamiento de la varianza del término de error $\epsilon$ dado el valor que toma la variable dependiente es que su **varianza es constante**.  Var$(\epsilon|x)=\sigma^2$ a este comportamiento se le denomina **homocedasticidad**.  Y es un supuesto sobre la eficiencia que complementa las propiedades como estimadores no sesgados (**BLUE**) que se obtienen con la técnica de **MCO**.
+
+Para ejemplificar consideremos el caso sobre el efecto del nivel educativo sobre el salario. Suponemos que $E(\epsilon|educ)=0$ lo que implica que $E(salario|educ)=\beta_0+\beta_1 educ$  y con el supuesto de homocedasticidad entonces Var$(\epsilon|educ)=\sigma^2$ no depende del nivel de educación, lo que es sinónimo de  Var$(salario|educ)=\sigma^2$. 
+
+Entonces, si bien en promedio el salario puede incrementarse a medida que el nivel de educación se incrementa, lo que nos interesa es que la tasa de crecimiento no varie, esto es que para cualquier nivel de educación  la variación en el nivel salarial se mantenga constante. Escenario en este caso particular poco probable, por que es probable que entre los  individuos con mayor nivel educativo se tenga una mayor variabilidad en los niveles salariales que entre grupos de individuos de bajos ingresos donde las opotunidades de empleo se ajustan generalmente en torno al  salario mínimo, un escenario de mayor homogéneidad.
+
+El supuesto de homocedasticidad es un hecho empírico sujeto a verificación. Ocurre cuendo la Var$(y|x)$ es una función de x.El no cumplimiento de este supuesto implica perdida de eficiencia en los estimados. 
+
+![](/img/h.jpg)
+
+#### Síntesis de Supuestos Gauss-Markov para el modelo de regresión simple.
+
++ Modelo lineal en los parámetros.
+
++ Muestra aleatoria.
+
++ Existe variación en la muestra que integra la variable explicativa. No existen relaciones exactas entre las variables explicativas. (Multicolinealidad).
+
++ Media condicional cero. El término de error $\epsilon$ tiene un valor esperado de cero dado cualquier valor de la variable explicativa $E(\epsilon|x)=0$
+
++ Homocedasticidad. El término de error $\epsilon$ tiene  varianza constante. 
+
+
+### Tarea 
+
+
+Leer sección  *The Meaning of “Linear” Regression*. En Wooldridge  (pag. 44).  ¿A qué nos referimos cuando indicamos que se trata de un modelo lineal? Comente en Disqus 
+
+
+
+
+### Términos clave
+
++ Distribución **t**
+
++ *Standard Error*  **SE**
+
++ Resiadual Standard Error **RSE**
+
++ *Residual Sum of squares*  **RSS** 
+
+

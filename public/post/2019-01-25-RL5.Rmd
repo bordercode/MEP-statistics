@@ -1,0 +1,707 @@
+---
+title: "RL-Multiple"
+author: "José Luis Manzanarees Rivera"
+date: 2019-01-26T21:11:11-05:00
+categories: ["R"]
+tags: ["Regresión Lineal", "MCO", "regression"]
+mathjax : true
+menu:
+  main:
+    name: RL-Muiltiple
+    weight: 7
+---
+
+
+```{r set-global-options, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(eval = TRUE, 
+                      echo = TRUE, 
+                      cache = FALSE,
+                      include = TRUE,
+                      collapse = FALSE,
+                      dependson = NULL,
+                      engine = "R", # Chunks will always have R code, unless noted
+                      error = FALSE)                     
+
+```
+
+
+
+```{r silent-packages, echo = FALSE, eval = TRUE, message=FALSE, include = FALSE}
+library(tidyverse)
+library(wooldridge)
+library(ISLR)
+```
+
+## Regresión Multiple. 
+
+La estimación de modelos bajo esta estructura permite incorporar **p variables independientes**, lo que contribuye para  explicar una mayor parte de la variación en $Y$ al controla por determiantes de interés.
+
+\begin{align}
+Y=\beta_0+\beta_1 X_1+\beta_2 X_2+...+\beta_p X_p+\epsilon
+(\#eq:mult)
+\end{align}
+
+
+Donde $\beta_j$  indica el efecto promedio  sobre Y de un cambio de una unidad en $X_j$ manteniendo los otros parámetros constantes.  Esta estructura del modelo nos permite controlar por $X_j$ variables explicativas de Y.
+
+![](/img/lm3d.jpg)
+
+En el contexto multivariado, la relación se convierte en un plano, este se elige tal que  minimiza la suma cuadrada de la distancia vertical entre cada observación y el plano.  
+
+
+### Preguntas importantes que nos interesa abordar en un modelo de regresión lineal múltiple. 
+
++ 1- Al menos uno de los regresores $X_1, X_2, ...,X_p$es útil para predecir la variable dependiente? 
+
++ 2.- ¿Todos los regresores ayudan a explicar $Y$? o ¿es sólo un subconjunto de estos útil?
+
++ 3.-¿Qué tan bien el modelo se ajsuta a los datos?
+
++ 4 .- ¿Qué tan precisas son nuestras predicciones? 
+
+
+
+### 1. Existe una relación entre entre la variable dependiente y los regresores? 
+
+$$H0: \beta_1=\beta_2=...=\beta_p=0$$
+$$Ha: B_j \neq 0 $$
+
+Por lo menos  un parámetro en el modelo es distinto de cero. La prueba se estima con el estadístico **F**^[El estadístico F sigue una distribución F]
+$$F=\frac{(TSS-RSS)/p}{RSS/(n-1-p)}$$
+Donde: $TSS=\sum(y_i-\bar y_i)^2$, $RSS=\sum(y_i-\hat y_i)^2$
+
+Si los supuestos del modelo se cumplen $E[RSS/(n-1-p)=\sigma^2]$ y Si H0. es verdad $E[(TSS-RSS)/p]=\sigma^2$
+
+Por lo que  en ausencia de relación  entre la variable dependiente y los regresores, el estadístico  $F\approx1$. 
+
+Por el contrario si **Ha** es verdad, tendremos  $E[(TSS-RSS)/p>\sigma^2]$ y por lo tanto esperamos  F>1. 
+
+
+
+La interpretación cuando el estadistico F>1 y es estadisticamente significativo (recordemos la prueba de hipótesis mediante el  **p-value**)  indica que al menos uno de los regresores es distinto de cero. Evidencia en favor del modelo propuesto. 
+
+Note que el estadístico F ajusta por el número de variables independientes **p** y el número de observaciones  **n**, este ajuste ofrece una ventaja respecto a las pruebas de significancia individaual con el estadístico t. 
+
+Note que cuando p>n, entonces no es válido  utilizar el modelo de regresión lineal con MCO, en consecuencia el F-statistic en este caso no es de utilidad.  
+
+
+#### Ejemplo 1 
+
+$salario=\beta_0+\beta_1 educ +\beta_2 exper+\epsilon$
+
+Efecto sobre salario por hora controlando por dos variables explicativas:  años de educación y años de exeriencia.  
+
+```{r, echo=FALSE}
+
+data(wage1)
+
+lm(wage~educ+exper,data=wage1)%>%
+summary()
+
+```
+
+#### Ejemplo 1.2
+
+Consideremos ahora el escenario de la *General Social Survey GSS* con datos de ingreso familiar como variable dependiente, edad, educación (años de estudio máximo) e ingreso de la persona que responde la encuesnta como variables explicativas. La base de datos de la GSS  2012 contiene 1974 observaciones para 10 variables. 
+
+¿Puede predecirse el ingreso familiar a partir del ingreso de la persona que responde la encuesta, su nivel de estudios y su edad? 
+
+
+$FIncome=\beta_0+\beta_1 age +\beta_2 educ +\beta_3 realrinc+\epsilon$
+
+```{r, echo=FALSE}
+library(foreign)
+
+income<-read.dta("C:/Users/LENOVO/Desktop/DESK/Docencia/MEP/chap2-gss2012.dta")
+
+lm(realinc~age+educ+realrinc,data=income )%>%
+  summary()
+
+```
+
+#### Ejemplo 2.
+
+$cons=\beta_0+\beta_1 inc +\beta_2 inc^2+\epsilon$
+
+El modelo relaciona el Consumo con el nivel de ingreso y la forma cuadrática de esta variable. 
+
+Note que el modelo de regresión multiple permite una mayor  flexibilidad al incluir diversas formas funcionales para los regresores como en este caso con una variable cuadrática, note que el modelo sigue siendo de regresión lineal en los parámetros. 
+
+
+
+#### Ejemplo 3 
+
+$log(sueldo)=\beta_0+\beta_1 log(ventas)+\beta_2 ceoten+\beta_3 ceoten^2+\epsilon$
+
+
+El modelo relaciona el cambio porcentual en el sueldo de los ejecutivos (ceo) con las variables explicativas: ventas, experiencia con el mismo empleador (tenure) así como un efecto no lineal (cuadrático para la variable tenure), que refleja el hecho de que años adicionales de experiencia podrán tener un efecto progresivamente mayor en el sueldo de los ejecutivos.  
+
+
+#### Ejemplo 4. 
+
+Ecuación de salario. 
+
+
+$\hat {log( wage)}=\beta_0+\beta_1educ+\beta_2 exper +\beta_3tenure$
+
+```{r, echo=FALSE, fig.width=10, fig.height=4,warning=FALSE, message = FALSE}
+library(gridExtra)
+theme_set(theme_light())
+
+
+data(wage1)
+
+p1<-ggplot(wage1,aes(educ,wage))+
+  geom_point(shape=1,color="orange")+
+  labs(y="Salario por Hora (USD)", title="Años de Educación")+
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+ 
+  scale_x_continuous(breaks = c(0, 6, 12,18))+
+  stat_smooth(method=lm, se=FALSE, colour="blue")
+
+
+p2<-ggplot(wage1,aes(exper,wage))+
+  geom_point(shape=1,color="orange")+
+  labs(title="Años de experiencia")+
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
+  theme(axis.title.y=element_blank())+
+  stat_smooth(method=lm, se=FALSE, colour="blue")
+
+
+
+p3<-ggplot(wage1,aes(tenure,wage))+
+  geom_point(shape=1,color="orange")+
+  labs(title="Años con el empleador")+
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
+  theme(axis.title.y=element_blank())+
+  stat_smooth(method=lm, se=FALSE, colour="blue")
+
+
+grid.arrange(p1, p2, p3, nrow = 1)
+
+lm(lwage ~ educ + exper + tenure, data = wage1)
+
+lm(lwage ~ educ + exper + tenure, data = wage1)%>%
+summary()
+
+```
+
+Note que un incremento de un año adicional de educación se relaciona con un incremento de 9.2% en el salario.
+
+Mientras un incremento de un año adicional en la experiencia 
+se asocia con solo un incremento del  .4% en salario. 
+
+Y el incremento de un año con el empleador se asocia con un incremento de  2.2% en el salario. 
+
+
+Note la significancia estadística de los parámetros con el contrsate de la hipotesis Nula $\beta_j=0$ mediante los valores del t-statistic y el p-value. 
+
+Note adicionalmente el estimado de la bondad de ajuste del modelo, un $R^2$ relativamente bajo, pues solo explica el 31.6% de la varianza en Y. 
+
+#### Ejemplo 5
+
+Considermos ahora un modelo para la relación entre la participación en el plan de pensiones *401k* de 1534 empresas como variable dependiente expresada en porcentaje y dos variables explicativas: edad del plan de pensiones: variable **age** (expresada en años) y la fracción correspondiente a la aportación patronal por cada peso que el trabajador aporta a la cuenta: (**mrate**). ejemplo un mrate= .57 implica que por cada peso del trabajador, el empleador aporta 57 centavos. 
+
+```{r}
+data(k401k)
+
+lm(prate ~ mrate + age, data = k401k)%>%
+summary()
+```
+
+El incremento de una unidad adicional en el match rate (mrate) se asocia con un incremento de 5.5% en la participación de los trabajadores en el fondo de pensiones 401K. El caso de la variable age (la edad del plan en la empresa) es también estadísticamente significativa.  
+
+Note en este caso la magnitud del $R^2$ es considerablemente pequeño lo que indica una área de oportunidad para mejorar el modelo. 
+
+Un rasgo importante sobre el $R^2$ es que usualmente se incrementa al añadir un regresor adicional, sin embargo, la prueba de hipótesis sobre cada regresor nos permite determinar si estos son estadísticamente significativos  o no y por lo tanto tenemos un criterio para decidir sobre su inclusión  en el modelo independientemente de que el $R^2$  "mejore"  con su inclusión.
+
+#### Ejemplo   6
+
+Consideremos ahora el modelo sobre el impacto de los gastos de publicidad en diversos medios (T.V. Radio, Newspaper) sobre el nivel de ventas.(Recuerde ventas en miles de unidades y gastos en miles de USD).  Estime el modelo y determine el valor de los parámetros de la pendiente para cada variable independiente. ¿Son estadísticamente significativos?  Qué proporción de la varianza es explicada por el modelo?
+
+
+```{r, echo=FALSE}
+a<-read.csv("Advertising.csv")
+names(a)
+lm(sales~TV+radio+newspaper,data=a)%>%
+summary()
+
+```
+
+Note en este caso la interpretación de los coeficientes: Por ejemplo para la variable **TV** un  incremento de una unidad ($1000 USD) tiene un impacto en la  positivo en las ventas de 48 unidades, **conrolando por las otras dos variables** (los gastos en radio y prensa escrita). 
+
+Note un punto interesante:  ¿Tendrá sentido indicar que **NO HAY** relación entre la variable  ventas y los gastos en prensa escrita. **(p-value=.86)?**. Aún a pesar de que el modelo de regresión simple indica lo contrario.
+
+```{r, echo=FALSE}
+
+a<-read.csv("Advertising.csv")%>%
+  select(-X)
+
+names(a)
+lm(sales~newspaper,data=a)%>%
+summary()
+
+```
+
+De hecho si tiene sentido, observe la siguiente matriz de correlación entre las variables. 
+
+```{r}
+
+res <- cor(a)
+round(res, 4)
+```
+Note que la correlación entre las variables newspaper y TV es positiva  (.35). Lo que revela una tendencia a gastar más en publicidad direigida en newspaers en mercados donde se gasta más en publicidad por radio. 
+
+Ahora suponga que de hecho el resultado del modelo de regresión multiple es correcto y los gastos en radio tienen efecto en las ventas, mientras los gastos en publicidad dirigida a newspapers no tienen impacto en las ventas. 
+
+Entonces en los mercados en los que incrementamos el gasto en radio nuestras ventas se incrementan, pero de hecho, acorde a la matriz de correlación también tendemos a gastar mas en publicidad en newspapers en esos mercados. 
+
+Por este motivo en una regresión simple en donde solo consideramos la relación entre ventas y gasto en publicidad en newspapers vemos que se tiene una relación positiva cuando en realidad  los gastos en newspapers de hecho no impactan el nivel de ventas!
+
+Es como si la variable newspapers refleja  la influencia de los otros gastos en publicidad (variables radio y T.V).
+
+Este ejemplo revela la importancia de controlar mediante la regresión múltiple los efectos de variables consideradas por la teoría como determinantes probables.    
+
+
+Respecto al estimado de bondad de ajuste del modelo $R^2$, note que si únicamente el modelo se estima con las variables TV y radio, el valor del $R^2=0.8972$ no se modifica. Por lo que la contribución de la variable *newspaper* prácticamente **NO** aporta en la explicación de la variación de las *ventas*  en el modelo, de hecho se confirma que la variable no es estadisticametne significativa (t, p-value=.86). 
+
+El contraste es evidente cuando comparamos el modelo solo con la variable TV. ($R^2=.61$) y cuando añadimos la variable radio $R^2=89.72$, variable que contribuye a la explicación de la varianza de la variable dependiente *ventas*  (mejora la especificación del modelo).
+
+Note también el cambio el **RSE** de las diferentes especificaciones. El RSE decrece con la inclusión de las variables estadisticamente significativas y se incrementa con el uso de regresores no relevantes estadisticamente como la variale *newspapers* en este caso.
+
+```{r, echo=FALSE}
+
+names(a)
+lm(sales~TV+ radio,data=a)%>%
+summary()
+```
+
+
+## Actividad 5
+
+####  Ejercicio 1:
+
+Considere la relación del peso al nacimiento (gramos) y las variables explicativas sobre el número de cigarros  consumidos por día por la madre durante su embarazo y el  nivel de ingreso familiar   Fuente de los datos: J. Mullahy (1997), “Instrumental-Variable Estimation of Count Data Models: Applications to Models of Cigarette Smoking Behavior,” Review of Economics and Statistics 79, 596-593. 
+
+a) Estime el modelo de regresión lineal y determine los parametros $\hat \beta$ correspondientes a cada regresor. (Exprese la variable independiente bwght  en gramos). Cúal es el efecto esperado en el peso del bebé si la madre fuma 7 cigarros por dia?
+
+b)  Indique si las  variables explicativas  son estadisticamente significativas al 5%.
+
+c) ¿Qué porporción de la varianza es explicada por el modelo?  $R^2$
+Explique posibels razones de la magnitud del $R^2$.
+
+d) Explica el modelo en su conjunto la variable  dependiente?   Tip: F-statistic p-value.
+
+
+```{r, echo =FALSE, include = FALSE}
+data(bwght)
+names(bwght)
+bwght<-mutate(bwght,bwght=bwght*0.028349523125000334*1000)
+
+summary(bwght$faminc)
+lm(bwght~cigs+faminc,data=bwght)%>%
+  summary()
+```
+
+#### Ejericio 2
+
+Considere  el escenario en que se relaciona el valor medio de las viviendas por CENSUS TRACT con   las siguientes características: número promedio de habitaciones (rooms), Distancia promedio en millas hacia los 5 principales centros de empleo (dist), la proporción de alumnos a maestros (stratio) en la sescuelas detro del census tract, incluidos determinates como la calidad del aire en la comunidad, apoximada por las mediciones de óxidos de nigrógeno  $NO_x$ ($NO_x$ medido en partes por millón), incluidos determinates sobre las condiciones de seguridad de la localidad como la cantidad de delitos per capita (crime).
+Base de datos con 506 observaciones (cada observación representa un census tract (AGEB)   Standard  Metropolitan Statistical Area (SMSA) en el area de Boston, MA, EUA.). 
+
+[Fuente del datos:](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.926.5532&rep=rep1&type=pdf)  “Hedonic Housing Prices and the Demand for Clean Air,” by Harrison, D. and D.L.Rubinfeld, Journal of Environmental Economics and Management 5, 81-102.
+
+En ocasiones es conveniente reportar los resultados de la regresión lineal utilizando coeficientes estandarizados, calculando los *z-scores* de cada variable -independientes y dependiente- (lo que se logra restando la media ($\bar x$) de cada observación y dividiendo sobre la desviación standard  $\sigma$).
+
+Este efoque en la estimación de los coeficientes permite interpretar las variaciones en función del número de desviaciones estándard. Por ejemplo, podemos responder la pregunta: ¿Cuál es el cambio en el valor de viviendas (variable dependiente en este ejemplo) ante un incremento de una desviacion estándard de $x_j$ (por ejemplo NO_x).  
+
+Este enfoque nos permite una interpretación independiente de las unidades de medida de cada regresor  lo cual ofrece una ventaja sobre la estiamación en niveles para detectar la importancia relativa de las variables independientes, incluso en los casos en los que cada regresor se expresa por unidades de medida heterogéneas. Importante en esta especificación el intercepto $\beta_0$ toma el valor de cero.
+
+a) Estime el modelo $price=\beta_0+\beta_1 nox+\beta_2 crime+\beta_3 rooms+\beta_4 dist+\beta_5 stratio$ en niveles. 
+Interprete los resultados.
+
+b) Estime el modelo usando las variables estandarizadas  (z-scores). Interprete los coeficientes (cambio de una desviación estándard) respecto a los cambios en la variable dependiente. ¿Qué variable tiene el mayor impacto sobre el valor  promedio de las viviendas en las localidades del estudio?
+
+c) Estime el modelo considerando la expresión logarítmica para  la variable dependiente y las variables independientes NO_x y dist. 
+
+Interprete los resutlados (Tip: Elasticidades.)
+
+d) Existe alguna diferencia entre los estadísticos  estimados $R^2$  y  **F** entre los tres modelos?
+
+```{r}
+data(hprice2)
+
+## Estimación en niveles 
+
+lm(price ~ nox + crime + rooms + dist + stratio, data = hprice2)%>%
+summary()
+
+## Estimación en z-scores
+
+lm(scale(price) ~ 0 + scale(nox) + scale(crime) + scale(rooms) + scale(dist) + scale(stratio), data = hprice2)%>% 
+summary()
+
+## Estimación elasticidades
+
+hprice2log<-mutate(hprice2,lprice=log(price), lnox=log(nox),ldist=log(dist))
+lm(lprice ~ lnox + crime + rooms + ldist + stratio, data = hprice2log)%>%
+summary()
+```
+
+
+## Modelar Variables cualitativas.
+
+Ej.  Variables cualitativas (factores)  como sexo, género, raza, etc., 
+
+#### Ejmeplo 1
+
+Consideremos ahora el escenario de un estudio sobre el saldo (variable Balance) de la tarjeta de crédito en relación a diversas características del usuario: Edad, calificación de crediticia, Educación, ingreso, limite de crédito de la tarjeta, grupo étnico, sexo y estutus marital.
+
+
+```{r,echo=FALSE}
+data(Credit)
+Credit<-select(Credit,-c(ID, Married,Ethnicity,Student,Gender,Cards))
+pairs(~Balance+Age+ Rating+Education+ Income+ Limit, data=Credit,col = "red", pch=1)
+```
+
+
+El objetivo es modelar la variable dependiente **saldo** en función de las diversas características del inidviduo. 
+
+Note que las variables Sexo (Gender) y grupo étnico son categóricas (factores). Podemos incluirlas en el modeo  creando variables *dummy*: 
+
+![](/img/dummy.jpg)
+
+
+
+```{r,echo=FALSE}
+data(Credit)
+Credit<-mutate(Credit,Gender=ifelse(Gender=="Female",1,0))
+lm(Balance~Gender, data =Credit)%>%
+  summary()
+```
+
+El saldo promedio de la tarjeta de crédito para los hombre es de $509.80. Mientras para las  mujeres=529.53 ó  509.80+ 19.73. Note que la variable Gender no es estadisticamente significativa  p-value=.66 , por lo no hay evidencia estadística sobre el impacto del género sobre la vvariable dependiente saldo. 
+
+```{r, echo =FALSE}
+data(Credit)
+Credit<-mutate(Credit,Asian=ifelse(Ethnicity=="Asian",1,0),
+               Caucasian=ifelse(Ethnicity=="Caucasian",1,0))
+
+lm(Balance~Asian+Caucasian,data =Credit)%>%
+  summary()
+
+```
+
+El resultado indica que la para los individuos Afroamericanos el balance promedio es de $\$521.00$, para los asiaticos $\$512.31$ ó 531-18.69 y para los caucásicos $\$518.5$ ó 531-12.50.
+
+Note que si tenemos **k** factores, entonces  tenemos **k-1** variables dummy dejando la variable sin recodificar como la variable base, en este caso la población afroamericana. 
+
+
+Finalmente note que las variables que representan el grupo étnico no son estadísticamente significativas.
+
+####Ejemplo 2
+
+
+Considere ahora la relación entre  salarios  y los atributos del individuo, incluimos ahora la variable cualitativa **sexo** para determinar si existe impacto alguno en el nivel salarial entre hombres o mujeres, un contraste de interés desde la perspectiva de política pública. La base de datos contiene 526 observaciones (individuos). La variable dependiente es *wage* (dólares por hora ajustados s precios de 2018). Fuente de datos. *Current Population Survey*.
+
+
+```{r, echo=FALSE}
+data(wage1)
+names(wage1)
+
+## To adjust for today prices  factor=cpi 2018 /1976
+
+cpi<-read.csv("file.csv")
+
+cpiy<-cpi%>%
+group_by(Year)%>%
+  summarize(cpi=mean(Value))%>%
+  filter(Year==1976|Year==2018)%>%
+  spread(Year,cpi)%>%
+  rename(A="2018",B="1976")%>%
+  summarize(factor=A/B)
+
+
+wage1<-mutate(wage1,wage=wage*cpiy$factor)
+
+lm(wage~female,data=wage1)%>%
+summary()  
+
+```
+
+Los hombres en promedio perciben un salario de $\$31.3$ USD/hr mientras la Mujeres $\$20.2$. Recuerde los parámetros $\beta_0 +\beta_1$ en este caso indica el valor promedio de la variable dependiente cuando  $X_1=1$ (Mujeres) según la codificación Mujeres=1, Hombres=0.Note además que la variable sexo es estadisticametne significativa. ^[Note que el ajuste con el CPI tiende a sobre estimar los salarios ya que el cálculo asume que estos se han incrementado a corde con la evolución  general de precios, lo cual evidentemetne no es el caso.  Como recomendación práctica, el caso del modelo de regresión simple que incorpora una variable dummy y la constante, es de gran utilidad pra llevar a cabo un contraste entre medias con dos grupos]. 
+
+#### Ejemplo 2a.
+
+Ahora consideremos el model cuando  controlamos por  variables  explicativas adicionales como educación (*educ*), años de experiencia*, (exper*) y años de antigüedad con el mismo empleador (*tenure*). El modelo de regresión lineal multipe a estimar es:
+
+$$wage=\beta_0+\beta_1 sex+\beta_2 educ+\beta_3 exper +\beta_4 tenure+\epsilon$$
+```{r,echo=FALSE}
+data(wage1)
+
+cpi<-read.csv("file.csv")
+
+cpiy<-cpi%>%
+group_by(Year)%>%
+  summarize(cpi=mean(Value))%>%
+  filter(Year==1976|Year==2018)%>%
+  spread(Year,cpi)%>%
+  rename(A="2018",B="1976")%>%
+  summarize(factor=A/B)
+wage1<-mutate(wage1,wage=wage*cpiy$factor)
+
+lm(wage~female+educ+exper+tenure,data=wage1)%>%
+  summary()
+```
+
+
+Note en la interpretación de los parámetros de la pendiente en este caso: $\beta_0$ corresponde al valor promedio de la variable salario para los hombres cuando $X_2,X_3,X_4=0$ por lo que en este caso el parámetro no resulta informativo (no tiene sentido ya que no existe en la muestra personas con cero escolaridad, experiencia y antigüedad) sin embargo, el parámetro $\beta_1$ indica el diferencial de salarios  entre Hombres y Mujeres. 
+
+En este caso  las mujeres perciben en promedio 8 USD/hr menos que los hombres, una vez que se controla por educación, experiencia, antigüedad, es decir, Si elegimos un hombre y una  mujer de la muestra con los mismos niveles de educación, experiencia y antigüedad, entonces la mujer percibe 8 usd/hr menos en promedio que el hombre. 
+
+Concluimos que la diferencia estimada se atribuye a la variable **sexo**, (ya hemos controlado por el resto de las variables), se tiene evidencia estadísticamente significativa de que las mujeres ganan menos en esta muestra, resultado que tiene implicacaiones de política pública en cuanto a la discriminación por género.
+
+#### Ejemplo 3 
+
+Consideremos ahora la interpretación de los parámetros cuando la variable dependiente se expresa mediante una **transformación logarítmica**. El modelo a estimar es: 
+
+$$log(wage)=\beta_0+\beta_1 female +\beta_2 educ+\beta_3 exper +\beta_4 exper^2+\beta_5 tenure + \beta_6 tenure^2 +\epsilon $$
+```{r,echo=FALSE}
+data(wage1)
+names(wage1)
+
+lm(lwage~female+educ+exper+expersq
+   +tenure+tenursq,data=wage1)%>%
+  summary()
+```
+
+Los resultados indican que considerando los mismos niveles de educación, experiencia y antigüedad (incluido el efecto no lineal de estas últimas variables), las mujeres promedian un salario 29.6% inferior al de los hombres.  Nuevamente enfatizar que la interpretación $\beta_0$ carece de interés. 
+
+#### Ejemplo 4
+
+Consideremos ahora la inclusión de dos variables cualitativas, por ejemplo el **estado civil** y si el individuo es hombre o mujer.
+
+Buscamos estimar las diferencias salariales dadas las características del individuo controlando por sexo (dummy), estado civil (dummy), educación, experiencia y antigüedad (incluidos los efectos no lineales de estas variables.)
+
+Para la estimación únicamente es necesario decidir por la categoria base, en este caso seleccionamos hombre y soltero. 
+
+De modo que necesitamos generar 3 variables dummy una para hombre-casado (hca), mujer-casada (mca) y mujer-soltera (msol). Note que la categoria hombre-soltero es nuestra selección para categoria base. 
+
+El modelo a estimar es: 
+
+
+$$log(wage)=\beta_0+\beta_1 hca +\beta_2 mca+\beta_3 msol+\beta_4 educ+\beta_5 exper +\beta_6 exper^2+\beta_7 tenure + \beta_8 tenure^2 +\epsilon $$
+```{r, echo=FALSE}
+
+data(wage1)
+names(wage1)
+
+wage1<-wage1%>%mutate(hca=ifelse(married==1&female==0,1,0), mca=ifelse(married==1&female==1,1,0),msol=ifelse(married==0&female==1,1,0))
+
+lm(lwage~hca+mca+msol+educ+exper+expersq+tenure+tenursq,data=wage1)%>%
+summary()
+
+```
+
+La estimación  nos permite observar las diferencias promedio  respecto a la categoria base (hombre-soltero), y dado que estamos haciendo una estimación de la forma log(Y), la interpretación es como diferencias porcentuales.
+
+Así, vemos que respecto a la categoria base (y considerando individuos con los mismos atributos) los hombres casados perciben en promedio sueldos superiores en 21.26%; las mujeres casadas perciben 19.8% menos que los hombres solteros, y las mujeres solteras un 11.03% menos que la categoria base. 
+
+Interesante el hecho de que controrio al caso de los hombres, las mujeres casadas perciben menores salarios respecto a su contraparte solteras!. De hecho la diferencia es de 8.8% (19.8-11.03)  y favorece a las solteras respecto a las casadas  ¿?  ¿Alguna hipótesis?
+
+¿Es la diferencia estadisticamente significativa?, bueno intuitivamtene es una brecha considerable pero es necesario  hacer formalmente la estimación para lo cual  construimos  el modelo con la variable   mujer-casada como la  base.
+
+```{r,echo=FALSE}
+
+
+data(wage1)
+names(wage1)
+
+wage1<-wage1%>%mutate(hca=ifelse(married==1&female==0,1,0),
+hsol=ifelse(married==0&female==0,1,0),                      msol=ifelse(married==0&female==1,1,0))
+
+lm(lwage~hca+hsol+msol+educ+exper+expersq+tenure+tenursq,data=wage1)%>%
+summary()
+
+```
+
+Note que la diferencia salarial entre Mujeres casadas y Solteras es de hecho estadísticamente significativa (al $10\%$) (p-value=0.09). Equivalente al porcentaje ya estimado $8.79\%$.    
+
+
+
+
+
+#### Ejemplo 5
+
+Consideremos ahora el escenario en que buscamos predecir los precios de las viviendas en función de atributos como  el tamaño del terreno (lotsize), tamaño de cosntrucción (sqrft), número de dormitorios (bdrms) y una variable factorial (dicotómica: 1,0) para indicar si la casa es de estilo colonial  o no (colonial). 
+
+El modelo se plantea utilizando la transformación logarítmica de la variable dependiente para observar cambios porcentuales en el precio. 
+
+
+$log(price)=\beta_0+\beta_1 bdrms+log(lotsize)+ \beta_2 log(sqrft)+\beta_3 colonial$
+
+```{r, echo=FALSE}
+data(hprice1)
+
+
+lm(lprice~bdrms+llotsize+lsqrft+colonial,data=hprice1)%>%
+  summary()
+
+#Note que el R adjuested controla por el número de regresores incluidos en el modelo y mientras el R^2 siempre se incrementa cuando incluimos regresores adicionales, no sucede este incremento con el R^2 ajustado.#
+```
+
+Los resultados indican que las casas estilo colonial ($X_{colonial}=1$) tienen un diferencial de 5.3% en el precio promedio respecto a las casas de otros estilos. (El signo es positivo lo que corresponde a un incremento en el precio para las casas de estilo colonial).  
+
+Adicionalmente las variables $llotsize$ y $lsqrft$ muestran los comabios porcentuales de la variable dependiente *log(precio)* ante el cambio de $1\%$.  POr lo que estos coeficientes $\hat \beta$ de hecho permiten conocer la tradicional elasticidad. En abos casos el precios es enalastico sin emabrgo es relativamente más sensible respecto a el tamaño de la construcción (variable *sqrft*).
+
+Note la interpretación del coeficiente $\hat \beta_{colonial}$ como la expresión porcentual en la diferencia entre los grupos de la variable dummy  controlando por el resto de atributos. Note finalmente que la variable colonial no es estadísticamente significativa, **NO se rechaza** $H_0: \beta_{colonial}=0$
+
+
+#### Tarea
+
+Considere el siguiente escenario en el que se busca explicar la relación entre la esperanza de vida de la población en una muestra de 194 paises  (la variable dependiente) y una serie de caracteristicas sintetizadas por las sigueintes variables explicativas: Producto Interno Bruto per capita 2005-2009 (miles de USD constantes a 2005) (*gdp*), años promedio de escolaridad escolaridad (*school*), tasa de fertilidad en pobalción adolescente  nacimientos por cada 1000 (*adfert*: Adolescent fertility: births/1000 births 2005/2009). Mortalidad infantil (*chldmort*:  tasa de mortalidad infantil (antes de 5 años por cada 1000 nacimientos). 
+[Fuente](http://hdr.undp.org/en/data)
+
+a) Represente graficamente la variación en la esperanza de vida en los paises de la muestra por región. Tip: Utilice un Boxplot.
+
+b) Represente graficamente la relación entre la variable esperanza de vida y años de escolaridad. (variable que mide los años promedio de escolaridad de los adultos en cada país en el periodo 2005/2010). Tip (Utilice un scatterplot con la linea de tendencia)
+
+c) Construya una matriz de correlación para las siguientes variables esperanza de vida (*life*), Producto Interno Bruto per capita 2005-2009 (miles de USD constantes a 2005) (*gdp*), años promedio de escolaridad (*school*), tasa de fertilidad en pobalción adolescente  nacimientos por cada 1000 (*adfert*: Adolescent fertility: births/1000 births 2005/2009). Mortalidad infantil (*chldmort*:  tasa de mortalidad infantil (antes de 5 años por cada 1000 nacimientos).  Grafique la matriz de correlación.
+
+d) Estime el modelo $life=\beta_0 +\beta_1gdp+\beta_2school+\beta_3 adfert +\beta_4 chldmort+\epsilon$
+
+Comente los resultados para los parámetros $\hat\beta_p$ incluidos los parámetros sobre el ajuste del modelo $R^2$ (¿Qué proporción de la varianza en la esperanza de vida  se explica por el modelo? ). El estadístico  **F** para la prueba de hipótesis $H0:\beta_1,=\beta_2=...\beta_j=0$ Que podemos decir de la validez del modelo en su conjunto.
+
+e) Según los parámetros del modelo, ¿cuantos años puede mejorar la esperanza de vida en un pais de la muestra si el GDP tiene un incremento de 10,000 USD per capita. 
+
+f) Considerando los parámetros estimados del modelo, ¿Qué efecto tendría la reducción de 10 individuos en al tasa de mortablidad infantil por cada 1000 nacimientos, sobre la esperanza de vida promedio para esta muestra de países? 
+
+g) Estime el modelo de regresión incluyendo como regresor la variable *dummy* para región en la que se ubica el país, con la binaria  Africa=1, O=otras.
+
+¿Es esta variable estadísticamente significativa? 
+¿Cúal es el estimado para esperanza de vida en un país de la región Africa? Y el estimado para aquellos paises fuera de esa región?  
+
+```{r, echo=FALSE,include=FALSE}
+theme_set(theme_light())
+
+
+nt<-readRDS("Nations2a.rds")%>%
+  mutate(region=fct_reorder(region,life))
+
+## Box plot
+
+ggplot(nt, aes(region,life))+
+geom_boxplot()+
+  labs(y="Esperanza de vida (Años)", x="Región") 
+
+## ScatterPlot
+
+ggplot(nt,aes(school,life ))+
+  geom_point(color="darkgreen",shape=3)+
+  stat_smooth(method=lm)+
+  labs(y="Esperanza de vida (Años)", x="Escolaridad (Años)") 
+
+## Correlation Matrix
+library(xtable)
+library(Hmisc)
+library(corrplot)
+
+nt2<-select(nt,life,gdp, school,adfert, chldmort)%>%
+  na.omit()
+
+cor<-cor(nt2)%>%
+round(4)
+
+corrplot(cor, method = "number",  type = "upper")
+
+
+corstars <-function(x, method=c("pearson", "spearman"), removeTriangle=c("upper", "lower"),
+                     result=c("none", "html", "latex")){
+    #Compute correlation matrix
+    require(Hmisc)
+    x <- as.matrix(x)
+    correlation_matrix<-rcorr(x, type=method[1])
+    R <- correlation_matrix$r # Matrix of correlation coeficients
+    p <- correlation_matrix$P # Matrix of p-value 
+    
+    ## Define notions for significance levels; spacing is important.
+    mystars <- ifelse(p < .0001, "****", ifelse(p < .001, "*** ", ifelse(p < .01, "**  ", ifelse(p < .05, "*   ", "    "))))
+    
+    ## trunctuate the correlation matrix to two decimal
+    R <- format(round(cbind(rep(-1.11, ncol(x)), R), 2))[,-1]
+    
+    ## build a new matrix that includes the correlations with their apropriate stars
+    Rnew <- matrix(paste(R, mystars, sep=""), ncol=ncol(x))
+    diag(Rnew) <- paste(diag(R), " ", sep="")
+    rownames(Rnew) <- colnames(x)
+    colnames(Rnew) <- paste(colnames(x), "", sep="")
+    
+    ## remove upper triangle of correlation matrix
+    if(removeTriangle[1]=="upper"){
+      Rnew <- as.matrix(Rnew)
+      Rnew[upper.tri(Rnew, diag = TRUE)] <- ""
+      Rnew <- as.data.frame(Rnew)
+    }
+    
+    ## remove lower triangle of correlation matrix
+    else if(removeTriangle[1]=="lower"){
+      Rnew <- as.matrix(Rnew)
+      Rnew[lower.tri(Rnew, diag = TRUE)] <- ""
+      Rnew <- as.data.frame(Rnew)
+    }
+    
+    ## remove last column and return the correlation matrix
+    Rnew <- cbind(Rnew[1:length(Rnew)-1])
+    if (result[1]=="none") return(Rnew)
+    else{
+      if(result[1]=="html") print(xtable(Rnew), type="html")
+      else print(xtable(Rnew), type="latex") 
+    }
+} 
+
+corstars(nt2)
+
+## 
+pairs(~life+gdp+ school+adfert+ chldmort, data=nt,col = "darkblue", pch=1)
+
+lm(life~gdp+school+adfert+chldmort, data=nt)%>%
+  summary()
+
+
+nt2<-mutate(nt,Africa=ifelse(region=="Africa",1,0))
+  lm(life~Africa,data=nt2)%>%
+    summary()
+  
+##Ans Africa 56.48= 73.2-16.72 años de esperanza de vida menos, que otras regiones (73.2 años en otras regiones.
+```
+
+### Efectos por   Interacciones  entre regresores.
+
+Considere ahora el siguiente escenario en donde se busca predecir el nivel de glucosa en sangre  para un grupo de pacientes en función de una serie de marcadores biológicos, caracteristicas personales  como: índice de masa corporal  **bmi**, edad, género (factor), y diagnóstico de hipertensión (factor).
+[Datos](https://www.kaggle.com/asaumya/healthcare-dataset-stroke-data).
+
+Primero estimamos el modelo considerando cada variable explicativa de manera independiente con la especificación: 
+$$avg_glucose_level=\beta_0 +\beta_1 bmi+\beta_2 age+\beta_3 hypert + \beta_4 gender +\epsilon$$
+
+
+
+```{r,echo=FALSE}
+bmi<-readRDS("bmi.rds")
+
+bmi<-bmi%>%
+filter(gender!="Other")%>%
+  mutate(hypertension=as.factor(hypertension))
+
+lm(avg_glucose_level~bmi+age+hypertension+gender, data=bmi)%>%
+summary()
+```
+
+Note que las varioables explicativas seleccionadas son estadisticamente significativas y los niveles de glucosa promedio estimados son mayores ante incrementos en el bmi, incrementan con la edad, con el dignóstico de hipertensión y para los hombres (en esta muestra). Ahora podemos medir la interacción entre edad y el diagnostico de hipertensión, un hipotesis emn este sentido es que podrían presentarse diferencias en los niveles de glucosa promedio a medida que avanza la edad del individuo dependientdo si este tiene diagnóstico de hipertesión o no. 
+
+Para implementar la estimación en R   únicamente usamos el operador de interacciones *. A continuación el resultado  para la interacción entre edad y el diagnóstico de hipertensión. 
+
+```{r,echo=FALSE}
+bmi<-readRDS("bmi.rds")
+lm(avg_glucose_level~bmi+age*hypertension+gender, data=bmi)%>%
+summary()
+
+```
+

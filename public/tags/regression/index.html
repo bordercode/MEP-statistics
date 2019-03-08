@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Regression</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta name="generator" content="Hugo 0.54.0" />
+	<meta property="og:title" content="Regression" />
+<meta property="og:description" content="Actividades de docencia por José Luis Manzanares Rivera en Posgrado. Maestría en Estudios de Población" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="/tags/regression/" />
+
+<meta property="og:updated_time" content="2019-02-05T21:11:11-05:00"/>
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="alternate" type="application/rss+xml" href="/tags/regression/index.xml" title="Estadística II">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-124338825-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="Estadística II" rel="home">
+				<div class="logo__title">Estadística II</div>
+				<div class="logo__tagline">Semestre II MEP 2019</div>
+			</a>
+		</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">Maestría en estudios de población</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/syllabus/">Syllabus</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2015-07-23-rl/">Regresion Lineal</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-01-11-rl2/">RL-Simple</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-01-15-rl3/">RL-Modelo</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-01-25-rl4/">RL-Hipótesis</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-01-25-rl5/">RL-Muiltiple</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-02-05-rl6/">RL-Diagnóstico</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-20-01-rl7-models/">RL-Multiple Cross-Section</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/recursos-adicionales/">Recursos Adicionales</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2018-12-30-ejercicios/">Ejercicios</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main list" role="main">
+	<header class="main__header">
+		<h1 class="main__title">Regression</h1>
+	</header><article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/post/2019-02-05-rl6/" rel="bookmark">
+			RL-Diagnóstico
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 16 16"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
+	<time class="meta__text" datetime="2019-02-05T21:11:11">February 05, 2019</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/r" rel="category">R</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		Análisis de los supuestos y pruebas de diagnóstico del modelo.Heterocedsticidad.Un supuesto de partida de los residuales es que se distribuyen a corde a la normal (Normalidad en los residuales) con media cero varianza constante \(\sigma^2\).
+Uno de los supuestos principales del Modelo de Regresión Lineal MRL es que los errores tiene la misma varianza, lo que se conoce como homocedasticidad, \[E(\epsilon|x)=E(\epsilon)=0\] \[var(\epsilon|x)=\sigma^2\]
+Cuando el supuesto no se cumple tenemos el problema denominado Heterocedasticidad.
+	</div>
+</article><article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/post/2019-01-25-rl5/" rel="bookmark">
+			RL-Multiple
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 16 16"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
+	<time class="meta__text" datetime="2019-01-26T21:11:11">January 26, 2019</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/r" rel="category">R</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		Regresión Multiple.La estimación de modelos bajo esta estructura permite incorporar p variables independientes, lo que contribuye para explicar una mayor parte de la variación en \(Y\) al controla por determiantes de interés.
+\[\begin{align}Y=\beta_0+\beta_1 X_1+\beta_2 X_2+...+\beta_p X_p+\epsilon\tag{1}\end{align}\]Donde \(\beta_j\) indica el efecto promedio sobre Y de un cambio de una unidad en \(X_j\) manteniendo los otros parámetros constantes. Esta estructura del modelo nos permite controlar por \(X_j\) variables explicativas de Y.
+	</div>
+</article><article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/post/2019-01-25-rl4/" rel="bookmark">
+			RL-Hipótesis
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 16 16"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
+	<time class="meta__text" datetime="2019-01-25T21:11:11">January 25, 2019</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/r" rel="category">R</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		Parámetros estimados y su precisión.¿Qué tan preciso es un parámetro estimado mediante el modelo de regresión lineal?
+Una manera de medir su precisión es mediante el cálculo del error estándar SE este nos indica el monto promedio en el que el parámetro \(\hat \beta\) estimado difiere del valor poblacional \(\beta\)
+Note que nos interesa determinar la precisión del parámetro muestral con relación al poblacional en este caso tomamos el ejemplo de la estimación de media muestral \(\hat \mu\) con relación a su correspondiente valor poblacional \(/mu\)
+	</div>
+</article><article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/post/2019-01-15-rl3/" rel="bookmark">
+			RL-Modelo
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 16 16"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
+	<time class="meta__text" datetime="2019-01-15T21:11:11">January 15, 2019</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/r" rel="category">R</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		Formalización del modeloEn términos matemáticos podemos describir la relación entre las variables del modelo con la expresión siguiente:
+\[\begin{align}Y \approx \beta_0 + \beta_1 X\tag{1}\end{align}\]Una vez que hemos estimado los parámetros del modelo podemos usarlos para hacer la predicción de \(\hat y\)
+\[\begin{align}\hat y= \hat \beta_0 + \hat \beta_1 x\tag{2}\end{align}\]Note que la diferencia entre la linea de regresión y cada observación (lineas grises) da cuenta del error de predicción.
+	</div>
+</article><article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/post/2019-20-01-rl7-models/" rel="bookmark">
+			Multiple Models
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 16 16"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
+	<time class="meta__text" datetime="2018-12-28T21:14:14">December 28, 2018</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/r" rel="category">R</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		Programación Funcional.Estimación de Multiples Modelos de regression Lineal.Considere un escenario en el que nos interesa modelar la relación entre la esperanza de vida y el PIB (una variable que representa el nivel económico de un país) o bien un indicador clásico como el indice de desarollo Humano y su evolución a lo largo del tiempo.
+El problema en este caso es que la unidad de análisis (142 países) implica la realización de un gran número de modelos, 142 modelos!
+	</div>
+</article><article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/post/2019-01-11-rl2/" rel="bookmark">
+			RL-Simple
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 16 16"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
+	<time class="meta__text" datetime="2018-12-28T21:13:14">December 28, 2018</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/r" rel="category">R</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		Regresión Lineal simple.Objetivo de la sesión: Presentar el modelo de Regresión lineal. Orígenes del concepto de regresión, características y estructura del modelo, expresión matématica.
+All models are wrong, but some are useful. Box (1979)
+En el curso estamos interesados en modelar relaciones estadísticas (estocásticas) no deterministas, esto es, en las variables análizadas tenemos cierto grado de incertidumbre.
+Origenes de la noción de regresiónLa noción de Regresión lineal. ¿Qué entendemos por regresión?
+	</div>
+</article><article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/post/2015-07-23-rl/" rel="bookmark">
+			Regresion Lineal
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 16 16"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
+	<time class="meta__text" datetime="2018-12-28T21:13:14">December 28, 2018</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/r" rel="category">R</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		True knowledge is knowledge of why things are as they are, and not merely what they are. Isaiah Berlin. Samprit Chatterjee (2012)
+Conceptos preliminares y Notación utilizada en el curso.Conocimientos previos deseables para llevar este curso: Vectores y matrices, Intervalos de confianza, Momentos estadísticos, Pruebas de hipótesis, Distribción Normal. Ej.
+\[\bar{x}=\frac{1}{n} (\sum_{i=1}^{n} x_i) =\frac{x_1 +x_2+...+x_n}{n}\]
+\[E(\bar{x})= \mu\]
+\[V(X)= Var(X)=\sigma^2_{X}\] \[\sigma^2 = \frac{1}{n}\sum_{i=1}^{n}(x_i - \bar{X})^2\] \[\sigma^2_{X}=E[(X-\mu)^2]\]
+Las bases de datos analizados en el curso tiene la siguiente estructura general con n renglones (observaciones) por p columnas (variables).
+	</div>
+</article><article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/post/2018-12-30-ejercicios/" rel="bookmark">
+			Ejercicios
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/r" rel="category">R</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		Actividad 1Soluciones.1.- Para la siguiente base de datos sobre tasas de mortalidad por suicidio en México en 2015, determine.
+La tasa promedio para los 32 estados del país para el sexo masculino.
+El valor máximo de google trends score (GTS) ¿En qué Estado ocurre? y el mínimo?
+¿Cúal es el valor promedio del GTS?
+La tasa promedio de sucidio para las mujeres en México.
+	</div>
+</article>
+</main>
+
+
+			</div>
+			
+<aside class="sidebar"><div class="widget-search widget">
+	<form class="widget-search__form" role="search" method="get" action="https://google.com/search">
+		<label>
+			<input class="widget-search__field" type="search" placeholder="SEARCH..." value="" name="q" aria-label="SEARCH...">
+		</label>
+		<input class="widget-search__submit" type="submit" value="Search">
+		<input type="hidden" name="sitesearch" value="/" />
+	</form>
+</div>
+<div class="widget-recent widget">
+	<h4 class="widget__title">Recent Posts</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/post/2019-02-05-rl6/">RL-Diagnóstico</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/2019-01-25-rl5/">RL-Multiple</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/2019-01-25-rl4/">RL-Hipótesis</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/2019-01-15-rl3/">RL-Modelo</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/recursos-adicionales/">Recursos Adicionaes</a></li>
+		</ul>
+	</div>
+</div>
+<div class="widget-categories widget">
+	<h4 class="widget__title">Categories</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/categories/development">Development</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/r">R</a></li>
+		</ul>
+	</div>
+</div>
+<div class="widget-taglist widget">
+	<h4 class="widget__title">Tags</h4>
+	<div class="widget__content">
+		<a class="widget-taglist__link widget__link btn" href="/tags/basic-elements" title="Basic elements">Basic elements</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/css" title="Css">Css</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/html" title="Html">Html</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/mco" title="Mco">Mco</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/regresi%c3%b3n-lineal" title="Regresión lineal">Regresión lineal</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/regression" title="Regression">Regression</a>
+	</div>
+</div>
+</aside>
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2019 Estadística II.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

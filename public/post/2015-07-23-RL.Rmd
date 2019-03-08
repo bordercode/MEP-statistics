@@ -1,0 +1,326 @@
+---
+title: "Regresion Lineal"
+author: "José Luis Manzanarees Rivera"
+date: 2018-12-28T21:13:14-05:00
+categories: ["R"]
+tags: ["Regresión Lineal", "MCO", "regression"]
+mathjax : true
+menu:
+  main:
+    name: Regresion Lineal
+    weight: 3
+---
+
+
+```{r set-global-options, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(eval = TRUE, 
+                      echo = TRUE, 
+                      cache = FALSE,
+                      include = TRUE,
+                      collapse = FALSE,
+                      dependson = NULL,
+                      engine = "R", # Chunks will always have R code, unless noted
+                      error = FALSE)                     
+
+```
+
+
+
+```{r silent-packages, echo = FALSE, eval = TRUE, message=FALSE, include = FALSE}
+library(ggrepel)
+library(tidyverse)
+library(scales)
+library(ggpubr)
+```
+
+*True knowledge is knowledge of why things are as they are, and not merely what they are.* **Isaiah Berlin.**
+Samprit Chatterjee (2012) 
+
+## Conceptos preliminares y Notación utilizada en el curso.
+
+Conocimientos previos deseables para llevar este curso:
+Vectores y matrices, Intervalos de confianza, Momentos  estadísticos, Pruebas de hipótesis, Distribción Normal.
+Ej.  
+
+$$\bar{x}=\frac{1}{n} (\sum_{i=1}^{n} x_i) =\frac{x_1 +x_2+...+x_n}{n}$$
+
+$$E(\bar{x})= \mu$$
+
+$$V(X)= Var(X)=\sigma^2_{X}$$ 
+$$\sigma^2 = \frac{1}{n}\sum_{i=1}^{n}(x_i - \bar{X})^2$$
+$$\sigma^2_{X}=E[(X-\mu)^2]$$
+
+
+Las bases de datos analizados en el curso tiene la siguiente estructura general con **n** renglones (observaciones)  por **p** columnas (variables).  
+
+![](/img/m.jpg)
+
+Con una variable por columna y una observación por renglón tal como tradicionalmente se estructura la información en una hoja de cálculo. 
+Note que el elemento $x_{ij}$ de la matriz $X$ muestra la **observación** **i** que va de $i=1,2,3,...,n$ 
+
+Y la **variable** **j**  que va $j=1,2,3,...,p$
+
+![](/img/m2.jpg)
+
+Así la estructura de los datos analizados se integra por pares ordenados  ${(x_1,y_1),(x_2,y_2),...,(x_n,y_n)}$
+
+Para el producto entre matrices la notación usada sigue la  convención usual, por ejemplo sea $A \in \mathbb{R}^{r d}$ y $B \in \mathbb{R}^{d s}$ Entonces el producto de $A$ y $B$ es denotado $AB$. 
+
+Y  el elemento $(i,j)$ de $AB$ se obtiene multiplicando cada elemento del renglón i de $A$ por cada elemento de la columna j de $B$ y sumando el resultado. Esto es $(AB)_{ij}$ $\sum_{k=1}^{d} a_{ik}b_{kj}$
+
+Ejemplo
+
+![](/img/m3.jpg)
+
+
+
+Vemos que el resultado es una matriz con dimensiones **r x s**.
+
+Y el producto sólo es posible ya que el número de renglones de $A$ es el mismo que el número de columnas de $B$
+
+
+
+## Estructura de datos.
+
+**Corte transversal.** Datos organizados con relación a una unidad de análisis, por ejemplo: una **muestra** de individuos, familias, empresas, ciudades, estados, paises, tomados para  un punto  determinado en el tiempo. Ejemplo: ENIGH, ENGASTO.ENSANUT, ENOE, SINAIS, DENUE. En algunos casos los datos corresponden a encuestas realizadas a lo largo de un perido en distintas semanas, estos datos se consieran de corte transversal.
+
+Este es el tipo de datos que estudiaremos en este curso principalmente. 
+
+Pregunta, la siguiente base contiene datos de corte transversal.
+
+```{r, echo=FALSE}
+TASA15<-readRDS("TASA15.rds")%>%
+  select(-c(id_ent,espT,pstd))
+TASA15
+
+TASA15_M<-TASA15%>%
+  filter(Sexo==2)
+
+TASA15_M
+```
+
+**Nota:** Un supuesto importante para el análisis de datos en estructura de corte transversal es que provienen de una **muestra aleatoria**. Algunos sesgos de selección comúnes ocurren por ejemplo en encuestas que preguntan sobre los ingresos, generalmente es un dato que algunas familias (sobre todo de altos ingresos) no proporcionan.  
+
+**Series de tiempo** Contienen datos de una unidad de análisis para varios momentos del tiempo, de periodicidad generalmente homogénea (diaria, mensual, trimestral, anual, etc.,).
+
+
+#### Comportamiento del precio de la Mezcla Mexicana de Petróleo 11/20/2018. ![](/img/oil.jpg)
+
+#### Comportamiento de la Temperatura Mundial 1880-2000 (°C). ![](/img/tseries.png)
+
+Otras estructuras incluyen  **datos de panel** que básicamente agrupan series de corte transversal para diferentes momentos en el tiempo (ej. varios años).
+
+#### Cociente de localización para Diabetes 1998-2015 Frontera Norte y Frontera Sur, México.
+![](/img/panel.jpg)
+
+```{r, echo=FALSE}
+
+library(gapminder)
+
+gapminder<-gapminder%>%
+mutate(year1950=year-1950)%>%
+  head(50)
+
+gapminder
+```
+
+Note la variable que distingue la unidad de análisis **(country)** y la variable que incorpora la dimensión temporal para la estructura de panel **(year)**.
+
+
+En el ejemplo siguiente la unidad de análisis es la ciudad y la dimensión temporal se consigna por la variable año, en este caso sólo dos años 1982 y 1987.
+
+```{r,echo=FALSE}
+
+library(wooldridge)
+
+data(crime2)
+
+crime2<-crime2%>%group_by(year)%>%
+mutate(city_id=row_number())%>%
+select(city_id,crimes,pcinc,unem,officers,year)%>%
+rename(ciudad=city_id, año=year)%>%
+  head(15)
+
+crime2
+```
+Note la estructura en este caso solo tenemos dos años, y como unidad de análisis  la ciudad. 
+
+También note que la dimensión que denota tiempo (año) se encuentra registrada en una varible.
+
+Así tenemos un data frame de 92 observaciones a lo largo del 2 años para 46 ciudades.
+
+Una estructura de este tipo, donde la dimensión tiempo  se extiende por un periodo corto (ej, comparación ente 2 años). También se denomina comumnente como *pooled cross-section*.
+
+Una ventaja importante de la estructura de datos de panel sobre cross-section es que nos permite **controlar por características no observadas** en un sólo período de tiempo entre las unidades de análisis.  
+
+### Tipo de variables.
+
+Las variables utilizadas serán de dos tipos: **numéricas** ó **categoricas**. A su vez estas corresponden con los siguientes tipos de datos identificados en los programas utilizadso en el curso **Rstudio** y **STATA**: *doubles, integers, characters, logicals.* 
+
+Los dos primeros son valores numéricos, decimales o enteros, mientras el tipo characters puede representar **factores** (fct), ej. categorias como hombre, mujer, estado: BC, Jalisco, Sonora,etc.
+
+Principalmente los modelos que estudiaremos consideran la relación entre variables numéricas. 
+
+**Ejemplo** base de datos  **Salarios** que contiene Datos sobre salario por hora, años de experiencia, años de educación, sexo y estatus marital. 
+
+**Note** la estructura de los datos (tipo de datos, número de observaciones y variables).
+
+
+```{r,   echo=FALSE}
+library(wooldridge)
+
+data(wage1)
+
+wage1<-wage1%>%
+select(c(wage,educ,exper,female,married))%>%
+  mutate(wage=as.double(wage), female=as.factor(female),married=as.factor(married))%>%
+  head(15)
+
+wage1
+
+str(wage1)
+```
+
+
+
+**Note**  que el orden de las observaciones en un **data frame** de corte transversal es irrelevante para la utilización de los datos en el proceso de estimación del modelo. En este caso ordenados en forma descendente por la variable Tasa. 
+
+
+**Ejemplo:** Datos sobre tasa de mortalidad por cáncer pulmón y  gasto en tabaco por hogar a escala estatal. 
+
+```{r, echo=FALSE}
+tabaco_mg<-readRDS("tabaco.rds")%>%
+mutate(Tasa=as.integer(Tasa))%>%
+  rename(gasto=pg)
+tabaco_mg
+```
+
+Otro punto a tener en cuenta sobre la estructura de corte transversal es que no necesariamente todas las variables consideradas corresponden al mismo momento del tiempo, en ocasiones una variable representa el promedio de los valores en un periodo de tiempo determinado. Este rasgo dependerá del análisis realizado.
+
+
+### Actividad  1 
+
+1.- Para la  siguiente   [base de datos](https://drive.google.com/file/d/1zpRbIB75iv0wwcKQECgmRue589UlZXBd/view?usp=sharing) sobre tasas de mortalidad por suicidio en México en 2015, determine. 
+
+a) La tasa promedio para los 32 estados del país para el sexo masculino. 
+
+b) El valor máximo de google trends score (GTS)  ¿En qué Estado ocurre?  y el mínimo?
+
+c) ¿Cúal es el valor promedio del GTS?
+
+d) La tasa promedio de sucidio para las mujeres en México. 
+
+
+
+
+```{r,eval=FALSE,echo=FALSE}
+
+strend<-readRDS("Suicidetrend.rds")
+glimpse(strend)
+
+# Descriptive: Media, max, min
+
+descriptive<-strend%>%
+  group_by(Sexo)%>%
+  summarize(mean=round(mean(Tasa),0),max=max(Tasa))
+
+# Google Trends score 
+
+media_gts<-strend%>%
+  filter(Sexo==1)%>%
+  arrange(desc(s))
+
+summary(media_gts$s)
+
+```
+
+
+2.- Considere la siguiente base de datos sobre condiciones de [obesidad y prevalencia de diabetes](https://drive.google.com/file/d/1sapYFuoLUI1hmZ_Sn0RPI4wJeVyozcCe/view?usp=sharing) en México 2015.
+
+
+a) Comente sobre la estructura de los datos, número de variables, observaciones ¿Qué variables son cuantitativas y cuáles son factores o categóricas? 
+
+b) Estime la tasa de morbilidad  promedio,  la máxima y la mínima así como la variaza $\sigma^2$ y desviación estándar  $\sigma$ para ambos sexos. 
+
+c) Determine si la diferencia entre la tasa promedio de morbilidad  de ambos sexos es estadísticamente significativa. (realice prueba de hipótesis a partir del estadístico *t* ).
+
+d) La variable tasa se distribuye a corde con los supuestos de normalidad?
+
+e) Estime el coeficeinte de correlación entre tasa de diabetes y la variable sobrepeso (imc promedio por estado  segÚn ENSANUT). 
+
+```{r,eval=FALSE,echo=FALSE}
+
+
+TASA15a<-readRDS("TASA15_diabetes_egre2.rds")
+
+# Estructura 
+str(TASA15a)
+names(TASA15a)
+
+# Descriptivas
+descriptive<-TASA15a%>%
+  group_by(Sexo)%>%
+  summarize(mean=round(mean(Tasa),0),max=max(Tasa), sd=sd(Tasa), var=var(Tasa))
+
+# t- test H0 mediaH = mediaM,  H1 diff !=0
+t.test(Tasa ~ Sexo, data = TASA15a)
+
+#No rechazamos H0. La diferencia entre las tasas promedio no es estadísticamente significativa. 
+
+#La tasa media es  igual para ambos sexos. 
+
+## Normalidad  media != mediana  Remember normalidad es un supuesto para validéz de t test.
+
+summary(TASA15a$Tasa)
+
+# Usamos el w - test statistic del shapiro.test para normalidad. H0: datos con distribución normal. Note el w -stat  tiene el rango [0=>w<=1]
+
+shapiro.test(TASA15a$Tasa)
+
+# Rechazamos H0.  Ej. p-value < 0.05. Los datos no tienen distribución normal.
+
+# Adicionalmente  representamos los datos vs. el qqplot 
+# Una distribución normal mostraría las observaciones a lo largo de la linea. Patrones que se alejan del perfil esperado muestran evidencia de que los datos no tienen distribución normal. 
+
+ggqqplot(TASA15a$Tasa, ylab = "Tasa")
+
+#Note que el eje x cauntiles acorde a distribución normal. 
+
+# Confirmamos un patrón NO consistente con la  distribución normal. De hecho por la forma de la distribución la muestra parece tener sesgo a la derecha. long tail a la derecha y mean>median.
+
+#En este caso por ejemplo podemos aplicar una transformación para aproximar normalidad. 
+
+
+# Persons correlation coef. # Dado que los datos no tienen norm dist  usamos el coeficiente de correlación de spearman. 
+
+
+TASA15a%>%
+group_by(Sexo)%>%
+summarize(c=cor(Tasa, IMC, method = "spearman", use = "complete.obs"))
+
+## Se encuentra correlación positiva con mayor magnitud para el sexo masculino. 
+```
+
+## Tarea
+
+Leer  Capítulo 1. [An Introduction to Statistical Learning](https://drive.google.com/file/d/1zaKc1XWvELsUgZrS32QdpHoM4-w0y7Qx/view?usp=sharing)
+
+Y comente en disqus los siguientes puntos.
+
+1.-Comente dos  motivos  por los cuales nos interesa estimar la forma funcional $f$ en el proceso de construcción de un  modelo estadístico.
+
+
+2.-Rasgos principales de la  estimacion paramétrica en contraste con la estimación  no parametrica. Mencione un ejemplo de modelo basasdo en estimacion paramétrica y uno no-paramétrica.
+
+Tiempo estimado 30 minutos
+
+
+### Términos Clave
+
+**Variable categórica** o factorial: Qualitative variables take on values in one of $K$ different classes, or categories.
+
+
+### Referencias
+
+
+Box, G. E. P. (1979). Robustness in the strategy of scientific model building. In R. Launer & G. Wilkinson (Eds.), Robustness in statistics (pp. 201–235). New York, NY: Academic Press.

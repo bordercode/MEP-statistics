@@ -1,0 +1,181 @@
+---
+title: "Regresion Lineal"
+author: "José Luis Manzanarees Rivera"
+date: 2018-12-28T21:13:14-05:00
+categories: ["R"]
+tags: ["Regresión Lineal", "MCO", "regression"]
+mathjax : true
+menu:
+  main:
+    name: Regresion Lineal
+    weight: 1
+---
+
+
+```{r set-global-options, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(eval = TRUE, 
+                      echo = TRUE, 
+                      cache = FALSE,
+                      include = TRUE,
+                      collapse = FALSE,
+                      dependson = NULL,
+                      engine = "R", # Chunks will always have R code, unless noted
+                      error = FALSE)                     
+
+```
+
+
+
+```{r silent-packages, echo = FALSE, eval = TRUE, message=FALSE, include = FALSE}
+library(ggrepel)
+library(tidyverse)
+library(scales)
+```
+
+*True knowledge is knowledge of why things are as they are, and not merely what they are.* **Isaiah Berlin.**
+Samprit Chatterjee (2012) 
+
+## Regresión Lineal
+
+
+**Objetivo de la sesión:** Presentar el modelo de Regresión lineal. Orígenes del concepto de regresión, características y estructura del modelo, expresión matématica. 
+
+
+*All models are wrong, but some are useful. Box (1979)*
+
+
+En el curso estamos interesados en modelar relaciones estadísticas (estocásticas) no deterministas, esto es, en las variables análizadas tenemos cierto grado de incertidumbre. 
+
+
+### Origenes de la noción de regresión
+
+La noción de Regresión lineal. ¿Qué entendemos por regresión?
+
+A pesar de las multiples contribuciones y desarrollos recientes sobre la aplicación de este concepto en el contexto del análisis estadístico el desarrollo del fenómeno de Regresión se atribuye al antropólogo británico **Francis Galton** (primo de **Charles Darwin**)  
+
+De acuerdo con Stigler en su libro [Statistics on the table](https://drive.google.com/file/d/1NgCTeIg4Tclt-TsKpHV_wmXvk4TY7dZ9/view?usp=sharing) *"The story is an exciting one involving, science, experiment, mathematics, simulation and one of the great thougth experiments of all times."* (Stigler, 1999)
+
+De acuerdo con **Dalton** en su obra [Hereditary Genius 1869](https://drive.google.com/file/d/1Zd3ORNina7jKPXe176nhUNP3wRSElsMv/view?usp=sharing). La mezcla de caracteristicas genéticas a lo largo de la descendencia explica el grado de talento observado en los individuos.
+
+Su trabajo aborda entre otros elementos como el talento se manifiesta através de las generaciones. Ej. los Bachs, (Johann Sebastian Bach) los Bernoulli, (Daniel Bernoulli ), etc.
+
+Sus observaciones parecian indicar que el talento sistemáticamente tendia a disminuir a medida que se consieraba a los miembros de la familia más distantes, tanto hacia "arriba"  en el árbol genealógico como hacia "abajo". La observación se manifiesta incluso al referirnos a otras especies. 
+
+Dalton: *"if a man breeds from strong,  well-shaped dogs, but of mixed pedigree, the puppies will be sometimes, but rarely, the equals of their parents. They will commonly be of a mongrel, nondescript type, because ancenstral peculiarities are apt to crop out in the offspring".*
+
+In statistics, regression analysis consists of techniques for modeling the relationship between a **dependent variable** (also called response variable) and **one or more independent variables** (also known as **explanatory** variables or predictors).
+
+In regression, the dependent variable is modeled as a **function of independent variables**, corresponding regression parameters (coeficients), and a random error term which represents **variation in the dependent variable unexplained** by the function of the dependent variables and coeficients. 
+
+In linear regression the dependent variable is modeled as a **linear function of a set of regression parameters** and a random error.
+
+The parameters need to be estimated so that the model gives the  **"best fit"** to the data. The parameters are estimated based on predefined criterion.
+
+The most commonly used criterion is the **least squares method**, but other criteria have also been used that will result in diferent estimators of the regression parameters.
+
+If a regression model adequately reflects the **true relationship** between the response variable and independent variables, this model can be used for **predicting dependent variable**, identifying important independent variables, and establishing desired causal relationship between the response variable and independent variables.
+
+
+Dado un par de variables con distribución normal X e Y centradas en su valor espérado (con media cero) 
+con varianza común $\sigma^2$ y correlación $\rho$, entonces el fenómeno de regresión es exprezado por:
+
+$E(Y|X=x)=\rho x$ , $E(X|Y=y)=\rho y$
+
+$Var(Y|X=x)=Var(X|Y=y)=(1- \rho^2 \sigma^2)$
+
+Esta notación enfatiza la interpretación de $\rho$ como el coeficiente de regresión y dado que 
+$-1 \geq \rho \leq 1$ tenemos regresión hacia la media de cero y una varianza condicional 
+decreciente a menos que X e Y muestren correlación perfecta.
+
+
+
+
+```{r, echo=FALSE, message = FALSE, warning = FALSE}
+strend<-readRDS("Suicidetrend.rds")
+
+ph<-ggplot(filter(strend,Sexo==1), aes(x=s, y=Tasa)) + 
+  geom_point(shape=21) + 
+  stat_smooth(method=lm,se=FALSE)+
+  ylab("Tasa de Mortalidad   (100 000 hab.)")+
+  xlab("Google Trends Score (2004-2018)") +
+  geom_label_repel(aes(label = Estado),box.padding= 0.35,point.padding = .5,segment.color = 'grey50')+ 
+  theme_bw()+
+  labs(title="Relación entre tasa de mortalidad por suicidio y Goolge Trend Score" ,subtitle="Término suicidio por estado")
+
+ph
+
+```
+
+
+```{r , echo=FALSE, message = FALSE, warning = FALSE}
+
+theme_set(theme_light())
+
+tc349<-readRDS("tasasHM15_c349")
+
+ggplot(tc349,aes(pg,Tasa, group=Sexo, colour=Sexo))+
+  geom_point()+
+  geom_smooth(method="lm")+
+  scale_colour_discrete(labels=c("Hombres", "Mujeres"))+
+labs(title="Relación tasa de mortalidad en cáncer de pulmón y Gasto en Tabaco", 
+     subtitle= "Gastos por Hogar según sexo", x= " (%) respecto al gasto total", y="Tasa de Mortalidad   (1000 000 hab.)")+
+  scale_x_continuous(labels=percent_format())
+
+
+tabaco_mg<-readRDS("tabaco.rds")
+
+  ggplot(tabaco_mg,aes(pg,Tasa))+
+  geom_point()+
+  geom_smooth(method="lm", colour="red")+
+  labs(title="Relación tasa de mortalidad en cáncer de pulmón y Gasto en Tabaco", subtitle="Hombres",  x="Gasto en Tabaco respecto al total", y="Tasa de Mortalidad   (1000 000 hab.)")+
+  scale_x_continuous(labels=percent_format())+
+  geom_label_repel(aes(label = Estado),box.padding= 0.35,point.padding = .5,segment.color = 'grey50')
+
+
+```
+
+
+### Correlación entre Salario medio y participación de la Mujer en empleo.
+#### Carreras más populares por categoria.
+
+```{r, echo=FALSE, message = FALSE, warning = FALSE, fig.width=10, fig.height=6}
+
+library(plotly)
+theme_set(theme_light())
+
+graduados<-readRDS("graduados.rds")
+
+  g<-ggplot(graduados,aes(ShareWomen,Median, color=Area,size=Sample_size, label=Major))+
+  geom_point()+
+  geom_smooth(aes(group=1),method = "lm")+
+  expand_limits(y=0)+
+  scale_color_brewer(palette="Dark2")+
+  scale_y_continuous(labels=dollar_format())+
+  scale_x_continuous(labels=percent_format())+
+  labs(x="Mujeres/Hombres", y="Salario Medio  US$")+
+    theme(legend.position="botton")
+  
+  ggplotly(g)
+
+```
+
+
+```{r,, echo=FALSE, message = FALSE, warning = FALSE}
+TASA15<-readRDS("tasa15diabetes.rds")
+
+ggplot(TASA15,aes(IMC,Tasa))+
+  geom_point()+
+  geom_smooth(method="lm",colour="darkgreen")+
+ labs(title="Relación Diabetes-Sobrepeso (25<IMC<=30)", subtitle="Según Entidad 2015",  x="IMC", y="Tasa morbilidad (100 000 hab.)")+
+geom_label_repel(aes(label = Estado),box.padding= 0.35,point.padding = .5,segment.color = 'grey50')
+
+```
+
+### Términos clave 
+
+**Least squares:** Noción atribuida a Gauss. Criterio para la estimación del modelo de regresión lineal.
+
+### Referencias
+
+
+Box, G. E. P. (1979). Robustness in the strategy of scientific model building. In R. Launer & G. Wilkinson (Eds.), Robustness in statistics (pp. 201–235). New York, NY: Academic Press.

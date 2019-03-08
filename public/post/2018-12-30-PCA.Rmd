@@ -1,0 +1,12 @@
+---
+title: "Principal Component Analysis"
+author: "JLMR"
+date: 2018-12-28T21:14:14-05:00
+categories: ["R"]
+tags: ["Regresión Lineal", "MCO", "regression"]
+mathjax : true
+menu:
+  main:
+    name: PCA
+    weight: 12
+---

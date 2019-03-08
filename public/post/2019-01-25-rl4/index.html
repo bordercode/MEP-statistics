@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>RL-Hipótesis</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta name="generator" content="Hugo 0.54.0" />
+	<meta property="og:title" content="RL-Hipótesis" />
+<meta property="og:description" content="Parámetros estimados y su precisión.¿Qué tan preciso es un parámetro estimado mediante el modelo de regresión lineal?
+Una manera de medir su precisión es mediante el cálculo del error estándar SE este nos indica el monto promedio en el que el parámetro \(\hat \beta\) estimado difiere del valor poblacional \(\beta\)
+Note que nos interesa determinar la precisión del parámetro muestral con relación al poblacional en este caso tomamos el ejemplo de la estimación de media muestral \(\hat \mu\) con relación a su correspondiente valor poblacional \(/mu\)" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/2019-01-25-rl4/" />
+<meta property="article:published_time" content="2019-01-25T21:11:11-05:00"/>
+<meta property="article:modified_time" content="2019-01-25T21:11:11-05:00"/>
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-124338825-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="Estadística II" rel="home">
+				<div class="logo__title">Estadística II</div>
+				<div class="logo__tagline">Semestre II MEP 2019</div>
+			</a>
+		</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">Maestría en estudios de población</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/syllabus/">Syllabus</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2015-07-23-rl/">Regresion Lineal</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-01-11-rl2/">RL-Simple</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-01-15-rl3/">RL-Modelo</a>
+		</li>
+		<li class="menu__item menu__item--active">
+			<a class="menu__link" href="/post/2019-01-25-rl4/">RL-Hipótesis</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-01-25-rl5/">RL-Muiltiple</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-02-05-rl6/">RL-Diagnóstico</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-20-01-rl7-models/">RL-Multiple Cross-Section</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/recursos-adicionales/">Recursos Adicionales</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2018-12-30-ejercicios/">Ejercicios</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">RL-Hipótesis</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 16 16"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
+	<time class="meta__text" datetime="2019-01-25T21:11:11">January 25, 2019</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/r" rel="category">R</a></span>
+</div>
+</div>
+		</header><div class="content post__content clearfix">
+			
+
+
+<div id="parametros-estimados-y-su-precision." class="section level3">
+<h3>Parámetros estimados y su precisión.</h3>
+<p>¿Qué tan preciso es un parámetro estimado mediante el modelo de regresión lineal?</p>
+<p>Una manera de medir su precisión es mediante el cálculo del <strong>error estándar</strong> <strong>SE</strong> este nos indica el monto promedio en el que el parámetro <span class="math inline">\(\hat \beta\)</span> estimado difiere del valor poblacional <span class="math inline">\(\beta\)</span></p>
+<p>Note que nos interesa determinar la precisión del parámetro muestral con relación al poblacional en este caso tomamos el ejemplo de la estimación de media muestral <span class="math inline">\(\hat \mu\)</span> con relación a su correspondiente valor poblacional <span class="math inline">\(/mu\)</span></p>
+<p>El <em>SE</em> se basa en el concepto de la varianza <span class="math inline">\(var(\hat \mu)=SE(\hat \mu)=\frac{\sigma^2}{n}\)</span> Y esta dado por:</p>
+<span class="math display" id="eq:se">\[\begin{align}
+SE(\hat \beta_0)^2= \sigma^2 [\frac{\bar{1}}{n}+\frac{\bar{x}^2}{\sum_{i=1}^{n}(x_i-\bar{x})^2}]
+\tag{1}
+\end{align}\]</span>
+<p><span class="math display">\[SE(\hat \beta_1)^2=  \frac{\sigma^2}{\sum_{i=1}^{n}(x_i-\bar{x})^2}\]</span> Donde <span class="math inline">\(\sigma^2\)</span>=Var(<span class="math inline">\(\epsilon\)</span>).<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<p>El estimado de la varianza <span class="math inline">\(\sigma\)</span> se denomina <em>Residual Standard Error</em> <strong>RSE</strong>. <span class="math inline">\(RSE=\sqrt{\frac {RSS}{(n-2)}}\)</span></p>
+<p>Los <strong>Errores Standard</strong> son útiles en la estimación de los intervalos de confianza.</p>
+<p>Un intervalo de confianza del <span class="math inline">\(95\%\)</span> se define como aquel rango tal que con el <span class="math inline">\(95\%\)</span> de probabilidad contiene el valor verdadero del parámetro.</p>
+<p>El intervalo se compone por <strong>limites superior</strong> e <strong>inferior</strong> de la muestra de datos.</p>
+<p>Para la regresión lineal el intervalo <span class="math inline">\(95\%\)</span> toma la especificación:</p>
+<p><span class="math display">\[\hat \beta_1\pm2\cdot SE(\hat \beta_1)\]</span></p>
+<p>La misma lógica para estimar el intervalo para <span class="math inline">\(\hat \beta_0\)</span></p>
+<p>Note que cuando el intervalo de confianza incluye <strong>0</strong> tenemos evidencia adicional de que el parámetro en cuestión no es estadisticamente significativo.</p>
+<p>Quiz: Indentifique el intervalo de confianza de <span class="math inline">\(95\%\)</span> para <span class="math inline">\(\hat \beta_0\)</span>, <span class="math inline">\(\hat \beta_1\)</span> para los ejemplos 1-3.</p>
+</div>
+<div id="prueba-de-hipotesis-y-significancia-estadistica-sobre-parametros" class="section level2">
+<h2>Prueba de Hipótesis y significancia estadística sobre parámetros</h2>
+<div id="valores-criticos-para-contraste.-relacion-entre-z-score-y-t-statistic." class="section level5">
+<h5>Valores criticos para contraste. Relación entre <em>Z-score</em> y <em>t</em>-statistic.</h5>
+<p>Para determinar si la relación entre la variable explicativa <span class="math inline">\(x\)</span> y la dependiente <span class="math inline">\(y\)</span> es estadisticamente significativa, la práctca estándard es probar <strong>la hipótesis Nula</strong> de que un coeficiente particular <span class="math inline">\(\beta_j=0\)</span>. Comencemos por estudiar la relación que tiene la distribuciòn normal y la distribución t estas permiten comprender el criterio para hacer el contraste sobre la signifiancia estadística.<br />
+El contraste de la hipotesis nula es posible al utilizar el coeficiente estandard denominado <span class="math inline">\(Z-score:\)</span> denfinido como:</p>
+<p><span class="math inline">\(z_j=\frac{\hat \beta_j}{\sigma\sqrt{v_j}}\)</span></p>
+<p>Donde <span class="math inline">\(v_j\)</span> es el <span class="math inline">\(j-esimo\)</span> elemento <span class="math inline">\((X^TX)^{-1}\)</span></p>
+<p>Bajo la hipótesis nula <span class="math inline">\(\beta_j=0, z_j\)</span> se distribuye como <span class="math inline">\(t-N-p-1\)</span> una distribución <span class="math inline">\(t\)</span> con N-p-1 grados de libertad.</p>
+<p>Considerando el parámetro muestral de la varianza, <span class="math inline">\(z_j\)</span> tendrá una <strong>distribución normal estandard</strong>. La diferencia entre los cuantiles de una distribución <span class="math inline">\(t\)</span> y la estandard normal, de hecho resulta infima, a medida que el tamaño muestral aumenta, <span class="math inline">\(N \rightarrow \infty\)</span> si bien utilizar los cuantiles de la distribución normal es un práctica común con muestras <span class="math inline">\(n \geqslant30\)</span>.</p>
+<p>Si el estadístico <span class="math inline">\(t\)</span> estimado (en valor absoluto) &gt; <span class="math inline">\(t\)</span> crítico, el coeficiente <span class="math inline">\(\hat \beta\)</span> puede considerse como estadisticamente signficativo (y podemos rechazar la hipótesis <span class="math inline">\(H_0:\hat \beta=0\)</span>).</p>
+<p>La siguiente figura muestra esta relación.</p>
+</div>
+<div id="probabilidades-de-la-cola-en-la-distribucion-t-prz-z" class="section level5">
+<h5>Probabilidades (de la cola en la distribución t) Pr(|Z| &gt; z)</h5>
+<div class="figure">
+<img src="/img/z-prob.jpg" />
+
+</div>
+<p>Note el valor de referencia del <span class="math inline">\(z-score\)</span> a medida que se incrementa el tamaño de muestra y la convergencia entre distribuciòn <span class="math inline">\(t\)</span></p>
+<p>Note que <span class="math inline">\(z^{(1-\alpha)}\)</span> con el percentil <span class="math inline">\((1-\alpha)\)</span> de la distribcuiòn normal.</p>
+</div>
+<div id="prueba-de-hipotesis-valores-criticos-y-areas-de-rechazo-de-la-hipotesis-nula." class="section level5">
+<h5>Prueba de hipótesis, valores criticos y areas de rechazo de la hipótesis nula.</h5>
+<div class="figure">
+<img src="/img/t.jpg" style="width:70.0%" />
+
+</div>
+<p>Definimos el cálculo del estadístico <span class="math inline">\(t\)</span> como <span class="math display">\[t=\frac{\hat \beta_1}{SE(\hat \beta_1)}\]</span></p>
+<p>En consecuencia al calcular la probabilidad de que observemos un valor <span class="math inline">\(\geqslant |t|\)</span> podemos establecer la existencia de la relación estadística entre la variable dependiente y explicativa.</p>
+<p>Esta probalbilidad la identificamos como <strong>p-value</strong> (ver resultados de la estimación ej. en R, Stata, etc.,)</p>
+<p>Los valores usuales del <em>p-value</em> para el contraste de la hipótesis nula son $ 1% 5%$ <span class="math inline">\(10\%\)</span>.</p>
+<pre><code>## 
+## Call:
+## lm(formula = lwage ~ educ, data = wage1)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.21158 -0.36393 -0.07263  0.29712  1.52339 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 0.583773   0.097336   5.998 3.74e-09 ***
+## educ        0.082744   0.007567  10.935  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.4801 on 524 degrees of freedom
+## Multiple R-squared:  0.1858, Adjusted R-squared:  0.1843 
+## F-statistic: 119.6 on 1 and 524 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = heightIn ~ ageYear, data = H)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -8.3444 -1.7206 -0.3108  1.4369  7.9299 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  30.6580     2.3420   13.09   &lt;2e-16 ***
+## ageYear       2.3009     0.1707   13.48   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.721 on 123 degrees of freedom
+## Multiple R-squared:  0.5964, Adjusted R-squared:  0.5931 
+## F-statistic: 181.8 on 1 and 123 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Note en ambos casos que las probabilidades de observar los parámetros estimados si <span class="math inline">\(H_0\)</span> es verdad, son prácticamente cero!! Por lo tanto podemos concluir que $_00, _10 $<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
+</div>
+<div id="precision-del-modelo." class="section level3">
+<h3>Precisión del modelo.</h3>
+<p>Una vez que hemos rechazado la hipótesis nula, es importante cuantificar hasta que grado el modelo se ajusta a los datos, para lograr esto, dos estimados son considerados imortantes: El primero es <em>Residual Standard Error</em> <strong>RSE</strong>. <span class="math inline">\(RSE=\sqrt{\frac {RSS}{(n-2)}}\)</span> y el estadístico <span class="math inline">\(R^2\)</span></p>
+</div>
+<div id="residual-standard-error-rse." class="section level3">
+<h3>Residual Standard Error RSE.</h3>
+<p>Recordemos que, asociado con cada observación tenemos en término de error <span class="math inline">\(\epsilon\)</span>, por lo que no es posible predecir con total predicción <span class="math inline">\(Y\)</span> a partir de <span class="math inline">\(X\)</span>.</p>
+<p>El <strong>RSE</strong> es un estimado de la desviación de <span class="math inline">\(\epsilon\)</span>. Este indicador muestra el monto promedio en el que la variable dependiente se desvia de <strong>la verdadera linea de regresión</strong>.</p>
+<p><span class="math display">\[RSE=\sqrt{\frac {RSS}{(n-2)}}\]</span> Recordemos que <span class="math display">\[RSS=\sum_{i=1}^{n}(y_i-\hat y_i)^2\]</span></p>
+<p>En el caso del modelo sobre votaciones y gastos de campaña, por ejemplo el <span class="math inline">\(RSE=6.385\)</span> lo que implica que las votaciones en cada distrito difieren (se desvian) de la verdadera linea de regresión en promedio en <span class="math inline">\(6.385\%\)</span>, <strong>RSE=6.385</strong></p>
+<p>Veamos el caso del modelo sobre ventas y gastos en publicidad (Ejemplo 3).</p>
+<pre><code>## 
+## Call:
+## lm(formula = sales ~ TV, data = ad)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -8.3860 -1.9545 -0.1913  2.0671  7.2124 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 7.032594   0.457843   15.36   &lt;2e-16 ***
+## TV          0.047537   0.002691   17.67   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.259 on 198 degrees of freedom
+## Multiple R-squared:  0.6119, Adjusted R-squared:  0.6099 
+## F-statistic: 312.1 on 1 and 198 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>El <span class="math inline">\(RSE=3.259\)</span> lo que implica que la ventas en promedio difieren de la linea verdadera de regresión en 3,259 unidades.</p>
+<p>Note que el indicador RSE nos aporta una medida de preción que depende del contexto, por ejemplo en este caso sabemos que el nivel de ventas medio es de 14,000 unidades por lo que la magnitud relativa de la desviación del es de <span class="math inline">\(23\%=3259/14000\)</span></p>
+<p>Veamos el modelo sobre estatura y edad (ejemplo 2).</p>
+<pre><code>## 
+## Call:
+## lm(formula = heightIn ~ ageYear, data = H)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -8.3444 -1.7206 -0.3108  1.4369  7.9299 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  30.6580     2.3420   13.09   &lt;2e-16 ***
+## ageYear       2.3009     0.1707   13.48   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.721 on 123 degrees of freedom
+## Multiple R-squared:  0.5964, Adjusted R-squared:  0.5931 
+## F-statistic: 181.8 on 1 and 123 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>El <strong>RSE</strong> estimado es <span class="math inline">\(2.721\)</span>, lo que se traduce en una desviación promedio de 2.7 pulgadas de la linea estimada de regresión.</p>
+<p>En este caso la magnitud que representa la desviación respecto a la estatura media es de <span class="math inline">\(4.38\%= 2.72/62.06\)</span></p>
+<p>En conclusión el <strong>RSE</strong> nos permite contar con una medida para contrastar la precisión (en el ajuste) entre varios modelos, esta <strong>expresado en las mismas unidades de la variable dependiente</strong>, es una medida absoluta, que puede ser útil para elegir el modelo más adecuado considerando los datos disponibles.</p>
+<p>Una desventaja del RSE es que se expresa en las mismas unidades de <span class="math inline">\(Y\)</span> por lo que determinar cuando se tiene el mejor <strong>RSE</strong> puede ser confuso.</p>
+</div>
+<div id="estadistico-r2" class="section level3">
+<h3>Estadístico <span class="math inline">\(R^2\)</span></h3>
+<p>El coeficiente de terminación <span class="math inline">\(R^2\)</span> mide la fracción de la varianza explicada. Permite una medida de ajuste alternativa. El R^2, es una medida independiente de las unidades de medida de Y, expresada como proporción de la <strong>varianza explicada</strong> (siempre en el rango <span class="math inline">\(0 \leq R^2 \leq 1\)</span>).</p>
+<p>De manera similar, el <em>adjusted</em> <span class="math inline">\(R^2\)</span> únicamente difiere en que “ajusta” por los grados de libertad en el modelo, si bien este prácticamente aporta la misma información al <span class="math inline">\(R^2\)</span> sin ajuste.</p>
+<span class="math display" id="eq:r2">\[\begin{align}
+R^2=\frac{TSS-RSS}{TSS}=1-\frac{RSS}{TSS}
+\tag{2}
+\end{align}\]</span>
+<p>Donde <span class="math inline">\(TSS=\sum (y_i-\bar y)^2\)</span> Suma total de cuadrados (<em>Total Sum of Squares</em>)</p>
+<p>El estadistico <span class="math inline">\(R^2\)</span> mide la proporción de la variación en <span class="math inline">\(Y\)</span> que es explicada por la regresión.</p>
+<p>Note que el TSS mide la varianza total en la variable dependiente antes de estimar la regresión. mientras que <span class="math inline">\(\frac{RSS}{TSS}\)</span> indica la proporción de la variación que no es explicada.</p>
+<p>Así, un valor cercano a cero indica que la regresión explica una prporción pequeña de la variación de <span class="math inline">\(Y\)</span>.</p>
+<p>En el modelo sobre estatura y edad (ejemplo 2) el <span class="math inline">\(R^2=0.5964\)</span> por lo que prácticamente dos tercios de la variabilidad de <span class="math inline">\(Y\)</span> se explica por la regresión sobre la edad.</p>
+<p>La magnitud del <span class="math inline">\(R^2\)</span> depende del problema estudiado y de la estructra del modelo y en general un valor cercano a 1 es considerado indicativo de un modelo robusto.</p>
+<p>Por el otro lado un valor pequeño cercano a cero, indica la existencia de problemas con el modelo.</p>
+<p>En aplicaciones en ciencias sociales por ejemplo, el modelo lineal es una aproximación muy general de la relación entre las variables por lo que los errores residuales debidos a las características no observadas son de gran magnitud lo que se refleja en valores de <span class="math inline">\(R^2\)</span>, generalmente por debajo de 1.</p>
+</div>
+</div>
+<div id="actividad-4" class="section level2">
+<h2>Actividad 4</h2>
+<div id="ejercicio-1." class="section level4">
+<h4>Ejercicio 1.</h4>
+<p>Considere una <a href="http://gattonweb.uky.edu/sheather/book/docs/datasets/prostateAlldata.txt">muestra</a> de 97 pacientes en un estudio sobre cáncer de prostata. El objetivo es determinar la relación entre el estado del cáncer de prostata en individuos con diferentes niveles de riesgo y estado de diagnóstico y marcadores clínicos considerados como posibles determinantes.</p>
+<p>La variable dependiente es un marcador para detectar la severidad, dada la presencia de la enfermedad: el antígeno prostático específico (<strong>lpsa</strong> log prostate specific antigen). Las variables explicativas son:</p>
+<p>El volumen del tumor (<strong>lcavol</strong>: log cáncer volume), Peso de la próstata. (log prostate weight <strong>lweight</strong> ) y edad del paciente (<strong>age</strong>)</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Represente mediante un diagrama de dispersión la relación entre la variable dependiente y las explicativas.</p></li>
+<li><p>Considerado la exploración visual sobre relación entre las variables, seleccione una variable explicativa para la estimación del modelo de regresión lineal simple y estime los parámetros <span class="math inline">\(\hat \beta_0, \hat \beta_1\)</span></p></li>
+<li><p>Identifique el valor estimado del <strong>RSE</strong></p></li>
+<li><p>A partir de los valores estimados del error estándard <strong>SE</strong> de los parámetros correspondientes al intercepto y la pendiente en el modelo lineal (<span class="math inline">\(\hat \beta_0, \hat \beta_1\)</span>), estime el intervalo de confianza del <span class="math inline">\(95\%\)</span> (límite superior e inferior).</p></li>
+<li><p>Indique el valor del estadístico estimado sobre la precisión del modelo (<span class="math inline">\(R^2\)</span>) .</p></li>
+</ol>
+</div>
+<div id="supuesto-de-varianza-constante-en-el-termino-de-error.-homocedasticidad." class="section level4">
+<h4>Supuesto de varianza constante en el término de error. Homocedasticidad.</h4>
+<p>Un supuesto importante sobre el comportamiento de la varianza del término de error <span class="math inline">\(\epsilon\)</span> dado el valor que toma la variable dependiente es que su <strong>varianza es constante</strong>. Var<span class="math inline">\((\epsilon|x)=\sigma^2\)</span> a este comportamiento se le denomina <strong>homocedasticidad</strong>. Y es un supuesto sobre la eficiencia que complementa las propiedades como estimadores no sesgados (<strong>BLUE</strong>) que se obtienen con la técnica de <strong>MCO</strong>.</p>
+<p>Para ejemplificar consideremos el caso sobre el efecto del nivel educativo sobre el salario. Suponemos que <span class="math inline">\(E(\epsilon|educ)=0\)</span> lo que implica que <span class="math inline">\(E(salario|educ)=\beta_0+\beta_1 educ\)</span> y con el supuesto de homocedasticidad entonces Var<span class="math inline">\((\epsilon|educ)=\sigma^2\)</span> no depende del nivel de educación, lo que es sinónimo de Var<span class="math inline">\((salario|educ)=\sigma^2\)</span>.</p>
+<p>Entonces, si bien en promedio el salario puede incrementarse a medida que el nivel de educación se incrementa, lo que nos interesa es que la tasa de crecimiento no varie, esto es que para cualquier nivel de educación la variación en el nivel salarial se mantenga constante. Escenario en este caso particular poco probable, por que es probable que entre los individuos con mayor nivel educativo se tenga una mayor variabilidad en los niveles salariales que entre grupos de individuos de bajos ingresos donde las opotunidades de empleo se ajustan generalmente en torno al salario mínimo, un escenario de mayor homogéneidad.</p>
+<p>El supuesto de homocedasticidad es un hecho empírico sujeto a verificación. Ocurre cuendo la Var<span class="math inline">\((y|x)\)</span> es una función de x.El no cumplimiento de este supuesto implica perdida de eficiencia en los estimados.</p>
+<div class="figure">
+<img src="/img/h.jpg" />
+
+</div>
+</div>
+<div id="sintesis-de-supuestos-gauss-markov-para-el-modelo-de-regresion-simple." class="section level4">
+<h4>Síntesis de Supuestos Gauss-Markov para el modelo de regresión simple.</h4>
+<ul>
+<li><p>Modelo lineal en los parámetros.</p></li>
+<li><p>Muestra aleatoria.</p></li>
+<li><p>Existe variación en la muestra que integra la variable explicativa. No existen relaciones exactas entre las variables explicativas. (Multicolinealidad).</p></li>
+<li><p>Media condicional cero. El término de error <span class="math inline">\(\epsilon\)</span> tiene un valor esperado de cero dado cualquier valor de la variable explicativa <span class="math inline">\(E(\epsilon|x)=0\)</span></p></li>
+<li><p>Homocedasticidad. El término de error <span class="math inline">\(\epsilon\)</span> tiene varianza constante.</p></li>
+</ul>
+</div>
+<div id="tarea" class="section level3">
+<h3>Tarea</h3>
+<p>Leer sección <em>The Meaning of “Linear” Regression</em>. En Wooldridge (pag. 44). ¿A qué nos referimos cuando indicamos que se trata de un modelo lineal? Comente en Disqus</p>
+</div>
+<div id="terminos-clave" class="section level3">
+<h3>Términos clave</h3>
+<ul>
+<li><p>Distribución <strong>t</strong></p></li>
+<li><p><em>Standard Error</em> <strong>SE</strong></p></li>
+<li><p>Resiadual Standard Error <strong>RSE</strong></p></li>
+<li><p><em>Residual Sum of squares</em> <strong>RSS</strong></p></li>
+</ul>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>La validez de esta definición bajo el supuesto de que los errores <span class="math inline">\(\epsilon_i\)</span> no estan correlacionados con <span class="math inline">\(\sigma^2\)</span><a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>Donde el p-value indica que podemos rechazar la hipótesis nula de que <span class="math inline">\(\beta=0\)</span><a href="#fnref2">↩</a></p></li>
+</ol>
+</div>
+
+		</div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 16 16"><path d="M16 9.5c0 .373-.24.74-.5 1l-5 5c-.275.26-.634.5-1 .5-.373 0-.74-.24-1-.5L1 8a2.853 2.853 0 0 1-.7-1C.113 6.55 0 5.973 0 5.6V1.4C0 1.034.134.669.401.401.67.134 1.034 0 1.4 0h4.2c.373 0 .95.113 1.4.3.45.187.732.432 1 .7l7.5 7.502c.26.274.5.632.5.998zM3.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/regresi%C3%B3n-lineal/" rel="tag">Regresión Lineal</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/mco/" rel="tag">MCO</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/regression/" rel="tag">regression</a></li>
+	</ul>
+</div>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="José Luis Manzanares Rivera avatar" src="/img/aavatar.jpg" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About José Luis Manzanares Rivera</span>
+	</div>
+	<div class="authorbox__description">
+		José Luis is a data scientist. He is currently conducting applied research at El Colegio de la Frontera Norte.
+	</div>
+</div>
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/post/2019-01-15-rl3/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">RL-Modelo</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/post/2019-01-25-rl5/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">RL-Multiple</p></a>
+	</div>
+</nav>
+
+<section class="comments">
+	<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "4insight" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+			</div>
+			<aside class="sidebar"><div class="widget-search widget">
+	<form class="widget-search__form" role="search" method="get" action="https://google.com/search">
+		<label>
+			<input class="widget-search__field" type="search" placeholder="SEARCH..." value="" name="q" aria-label="SEARCH...">
+		</label>
+		<input class="widget-search__submit" type="submit" value="Search">
+		<input type="hidden" name="sitesearch" value="/" />
+	</form>
+</div>
+<div class="widget-recent widget">
+	<h4 class="widget__title">Recent Posts</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/post/2019-02-05-rl6/">RL-Diagnóstico</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/2019-01-25-rl5/">RL-Multiple</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/2019-01-25-rl4/">RL-Hipótesis</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/2019-01-15-rl3/">RL-Modelo</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/recursos-adicionales/">Recursos Adicionaes</a></li>
+		</ul>
+	</div>
+</div>
+<div class="widget-categories widget">
+	<h4 class="widget__title">Categories</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/categories/development">Development</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/r">R</a></li>
+		</ul>
+	</div>
+</div>
+<div class="widget-taglist widget">
+	<h4 class="widget__title">Tags</h4>
+	<div class="widget__content">
+		<a class="widget-taglist__link widget__link btn" href="/tags/basic-elements" title="Basic elements">Basic elements</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/css" title="Css">Css</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/html" title="Html">Html</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/mco" title="Mco">Mco</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/regresi%c3%b3n-lineal" title="Regresión lineal">Regresión lineal</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/regression" title="Regression">Regression</a>
+	</div>
+</div>
+</aside>
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2019 Estadística II.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

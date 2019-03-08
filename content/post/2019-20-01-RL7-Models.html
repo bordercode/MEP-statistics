@@ -1,0 +1,56 @@
+---
+title: "Multiple Models"
+author: "JLMR"
+date: 2018-12-28T21:14:14-05:00
+categories: ["R"]
+tags: ["Regresión Lineal", "MCO", "regression"]
+mathjax : true
+menu:
+  main:
+    name: RL-Multiple Cross-Section 
+    weight: 11
+---
+
+
+
+<div id="programacion-funcional." class="section level2">
+<h2>Programación Funcional.</h2>
+<div id="estimacion-de-multiples-modelos-de-regression-lineal." class="section level5">
+<h5>Estimación de Multiples Modelos de regression Lineal.</h5>
+<p>Considere un escenario en el que nos interesa modelar la relación entre la <strong>esperanza de vida</strong> y el PIB (una variable que representa el nivel económico de un país) o bien un indicador clásico como el indice de desarollo Humano y su evolución a lo largo del tiempo.</p>
+<p>El problema en este caso es que la unidad de análisis (142 países) implica la realización de un gran número de modelos, 142 modelos!!! ¿Cómo podemos atender esta tarea de estimar 142 modelos de regresión lineal de una forma eficiente?</p>
+<p>Una opción que se usa por el <a href="http://hdr.undp.org/en/data">sitio oficial</a> del programa de Naciones Unidas para el desarrollo. Es presentar la relación entre variables mediante graficas de lineas: <img src="/img/onu.jpg" /></p>
+<p>No obstante, el enfoque visual utilizado de <strong>ONU</strong> no permite una observarción precisa. Cada linea representa uno de los 142 paises!!</p>
+<p>Alternativamtene podemos representar la información usando las herramientas de visualización en <strong>R</strong> que ya conocemos.</p>
+<div class="figure">
+<img src="/img/continents.gif" />
+
+</div>
+<div class="figure">
+<img src="/img/p.gif" />
+
+</div>
+<p>Ahora el reto es generar un modelo de regresión lineal para cada país. El enfoque que usaremos es mediante <strong>programación funcional</strong></p>
+<p>El objetivo es contar con <strong>una</strong> representación visual del comportamiento de la <strong>variable dependiente</strong> (en este caso el incremento anual de la <strong>esperanza de vida</strong>) aunado a los parámetros básicos que describen el desempeño del modelo como el coeficiente de determianción <strong>R^2</strong> para cada país.</p>
+<p>La siguiente gráfica muestra una aplicación de este concepto.</p>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<p>Observen que para la mayoría de estos países el modelo se ajsuta bastante bien (<span class="math inline">\(R^2\approx.97\)</span>), sin embargo para un grupo de paises particular el modelo parece no tener un ajuste adecuado?</p>
+<p>¿Qué tienen estos países en comun?</p>
+<p>Bueno, al parecer todos estos paises son de África, ¿Por qué el modelo de regresión lineal en este caso no se ajusta tan bien como en la mayoría de los países?</p>
+<p>Para lograr el análisis necesitamos tres fases:</p>
+<ul>
+<li>tidy data con library(dplyr)</li>
+</ul>
+<p><img src="/img/nested.jpg" /> + functional programming con library(purrr) y</p>
+<ul>
+<li>tidy modelos con library(broom).</li>
+</ul>
+</div>
+</div>

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>RL-Modelo</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta name="generator" content="Hugo 0.54.0" />
+	<meta property="og:title" content="RL-Modelo" />
+<meta property="og:description" content="Formalización del modeloEn términos matemáticos podemos describir la relación entre las variables del modelo con la expresión siguiente:
+\[\begin{align}Y \approx \beta_0 &#43; \beta_1 X\tag{1}\end{align}\]Una vez que hemos estimado los parámetros del modelo podemos usarlos para hacer la predicción de \(\hat y\)
+\[\begin{align}\hat y= \hat \beta_0 &#43; \hat \beta_1 x\tag{2}\end{align}\]Note que la diferencia entre la linea de regresión y cada observación (lineas grises) da cuenta del error de predicción." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/2019-01-15-rl3/" />
+<meta property="article:published_time" content="2019-01-15T21:11:11-05:00"/>
+<meta property="article:modified_time" content="2019-01-15T21:11:11-05:00"/>
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-124338825-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="Estadística II" rel="home">
+				<div class="logo__title">Estadística II</div>
+				<div class="logo__tagline">Semestre II MEP 2019</div>
+			</a>
+		</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">Maestría en estudios de población</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/syllabus/">Syllabus</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2015-07-23-rl/">Regresion Lineal</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-01-11-rl2/">RL-Simple</a>
+		</li>
+		<li class="menu__item menu__item--active">
+			<a class="menu__link" href="/post/2019-01-15-rl3/">RL-Modelo</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-01-25-rl4/">RL-Hipótesis</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-01-25-rl5/">RL-Muiltiple</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-02-05-rl6/">RL-Diagnóstico</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-20-01-rl7-models/">RL-Multiple Cross-Section</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/recursos-adicionales/">Recursos Adicionales</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2018-12-30-ejercicios/">Ejercicios</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">RL-Modelo</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 16 16"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
+	<time class="meta__text" datetime="2019-01-15T21:11:11">January 15, 2019</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/r" rel="category">R</a></span>
+</div>
+</div>
+		</header><div class="content post__content clearfix">
+			
+
+
+<div id="formalizacion-del-modelo" class="section level2">
+<h2>Formalización del modelo</h2>
+<p>En términos matemáticos podemos describir la relación entre las variables del modelo con la expresión siguiente:</p>
+<span class="math display" id="eq:align">\[\begin{align}
+Y \approx \beta_0 + \beta_1 X
+\tag{1}
+\end{align}\]</span>
+<p>Una vez que hemos estimado los parámetros del modelo podemos usarlos para hacer la predicción de <span class="math inline">\(\hat y\)</span></p>
+<span class="math display" id="eq:mod">\[\begin{align}
+\hat y= \hat \beta_0 + \hat \beta_1 x
+\tag{2}
+\end{align}\]</span>
+<div class="figure">
+<img src="/img/lm4.jpg" />
+
+</div>
+<p>Note que la diferencia entre la linea de regresión y cada observación (lineas grises) da cuenta del error de predicción.</p>
+<p><span class="math display">\[e_i=y_i - \hat y_i\]</span> El modelo de regresión toma la suma al cuadrado de estos errores para determinar la estimación de la linea de mejor ajuste.</p>
+<p>Suponemos un valor esperado para el término de error <span class="math inline">\(E(\epsilon)=0\)</span>. Esto es, suponemos que la distribución de estos factores no observados, en promedio tienen media cero.</p>
+<div id="supuesto-de-media-condicional-cero." class="section level4">
+<h4>Supuesto de Media condicional cero.</h4>
+<p>Sean <span class="math inline">\(x\)</span> y <span class="math inline">\(\epsilon\)</span> variables aleatorias.</p>
+<p>Suponemos que el valor promedio de las características no observadas no depende del valor particular que tome <span class="math inline">\(x\)</span> <span class="math display">\[E(\epsilon|x)=E(\epsilon)=0\]</span></p>
+<p>El valor esperado de las características no observadas, (que se captura por los errores) es independiente de <span class="math inline">\(x\)</span> y en términos promedio es cero.</p>
+<p>Definición:</p>
+<p><em>Residual Sum of Squares</em> <strong>RSS</strong>.</p>
+<span class="math display">\[RSS=e_1^2 +e_2^2+...+e_n^2\]</span>
+<span class="math display" id="eq:RSS">\[\begin{align}
+RSS= (y_1- \hat \beta_0 - \hat \beta_1 x_1)^2 + (y_2- \hat \beta_0 - \hat \beta_1 x_2)^2+...+(y_n- \hat \beta_0 - \hat \beta_1 x_n)^2
+\tag{3}
+\end{align}\]</span>
+<p><img src="/img/rss1.jpg" /> El enfoque de Mínimos Cuadrados Ordinarios <strong>MCO</strong> (Ordinary Least Squares OLS por sus siglas en inglés), selecciona los parámetros <span class="math inline">\(\hat \beta_0 , \hat \beta_1\)</span> que minimizan la <strong>RSS</strong>.</p>
+</div>
+<div id="coeficientes-acorde-con-el-criterio-mco." class="section level4">
+<h4>Coeficientes acorde con el criterio MCO.</h4>
+<span class="math display" id="eq:beta">\[\begin{align}
+\hat \beta_1 =\frac{ \sum_{i=1}^{n} (x_i-\bar{x})(y_i-\bar{y})}{\sum_{i=1}^{n} (x_i-\bar{x})^2},
+\tag{4}
+\end{align}\]</span>
+<p>El parámetro <span class="math inline">\(\hat \beta_1\)</span> es el cociente de la covarianza de <span class="math inline">\((x,y)\)</span> y la varianza de <span class="math inline">\(x\)</span>. Dividir por <span class="math inline">\(\frac{1}{n}\)</span> ambos factores no hace diferencia alguna.</p>
+<p><span class="math display">\[\hat \beta_0 =\bar y- \hat \beta_1 \bar{x}\]</span> Donde <span class="math display">\[\bar{y}\equiv\frac{1}{n} \sum_{i=1}^{n} y_i\]</span> y <span class="math display">\[\bar{x} \equiv \frac{1}{n} \sum_{i=1}^{n} x_i\]</span></p>
+<p>Note por la definición que si <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span> tienen correlación positiva, <span class="math inline">\(\Rightarrow \hat \beta_1&gt;0\)</span> y si <span class="math inline">\(\sum_{i=1}^{n} (x_i-\bar{x})(y_i-\bar{y})&lt;0 \Rightarrow \hat \beta_1&lt;0\)</span></p>
+<p>Considere la siguiente representación del modelo lineal a partir del valor esperado y con los supuestos <span class="math inline">\(E(\epsilon)=0\)</span> e independencia entre la parte aleatoria del modelo y las variables explicativas: y <span class="math inline">\(cov(x,\epsilon)=E(x \epsilon)=0\)</span></p>
+<span class="math display" id="eq:ve">\[\begin{align}
+E(y-\beta_0-\beta_1 x)=0
+\tag{5}
+\end{align}\]</span>
+<span class="math display" id="eq:ve1">\[\begin{align}
+E [x(y-\beta_0-\beta_1 x)]=0
+\tag{6}
+\end{align}\]</span>
+<p>Los parámetros muestrales correspondientes</p>
+<span class="math display" id="eq:ve3">\[\begin{align}
+\frac{1}{n}\sum_{i=1}^{n} (y_i-\hat \beta_0- \hat \beta_1 x_i) =0
+\tag{7}
+\end{align}\]</span>
+<span class="math display" id="eq:ve4">\[\begin{align}
+\frac{1}{n} \sum_{i=1}^{n} x_i(y_i-\hat \beta_0- \hat \beta_1 x_i)=0
+\tag{8}
+\end{align}\]</span>
+<p>Ecuaciones <a href="#eq:ve3">(7)</a> y <a href="#eq:ve4">(8)</a> son las condiciones de primer orden a resolver acorde con los principios de optimización.</p>
+<p>A partir de las propiedades de suma estas ecuaciones se pueden reescribir:</p>
+<span class="math display" id="eq:ve5">\[\begin{align}
+\bar{y}=\hat \beta_0- \hat \beta_1 \bar{x} 
+\tag{9}
+\end{align}\]</span>
+<p>Reescribiendo <span class="math inline">\(\hat \beta_0\)</span> y <span class="math inline">\(\hat \beta_1\)</span> en términos de <span class="math inline">\(\bar{y}\)</span> y <span class="math inline">\(\bar{x}\)</span> tenemos:</p>
+<span class="math display" id="eq:ve6">\[\begin{align}
+\hat \beta_0= \bar{y} - \hat \beta_1 \bar {x}=0
+\tag{10}
+\end{align}\]</span>
+<p>Sustituyendo <a href="#eq:ve6">(10)</a> en <a href="#eq:ve4">(8)</a> tenemos</p>
+<p><span class="math display">\[\sum_{i=1}^{n} x_i [ y_i-(\bar y- \beta_1 \bar{x})- \hat \beta_1 x_i]=0\]</span></p>
+<p>Reordenando tenemos:</p>
+<p><span class="math display">\[\sum_{i=1}^{n}x_i(y_i-\bar{y})= \hat \beta_1  \sum_{i=1}^{n} x_i(x_i-\bar {x})\]</span></p>
+<p>Considerando propiedades de suma tenemos:</p>
+<p><span class="math display">\[\sum_{i=1}^{n} x_i(y_i- \bar{y})= \sum_{i=1}^{n} (x_i- \bar{x})(y_i- \bar{y}) , \sum_{i=1}^{n} x_i(x_i- \bar{x})=\sum_{i=1}^{n} (x_i- \bar{x})^2\]</span> Si <span class="math inline">\(\sum_{i=1}^{n} (x_i- \bar{x})^2&gt;0\)</span> lo cual se cumple cuando <strong>NO</strong> todos los valores de la muestra son iguales, entonces:</p>
+<span class="math display" id="eq:ve7">\[\begin{align}
+\hat \beta_1=  \frac{\sum_{i=1}^{n} (x_i- \bar{x})(y_i- \bar{y}) }{\sum_{i=1}^{n} (x_i- \bar{x})^2}
+\tag{11}
+\end{align}\]</span>
+<p>Considerando el <strong>supuesto de Media condicional cero</strong> <span class="math inline">\(E(\epsilon|x)=0\)</span> y representando el valor esperado de <a href="#eq:mod">(2)</a> condicional en <span class="math inline">\(x\)</span> tenemos una función lineal de <span class="math inline">\(x\)</span>:</p>
+<span class="math display" id="eq:expval">\[\begin{align}
+E(y|x)= \beta_0+ \beta_1 X 
+\tag{12}
+\end{align}\]</span>
+<p>La siguiente gráfica muestra esta idea para la función lineal <span class="math inline">\(\beta_0+\beta_1 x\)</span> con la distribución de los valores de <span class="math inline">\(y\)</span> centrados en <span class="math inline">\(E(y|x)\)</span></p>
+<div class="figure">
+<img src="/img/lm6.jpg" width="400" />
+
+</div>
+<p>Lo que se significa que <strong>un incremento de una unidad en <span class="math inline">\(x\)</span> cambia el valor esperado de <span class="math inline">\(y\)</span> por el monto denotado <span class="math inline">\(\hat \beta_1\)</span></strong>, para cualquier valor dado de <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span> que está centrado alrededor de <span class="math inline">\(E(y|x)\)</span>.</p>
+<p>En términos de la ecuación lineal el estimado de la pendiente es: <span class="math display">\[\hat \beta_1= \frac{\Delta \hat y}{\Delta  x}\]</span> <span class="math display">\[\Delta \hat y=\hat \beta_1 \Delta  x\]</span></p>
+<p>En la siguiente figura se presenta ésta idea con una muestra teórica de valores aleatorios para <span class="math inline">\(x\)</span> y <span class="math inline">\(y\)</span>.</p>
+<p>El panel a) muestra en linea roja la verdadera relación en entre <span class="math inline">\(x\)</span> y <span class="math inline">\(y\)</span>, la linea azul es la linea de regresión obtenidad por MCO que se basa en los datos observados (scatter points).</p>
+<p>En panel b) se incluyen las lineas de regresión para 10 modelos con muestras aleatorias en la población de <span class="math inline">\(x\)</span>, vemos que cada modelo permite generar una línea distinta si bien, en <em>promedio</em> estas siguen la trayectoria de la linea de regresión poblacional (roja).</p>
+<p>En el panel c) Observamos el efecto del criterio de minimos cuadrados con la obtensión del <em>RSS</em> de menor valor para los parámetros <span class="math inline">\(\hat \beta_0\)</span> y <span class="math inline">\(\hat \beta_1\)</span></p>
+<div class="figure">
+<img src="/img/lm5.jpg" />
+
+</div>
+<p><strong>Ejemplo 1</strong></p>
+<p>Considerando el ejemplo de la relación entre salario y años de educación <span class="math inline">\(log(wage)=\beta_0 +\beta_1 educ+ \epsilon\)</span></p>
+<p>Con el logaritmo de salario (<strong>wage</strong> en dólares por hora) para medir el cambio porcentual ante el incremento de un año adicional de educación con la variable <strong>educ</strong> que se registra en años.</p>
+<p>Recordamos que <span class="math inline">\(\epsilon\)</span> integra un conjunto de variables que se asumen constantes como experiencia, habilidades, etc., Y estas tienen una distribución representada por el valor esperado normalizado en cero <span class="math inline">\(E(\epsilon)=0\)</span>. (algunas personas tienen más habilidad natural que otras, más o menos experiencia, considerar el supuesto de la distribución con media cero es consistente con este hecho empírico).</p>
+<p>La gráfica siguiente muestra la linea de regresión (rojo) para las variables salarios y educación con las observaciones (azul) como un scatter plot.</p>
+<p><img src="/post/2019-01-15-RL3_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>Notamos una relación positiva y a medida que la persona tiene más años de educación en promedio percibe un mayor salario.</p>
+<p>Tenemos una linea de regresión obtenida bajo el criterio de MCO y observamos una distancia entre la linea de regresión y las observaciones, sin embargo sabemos que la linea de regresión minimiza esa distancia.</p>
+<p>Considerando los parámetros estimados para este ejemplo sobre la relación salario y años de educación tenemos que <span class="math inline">\(\hat \beta_0=0.583773\)</span> y <span class="math inline">\(\hat \beta_1=0.082744\)</span></p>
+<p>Lo que implica que un año adicional de educación se relaciona con un incremento del 8.2% en el salario por hora percibido.</p>
+<p><strong>Nota</strong> sobre el uso de logaritmos en la forma funcional del modelo de regresión lineal.</p>
+<div class="figure">
+<img src="/img/logs.jpg" />
+
+</div>
+<pre><code>## 
+## Call:
+## lm(formula = lwage ~ educ, data = wage1)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -2.21158 -0.36393 -0.07263  0.29712  1.52339 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 0.583773   0.097336   5.998 3.74e-09 ***
+## educ        0.082744   0.007567  10.935  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.4801 on 524 degrees of freedom
+## Multiple R-squared:  0.1858, Adjusted R-squared:  0.1843 
+## F-statistic: 119.6 on 1 and 524 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div id="ejemplo-2" class="section level4">
+<h4>Ejemplo 2</h4>
+<p>Consideremos ahora la base de datos: Height and weight of schoolchildren de Lewis, T., &amp; Taylor, L.R. (1967) en el estudio introduction to Experimental Ecology, que contiene 236 observaciones para 5 variables en una muestra de niños en edades entre 11 A 17 años, para estudiar la relación entre dos variables la altura y la edad. En términos teóricos se ha demostrado que entre la población munidal se tiene una estrecha relación entre estas variables.</p>
+<p><img src="/post/2019-01-15-RL3_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<pre><code>## 
+## Call:
+## lm(formula = heightIn ~ ageYear, data = heightweight)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -8.3517 -1.9006  0.1378  1.9071  8.3371 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  37.4356     1.8281   20.48   &lt;2e-16 ***
+## ageYear       1.7483     0.1329   13.15   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.989 on 234 degrees of freedom
+## Multiple R-squared:  0.4249, Adjusted R-squared:  0.4225 
+## F-statistic: 172.9 on 1 and 234 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = heightIn ~ ageYear, data = M)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -7.2725 -2.1208  0.4331  1.7637  6.4176 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  43.9634     2.4625  17.854  &lt; 2e-16 ***
+## ageYear       1.2089     0.1787   6.767 6.88e-10 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.831 on 109 degrees of freedom
+## Multiple R-squared:  0.2958, Adjusted R-squared:  0.2893 
+## F-statistic: 45.79 on 1 and 109 DF,  p-value: 6.875e-10</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = heightIn ~ ageYear, data = H)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -8.3444 -1.7206 -0.3108  1.4369  7.9299 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  30.6580     2.3420   13.09   &lt;2e-16 ***
+## ageYear       2.3009     0.1707   13.48   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.721 on 123 degrees of freedom
+## Multiple R-squared:  0.5964, Adjusted R-squared:  0.5931 
+## F-statistic: 181.8 on 1 and 123 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Notamos un efecto positivo, que es de mayor magnitud para los niños. Con un incremento de <span class="math inline">\(\hat \beta_1= 2.03\)</span> pulgadas por un año adicional. Mientras el incremento para el sexo femenino es ligeramente inferior. <span class="math inline">\(\hat \beta_1=1.2\)</span></p>
+<p>Note además que el modelo se estima con las varaibles en niveles por lo que la interpretación se hace considerando las unidades de cada variable en este caso edad en años y estatura en pulgadas.</p>
+</div>
+<div id="ejemplo-3" class="section level4">
+<h4>Ejemplo 3</h4>
+<p>Considermos ahora una situación en la que la variable dependiente es ventas (monto expresado en unidad monetaria ej. miles de dólares). Y las variables independientes corresponden a gastos en publicidad para tres medios: t.v., newspapers, radio. La muestra contiene 200 observaciones para las variables: Y=ventas, x=gasto en publicidad dirigido a tv. y corresponden a 200 puntos de venta.</p>
+<p>El modelo de regresión siguiente muestra la relación entre la variable ventas y los gastos en publicidad para el medio t.v. (gasto expresado en miles de USD y y ventas en unidades).</p>
+<p><img src="/post/2019-01-15-RL3_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre><code>## 
+## Call:
+## lm(formula = sales ~ TV, data = ad)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -8.3860 -1.9545 -0.1913  2.0671  7.2124 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 7.032594   0.457843   15.36   &lt;2e-16 ***
+## TV          0.047537   0.002691   17.67   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.259 on 198 degrees of freedom
+## Multiple R-squared:  0.6119, Adjusted R-squared:  0.6099 
+## F-statistic: 312.1 on 1 and 198 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Los parámetros estimados del modelo indican que un incremento de una unidad adicional (en este caso un incremento de <span class="math inline">\(\$ 1000\)</span>) en la variable gasto en publicidad en TV se asocia con un incremento de 47 unidades en la variable ventas <span class="math inline">\(\hat \beta_1=0.047537\)</span></p>
+</div>
+<div id="ejemplo-4" class="section level4">
+<h4>Ejemplo 4</h4>
+<p>Consideremos ahora la relación entre el Sueldo que perciben los CEO’s (Chief Executive Officer) y el indicador de desempeño financiero <em>return on equity</em> <strong>roe</strong> este es un indicador clásico que es utilizado como <em>proxy</em> para medir el desempeño de un CEO. La muestra contiene 209 observaciones y 12 variables con información financiera publicadas por un estudio de <em>Businessweek</em> de Mayo 6, 1991.</p>
+<p>La variable dependiente es el Suelso (expresado en miles USD), en términos teóricos se supone que existe una relación positiva entre el Sueldo que un CEO percibe e indicadores de desempeño de la compañia, en este sentido el <strong>roe</strong> es una variable que recoge el desempeño financiero (variable que se encuentra expresada en porcentaje).</p>
+<p>Estimaremos ahora el modelo de regresión lineal <span class="math display">\[y=\hat \beta_0 + \hat \beta_1 x+\epsilon\]</span> <span class="math display">\[salario=\beta_0 + \hat \beta_1 roe+\epsilon\]</span> para conocer si la hipótesis sobre la relación entre las variables se cumple y en su caso la magnitud de los parámetros <span class="math inline">\(\hat \beta_0, \hat \beta_1\)</span></p>
+<pre><code>## &#39;data.frame&#39;:    209 obs. of  12 variables:
+##  $ salary  : int  1095 1001 1122 578 1368 1145 1078 1094 1237 833 ...
+##  $ pcsalary: int  20 32 9 -9 7 5 10 7 16 5 ...
+##  $ sales   : num  27595 9958 6126 16246 21783 ...
+##  $ roe     : num  14.1 10.9 23.5 5.9 13.8 ...
+##  $ pcroe   : num  106.4 -30.6 -16.3 -25.7 -3 ...
+##  $ ros     : int  191 13 14 -21 56 55 62 44 37 37 ...
+##  $ indus   : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ finance : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ consprod: int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ utility : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ lsalary : num  7 6.91 7.02 6.36 7.22 ...
+##  $ lsales  : num  10.23 9.21 8.72 9.7 9.99 ...
+##  - attr(*, &quot;time.stamp&quot;)= chr &quot;25 Jun 2011 23:03&quot;</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     223     736    1039    1281    1407   14822</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    0.50   12.40   15.50   17.18   20.00   56.30</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = salary ~ roe, data = ceosal1)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1160.2  -526.0  -254.0   138.8 13499.9 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   963.19     213.24   4.517 1.05e-05 ***
+## roe            18.50      11.12   1.663   0.0978 .  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1367 on 207 degrees of freedom
+## Multiple R-squared:  0.01319,    Adjusted R-squared:  0.008421 
+## F-statistic: 2.767 on 1 and 207 DF,  p-value: 0.09777</code></pre>
+<p>Como es costrumbre en primera instancia exploramos la estructura de los datos. Tenemos 209 observaciones, 12 variables.</p>
+<p>En segundo lugar analizamos las estadísticas descriptivas. Para la variable Sueldo tenemos una media de <span class="math inline">\(\$1,281,000\)</span> usd anuales, un mínimo de <span class="math inline">\(\$223,000\)</span> y un máximo de <span class="math inline">\(\$14,822,000\)</span>. El rendimiento del capital promedio es <span class="math inline">\(17.18\%\)</span>, máximo de <span class="math inline">\(56.30\%\)</span> y mínimo de <span class="math inline">\(.50\%\)</span></p>
+<p>En tercer lugar note por el parámetro <span class="math inline">\(\hat \beta_1\)</span> que hay una relación positiva ente Sueldo del CEO y el roe de la compañia, con <span class="math inline">\(\hat \beta_0=963.19\)</span> lo que implica que si el ROE es cero, la predicción del sueldo es <span class="math inline">\(\$963,190\)</span> y la pendiente <span class="math inline">\(\hat \beta_1=18.50\)</span>. Así <span class="math inline">\(\Delta x=1\%\Rightarrow \Delta y=\$ 18,500\)</span> En otras palabras ante <strong>un incremento de 1% en el roe</strong>, en promedio, el sueldo del CEO <span class="math inline">\(i\)</span> cambia en <span class="math inline">\(\$ 18,500\)</span> usd anuales.</p>
+<p>La siguiente gráfica muestra estas relaciones distinguiendo por dos escenarios de interés (con variables categóricas)</p>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##     223     736    1039    1281    1407   14822</code></pre>
+<p><img src="/post/2019-01-15-RL3_files/figure-html/unnamed-chunk-7-1.png" width="672" /><img src="/post/2019-01-15-RL3_files/figure-html/unnamed-chunk-7-2.png" width="672" /></p>
+</div>
+</div>
+<div id="actividad-3" class="section level2">
+<h2>Actividad 3</h2>
+<div id="ejercicio-1" class="section level4">
+<h4>Ejercicio 1</h4>
+<p>Considere el siguiente escenario sobre procesos electorales. Sea una <a href="https://drive.google.com/file/d/1lzbPJYbvk2C7uRk8JMB0RT3tvpoTl4X8/view?usp=sharing">muestra</a> de 173 resultados de votaciones distritales en un proceso entre dos partidos. La variable dependiente es el porcentaje de voto que recibió el candidato en la elección y la variable independiente es la proporción del gasto total de campaña correspondiente al candidato. Estudio de M. Barone and G. Ujifusa, The Almanac of American Politics, 1992.</p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Estime el modelo de regresión y determine <span class="math inline">\(\hat \beta_0, \hat \beta_1\)</span>.</p></li>
+<li><p>¿Cuál es el efecto en el porcentaje del voto ante un incremento de <span class="math inline">\(1\%\)</span> en los gastos de campaña del candidato.</p></li>
+<li><p>Estime el porcetaje del voto recibido si la proporción en gasto de campaña es de <span class="math inline">\(62\%\)</span> <span class="math inline">\(\Delta \hat voto= \hat \beta_1 \Delta gasto\)</span></p></li>
+</ol>
+</div>
+</div>
+<div id="tarea." class="section level2">
+<h2>Tarea.</h2>
+<p>Leer sección <em>The Effects of Changing Units of Measurement on OLS Statistics</em> y sección: <em>Incorporating Nonlinearities in Simple Regression</em> en Wooldridge (pags. 40-44)</p>
+<p>Como interpretamos una modelo de regresión cuya variable dependiente se expresa mediante una transformación logarítmica?</p>
+<p>Qué interpretación tiene el coeficiente <span class="math inline">\(\hat \beta_1\)</span> en el modelo en logarítmos para las variables dependiente y explicativa.</p>
+<p>Comente en Disqus.</p>
+<div id="terminos-clave" class="section level3">
+<h3>Términos clave</h3>
+<ul>
+<li><p>Coeficiente de la pendiente <span class="math inline">\(\hat \beta_1\)</span></p></li>
+<li><p>coeficiente de intercepto <span class="math inline">\(\hat \beta_0\)</span></p></li>
+</ul>
+</div>
+</div>
+
+		</div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 16 16"><path d="M16 9.5c0 .373-.24.74-.5 1l-5 5c-.275.26-.634.5-1 .5-.373 0-.74-.24-1-.5L1 8a2.853 2.853 0 0 1-.7-1C.113 6.55 0 5.973 0 5.6V1.4C0 1.034.134.669.401.401.67.134 1.034 0 1.4 0h4.2c.373 0 .95.113 1.4.3.45.187.732.432 1 .7l7.5 7.502c.26.274.5.632.5.998zM3.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/regresi%C3%B3n-lineal/" rel="tag">Regresión Lineal</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/mco/" rel="tag">MCO</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/regression/" rel="tag">regression</a></li>
+	</ul>
+</div>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="José Luis Manzanares Rivera avatar" src="/img/aavatar.jpg" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About José Luis Manzanares Rivera</span>
+	</div>
+	<div class="authorbox__description">
+		José Luis is a data scientist. He is currently conducting applied research at El Colegio de la Frontera Norte.
+	</div>
+</div>
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/post/recursos-adicionales/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">Recursos Adicionaes</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/post/2019-01-25-rl4/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">RL-Hipótesis</p></a>
+	</div>
+</nav>
+
+<section class="comments">
+	<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "4insight" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+			</div>
+			<aside class="sidebar"><div class="widget-search widget">
+	<form class="widget-search__form" role="search" method="get" action="https://google.com/search">
+		<label>
+			<input class="widget-search__field" type="search" placeholder="SEARCH..." value="" name="q" aria-label="SEARCH...">
+		</label>
+		<input class="widget-search__submit" type="submit" value="Search">
+		<input type="hidden" name="sitesearch" value="/" />
+	</form>
+</div>
+<div class="widget-recent widget">
+	<h4 class="widget__title">Recent Posts</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/post/2019-02-05-rl6/">RL-Diagnóstico</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/2019-01-25-rl5/">RL-Multiple</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/2019-01-25-rl4/">RL-Hipótesis</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/2019-01-15-rl3/">RL-Modelo</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/recursos-adicionales/">Recursos Adicionaes</a></li>
+		</ul>
+	</div>
+</div>
+<div class="widget-categories widget">
+	<h4 class="widget__title">Categories</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/categories/development">Development</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/r">R</a></li>
+		</ul>
+	</div>
+</div>
+<div class="widget-taglist widget">
+	<h4 class="widget__title">Tags</h4>
+	<div class="widget__content">
+		<a class="widget-taglist__link widget__link btn" href="/tags/basic-elements" title="Basic elements">Basic elements</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/css" title="Css">Css</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/html" title="Html">Html</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/mco" title="Mco">Mco</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/regresi%c3%b3n-lineal" title="Regresión lineal">Regresión lineal</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/regression" title="Regression">Regression</a>
+	</div>
+</div>
+</aside>
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2019 Estadística II.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

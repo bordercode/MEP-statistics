@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en-us">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Multiple Models</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta name="generator" content="Hugo 0.54.0" />
+	<meta property="og:title" content="Multiple Models" />
+<meta property="og:description" content="Programación Funcional.Estimación de Multiples Modelos de regression Lineal.Considere un escenario en el que nos interesa modelar la relación entre la esperanza de vida y el PIB (una variable que representa el nivel económico de un país) o bien un indicador clásico como el indice de desarollo Humano y su evolución a lo largo del tiempo.
+El problema en este caso es que la unidad de análisis (142 países) implica la realización de un gran número de modelos, 142 modelos!" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/post/2019-20-01-rl7-models/" />
+<meta property="article:published_time" content="2018-12-28T21:14:14-05:00"/>
+<meta property="article:modified_time" content="2018-12-28T21:14:14-05:00"/>
+
+	
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-124338825-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="Estadística II" rel="home">
+				<div class="logo__title">Estadística II</div>
+				<div class="logo__tagline">Semestre II MEP 2019</div>
+			</a>
+		</div>
+		
+<nav class="menu">
+	<button class="menu__btn" aria-haspopup="true" aria-expanded="false" tabindex="0">
+		<span class="menu__btn-title" tabindex="-1">Menu</span>
+	</button>
+	<ul class="menu__list">
+		<li class="menu__item">
+			<a class="menu__link" href="/about/">Maestría en estudios de población</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/syllabus/">Syllabus</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2015-07-23-rl/">Regresion Lineal</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-01-11-rl2/">RL-Simple</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-01-15-rl3/">RL-Modelo</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-01-25-rl4/">RL-Hipótesis</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-01-25-rl5/">RL-Muiltiple</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2019-02-05-rl6/">RL-Diagnóstico</a>
+		</li>
+		<li class="menu__item menu__item--active">
+			<a class="menu__link" href="/post/2019-20-01-rl7-models/">RL-Multiple Cross-Section</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/recursos-adicionales/">Recursos Adicionales</a>
+		</li>
+		<li class="menu__item">
+			<a class="menu__link" href="/post/2018-12-30-ejercicios/">Ejercicios</a>
+		</li>
+	</ul>
+</nav>
+
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">Multiple Models</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 16 16"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
+	<time class="meta__text" datetime="2018-12-28T21:14:14">December 28, 2018</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/r" rel="category">R</a></span>
+</div>
+</div>
+		</header><div class="content post__content clearfix">
+			
+
+
+<div id="programacion-funcional." class="section level2">
+<h2>Programación Funcional.</h2>
+<div id="estimacion-de-multiples-modelos-de-regression-lineal." class="section level5">
+<h5>Estimación de Multiples Modelos de regression Lineal.</h5>
+<p>Considere un escenario en el que nos interesa modelar la relación entre la <strong>esperanza de vida</strong> y el PIB (una variable que representa el nivel económico de un país) o bien un indicador clásico como el indice de desarollo Humano y su evolución a lo largo del tiempo.</p>
+<p>El problema en este caso es que la unidad de análisis (142 países) implica la realización de un gran número de modelos, 142 modelos!!! ¿Cómo podemos atender esta tarea de estimar 142 modelos de regresión lineal de una forma eficiente?</p>
+<p>Una opción que se usa por el <a href="http://hdr.undp.org/en/data">sitio oficial</a> del programa de Naciones Unidas para el desarrollo. Es presentar la relación entre variables mediante graficas de lineas: <img src="/img/onu.jpg" /></p>
+<p>No obstante, el enfoque visual utilizado de <strong>ONU</strong> no permite una observarción precisa. Cada linea representa uno de los 142 paises!!</p>
+<p>Alternativamtene podemos representar la información usando las herramientas de visualización en <strong>R</strong> que ya conocemos.</p>
+<div class="figure">
+<img src="/img/continents.gif" />
+
+</div>
+<div class="figure">
+<img src="/img/p.gif" />
+
+</div>
+<p>Ahora el reto es generar un modelo de regresión lineal para cada país. El enfoque que usaremos es mediante <strong>programación funcional</strong></p>
+<p>El objetivo es contar con <strong>una</strong> representación visual del comportamiento de la <strong>variable dependiente</strong> (en este caso el incremento anual de la <strong>esperanza de vida</strong>) aunado a los parámetros básicos que describen el desempeño del modelo como el coeficiente de determianción <strong>R^2</strong> para cada país.</p>
+<p>La siguiente gráfica muestra una aplicación de este concepto.</p>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<p>Observen que para la mayoría de estos países el modelo se ajsuta bastante bien (<span class="math inline">\(R^2\approx.97\)</span>), sin embargo para un grupo de paises particular el modelo parece no tener un ajuste adecuado?</p>
+<p>¿Qué tienen estos países en comun?</p>
+<p>Bueno, al parecer todos estos paises son de África, ¿Por qué el modelo de regresión lineal en este caso no se ajusta tan bien como en la mayoría de los países?</p>
+<p>Para lograr el análisis necesitamos tres fases:</p>
+<ul>
+<li>tidy data con library(dplyr)</li>
+</ul>
+<p><img src="/img/nested.jpg" /> + functional programming con library(purrr) y</p>
+<ul>
+<li>tidy modelos con library(broom).</li>
+</ul>
+</div>
+</div>
+
+		</div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="icon icon-tag" width="16" height="16" viewBox="0 0 16 16"><path d="M16 9.5c0 .373-.24.74-.5 1l-5 5c-.275.26-.634.5-1 .5-.373 0-.74-.24-1-.5L1 8a2.853 2.853 0 0 1-.7-1C.113 6.55 0 5.973 0 5.6V1.4C0 1.034.134.669.401.401.67.134 1.034 0 1.4 0h4.2c.373 0 .95.113 1.4.3.45.187.732.432 1 .7l7.5 7.502c.26.274.5.632.5.998zM3.5 5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/regresi%C3%B3n-lineal/" rel="tag">Regresión Lineal</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/mco/" rel="tag">MCO</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/regression/" rel="tag">regression</a></li>
+	</ul>
+</div>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<figure class="authorbox__avatar">
+		<img alt="José Luis Manzanares Rivera avatar" src="/img/aavatar.jpg" class="avatar" height="90" width="90">
+	</figure>
+	<div class="authorbox__header">
+		<span class="authorbox__name">About José Luis Manzanares Rivera</span>
+	</div>
+	<div class="authorbox__description">
+		José Luis is a data scientist. He is currently conducting applied research at El Colegio de la Frontera Norte.
+	</div>
+</div>
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/post/2019-01-11-rl2/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">RL-Simple</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/post/recursos-adicionales/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">Recursos Adicionaes</p></a>
+	</div>
+</nav>
+
+<section class="comments">
+	<div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "4insight" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</section>
+
+
+			</div>
+			<aside class="sidebar"><div class="widget-search widget">
+	<form class="widget-search__form" role="search" method="get" action="https://google.com/search">
+		<label>
+			<input class="widget-search__field" type="search" placeholder="SEARCH..." value="" name="q" aria-label="SEARCH...">
+		</label>
+		<input class="widget-search__submit" type="submit" value="Search">
+		<input type="hidden" name="sitesearch" value="/" />
+	</form>
+</div>
+<div class="widget-recent widget">
+	<h4 class="widget__title">Recent Posts</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/post/2019-02-05-rl6/">RL-Diagnóstico</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/2019-01-25-rl5/">RL-Multiple</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/2019-01-25-rl4/">RL-Hipótesis</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/2019-01-15-rl3/">RL-Modelo</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/recursos-adicionales/">Recursos Adicionaes</a></li>
+		</ul>
+	</div>
+</div>
+<div class="widget-categories widget">
+	<h4 class="widget__title">Categories</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/categories/development">Development</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/r">R</a></li>
+		</ul>
+	</div>
+</div>
+<div class="widget-taglist widget">
+	<h4 class="widget__title">Tags</h4>
+	<div class="widget__content">
+		<a class="widget-taglist__link widget__link btn" href="/tags/basic-elements" title="Basic elements">Basic elements</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/css" title="Css">Css</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/html" title="Html">Html</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/mco" title="Mco">Mco</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/regresi%c3%b3n-lineal" title="Regresión lineal">Regresión lineal</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/regression" title="Regression">Regression</a>
+	</div>
+</div>
+</aside>
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2019 Estadística II.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

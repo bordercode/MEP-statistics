@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>R on Estadística II</title>
+    <link>/categories/r/</link>
+    <description>Recent content in R on Estadística II</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 05 Feb 2019 21:11:11 -0500</lastBuildDate>
+    
+	<atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>RL-Diagnóstico</title>
+      <link>/post/2019-02-05-rl6/</link>
+      <pubDate>Tue, 05 Feb 2019 21:11:11 -0500</pubDate>
+      
+      <guid>/post/2019-02-05-rl6/</guid>
+      <description>Análisis de los supuestos y pruebas de diagnóstico del modelo.Heterocedsticidad.Un supuesto de partida de los residuales es que se distribuyen a corde a la normal (Normalidad en los residuales) con media cero varianza constante \(\sigma^2\).
+Uno de los supuestos principales del Modelo de Regresión Lineal MRL es que los errores tiene la misma varianza, lo que se conoce como homocedasticidad, \[E(\epsilon|x)=E(\epsilon)=0\] \[var(\epsilon|x)=\sigma^2\]
+Cuando el supuesto no se cumple tenemos el problema denominado Heterocedasticidad.</description>
+    </item>
+    
+    <item>
+      <title>RL-Multiple</title>
+      <link>/post/2019-01-25-rl5/</link>
+      <pubDate>Sat, 26 Jan 2019 21:11:11 -0500</pubDate>
+      
+      <guid>/post/2019-01-25-rl5/</guid>
+      <description>Regresión Multiple.La estimación de modelos bajo esta estructura permite incorporar p variables independientes, lo que contribuye para explicar una mayor parte de la variación en \(Y\) al controla por determiantes de interés.
+\[\begin{align}Y=\beta_0+\beta_1 X_1+\beta_2 X_2+...+\beta_p X_p+\epsilon\tag{1}\end{align}\]Donde \(\beta_j\) indica el efecto promedio sobre Y de un cambio de una unidad en \(X_j\) manteniendo los otros parámetros constantes. Esta estructura del modelo nos permite controlar por \(X_j\) variables explicativas de Y.</description>
+    </item>
+    
+    <item>
+      <title>RL-Hipótesis</title>
+      <link>/post/2019-01-25-rl4/</link>
+      <pubDate>Fri, 25 Jan 2019 21:11:11 -0500</pubDate>
+      
+      <guid>/post/2019-01-25-rl4/</guid>
+      <description>Parámetros estimados y su precisión.¿Qué tan preciso es un parámetro estimado mediante el modelo de regresión lineal?
+Una manera de medir su precisión es mediante el cálculo del error estándar SE este nos indica el monto promedio en el que el parámetro \(\hat \beta\) estimado difiere del valor poblacional \(\beta\)
+Note que nos interesa determinar la precisión del parámetro muestral con relación al poblacional en este caso tomamos el ejemplo de la estimación de media muestral \(\hat \mu\) con relación a su correspondiente valor poblacional \(/mu\)</description>
+    </item>
+    
+    <item>
+      <title>RL-Modelo</title>
+      <link>/post/2019-01-15-rl3/</link>
+      <pubDate>Tue, 15 Jan 2019 21:11:11 -0500</pubDate>
+      
+      <guid>/post/2019-01-15-rl3/</guid>
+      <description>Formalización del modeloEn términos matemáticos podemos describir la relación entre las variables del modelo con la expresión siguiente:
+\[\begin{align}Y \approx \beta_0 + \beta_1 X\tag{1}\end{align}\]Una vez que hemos estimado los parámetros del modelo podemos usarlos para hacer la predicción de \(\hat y\)
+\[\begin{align}\hat y= \hat \beta_0 + \hat \beta_1 x\tag{2}\end{align}\]Note que la diferencia entre la linea de regresión y cada observación (lineas grises) da cuenta del error de predicción.</description>
+    </item>
+    
+    <item>
+      <title>Multiple Models</title>
+      <link>/post/2019-20-01-rl7-models/</link>
+      <pubDate>Fri, 28 Dec 2018 21:14:14 -0500</pubDate>
+      
+      <guid>/post/2019-20-01-rl7-models/</guid>
+      <description>Programación Funcional.Estimación de Multiples Modelos de regression Lineal.Considere un escenario en el que nos interesa modelar la relación entre la esperanza de vida y el PIB (una variable que representa el nivel económico de un país) o bien un indicador clásico como el indice de desarollo Humano y su evolución a lo largo del tiempo.
+El problema en este caso es que la unidad de análisis (142 países) implica la realización de un gran número de modelos, 142 modelos!</description>
+    </item>
+    
+    <item>
+      <title>RL-Simple</title>
+      <link>/post/2019-01-11-rl2/</link>
+      <pubDate>Fri, 28 Dec 2018 21:13:14 -0500</pubDate>
+      
+      <guid>/post/2019-01-11-rl2/</guid>
+      <description>Regresión Lineal simple.Objetivo de la sesión: Presentar el modelo de Regresión lineal. Orígenes del concepto de regresión, características y estructura del modelo, expresión matématica.
+All models are wrong, but some are useful. Box (1979)
+En el curso estamos interesados en modelar relaciones estadísticas (estocásticas) no deterministas, esto es, en las variables análizadas tenemos cierto grado de incertidumbre.
+Origenes de la noción de regresiónLa noción de Regresión lineal. ¿Qué entendemos por regresión?</description>
+    </item>
+    
+    <item>
+      <title>Regresion Lineal</title>
+      <link>/post/2015-07-23-rl/</link>
+      <pubDate>Fri, 28 Dec 2018 21:13:14 -0500</pubDate>
+      
+      <guid>/post/2015-07-23-rl/</guid>
+      <description>True knowledge is knowledge of why things are as they are, and not merely what they are. Isaiah Berlin. Samprit Chatterjee (2012)
+Conceptos preliminares y Notación utilizada en el curso.Conocimientos previos deseables para llevar este curso: Vectores y matrices, Intervalos de confianza, Momentos estadísticos, Pruebas de hipótesis, Distribción Normal. Ej.
+\[\bar{x}=\frac{1}{n} (\sum_{i=1}^{n} x_i) =\frac{x_1 +x_2+...+x_n}{n}\]
+\[E(\bar{x})= \mu\]
+\[V(X)= Var(X)=\sigma^2_{X}\] \[\sigma^2 = \frac{1}{n}\sum_{i=1}^{n}(x_i - \bar{X})^2\] \[\sigma^2_{X}=E[(X-\mu)^2]\]
+Las bases de datos analizados en el curso tiene la siguiente estructura general con n renglones (observaciones) por p columnas (variables).</description>
+    </item>
+    
+    <item>
+      <title>Ejercicios</title>
+      <link>/post/2018-12-30-ejercicios/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2018-12-30-ejercicios/</guid>
+      <description>Actividad 1Soluciones.1.- Para la siguiente base de datos sobre tasas de mortalidad por suicidio en México en 2015, determine.
+La tasa promedio para los 32 estados del país para el sexo masculino.
+El valor máximo de google trends score (GTS) ¿En qué Estado ocurre? y el mínimo?
+¿Cúal es el valor promedio del GTS?
+La tasa promedio de sucidio para las mujeres en México.</description>
+    </item>
+    
+  </channel>
+</rss>

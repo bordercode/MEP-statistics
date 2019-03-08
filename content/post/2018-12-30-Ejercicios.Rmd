@@ -1,0 +1,348 @@
+---
+title: "Ejercicios"
+author: "JLMR"
+date: "30 de diciembre de 2018"
+categories: ["R"]
+tags: ["Regresión Lineal", "MCO", "regression"]
+mathjax : true
+menu:
+  main:
+    name: Ejercicios
+    weight: 15
+---
+
+
+
+```{r set-global-options, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(eval = TRUE, 
+                      echo = TRUE, 
+                      cache = FALSE,
+                      include = TRUE,
+                      collapse = FALSE,
+                      dependson = NULL,
+                      engine = "R", # Chunks will always have R code, unless noted
+                      error = FALSE)                     
+
+```
+
+
+
+```{r silent-packages, echo = FALSE, eval = TRUE, message=FALSE, include = FALSE}
+library(ggrepel)
+library(tidyverse)
+library(scales)
+library(ggpubr)
+```
+
+```{r, echo=FALSE, include = FALSE}
+# Data sets 
+
+library(wooldridge)
+library(ISLR)
+library(MASS)
+```
+
+
+
+### Actividad  1 
+
+### Soluciones.
+
+
+1.- Para la  siguiente   [base de datos](https://drive.google.com/file/d/1zpRbIB75iv0wwcKQECgmRue589UlZXBd/view?usp=sharing) sobre tasas de mortalidad por suicidio en México en 2015, determine. 
+
+a) La tasa promedio para los 32 estados del país para el sexo masculino. 
+
+b) El valor máximo de google trends score (GTS)  ¿En qué Estado ocurre?  y el mínimo?
+
+c) ¿Cúal es el valor promedio del GTS?
+
+d) La tasa promedio de sucidio para las mujeres en México. 
+
+
+
+
+```{r,echo=FALSE}
+
+strend<-readRDS("Suicidetrend.rds")
+glimpse(strend)
+
+# Descriptive: Media, max, min
+
+strend%>%
+  group_by(Sexo)%>%
+  summarize(mean=round(mean(Tasa),0),max=max(Tasa))
+
+# Google Trends score 
+
+media_gts<-strend%>%
+  filter(Sexo==1)%>%
+  arrange(desc(s))
+
+summary(media_gts$s)
+
+```
+
+
+2.- Considere la siguiente base de datos sobre condiciones de [obesidad y prevalencia de diabetes](https://drive.google.com/file/d/1sapYFuoLUI1hmZ_Sn0RPI4wJeVyozcCe/view?usp=sharing) en México 2015.
+
+
+a) Comente sobre la estructura de los datos, número de variables, observaciones ¿Qué variables son cuantitativas y cuáles son factores o categóricas? 
+
+b) Estime la tasa de morbilidad  promedio,  la máxima y la mínima así como la variaza $\sigma^2$ y desviación estándar  $\sigma$ para ambos sexos. 
+
+c) Determine si la diferencia entre la tasa promedio de morbilidad  de ambos sexos es estadísticamente significativa. (realice prueba de hipótesis a partir del estadístico *t* ).
+
+d) La variable tasa se distribuye a corde con los supuestos de normalidad?
+
+e) Estime el coeficeinte de correlación entre tasa de diabetes y la variable sobrepeso (imc promedio por estado  segÚn ENSANUT). 
+
+```{r,echo=FALSE}
+
+
+TASA15a<-readRDS("TASA15_diabetes_egre2.rds")
+
+# Estructura 
+str(TASA15a)
+names(TASA15a)
+
+# Descriptivas
+descriptive<-TASA15a%>%
+  group_by(Sexo)%>%
+  summarize(mean=round(mean(Tasa),0),max=max(Tasa), sd=sd(Tasa), var=var(Tasa))
+
+# t- test H0 mediaH = mediaM,  H1 diff !=0
+t.test(Tasa ~ Sexo, data = TASA15a)
+
+#No rechazamos H0. La diferencia entre las tasas promedio no es estadísticamente significativa. 
+
+#La tasa media es  igual para ambos sexos. 
+
+## Normalidad  media != mediana  Remember normalidad es un supuesto para validéz de t test.
+
+summary(TASA15a$Tasa)
+
+# Usamos el w - test statistic del shapiro.test para normalidad. H0: datos con distribución normal. Note el w -stat  tiene el rango [0=>w<=1]
+
+shapiro.test(TASA15a$Tasa)
+
+# Rechazamos H0.  Ej. p-value < 0.05. Los datos no tienen distribución normal.
+
+# Adicionalmente  representamos los datos vs. el qqplot 
+# Una distribución normal mostraría las observaciones a lo largo de la linea. Patrones que se alejan del perfil esperado muestran evidencia de que los datos no tienen distribución normal. 
+
+ggqqplot(TASA15a$Tasa, ylab = "Tasa")
+
+#Note que el eje x cauntiles acorde a distribución normal. 
+
+# Confirmamos un patrón NO consistente con la  distribución normal. De hecho por la forma de la distribución la muestra parece tener sesgo a la derecha. long tail a la derecha y mean>median.
+
+#En este caso por ejemplo podemos aplicar una transformación para aproximar normalidad. 
+
+
+# Persons correlation coef. # Dado que los datos no tienen norm dist  usamos el coeficiente de correlación de spearman. 
+
+
+TASA15a%>%
+group_by(Sexo)%>%
+summarize(c=cor(Tasa, IMC, method = "spearman", use = "complete.obs"))
+
+## Se encuentra correlación positiva con mayor magnitud para el sexo masculino. 
+```
+
+
+## Actividad 2
+
+### Ejercicio 1
+
+```{r, echo=FALSE, message = FALSE, warning = FALSE}
+strend<-readRDS("Suicidetrend.rds")
+
+ph<-ggplot(filter(strend,Sexo==1), aes(x=s, y=Tasa)) + 
+  geom_point(shape=21) + 
+  stat_smooth(method=lm,se=FALSE)+
+  ylab("Tasa de Mortalidad   (100 000 hab.)")+
+  xlab("Google Trends Score (2004-2018)") +
+  geom_label_repel(aes(label = Estado),box.padding= 0.35,point.padding = .5,segment.color = 'grey50')+ 
+  theme_bw()+
+  labs(title="Relación entre tasa de mortalidad por suicidio y Goolge Trend Score" ,subtitle="Término suicidio por estado")
+ph
+```
+
+
+```{r , echo=FALSE, message = FALSE, warning = FALSE}
+
+theme_set(theme_light())
+
+tc349<-readRDS("tasasHM15_c349")
+
+ggplot(tc349,aes(pg,Tasa, group=Sexo, colour=Sexo))+
+  geom_point()+
+  geom_smooth(method="lm")+
+  scale_colour_discrete(labels=c("Hombres", "Mujeres"))+
+labs(title="Relación tasa de mortalidad en cáncer de pulmón y Gasto en Tabaco", 
+     subtitle= "Gastos por Hogar según sexo", x= " (%) respecto al gasto total", y="Tasa de Mortalidad   (1000 000 hab.)")+
+  scale_x_continuous(labels=percent_format())
+
+
+tabaco_mg<-readRDS("tabaco.rds")
+
+  ggplot(tabaco_mg,aes(pg,Tasa))+
+  geom_point()+
+  geom_smooth(method="lm", colour="red")+
+  labs(title="Relación tasa de mortalidad en cáncer de pulmón y Gasto en Tabaco", subtitle="Hombres",  x="Gasto en Tabaco respecto al total", y="Tasa de Mortalidad   (1000 000 hab.)")+
+  scale_x_continuous(labels=percent_format())+
+  geom_label_repel(aes(label = Estado),box.padding= 0.35,point.padding = .5,segment.color = 'grey50')
+
+
+```
+
+
+### Correlación entre Salario medio y participación de la Mujer en empleo.
+#### Carreras más populares por categoria.
+
+```{r, echo=FALSE, message = FALSE, warning = FALSE, fig.width=10, fig.height=6}
+
+library(plotly)
+theme_set(theme_light())
+
+graduados<-readRDS("graduados.rds")
+
+  g<-ggplot(graduados,aes(ShareWomen,Median, color=Area,size=Sample_size, label=Major))+
+  geom_point()+
+  geom_smooth(aes(group=1),method = "lm")+
+  expand_limits(y=0)+
+  scale_color_brewer(palette="Dark2")+
+  scale_y_continuous(labels=dollar_format())+
+  scale_x_continuous(labels=percent_format())+
+  labs(x="Mujeres/Hombres", y="Salario Medio  US$")+
+    theme(legend.position="botton")
+  
+  ggplotly(g)
+
+```
+
+
+```{r, echo=FALSE, message = FALSE, warning = FALSE}
+TASA15<-readRDS("tasa15diabetes.rds")
+
+ggplot(TASA15,aes(IMC,Tasa))+
+  geom_point()+
+  geom_smooth(method="lm",colour="darkgreen")+
+ labs(title="Relación Diabetes-Sobrepeso (25<IMC<=30)", subtitle="Según Entidad 2015",  x="IMC", y="Tasa morbilidad (100 000 hab.)")+
+geom_label_repel(aes(label = Estado),box.padding= 0.35,point.padding = .5,segment.color = 'grey50')
+
+```
+
+## Ejercicio 2
+
+```{r, echo=FALSE}
+
+## Statistics for a large number of US Colleges from the 1995 issue of US News and World Report. from ISLR
+
+## usando base de datos College desde ISLR package.
+
+# Load data frame y describir la estructura.
+
+data(College)
+str(College)
+# Creando una variable para identificar a las universidades de elite. Donde el porcentaje de nuevos estudiantes que vienen del top 10% de su clase supera el 50% de los aetudiantes 
+
+College_e<-College%>%
+  mutate(elite=ifelse(Top10perc>50,1,0))
+
+## Un box plot para examinar la distribución de las variables  pago de colegiatura y tipo de estitución. 
+ggplot(College_e, aes(Private,Outstate))+
+geom_boxplot()+
+  labs(y="Pago de Colegiatura ($)", x="Privada?")
+```
+
+## Ejercicio 3
+
+
+```{r, echo=FALSE, warning=FALSE, message = FALSE}
+theme_set(theme_light())
+
+## Risk Factors Associated with Low Infant Birth Weight From MASS package.
+
+data(birthwt)
+str(birthwt)
+
+## Codificando la variable  categórica smoke y plot densidad.
+
+smoke_plot<-birthwt%>%
+  mutate(smoke=as.factor(smoke))%>%
+  mutate(smoke=ifelse(smoke==1,"Smoke", "No"))
+
+  ggplot(smoke_plot,aes(x=bwt)) +
+  geom_density(fill="pink",colour=NA, alpha=.2 ) +
+  geom_line(stat="density")+
+facet_grid(smoke ~ .)+
+    labs(x="Peso en gramos")
+
+
+
+## Codificando  race y plot  histograma.
+bwt_raza<-birthwt%>%
+  mutate(race=as.factor(race))%>%
+  mutate(race=ifelse(race==1,"white",ifelse(race==2,"black","Otra")))
+
+ggplot(bwt_raza,aes(x=bwt)) +
+geom_histogram(fill="white", colour="black") +
+facet_grid(race ~ .,scales="free")+
+  labs(x="Peso en gramos", y="Cantidad")
+
+```
+
+
+
+
+### Actividad 3 
+
+#### Ejercicio 1
+
+
+```{r, eval=FALSE, echo=FALSE}
+theme_set(theme_light())
+
+
+vote1<-readRDS("vote1.rds")
+data(vote1)
+str(vote1)
+
+lm(voteA~shareA,data=vote1)%>%
+summary()
+```
+
+```{r,echo=FALSE}
+vote1<-readRDS("vote1.rds")%>%
+ggplot(aes(shareA,voteA))+
+  geom_point(shape=1)+
+  geom_smooth(method=lm, se=FALSE, fullrange=TRUE)+
+  labs(x="Gastos en campaña (%)", y="Voto (%)")
+```
+
+
+
+
+#### Ejercicio 2
+```{r,  echo=FALSE, include=FALSE}
+pc<-read.table("http://gattonweb.uky.edu/sheather/book/docs/datasets/prostateAlldata.txt", header =TRUE )
+
+str(pc)
+
+pairs(lpsa~lcavol+lweight+age, data=pc)
+
+lm(lpsa~lcavol,data=pc)%>%
+summary()
+```
+
+
+# Anexo
+
+**Sobre distribución de los datos.**
+
+Relación entre Boxplot, curva de densidad e Histograma.
+![](/img/d.jpg)
+
+
