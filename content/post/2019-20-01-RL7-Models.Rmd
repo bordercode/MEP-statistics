@@ -66,26 +66,28 @@ Bueno,  al parecer todos estos paises son de África, ¿Por qué el modelo de re
 
 Para lograr el análisis necesitamos  tres fases:
 
-+ nest data  anidar la base de datos con  library(tidyr) 
++ nest data.  Anidar la base de datos con  library(tidyr) 
 
 ![](/img/nested.jpg)
 
-+ functional programming con library(purrr)  map  una función para toda lista de df
++ functional programming con library(purrr), Usando  **map**  para una función para toda lista de df.
 
-+ Extraer parametros de  modelos con library(broom) glance(). 
++ Extraer parámetros de  los modelos con library(broom) y la función glance(). 
 
 #### Aplicación del enfoque de programación funcional.
 
-```{r}
+```{r,echo=FALSE}
 continents<-gapminder%>%
 select(country,continent)
 ```
 
-```{r, echo=FALSE}
+```{r}
 #1. Cargamos los datos
 gapminder
 View(gapminder)
 str(gapminder)
+
+gapminder<-mutate(gapminder,year1950=year-1950)
 
 continents<-gapminder%>%
 select(country,continent)
@@ -102,20 +104,17 @@ nest()
 
 #2,1 Podemos extraer la información para un pais específico haciendo referencia a su indice. En este caso extraemos el caso de México  (index 83 en la lista).
 
-by_country$data[[83]]
 
 #3. Creamos la función para aplicar a todos los paises:
 
 country_model <- function(df){
-lm(lifeExp ~ year, data = df)
+lm(lifeExp ~ year1950, data = df)
   }
-
 
 models <- by_country %>%
 mutate(
 model = data %>% map(country_model)
 )
-
 
 
 #4. Usamos broom para extraer comeponentes  individuales del modelo. En especial tidy para extraer el coeficeinte de determinación **rsq**
@@ -132,24 +131,18 @@ models<-models%>%
     augment=map(model,broom::augment)
     )%>%
  left_join(continents)
-
-models%>%arrange(desc(rsq))
-
-models%>%filter(continent=="Africa")
-
 ```
 
-```{r}
+```{r, include=FALSE}
 ggplot(models,aes(rsq,reorder(country,rsq)))+
   geom_point(aes(colour=continent))+
   theme_tufte()
-ggsave("purrr-gapminder.jpg", width = 25, height = 17, units = "cm",dpi=300)
 
 ```
 
 
 
-```{r}
+```{r, include=FALSE}
 
 ## Alternativa eficiente
 
@@ -165,6 +158,10 @@ modelos<-gapminder %>%mutate(year1950=year-1950)%>%
   arrange(rsq)%>%
   left_join(continents)
 modelos
+
+modelos%>%arrange(desc(rsq))
+
+modelos%>%filter(continent=="Africa")
 ```
 
 

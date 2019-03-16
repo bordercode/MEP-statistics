@@ -53,21 +53,21 @@ menu:
 <p>Bueno, al parecer todos estos paises son de África, ¿Por qué el modelo de regresión lineal en este caso no se ajusta tan bien como en la mayoría de los países?</p>
 <p>Para lograr el análisis necesitamos tres fases:</p>
 <ul>
-<li>nest data anidar la base de datos con library(tidyr)</li>
+<li>nest data. Anidar la base de datos con library(tidyr)</li>
 </ul>
 <div class="figure">
 <img src="/img/nested.jpg" />
 
 </div>
 <ul>
-<li><p>functional programming con library(purrr) map una función para toda lista de df</p></li>
-<li><p>Extraer parametros de modelos con library(broom) glance().</p></li>
+<li><p>functional programming con library(purrr), Usando <strong>map</strong> para una función para toda lista de df.</p></li>
+<li><p>Extraer parámetros de los modelos con library(broom) y la función glance().</p></li>
 </ul>
 </div>
 <div id="aplicacion-del-enfoque-de-programacion-funcional." class="section level4">
 <h4>Aplicación del enfoque de programación funcional.</h4>
-<pre class="r"><code>continents&lt;-gapminder%&gt;%
-select(country,continent)</code></pre>
+<pre class="r"><code>#1. Cargamos los datos
+gapminder</code></pre>
 <pre><code>## # A tibble: 1,704 x 6
 ##    country     continent  year lifeExp      pop gdpPercap
 ##    &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
@@ -82,6 +82,8 @@ select(country,continent)</code></pre>
 ##  9 Afghanistan Asia       1992    41.7 16317921      649.
 ## 10 Afghanistan Asia       1997    41.8 22227415      635.
 ## # ... with 1,694 more rows</code></pre>
+<pre class="r"><code>View(gapminder)
+str(gapminder)</code></pre>
 <pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    1704 obs. of  6 variables:
 ##  $ country  : Factor w/ 142 levels &quot;Afghanistan&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ continent: Factor w/ 5 levels &quot;Africa&quot;,&quot;Americas&quot;,..: 3 3 3 3 3 3 3 3 3 3 ...
@@ -89,83 +91,50 @@ select(country,continent)</code></pre>
 ##  $ lifeExp  : num  28.8 30.3 32 34 36.1 ...
 ##  $ pop      : int  8425333 9240934 10267083 11537966 13079460 14880372 12881816 13867957 16317921 22227415 ...
 ##  $ gdpPercap: num  779 821 853 836 740 ...</code></pre>
-<pre><code>## # A tibble: 12 x 5
-##    continent  year lifeExp       pop gdpPercap
-##    &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
-##  1 Americas   1952    50.8  30144317     3478.
-##  2 Americas   1957    55.2  35015548     4132.
-##  3 Americas   1962    58.3  41121485     4582.
-##  4 Americas   1967    60.1  47995559     5755.
-##  5 Americas   1972    62.4  55984294     6809.
-##  6 Americas   1977    65.0  63759976     7675.
-##  7 Americas   1982    67.4  71640904     9611.
-##  8 Americas   1987    69.5  80122492     8688.
-##  9 Americas   1992    71.5  88111030     9472.
-## 10 Americas   1997    73.7  95895146     9767.
-## 11 Americas   2002    74.9 102479927    10742.
-## 12 Americas   2007    76.2 108700891    11978.</code></pre>
-<pre><code>## Joining, by = &quot;country&quot;</code></pre>
-<pre><code>## # A tibble: 1,704 x 8
-##    country data       model   tidy     glance      rsq augment    continent
-##    &lt;fct&gt;   &lt;list&gt;     &lt;list&gt;  &lt;list&gt;   &lt;list&gt;    &lt;dbl&gt; &lt;list&gt;     &lt;fct&gt;    
-##  1 Brazil  &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.998 &lt;tibble [~ Americas 
-##  2 Brazil  &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.998 &lt;tibble [~ Americas 
-##  3 Brazil  &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.998 &lt;tibble [~ Americas 
-##  4 Brazil  &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.998 &lt;tibble [~ Americas 
-##  5 Brazil  &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.998 &lt;tibble [~ Americas 
-##  6 Brazil  &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.998 &lt;tibble [~ Americas 
-##  7 Brazil  &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.998 &lt;tibble [~ Americas 
-##  8 Brazil  &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.998 &lt;tibble [~ Americas 
-##  9 Brazil  &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.998 &lt;tibble [~ Americas 
-## 10 Brazil  &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.998 &lt;tibble [~ Americas 
-## # ... with 1,694 more rows</code></pre>
-<pre><code>## # A tibble: 624 x 8
-##    country data       model   tidy     glance      rsq augment    continent
-##    &lt;fct&gt;   &lt;list&gt;     &lt;list&gt;  &lt;list&gt;   &lt;list&gt;    &lt;dbl&gt; &lt;list&gt;     &lt;fct&gt;    
-##  1 Algeria &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.985 &lt;tibble [~ Africa   
-##  2 Algeria &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.985 &lt;tibble [~ Africa   
-##  3 Algeria &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.985 &lt;tibble [~ Africa   
-##  4 Algeria &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.985 &lt;tibble [~ Africa   
-##  5 Algeria &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.985 &lt;tibble [~ Africa   
-##  6 Algeria &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.985 &lt;tibble [~ Africa   
-##  7 Algeria &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.985 &lt;tibble [~ Africa   
-##  8 Algeria &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.985 &lt;tibble [~ Africa   
-##  9 Algeria &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.985 &lt;tibble [~ Africa   
-## 10 Algeria &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.985 &lt;tibble [~ Africa   
-## # ... with 614 more rows</code></pre>
-<pre class="r"><code>ggplot(models,aes(rsq,reorder(country,rsq)))+
-  geom_point(aes(colour=continent))+
-  theme_tufte()</code></pre>
-<p><img src="/post/2019-20-01-RL7-Models_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<pre class="r"><code>ggsave(&quot;purrr-gapminder.jpg&quot;, width = 25, height = 17, units = &quot;cm&quot;,dpi=300)</code></pre>
-<pre class="r"><code>## Alternativa eficiente
+<pre class="r"><code>gapminder&lt;-mutate(gapminder,year1950=year-1950)
 
 continents&lt;-gapminder%&gt;%
 select(country,continent)
 
 
-modelos&lt;-gapminder %&gt;%mutate(year1950=year-1950)%&gt;%
-  group_by(country) %&gt;%
-  nest() %&gt;%  
-  mutate(fit = map(data, ~ lm(lifeExp ~ year1950, data = .x))) %&gt;%
-  mutate(rsq = map_dbl(fit, ~ summary(.x)[[&quot;r.squared&quot;]]))%&gt;% 
-  arrange(rsq)%&gt;%
-  left_join(continents)</code></pre>
+## Note que tenenos 1704 observaciones, para 5 variables. Estas variables como el GDP percapita, la esperanza de vida, la población   corresponden a 142 países en 5 continentes.
+
+
+#2. Agrupamos y aplicamos la función nest para &quot;anidar los datos de cada país  en, una nueva variable llamada data en forma de lista&quot; 
+
+by_country&lt;-gapminder%&gt;%
+group_by(country)%&gt;%
+nest()
+
+#2,1 Podemos extraer la información para un pais específico haciendo referencia a su indice. En este caso extraemos el caso de México  (index 83 en la lista).
+
+
+#3. Creamos la función para aplicar a todos los paises:
+
+country_model &lt;- function(df){
+lm(lifeExp ~ year1950, data = df)
+  }
+
+models &lt;- by_country %&gt;%
+mutate(
+model = data %&gt;% map(country_model)
+)
+
+
+#4. Usamos broom para extraer comeponentes  individuales del modelo. En especial tidy para extraer el coeficeinte de determinación **rsq**
+
+#tidy() component-level (Estimates, Std Errors,  p-value, t test )
+#augment() observation level (like  residuals)
+#glance().model-level (like rsq, F statistic) 
+
+models&lt;-models%&gt;%
+  mutate(
+    tidy=map(model,broom::tidy),
+    glance=map(model,broom::glance),
+    rsq=glance%&gt;%map_dbl(&quot;r.squared&quot;),
+    augment=map(model,broom::augment)
+    )%&gt;%
+ left_join(continents)</code></pre>
 <pre><code>## Joining, by = &quot;country&quot;</code></pre>
-<pre class="r"><code>modelos</code></pre>
-<pre><code>## # A tibble: 1,704 x 5
-##    country data              fit         rsq continent
-##    &lt;fct&gt;   &lt;list&gt;            &lt;list&gt;    &lt;dbl&gt; &lt;fct&gt;    
-##  1 Rwanda  &lt;tibble [12 x 6]&gt; &lt;S3: lm&gt; 0.0172 Africa   
-##  2 Rwanda  &lt;tibble [12 x 6]&gt; &lt;S3: lm&gt; 0.0172 Africa   
-##  3 Rwanda  &lt;tibble [12 x 6]&gt; &lt;S3: lm&gt; 0.0172 Africa   
-##  4 Rwanda  &lt;tibble [12 x 6]&gt; &lt;S3: lm&gt; 0.0172 Africa   
-##  5 Rwanda  &lt;tibble [12 x 6]&gt; &lt;S3: lm&gt; 0.0172 Africa   
-##  6 Rwanda  &lt;tibble [12 x 6]&gt; &lt;S3: lm&gt; 0.0172 Africa   
-##  7 Rwanda  &lt;tibble [12 x 6]&gt; &lt;S3: lm&gt; 0.0172 Africa   
-##  8 Rwanda  &lt;tibble [12 x 6]&gt; &lt;S3: lm&gt; 0.0172 Africa   
-##  9 Rwanda  &lt;tibble [12 x 6]&gt; &lt;S3: lm&gt; 0.0172 Africa   
-## 10 Rwanda  &lt;tibble [12 x 6]&gt; &lt;S3: lm&gt; 0.0172 Africa   
-## # ... with 1,694 more rows</code></pre>
 </div>
 </div>
