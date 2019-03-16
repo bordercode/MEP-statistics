@@ -279,7 +279,7 @@ unnest(models,tidy)</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
 <p><img src="/post/2019-20-01-RL7-Models_files/figure-html/unnamed-chunk-6-1.png" width="1152" /></p>
 <p>Para explorar el comportamiento de los residuales, como parte del proceso de diagnóstico del modelo usamos los componentes a nivel de observación del modelo obtenidos con la función augment() y el posterior unnest().</p>
-<p>Este componente nos aporta información sobre el cumplimiento de los supuestos del modelo. Observamos que posiblemente es necesario mejorar la estimación de los (modelos!) para grupos específicos de paises en continentes como äfrica (claramente, un comportamiento no lineal) dado que los residuales muestran un patrón, no consitente con un modelo lineal.</p>
+<p>Este componente nos aporta información sobre el cumplimiento de los supuestos del modelo. Observamos que posiblemente es necesario mejorar la estimación de los (modelos!) para grupos específicos de paises en continentes como äfrica (claramente, un comportamiento no lineal) dado que los residuales muestran un patrón no consitente con un modelo lineal.</p>
 </div>
 </div>
 
