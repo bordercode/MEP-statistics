@@ -11,7 +11,7 @@ menu:
     weight: 11
 ---
 
-```{r,echo=FALSE}
+```{r,echo=FALSE, message=FALSE,warning=FALSE}
 library(gapminder)
 library(dplyr)
 library(purrr)
@@ -26,7 +26,7 @@ library(ggthemes)
 ##### Estimación de Multiples Modelos de regression Lineal.
 
 
-Considere un escenario en el que nos interesa modelar la relación entre la **esperanza de vida** y el PIB (una variable que representa el nivel económico de un país) o bien un indicador clásico como el indice de desarollo Humano  y su evolucióna lo largo del tiempo. 
+Considere un escenario en el que nos interesa modelar la relación entre la **esperanza de vida** y el PIB (una variable que representa el nivel económico de un país) o bien un indicador clásico como el indice de desarollo Humano  y su evolución a lo largo del tiempo. 
 
 El problema en este caso es que la unidad de análisis (142 países) implica la realización de  un gran número de modelos, 142 modelos!!! ¿Cómo podemos atender esta tarea de estimar 142 modelos de regresión lineal de una forma eficiente?
 
@@ -44,24 +44,13 @@ Alternativamtene podemos representar la información usando las herramientas de 
 
 Ahora el reto es generar un modelo de regresión lineal para cada país. El enfoque que usaremos es mediante **programación funcional**
 
-El objetivo es contar con **una** representación visual del comportamiento de la **variable dependiente**: Esperanza de vida  en funeción del tiempo, es decir estimaremos el modelo: 
+El objetivo es contar con **una** representación visual del comportamiento de la **variable dependiente**: Esperanza de vida  en función del tiempo, es decir estimaremos el modelo: 
 
-$$y=\beta_0+\beta_1x+\epsilon$$ Donde $y$=Esperanza de vida, $x=$años trenscurridos desde 1950.
+$$y=\beta_0+\beta_1x+\epsilon$$ Donde $y$=Esperanza de vida, $x=$años transcurridos desde 1950.
 
-De tal modo que la interpretación de el parámetro $\beta_1$ es el **incremento en la esperanza de vida** asociado a un año adicional transcurrido desde el inicio de la muestra (1950-2007).
+De tal modo que la interpretación de el parámetro $\beta_1$ es el **incremento en la esperanza de vida** asociado a un año adicional transcurrido desde el inicio de la muestra [1950-2007].
 
-Incremento anual de la **esperanza de vida** aunado a los parámetros básicos que describen el desempeño del modelo como el coeficiente de determianción **R^2** para cada país.
-
-La siguiente gráfica muestra una aplicación de este concepto.
-
-
-![](/img/purrr-gapminder.jpg)
-
-Observen que para la mayoría de estos países el modelo se ajsuta bastante bien ($R^2\approx.97$), sin embargo para un grupo de paises particular el modelo parece no tener un ajuste adecuado? 
-
-¿Qué tienen estos países en común?
-
-Bueno,  al parecer todos estos paises son de África, ¿Por qué el modelo de regresión lineal en este caso no se ajusta tan bien como en la mayoría de los países? 
+#### Aplicación del enfoque de programación funcional.
 
 
 Para lograr el análisis necesitamos  tres fases:
@@ -74,7 +63,11 @@ Para lograr el análisis necesitamos  tres fases:
 
 + Extraer parámetros de  los modelos con library(broom) y la función glance(). 
 
-#### Aplicación del enfoque de programación funcional.
+
+
+
+Incremento anual de la **esperanza de vida** aunado a los parámetros básicos que describen el desempeño del modelo como el coeficiente de determianción **R^2** para cada país.
+
 
 ```{r,echo=FALSE}
 continents<-gapminder%>%
@@ -137,6 +130,19 @@ models<-models[!duplicated(models$country), ]
 
 ```
 
+La siguiente gráfica muestra el resultado de una aplicación de este concepto mediante la extracción de los componentes (con la función glance()) para el coeficiente de determinación **rsq** y el coeficeinte estimado de la variable dependiente.
+
+
+![](/img/purrr-gapminder.jpg)
+
+Observen que para la mayoría de estos países el modelo se ajsuta bastante bien ($R^2\approx.97$), sin embargo para un grupo de paises particular el modelo parece no tener un ajuste adecuado? 
+
+¿Qué tienen estos países en común?
+
+Bueno,  al parecer todos estos paises son de África, ¿Por qué el modelo de regresión lineal en este caso no se ajusta tan bien como en la mayoría de los países? 
+
+
+
 ```{r, include=FALSE}
 ggplot(models,aes(rsq,reorder(country,rsq)))+
   geom_point(aes(colour=continent))+
@@ -146,7 +152,8 @@ ggplot(models,aes(rsq,reorder(country,rsq)))+
 
 
 ```{r,fig.width=12, fig.height=8}
-#Unnest y plot  componentes de interes. 
+#Unnest y plot  componentes de interés.
+
 unnest(models,tidy)
 
 models%>%
@@ -156,32 +163,30 @@ models%>%
   ggplot(aes(`(Intercept)`, year1950))+
   geom_point(aes(colour=continent,size=rsq))+
   geom_smooth(se=FALSE)+
-  xlab("Esperanza de vida EV")+
-  ylab("Mejora anual en EV al inicio del periodo (1950)")+
+  xlab("Esperanza de vida EV al inicio del periodo (1950)")+
+  ylab("Mejora anual en EV")+
   scale_size_area()+
   theme_light()+
   scale_colour_viridis_d()
   
 ```
-#### Algunas observaciones finales sobre el patrón observado con la estimación de los modelos:
+
+####Algunas consideraciones finales sobre el patrón observado  con la estimación de los modelos:
 
 
-¿QUé representaría un punto en la esquina superior derecha?
+¿Qué representaría un punto en la esquina superior derecha?
 
-Un país que tenia una elevada esperanza de vida en 1950 y que ha mejorado este indicador  rapidamente desde entonces. 
+ANs: Un país que tenía una elevada esperanza de vida en 1950 y que ha mejorado  rapidamente desde entonces. 
 
-Qué indica la usencia de puntos en la esquina superior derecha?
+¿Qué indica la usencia de puntos en la esquina superior derecha?
 
-De hecho es un buen indicio por que sugiere que los países que tenian menor EV al inicio de hecho son los que han avanzado más en este indicador.
+De hecho es un buen indicio. la distribución de puntos concentrada en la esquina superior izquierda sugiere que los países que tenian menor EV al inicio de hecho son los que han avanzado más en este indicador.
 
 
 Los paises en los que el modeo no se ajusta bien estan en Africa mayoritariamente.
-Esta información sobre la magnitud del coeficiente de determianción $r^2$ es valiosa por que nos alerta sobre el riesgo de hacer inferencia con base en los modelos estimados para grupo de países específico. 
+Esta información sobre la magnitud del coeficiente de determianción $r^2$ es valiosa por que nos alerta sobre el riesgo de hacer inferencia con base en los modelos estimados para grupo de países específico en este caso África.
 
 Al parecer la mejoría en la esperanza de vida ha sido mayor en aquellos paises cuya población inicialmente moría mas jóven. 
-
-
-knitr::opts_chunk$set(fig.width=12, fig.height=8)
 
 
 ```{r,fig.width=12, fig.height=8}
@@ -197,7 +202,10 @@ models%>%
   
 ```
 
-Este componente nos aporta información sobre el cumplimeinto de los supuestos del modelo. Observamos que posiblemente es necesario mejorar el modelo (modelos!) dado que los residuales muestran un patrón, notablemente mas aceptuado en continentes como África.
+
+Para explorar el comportamiento de los residuales, como parte del proceso de diagnóstico del modelo usamos   los componentes a nivel de observación del modelo obtenidos con la función augment() y el posterior unnest().
+
+Este componente nos aporta información sobre el cumplimiento de los supuestos del modelo. Observamos que posiblemente es necesario mejorar la estimación de los  (modelos!) para grupos específicos de paises en continentes como äfrica (claramente, un comportamiento no lineal) dado que los residuales muestran un patrón, no consitente con  un modelo lineal.
 
 ```{r, include=FALSE}
 

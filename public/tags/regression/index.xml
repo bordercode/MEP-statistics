@@ -60,7 +60,8 @@ Note que nos interesa determinar la precisión del parámetro muestral con relac
       <pubDate>Fri, 28 Dec 2018 21:14:14 -0500</pubDate>
       
       <guid>/post/2019-20-01-rl7-models/</guid>
-      <description>## ## Attaching package: &amp;#39;dplyr&amp;#39;## The following objects are masked from &amp;#39;package:stats&amp;#39;:## ## filter, lag## The following objects are masked from &amp;#39;package:base&amp;#39;:## ## intersect, setdiff, setequal, unionProgramación Funcional.Estimación de Multiples Modelos de regression Lineal.Considere un escenario en el que nos interesa modelar la relación entre la esperanza de vida y el PIB (una variable que representa el nivel económico de un país) o bien un indicador clásico como el indice de desarollo Humano y su evolucióna lo largo del tiempo.</description>
+      <description>Programación Funcional.Estimación de Multiples Modelos de regression Lineal.Considere un escenario en el que nos interesa modelar la relación entre la esperanza de vida y el PIB (una variable que representa el nivel económico de un país) o bien un indicador clásico como el indice de desarollo Humano y su evolución a lo largo del tiempo.
+El problema en este caso es que la unidad de análisis (142 países) implica la realización de un gran número de modelos, 142 modelos!</description>
     </item>
     
     <item>
