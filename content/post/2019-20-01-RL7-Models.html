@@ -165,10 +165,12 @@ unnest(models,tidy)</code></pre>
 <h4>Algunas consideraciones finales sobre el patrón observado con la estimación de los modelos:</h4>
 <p>¿Qué representaría un punto en la esquina superior derecha?</p>
 <p>ANs: Un país que tenía una elevada esperanza de vida en 1950 y que ha mejorado rapidamente desde entonces.</p>
-<p>¿Qué indica la usencia de puntos en la esquina superior derecha?</p>
+<p>¿Qué indica la ausencia de puntos en la esquina superior derecha?</p>
 <p>De hecho es un buen indicio. la distribución de puntos concentrada en la esquina superior izquierda sugiere que los países que tenian menor EV al inicio de hecho son los que han avanzado más en este indicador.</p>
-<p>Los paises en los que el modeo no se ajusta bien estan en Africa mayoritariamente. Esta información sobre la magnitud del coeficiente de determianción <span class="math inline">\(r^2\)</span> es valiosa por que nos alerta sobre el riesgo de hacer inferencia con base en los modelos estimados para grupo de países específico en este caso África.</p>
+<p>Los paises en los que el modelo no se ajusta bien estan en África mayoritariamente. Esta información sobre la magnitud del coeficiente de determianción <span class="math inline">\(r^2\)</span> es valiosa por que nos alerta sobre el riesgo de hacer inferencia con base en los modelos estimados para grupo de países específico en este caso África.</p>
 <p>Al parecer la mejoría en la esperanza de vida ha sido mayor en aquellos paises cuya población inicialmente moría mas jóven.</p>
+<p>Para explorar el comportamiento de los residuales, como parte del proceso de diagnóstico del modelo usamos los componentes a nivel de observación del modelo obtenidos con la función augment() y el posterior unnest().</p>
+<p>Este componente nos aporta información sobre el cumplimiento de los supuestos del modelo. Observamos que posiblemente es necesario mejorar la estimación de los (modelos!) para grupos específicos de paises en continentes como äfrica (claramente, un comportamiento no lineal) dado que los residuales muestran un patrón no consitente con un modelo lineal.</p>
 <pre class="r"><code>models%&gt;%
   unnest(augment)%&gt;%
   ggplot(aes(year1950,.resid))+
@@ -180,7 +182,5 @@ unnest(models,tidy)</code></pre>
   theme_light()</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
 <p><img src="/post/2019-20-01-RL7-Models_files/figure-html/unnamed-chunk-6-1.png" width="1152" /></p>
-<p>Para explorar el comportamiento de los residuales, como parte del proceso de diagnóstico del modelo usamos los componentes a nivel de observación del modelo obtenidos con la función augment() y el posterior unnest().</p>
-<p>Este componente nos aporta información sobre el cumplimiento de los supuestos del modelo. Observamos que posiblemente es necesario mejorar la estimación de los (modelos!) para grupos específicos de paises en continentes como äfrica (claramente, un comportamiento no lineal) dado que los residuales muestran un patrón no consitente con un modelo lineal.</p>
 </div>
 </div>
