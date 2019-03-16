@@ -11,6 +11,16 @@ menu:
     weight: 11
 ---
 
+```{r,echo=FALSE}
+library(gapminder)
+library(dplyr)
+library(purrr)
+library(tidyr)
+library(ggplot2)
+library(broom)
+library(ggthemes)
+```
+
 ## Programación Funcional. 
 
 ##### Estimación de Multiples Modelos de regression Lineal.
@@ -44,26 +54,32 @@ Incremento anual de la **esperanza de vida** aunado a los parámetros básicos q
 
 La siguiente gráfica muestra una aplicación de este concepto.
 
-```{r,echo=FALSE}
-library(gapminder)
-library(dplyr)
-library(purrr)
-library(tidyr)
-library(ggplot2)
-library(broom)
-library(ggthemes)
-```
 
-```{r}
+![](/img/purrr-gapminder.jpg)
+
+Observen que para la mayoría de estos países el modelo se ajsuta bastante bien ($R^2\approx.97$), sin embargo para un grupo de paises particular el modelo parece no tener un ajuste adecuado? 
+
+¿Qué tienen estos países en comun?
+
+Bueno,  al parecer todos estos paises son de África, ¿Por qué el modelo de regresión lineal en este caso no se ajusta tan bien como en la mayoría de los países? 
 
 
-continents<-gapminder%>%
-select(country,continent)
+Para lograr el análisis necesitamos  tres fases:
 
++ nest data  anidar la base de datos con  library(tidyr) 
 
-```
+![](/img/nested.jpg)
+
++ functional programming con library(purrr)  map  una función para toda lista de df
+
++ Extraer parametros de  modelos con library(broom) glance(). 
 
 #### Aplicación del enfoque de programación funcional.
+
+```{r}
+continents<-gapminder%>%
+select(country,continent)
+```
 
 ```{r, echo=FALSE}
 #1. Cargamos los datos
@@ -123,13 +139,15 @@ models%>%filter(continent=="Africa")
 
 ```
 
-
 ```{r}
 ggplot(models,aes(rsq,reorder(country,rsq)))+
   geom_point(aes(colour=continent))+
   theme_tufte()
-  
+ggsave("purrr-gapminder.jpg", width = 25, height = 17, units = "cm",dpi=300)
+
 ```
+
+
 
 ```{r}
 
@@ -149,23 +167,6 @@ modelos<-gapminder %>%mutate(year1950=year-1950)%>%
 modelos
 ```
 
-
-
-Observen que para la mayoría de estos países el modelo se ajsuta bastante bien ($R^2\approx.97$), sin embargo para un grupo de paises particular el modelo parece no tener un ajuste adecuado? 
-
-¿Qué tienen estos países en comun?
-
-Bueno,  al parecer todos estos paises son de África, ¿Por qué el modelo de regresión lineal en este caso no se ajusta tan bien como en la mayoría de los países? 
-
-
-Para lograr el análisis necesitamos  tres fases:
-
-+ tidy data con library(dplyr) 
-
-![](/img/nested.jpg)
-+ functional programming con library(purrr) y
-
-+ tidy modelos con library(broom). 
 
 
 
