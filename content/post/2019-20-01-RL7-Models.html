@@ -166,13 +166,14 @@ unnest(models,tidy)</code></pre>
   theme_light()+
   scale_colour_viridis_d()</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
-<p><img src="/post/2019-20-01-RL7-Models_files/figure-html/unnamed-chunk-5-1.png" width="672" /> #### Algunas observaciones finales sobre el patrón observado con la estimación de los modelos:</p>
+<p><img src="/post/2019-20-01-RL7-Models_files/figure-html/unnamed-chunk-5-1.png" width="1152" /> #### Algunas observaciones finales sobre el patrón observado con la estimación de los modelos:</p>
 <p>¿QUé representaría un punto en la esquina superior derecha?</p>
 <p>Un país que tenia una elevada esperanza de vida en 1950 y que ha mejorado este indicador rapidamente desde entonces.</p>
 <p>Qué indica la usencia de puntos en la esquina superior derecha?</p>
 <p>De hecho es un buen indicio por que sugiere que los países que tenian menor EV al inicio de hecho son los que han avanzado más en este indicador.</p>
 <p>Los paises en los que el modeo no se ajusta bien estan en Africa mayoritariamente. Esta información sobre la magnitud del coeficiente de determianción <span class="math inline">\(r^2\)</span> es valiosa por que nos alerta sobre el riesgo de hacer inferencia con base en los modelos estimados para grupo de países específico.</p>
 <p>Al parecer la mejoría en la esperanza de vida ha sido mayor en aquellos paises cuya población inicialmente moría mas jóven.</p>
+<p>knitr::opts_chunk$set(fig.width=12, fig.height=8)</p>
 <pre class="r"><code>models%&gt;%
   unnest(augment)%&gt;%
   ggplot(aes(year1950,.resid))+
@@ -183,7 +184,7 @@ unnest(models,tidy)</code></pre>
   xlab(&quot;Años desde 1950&quot;)+
   theme_light()</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
-<p><img src="/post/2019-20-01-RL7-Models_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="/post/2019-20-01-RL7-Models_files/figure-html/unnamed-chunk-6-1.png" width="1152" /></p>
 <p>Este componente nos aporta información sobre el cumplimeinto de los supuestos del modelo. Observamos que posiblemente es necesario mejorar el modelo (modelos!) dado que los residuales muestran un patrón, notablemente mas aceptuado en continentes como África.</p>
 </div>
 </div>
