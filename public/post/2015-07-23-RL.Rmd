@@ -41,6 +41,7 @@ Samprit Chatterjee (2012)
 Conocimientos previos deseables para llevar este curso:
 Vectores y matrices, Intervalos de confianza, Momentos  estadísticos, Pruebas de hipótesis, Distribción Normal.
 Ej.  
+$$aamr=\sum_{i=x}^{y} \Bigg[  \left[  \frac{counts_i}{pop_i}X100,000 \right] X \left[ \frac{stdr_i}{ \sum_{j=x}^{y} stdr_j} \right]  \Bigg]$$
 
 $$\bar{x}=\frac{1}{n} (\sum_{i=1}^{n} x_i) =\frac{x_1 +x_2+...+x_n}{n}$$
 

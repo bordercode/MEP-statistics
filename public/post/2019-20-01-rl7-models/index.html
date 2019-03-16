@@ -9,7 +9,7 @@
 	<meta name="description" content="">
 	<meta name="generator" content="Hugo 0.54.0" />
 	<meta property="og:title" content="Multiple Models" />
-<meta property="og:description" content="Programación Funcional.Estimación de Multiples Modelos de regression Lineal.Considere un escenario en el que nos interesa modelar la relación entre la esperanza de vida y el PIB (una variable que representa el nivel económico de un país) o bien un indicador clásico como el indice de desarollo Humano y su evolución a lo largo del tiempo.
+<meta property="og:description" content="Programación Funcional.Estimación de Multiples Modelos de regression Lineal.Considere un escenario en el que nos interesa modelar la relación entre la esperanza de vida y el PIB (una variable que representa el nivel económico de un país) o bien un indicador clásico como el indice de desarollo Humano y su evolucióna lo largo del tiempo.
 El problema en este caso es que la unidad de análisis (142 países) implica la realización de un gran número de modelos, 142 modelos!" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/post/2019-20-01-rl7-models/" />
@@ -115,9 +115,9 @@ if (!doNotTrack) {
 <h2>Programación Funcional.</h2>
 <div id="estimacion-de-multiples-modelos-de-regression-lineal." class="section level5">
 <h5>Estimación de Multiples Modelos de regression Lineal.</h5>
-<p>Considere un escenario en el que nos interesa modelar la relación entre la <strong>esperanza de vida</strong> y el PIB (una variable que representa el nivel económico de un país) o bien un indicador clásico como el indice de desarollo Humano y su evolución a lo largo del tiempo.</p>
+<p>Considere un escenario en el que nos interesa modelar la relación entre la <strong>esperanza de vida</strong> y el PIB (una variable que representa el nivel económico de un país) o bien un indicador clásico como el indice de desarollo Humano y su evolucióna lo largo del tiempo.</p>
 <p>El problema en este caso es que la unidad de análisis (142 países) implica la realización de un gran número de modelos, 142 modelos!!! ¿Cómo podemos atender esta tarea de estimar 142 modelos de regresión lineal de una forma eficiente?</p>
-<p>Una opción que se usa por el <a href="http://hdr.undp.org/en/data">sitio oficial</a> del programa de Naciones Unidas para el desarrollo. Es presentar la relación entre variables mediante graficas de lineas: <img src="/img/onu.jpg" /></p>
+<p>Una opción que se usa por el <a href="http://hdr.undp.org/en/data">Programa de Naciones Unidas para el Desarrollo</a>, es presentar la relación entre variables mediante gráficas de lineas: <img src="/img/onu.jpg" /></p>
 <p>No obstante, el enfoque visual utilizado de <strong>ONU</strong> no permite una observarción precisa. Cada linea representa uno de los 142 paises!!</p>
 <p>Alternativamtene podemos representar la información usando las herramientas de visualización en <strong>R</strong> que ya conocemos.</p>
 <div class="figure">
@@ -129,7 +129,10 @@ if (!doNotTrack) {
 
 </div>
 <p>Ahora el reto es generar un modelo de regresión lineal para cada país. El enfoque que usaremos es mediante <strong>programación funcional</strong></p>
-<p>El objetivo es contar con <strong>una</strong> representación visual del comportamiento de la <strong>variable dependiente</strong> (en este caso el incremento anual de la <strong>esperanza de vida</strong>) aunado a los parámetros básicos que describen el desempeño del modelo como el coeficiente de determianción <strong>R^2</strong> para cada país.</p>
+<p>El objetivo es contar con <strong>una</strong> representación visual del comportamiento de la <strong>variable dependiente</strong>: Esperanza de vida en funeción del tiempo, es decir estimaremos el modelo:</p>
+<p><span class="math display">\[y=\beta_0+\beta_1x+\epsilon\]</span> Donde <span class="math inline">\(y\)</span>=Esperanza de vida, <span class="math inline">\(x=\)</span>años trenscurridos desde 1950.</p>
+<p>De tal modo que la interpretación de el parámetro <span class="math inline">\(\beta_1\)</span> es el <strong>incremento en la esperanza de vida</strong> asociado a un año adicional transcurrido desde el inicio de la muestra (1950-2007).</p>
+<p>Incremento anual de la <strong>esperanza de vida</strong> aunado a los parámetros básicos que describen el desempeño del modelo como el coeficiente de determianción <strong>R^2</strong> para cada país.</p>
 <p>La siguiente gráfica muestra una aplicación de este concepto.</p>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
@@ -139,6 +142,109 @@ if (!doNotTrack) {
 <pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>continents&lt;-gapminder%&gt;%
+select(country,continent)</code></pre>
+</div>
+<div id="aplicacion-del-enfoque-de-programacion-funcional." class="section level4">
+<h4>Aplicación del enfoque de programación funcional.</h4>
+<pre><code>## # A tibble: 1,704 x 6
+##    country     continent  year lifeExp      pop gdpPercap
+##    &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
+##  1 Afghanistan Asia       1952    28.8  8425333      779.
+##  2 Afghanistan Asia       1957    30.3  9240934      821.
+##  3 Afghanistan Asia       1962    32.0 10267083      853.
+##  4 Afghanistan Asia       1967    34.0 11537966      836.
+##  5 Afghanistan Asia       1972    36.1 13079460      740.
+##  6 Afghanistan Asia       1977    38.4 14880372      786.
+##  7 Afghanistan Asia       1982    39.9 12881816      978.
+##  8 Afghanistan Asia       1987    40.8 13867957      852.
+##  9 Afghanistan Asia       1992    41.7 16317921      649.
+## 10 Afghanistan Asia       1997    41.8 22227415      635.
+## # ... with 1,694 more rows</code></pre>
+<pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    1704 obs. of  6 variables:
+##  $ country  : Factor w/ 142 levels &quot;Afghanistan&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ continent: Factor w/ 5 levels &quot;Africa&quot;,&quot;Americas&quot;,..: 3 3 3 3 3 3 3 3 3 3 ...
+##  $ year     : int  1952 1957 1962 1967 1972 1977 1982 1987 1992 1997 ...
+##  $ lifeExp  : num  28.8 30.3 32 34 36.1 ...
+##  $ pop      : int  8425333 9240934 10267083 11537966 13079460 14880372 12881816 13867957 16317921 22227415 ...
+##  $ gdpPercap: num  779 821 853 836 740 ...</code></pre>
+<pre><code>## # A tibble: 12 x 5
+##    continent  year lifeExp       pop gdpPercap
+##    &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;     &lt;int&gt;     &lt;dbl&gt;
+##  1 Americas   1952    50.8  30144317     3478.
+##  2 Americas   1957    55.2  35015548     4132.
+##  3 Americas   1962    58.3  41121485     4582.
+##  4 Americas   1967    60.1  47995559     5755.
+##  5 Americas   1972    62.4  55984294     6809.
+##  6 Americas   1977    65.0  63759976     7675.
+##  7 Americas   1982    67.4  71640904     9611.
+##  8 Americas   1987    69.5  80122492     8688.
+##  9 Americas   1992    71.5  88111030     9472.
+## 10 Americas   1997    73.7  95895146     9767.
+## 11 Americas   2002    74.9 102479927    10742.
+## 12 Americas   2007    76.2 108700891    11978.</code></pre>
+<pre><code>## Joining, by = &quot;country&quot;</code></pre>
+<pre><code>## # A tibble: 1,704 x 8
+##    country data       model   tidy     glance      rsq augment    continent
+##    &lt;fct&gt;   &lt;list&gt;     &lt;list&gt;  &lt;list&gt;   &lt;list&gt;    &lt;dbl&gt; &lt;list&gt;     &lt;fct&gt;    
+##  1 Brazil  &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.998 &lt;tibble [~ Americas 
+##  2 Brazil  &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.998 &lt;tibble [~ Americas 
+##  3 Brazil  &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.998 &lt;tibble [~ Americas 
+##  4 Brazil  &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.998 &lt;tibble [~ Americas 
+##  5 Brazil  &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.998 &lt;tibble [~ Americas 
+##  6 Brazil  &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.998 &lt;tibble [~ Americas 
+##  7 Brazil  &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.998 &lt;tibble [~ Americas 
+##  8 Brazil  &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.998 &lt;tibble [~ Americas 
+##  9 Brazil  &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.998 &lt;tibble [~ Americas 
+## 10 Brazil  &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.998 &lt;tibble [~ Americas 
+## # ... with 1,694 more rows</code></pre>
+<pre><code>## # A tibble: 624 x 8
+##    country data       model   tidy     glance      rsq augment    continent
+##    &lt;fct&gt;   &lt;list&gt;     &lt;list&gt;  &lt;list&gt;   &lt;list&gt;    &lt;dbl&gt; &lt;list&gt;     &lt;fct&gt;    
+##  1 Algeria &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.985 &lt;tibble [~ Africa   
+##  2 Algeria &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.985 &lt;tibble [~ Africa   
+##  3 Algeria &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.985 &lt;tibble [~ Africa   
+##  4 Algeria &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.985 &lt;tibble [~ Africa   
+##  5 Algeria &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.985 &lt;tibble [~ Africa   
+##  6 Algeria &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.985 &lt;tibble [~ Africa   
+##  7 Algeria &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.985 &lt;tibble [~ Africa   
+##  8 Algeria &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.985 &lt;tibble [~ Africa   
+##  9 Algeria &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.985 &lt;tibble [~ Africa   
+## 10 Algeria &lt;tibble [~ &lt;S3: l~ &lt;tibble~ &lt;tibble ~ 0.985 &lt;tibble [~ Africa   
+## # ... with 614 more rows</code></pre>
+<pre class="r"><code>ggplot(models,aes(rsq,reorder(country,rsq)))+
+  geom_point(aes(colour=continent))+
+  theme_tufte()</code></pre>
+<p><img src="/post/2019-20-01-RL7-Models_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>## Alternativa eficiente
+
+continents&lt;-gapminder%&gt;%
+select(country,continent)
+
+
+modelos&lt;-gapminder %&gt;%mutate(year1950=year-1950)%&gt;%
+  group_by(country) %&gt;%
+  nest() %&gt;%  
+  mutate(fit = map(data, ~ lm(lifeExp ~ year1950, data = .x))) %&gt;%
+  mutate(rsq = map_dbl(fit, ~ summary(.x)[[&quot;r.squared&quot;]]))%&gt;% 
+  arrange(rsq)%&gt;%
+  left_join(continents)</code></pre>
+<pre><code>## Joining, by = &quot;country&quot;</code></pre>
+<pre class="r"><code>modelos</code></pre>
+<pre><code>## # A tibble: 1,704 x 5
+##    country data              fit         rsq continent
+##    &lt;fct&gt;   &lt;list&gt;            &lt;list&gt;    &lt;dbl&gt; &lt;fct&gt;    
+##  1 Rwanda  &lt;tibble [12 x 6]&gt; &lt;S3: lm&gt; 0.0172 Africa   
+##  2 Rwanda  &lt;tibble [12 x 6]&gt; &lt;S3: lm&gt; 0.0172 Africa   
+##  3 Rwanda  &lt;tibble [12 x 6]&gt; &lt;S3: lm&gt; 0.0172 Africa   
+##  4 Rwanda  &lt;tibble [12 x 6]&gt; &lt;S3: lm&gt; 0.0172 Africa   
+##  5 Rwanda  &lt;tibble [12 x 6]&gt; &lt;S3: lm&gt; 0.0172 Africa   
+##  6 Rwanda  &lt;tibble [12 x 6]&gt; &lt;S3: lm&gt; 0.0172 Africa   
+##  7 Rwanda  &lt;tibble [12 x 6]&gt; &lt;S3: lm&gt; 0.0172 Africa   
+##  8 Rwanda  &lt;tibble [12 x 6]&gt; &lt;S3: lm&gt; 0.0172 Africa   
+##  9 Rwanda  &lt;tibble [12 x 6]&gt; &lt;S3: lm&gt; 0.0172 Africa   
+## 10 Rwanda  &lt;tibble [12 x 6]&gt; &lt;S3: lm&gt; 0.0172 Africa   
+## # ... with 1,694 more rows</code></pre>
 <p>Observen que para la mayoría de estos países el modelo se ajsuta bastante bien (<span class="math inline">\(R^2\approx.97\)</span>), sin embargo para un grupo de paises particular el modelo parece no tener un ajuste adecuado?</p>
 <p>¿Qué tienen estos países en comun?</p>
 <p>Bueno, al parecer todos estos paises son de África, ¿Por qué el modelo de regresión lineal en este caso no se ajusta tan bien como en la mayoría de los países?</p>
