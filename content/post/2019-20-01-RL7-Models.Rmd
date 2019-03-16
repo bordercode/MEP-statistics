@@ -59,7 +59,7 @@ La siguiente gráfica muestra una aplicación de este concepto.
 
 Observen que para la mayoría de estos países el modelo se ajsuta bastante bien ($R^2\approx.97$), sin embargo para un grupo de paises particular el modelo parece no tener un ajuste adecuado? 
 
-¿Qué tienen estos países en comun?
+¿Qué tienen estos países en común?
 
 Bueno,  al parecer todos estos paises son de África, ¿Por qué el modelo de regresión lineal en este caso no se ajusta tan bien como en la mayoría de los países? 
 
