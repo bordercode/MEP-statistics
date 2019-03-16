@@ -192,7 +192,7 @@ Al parecer la mejoría en la esperanza de vida ha sido mayor en aquellos paises 
 Para explorar el comportamiento de los residuales, como parte del proceso de diagnóstico del modelo usamos   los componentes a nivel de observación del modelo obtenidos con la función augment() y el posterior unnest().
 
 
-Este componente nos aporta información sobre el cumplimiento de los supuestos del modelo. Observamos que posiblemente es necesario mejorar la estimación de los  (modelos!) para grupos específicos de paises en continentes como äfrica (claramente, un comportamiento no lineal) dado que los residuales muestran un patrón no consitente con  un modelo lineal.
+Este componente nos aporta información sobre el cumplimiento de los supuestos del modelo. Observamos que posiblemente es necesario mejorar la estimación de los  (modelos!) para grupos específicos de paises en continentes como África (claramente, un comportamiento no lineal) dado que los residuales muestran un patrón no consistente con  un modelo lineal.
 
 ```{r,fig.width=12, fig.height=8}
 models%>%
