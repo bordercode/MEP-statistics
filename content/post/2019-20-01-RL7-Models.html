@@ -136,5 +136,54 @@ models&lt;-models%&gt;%
     )%&gt;%
  left_join(continents)</code></pre>
 <pre><code>## Joining, by = &quot;country&quot;</code></pre>
+<pre class="r"><code>models&lt;-models[!duplicated(models$country), ]</code></pre>
+<pre class="r"><code>#Unnest y plot  componentes de interes. 
+unnest(models,tidy)</code></pre>
+<pre><code>## # A tibble: 284 x 8
+##    country     rsq continent term     estimate std.error statistic  p.value
+##    &lt;fct&gt;     &lt;dbl&gt; &lt;fct&gt;     &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+##  1 Afghanis~ 0.948 Asia      (Interc~   29.4     0.699       42.0  1.40e-12
+##  2 Afghanis~ 0.948 Asia      year1950    0.275   0.0205      13.5  9.84e- 8
+##  3 Albania   0.911 Europe    (Interc~   58.6     1.13        51.7  1.79e-13
+##  4 Albania   0.911 Europe    year1950    0.335   0.0332      10.1  1.46e- 6
+##  5 Algeria   0.985 Africa    (Interc~   42.2     0.756       55.8  8.22e-14
+##  6 Algeria   0.985 Africa    year1950    0.569   0.0221      25.7  1.81e-10
+##  7 Angola    0.888 Africa    (Interc~   31.7     0.804       39.4  2.63e-12
+##  8 Angola    0.888 Africa    year1950    0.209   0.0235       8.90 4.59e- 6
+##  9 Argentina 0.996 Americas  (Interc~   62.2     0.167      372.   4.80e-22
+## 10 Argentina 0.996 Americas  year1950    0.232   0.00489     47.4  4.22e-13
+## # ... with 274 more rows</code></pre>
+<pre class="r"><code>models%&gt;%
+  unnest(tidy)%&gt;%
+  select(continent,country, term, estimate,rsq)%&gt;%
+  spread(term, estimate)%&gt;%
+  ggplot(aes(`(Intercept)`, year1950))+
+  geom_point(aes(colour=continent,size=rsq))+
+  geom_smooth(se=FALSE)+
+  xlab(&quot;Esperanza de vida EV&quot;)+
+  ylab(&quot;Mejora anual en EV al inicio del periodo (1950)&quot;)+
+  scale_size_area()+
+  theme_light()+
+  scale_colour_viridis_d()</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="/post/2019-20-01-RL7-Models_files/figure-html/unnamed-chunk-5-1.png" width="672" /> #### Algunas observaciones finales sobre el patrón observado con la estimación de los modelos:</p>
+<p>¿QUé representaría un punto en la esquina superior derecha?</p>
+<p>Un país que tenia una elevada esperanza de vida en 1950 y que ha mejorado este indicador rapidamente desde entonces.</p>
+<p>Qué indica la usencia de puntos en la esquina superior derecha?</p>
+<p>De hecho es un buen indicio por que sugiere que los países que tenian menor EV al inicio de hecho son los que han avanzado más en este indicador.</p>
+<p>Los paises en los que el modeo no se ajusta bien estan en Africa mayoritariamente. Esta información sobre la magnitud del coeficiente de determianción <span class="math inline">\(r^2\)</span> es valiosa por que nos alerta sobre el riesgo de hacer inferencia con base en los modelos estimados para grupo de países específico.</p>
+<p>Al parecer la mejoría en la esperanza de vida ha sido mayor en aquellos paises cuya población inicialmente moría mas jóven.</p>
+<pre class="r"><code>models%&gt;%
+  unnest(augment)%&gt;%
+  ggplot(aes(year1950,.resid))+
+  geom_line(aes(group=country), alpha=1/3)+
+  geom_smooth(se=FALSE)+
+  geom_hline(yintercept = 0,colour=&quot;white&quot;)+
+  facet_wrap(~continent)+
+  xlab(&quot;Años desde 1950&quot;)+
+  theme_light()</code></pre>
+<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="/post/2019-20-01-RL7-Models_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>Este componente nos aporta información sobre el cumplimeinto de los supuestos del modelo. Observamos que posiblemente es necesario mejorar el modelo (modelos!) dado que los residuales muestran un patrón, notablemente mas aceptuado en continentes como África.</p>
 </div>
 </div>

@@ -131,6 +131,10 @@ models<-models%>%
     augment=map(model,broom::augment)
     )%>%
  left_join(continents)
+
+
+models<-models[!duplicated(models$country), ]
+
 ```
 
 ```{r, include=FALSE}
@@ -141,6 +145,58 @@ ggplot(models,aes(rsq,reorder(country,rsq)))+
 ```
 
 
+```{r}
+#Unnest y plot  componentes de interes. 
+unnest(models,tidy)
+
+models%>%
+  unnest(tidy)%>%
+  select(continent,country, term, estimate,rsq)%>%
+  spread(term, estimate)%>%
+  ggplot(aes(`(Intercept)`, year1950))+
+  geom_point(aes(colour=continent,size=rsq))+
+  geom_smooth(se=FALSE)+
+  xlab("Esperanza de vida EV")+
+  ylab("Mejora anual en EV al inicio del periodo (1950)")+
+  scale_size_area()+
+  theme_light()+
+  scale_colour_viridis_d()
+  
+```
+#### Algunas observaciones finales sobre el patrón observado con la estimación de los modelos:
+
+
+¿QUé representaría un punto en la esquina superior derecha?
+
+Un país que tenia una elevada esperanza de vida en 1950 y que ha mejorado este indicador  rapidamente desde entonces. 
+
+Qué indica la usencia de puntos en la esquina superior derecha?
+
+De hecho es un buen indicio por que sugiere que los países que tenian menor EV al inicio de hecho son los que han avanzado más en este indicador.
+
+
+Los paises en los que el modeo no se ajusta bien estan en Africa mayoritariamente.
+Esta información sobre la magnitud del coeficiente de determianción $r^2$ es valiosa por que nos alerta sobre el riesgo de hacer inferencia con base en los modelos estimados para grupo de países específico. 
+
+Al parecer la mejoría en la esperanza de vida ha sido mayor en aquellos paises cuya población inicialmente moría mas jóven. 
+
+
+
+
+```{r}
+models%>%
+  unnest(augment)%>%
+  ggplot(aes(year1950,.resid))+
+  geom_line(aes(group=country), alpha=1/3)+
+  geom_smooth(se=FALSE)+
+  geom_hline(yintercept = 0,colour="white")+
+  facet_wrap(~continent)+
+  xlab("Años desde 1950")+
+  theme_light()
+  
+```
+
+Este componente nos aporta información sobre el cumplimeinto de los supuestos del modelo. Observamos que posiblemente es necesario mejorar el modelo (modelos!) dado que los residuales muestran un patrón, notablemente mas aceptuado en continentes como África.
 
 ```{r, include=FALSE}
 
