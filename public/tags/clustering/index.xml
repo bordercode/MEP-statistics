@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Clustering on Estadística II</title>
+    <link>/tags/clustering/</link>
+    <description>Recent content in Clustering on Estadística II</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="/tags/clustering/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>PCA</title>
+      <link>/post/2019-02-24-pca/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/post/2019-02-24-pca/</guid>
+      <description>Análisis de Componentes Principales (PCA).El método PCA permite reexpresar un conjunto multidimensional de datos (ej. k dimnesiones) que contiene variables altamente correlacionadas ( ej. que aportan información redundante), en un subconjnto de datos de menor dimensión.
+Cada variable puede considerarse como una dimensión.
+Sea \(x_i\) la observaciÓn del individuo i tomado de la variable k donde i varia de i a I y k a K
+El PCA es una técnica ´para descubrir como variables numéricas “covarian”.</description>
+    </item>
+    
+  </channel>
+</rss>

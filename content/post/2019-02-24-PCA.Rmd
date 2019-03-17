@@ -2,11 +2,23 @@
 title: "PCA"
 author: "JLMR"
 date: "24 de febrero de 2019"
-output: html_document
+categories: ["R"]
+tags: ["PCA", "clustering", "classification", "unsupervised statistical learning"]
+mathjax : true
+menu:
+  main:
+    name: PCA
+    weight: 12
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r,echo=FALSE, message=FALSE,warning=FALSE}
+library(gapminder)
+library(dplyr)
+library(purrr)
+library(tidyr)
+library(ggplot2)
+library(broom)
+library(ggthemes)
 ```
 
 ## Análisis de Componentes Principales (PCA).
