@@ -62,7 +62,7 @@ matrix
 ```
 
 Entonces podemos expresar el primer vector de esta matriz como 
-$$\vec{x_1}  = \begin{bmatrix} 21  \\6 \\ 160 \end{bmatrix}$$
+$$\vec{x_1}  = \begin{bmatrix} 24  \\152 \\ 108 \end{bmatrix}$$
 
 
 
