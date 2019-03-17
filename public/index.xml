@@ -23,6 +23,18 @@ Cuando el supuesto no se cumple tenemos el problema denominado Heterocedasticida
     </item>
     
     <item>
+      <title>PCA</title>
+      <link>/post/2019-02-24-pca/</link>
+      <pubDate>Mon, 28 Jan 2019 21:14:14 -0500</pubDate>
+      
+      <guid>/post/2019-02-24-pca/</guid>
+      <description>Análisis de Componentes Principales (PCA).El método PCA permite reexpresar un conjunto multidimensional de datos (ej. k dimnesiones) que contiene variables altamente correlacionadas ( ej. que aportan información redundante), en un subconjnto de datos de menor dimensión.
+Cada variable puede considerarse como una dimensión.
+Sea \(x_i\) la observación del individuo i tomado de la variable k donde i varia de i a I y k a K
+El PCA es una técnica ´para descubrir como variables numéricas “covarian”.</description>
+    </item>
+    
+    <item>
       <title>RL-Multiple</title>
       <link>/post/2019-01-25-rl5/</link>
       <pubDate>Sat, 26 Jan 2019 21:11:11 -0500</pubDate>
@@ -145,18 +157,6 @@ La tasa promedio para los 32 estados del país para el sexo masculino.
       
       <guid>/about/</guid>
       <description>Descripción del programa. El programa tiene una duración de dos años, organizados en cuatro semestres. Desde un inicio se trabaja en el planteamiento y desarrollo de su tesis, que estará enmarcada en una de las líneas de especialidad de la maestría. Para llevar a cabo este proceso contarán con el apoyo de su director o directora de tesis, la planta docente asociada al programa y los cursos contenidos en el plan de estudios.</description>
-    </item>
-    
-    <item>
-      <title>PCA</title>
-      <link>/post/2019-02-24-pca/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/post/2019-02-24-pca/</guid>
-      <description>Análisis de Componentes Principales (PCA).El método PCA permite reexpresar un conjunto multidimensional de datos (ej. k dimnesiones) que contiene variables altamente correlacionadas ( ej. que aportan información redundante), en un subconjnto de datos de menor dimensión.
-Cada variable puede considerarse como una dimensión.
-Sea \(x_i\) la observaciÓn del individuo i tomado de la variable k donde i varia de i a I y k a K
-El PCA es una técnica ´para descubrir como variables numéricas “covarian”.</description>
     </item>
     
   </channel>

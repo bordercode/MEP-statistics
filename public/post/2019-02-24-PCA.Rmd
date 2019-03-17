@@ -1,7 +1,7 @@
 ---
 title: "PCA"
 author: "JLMR"
-date: "24 de febrero de 2019"
+date: 2019-01-28T21:14:14-05:00
 categories: ["R"]
 tags: ["PCA", "clustering", "classification", "unsupervised statistical learning"]
 mathjax : true
@@ -28,7 +28,7 @@ El método **PCA** permite reexpresar un conjunto multidimensional de datos (ej.
 
 Cada variable puede considerarse como una dimensión.
 
-Sea $x_i$ la observaciÓn del individuo *i* tomado de la variable **k**  donde i varia de **i** a **I** y k a **K**
+Sea $x_i$ la observación del individuo *i* tomado de la variable **k**  donde i varia de **i** a **I** y k a **K**
 
 El **PCA** es  una técnica ´para descubrir como variables **numéricas** **"covarian"**.
 
@@ -36,13 +36,34 @@ La aplicación del método reduce a un subconjunto de  dimensiones (componentes 
 
 La estructura de datos resultante maximiza la variación inherente al conjunto de datos.
 
-Los componentes son combinaciones lineales de las variables originales, que controlan por el "ruido" (información reducntdante) en los datos. Nos interesa la **señal** no el **ruido**!
+Los componentes son combinaciones lineales de las variables originales, que controlan por el "ruido" (información redundante) en los datos. Nos interesa la **señal** no el **ruido**!
 
-El **componente principal** es una combinación lineal de la variables consideradas para predicción.
+El **componente principal** es una combinación lineal de la variables consideradas para predicción. este captura la mayyor pate de la variación en los dimensiones consideradas.
 
 El método permite estimar la proporción de la variación que cada dimensión aporta a los componentes principales, de tal forma que podamos identificar las variables de mayor relevancia para el análisis y conocer las variables correlacionadas.
 
-En la estimación de **PCA**, el monto de la variación que cada componente retiene se captura por el **eigenvalor**
+En la estimación de **PCA**, el monto de la variación que cada componente retiene se captura por el **eigenvalor** y se expresa com cociente de la varización total den los datos.
+
+Antes avanzar consideremos algunos fundamentos de algebra lineal necesarios para tener un mejor entendimiento de esta técnica:
+
+Suponga que tiene la sigueinte  matriz con dimensiones mxn  n=5, m=3,
+
+```{r, echo=FALSE}
+Name<-c("A",	"B",	"C",	"D",	"E")
+Age<-c(24,	50,	17,	35,	65)
+Height<-c(152,	175,	160,	170,	155)
+IQ<-c(108,102,	95,	97,	87)
+
+matrix<-as.data.frame(cbind(Age, Height
+                        ,IQ))
+
+View(matrix)
+```
+
+Entonces podemos expresar el primer vector de esta matriz como 
+$$\vec{x_1}  = \begin{bmatrix} 21  \\6 \\ 160 \end{bmatrix}$$
+
+
 
 
 

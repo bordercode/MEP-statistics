@@ -6,6 +6,7 @@
     <description>Recent content in Classification on Estadística II</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
+    <lastBuildDate>Mon, 28 Jan 2019 21:14:14 -0500</lastBuildDate>
     
 	<atom:link href="/tags/classification/index.xml" rel="self" type="application/rss+xml" />
     
@@ -13,12 +14,12 @@
     <item>
       <title>PCA</title>
       <link>/post/2019-02-24-pca/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 28 Jan 2019 21:14:14 -0500</pubDate>
       
       <guid>/post/2019-02-24-pca/</guid>
       <description>Análisis de Componentes Principales (PCA).El método PCA permite reexpresar un conjunto multidimensional de datos (ej. k dimnesiones) que contiene variables altamente correlacionadas ( ej. que aportan información redundante), en un subconjnto de datos de menor dimensión.
 Cada variable puede considerarse como una dimensión.
-Sea \(x_i\) la observaciÓn del individuo i tomado de la variable k donde i varia de i a I y k a K
+Sea \(x_i\) la observación del individuo i tomado de la variable k donde i varia de i a I y k a K
 El PCA es una técnica ´para descubrir como variables numéricas “covarian”.</description>
     </item>
     
