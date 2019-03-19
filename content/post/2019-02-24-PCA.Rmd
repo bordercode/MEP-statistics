@@ -134,6 +134,11 @@ $(A^T A)^T=A^T \cdot (A^T)^T=A^T A$
 
 Considere un vector propio  $v$ $\neq0$ de $A^TA$ con valor propio  $\lambda \neq0$ ej. $(A^TA)v=\lambda v$
 
+Ahora multiplicamos la matriz anterior por A tenemos $$(AA^T)(Av)=\lambda(Av)$$ lo que implica que $Av$ es un vector propio de $A A^T$ con Eigenvalor $\lambda$. Entonces los valores característicos de $A^TA$ son los mismos que $AA^T$.
+
+El uso de esta propuesta es importante por que permite simplificar el computo para estimar los eigenvalores por ejemplo considere una matriz de 400x3 entonces $A^TA$ es una matriz de 400X400 con 400 $\lambda$'s pero $A^TA$ tiene solo 3 $\lambda$'s, 
+
+
 Con la técnica de PCA determinamos los vectores propios, estos vectores capturan el espacio común a lo largo del cuál se registra la variación de los datos  y los valores propios, que dan cuenta de la magnitud de la varianza que cada vector propio explica. 
 
 ![](/img/v.jpg)
