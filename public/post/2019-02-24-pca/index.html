@@ -161,7 +161,27 @@ if (!doNotTrack) {
 <p>En este contexto el escalar <span class="math inline">\(\lambda\)</span> es denominado Eigenvalor (valor propio, o característico).</p>
 <p><span class="math inline">\(Av=\lambda v\)</span></p>
 <p>Donde <strong>v</strong> es un Eigenvector y <span class="math inline">\(\lambda\)</span> el Eigenvalor.</p>
-<p>Con la técnica de PCA determinamos los vectores peopios, estos vectores capturan el espacio común a lo largo del cual se registra la variación de los datos y los valores propios, que dan cuenta de la magnitud de la varianza que cada vector propio explica.</p>
+<p><strong>Matriz simétrica:</strong> Una matriz <span class="math inline">\(mxn\)</span> se dice que es simétrica si <span class="math inline">\(A^T =A\)</span></p>
+<p>Por ejemplo:</p>
+<p><span class="math display">\[\begin{bmatrix}1&amp;2&amp;3\\2&amp;4&amp;5\\3&amp;5&amp;6\end{bmatrix}\]</span></p>
+<p><strong>Vectores ortogonales:</strong> Dos vectores se consideran ortogonales cuando:</p>
+<p><span class="math inline">\(\vec{u_.}\cdot \vec{v_.}=0\)</span></p>
+<p><strong>Teorema:</strong></p>
+<p>Sea <strong>A</strong> una matriz simétrica. Entonces, existen <strong>valores</strong> propios reales <span class="math inline">\(\lambda_1, \lambda_2,\lambda_3,...,\lambda_n,\)</span> y <strong>vectores</strong> propios ortogonales <span class="math inline">\(\vec{v_1},\vec{v_2},\vec{v_3},...\vec{v_n}\neq 0\)</span><br />
+tal que <span class="math inline">\(A\vec{v_i}=\lambda \vec{v_i}\)</span> para <span class="math inline">\(i=1,2,...,n\)</span></p>
+<p>Adicionalmente consideremos la siguientes observaciones:</p>
+<ol style="list-style-type: decimal">
+<li>Sea <span class="math inline">\(A \in \mathbb{R}\)</span>una matriz mXn. Entoces tanto <span class="math inline">\(A^T \cdot A\)</span> como <span class="math inline">\(A \cdot A^T\)</span> son simétricas.</li>
+</ol>
+<p><span class="math inline">\((AA^T)^T=(A^T)^T \cdot A^T=A \cdot A^T\)</span></p>
+<p><span class="math inline">\((A^T A)^T=A^T \cdot (A^T)^T=A^T A\)</span></p>
+<p>2.- Sea A una matriz mxn. Entonces la matriz <span class="math inline">\(AA^T\)</span> y <span class="math inline">\(A^TA\)</span> tienen los mismos valores propios <span class="math inline">\(\neq0\)</span></p>
+<p>Considere un vector propio <span class="math inline">\(v\)</span> <span class="math inline">\(\neq0\)</span> de <span class="math inline">\(A^TA\)</span> con valor propio <span class="math inline">\(\lambda \neq0\)</span> ej. <span class="math inline">\((A^TA)v=\lambda v\)</span></p>
+<p>Con la técnica de PCA determinamos los vectores propios, estos vectores capturan el espacio común a lo largo del cuál se registra la variación de los datos y los valores propios, que dan cuenta de la magnitud de la varianza que cada vector propio explica.</p>
+<div class="figure">
+<img src="/img/v.jpg" />
+
+</div>
 <pre><code>## corrplot 0.84 loaded</code></pre>
 <pre><code>## [1] &quot;C:/Users/LENOVO/Desktop/DESK/web/MEP-statistics/content/post&quot;</code></pre>
 <pre><code>## &#39;data.frame&#39;:    569 obs. of  33 variables:
