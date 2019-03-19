@@ -87,10 +87,14 @@ Entonces podemos expresar el primer vector de esta matriz como
 $$\vec{x_1}  = \begin{bmatrix} 24  \\152 \\ 108 \end{bmatrix}$$
 Suponga que tenomos una matriz *A* nxn   y un vector nx1 *v*. si multiplicamos *v* por *A* Obtenemos otro vector. La matriz A ha realizado una transformación sobre el vector v.  
 
+![](/img/matrix.jpg)
+
+Note que el producto resultante la mtriz transformada cambió el tamaño,  no la dirección del vector. 
+
 \(\begin{bmatrix}2&3\\1&2\end{bmatrix} 
 \begin{bmatrix}2\\5\end{bmatrix}=\begin{bmatrix}19\\12\end{bmatrix}\)
 
-![](/img/matrix.jpg)
+
 Recordemos la definición de Eigenvectores (vectores propios/característicos) y Eigenvalores.
 
 **Eigenvectores**. Un vector tal que cuando son transformados por el operador resultan en un múltiplo escalar de si mismos.
@@ -99,10 +103,12 @@ En este contexto el escalar $\lambda$ es denominado Eigenvalor (valor propio, o 
 
 \(Av=\lambda v\)
 
-Donde **x** es un Eigenvector y $\lambda$ el Eigenvalor.
+Donde **v** es un Eigenvector y $\lambda$ el Eigenvalor.
 
 
+Con la técnica de PCA determinamos los vectores propios, estos vectores capturan el espacio común a lo largo del cual se registra la variación de los datos  y los valores propios, que dan cuenta de la magnitud de la varianza que cada vector propio explica. 
 
+![](/img/pc.png)
 ```{r,echo=FALSE}
 library(corrplot)
 getwd()
