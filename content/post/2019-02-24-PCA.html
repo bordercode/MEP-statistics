@@ -34,4 +34,194 @@ menu:
 ## 4  35    170  97
 ## 5  65    155  87</code></pre>
 <p>Entonces podemos expresar el primer vector de esta matriz como <span class="math display">\[\vec{x_1}  = \begin{bmatrix} 24  \\152 \\ 108 \end{bmatrix}\]</span></p>
+<pre><code>## corrplot 0.84 loaded</code></pre>
+<pre><code>## [1] &quot;C:/Users/LENOVO/Desktop/DESK/web/MEP-statistics/content/post&quot;</code></pre>
+<pre><code>## &#39;data.frame&#39;:    569 obs. of  33 variables:
+##  $ id                     : int  842302 842517 84300903 84348301 84358402 843786 844359 84458202 844981 84501001 ...
+##  $ diagnosis              : Factor w/ 2 levels &quot;B&quot;,&quot;M&quot;: 2 2 2 2 2 2 2 2 2 2 ...
+##  $ radius_mean            : num  18 20.6 19.7 11.4 20.3 ...
+##  $ texture_mean           : num  10.4 17.8 21.2 20.4 14.3 ...
+##  $ perimeter_mean         : num  122.8 132.9 130 77.6 135.1 ...
+##  $ area_mean              : num  1001 1326 1203 386 1297 ...
+##  $ smoothness_mean        : num  0.1184 0.0847 0.1096 0.1425 0.1003 ...
+##  $ compactness_mean       : num  0.2776 0.0786 0.1599 0.2839 0.1328 ...
+##  $ concavity_mean         : num  0.3001 0.0869 0.1974 0.2414 0.198 ...
+##  $ concave.points_mean    : num  0.1471 0.0702 0.1279 0.1052 0.1043 ...
+##  $ symmetry_mean          : num  0.242 0.181 0.207 0.26 0.181 ...
+##  $ fractal_dimension_mean : num  0.0787 0.0567 0.06 0.0974 0.0588 ...
+##  $ radius_se              : num  1.095 0.543 0.746 0.496 0.757 ...
+##  $ texture_se             : num  0.905 0.734 0.787 1.156 0.781 ...
+##  $ perimeter_se           : num  8.59 3.4 4.58 3.44 5.44 ...
+##  $ area_se                : num  153.4 74.1 94 27.2 94.4 ...
+##  $ smoothness_se          : num  0.0064 0.00522 0.00615 0.00911 0.01149 ...
+##  $ compactness_se         : num  0.049 0.0131 0.0401 0.0746 0.0246 ...
+##  $ concavity_se           : num  0.0537 0.0186 0.0383 0.0566 0.0569 ...
+##  $ concave.points_se      : num  0.0159 0.0134 0.0206 0.0187 0.0188 ...
+##  $ symmetry_se            : num  0.03 0.0139 0.0225 0.0596 0.0176 ...
+##  $ fractal_dimension_se   : num  0.00619 0.00353 0.00457 0.00921 0.00511 ...
+##  $ radius_worst           : num  25.4 25 23.6 14.9 22.5 ...
+##  $ texture_worst          : num  17.3 23.4 25.5 26.5 16.7 ...
+##  $ perimeter_worst        : num  184.6 158.8 152.5 98.9 152.2 ...
+##  $ area_worst             : num  2019 1956 1709 568 1575 ...
+##  $ smoothness_worst       : num  0.162 0.124 0.144 0.21 0.137 ...
+##  $ compactness_worst      : num  0.666 0.187 0.424 0.866 0.205 ...
+##  $ concavity_worst        : num  0.712 0.242 0.45 0.687 0.4 ...
+##  $ concave.points_worst   : num  0.265 0.186 0.243 0.258 0.163 ...
+##  $ symmetry_worst         : num  0.46 0.275 0.361 0.664 0.236 ...
+##  $ fractal_dimension_worst: num  0.1189 0.089 0.0876 0.173 0.0768 ...
+##  $ X                      : logi  NA NA NA NA NA NA ...</code></pre>
+<pre><code>##  [1] &quot;id&quot;                      &quot;diagnosis&quot;              
+##  [3] &quot;radius_mean&quot;             &quot;texture_mean&quot;           
+##  [5] &quot;perimeter_mean&quot;          &quot;area_mean&quot;              
+##  [7] &quot;smoothness_mean&quot;         &quot;compactness_mean&quot;       
+##  [9] &quot;concavity_mean&quot;          &quot;concave.points_mean&quot;    
+## [11] &quot;symmetry_mean&quot;           &quot;fractal_dimension_mean&quot; 
+## [13] &quot;radius_se&quot;               &quot;texture_se&quot;             
+## [15] &quot;perimeter_se&quot;            &quot;area_se&quot;                
+## [17] &quot;smoothness_se&quot;           &quot;compactness_se&quot;         
+## [19] &quot;concavity_se&quot;            &quot;concave.points_se&quot;      
+## [21] &quot;symmetry_se&quot;             &quot;fractal_dimension_se&quot;   
+## [23] &quot;radius_worst&quot;            &quot;texture_worst&quot;          
+## [25] &quot;perimeter_worst&quot;         &quot;area_worst&quot;             
+## [27] &quot;smoothness_worst&quot;        &quot;compactness_worst&quot;      
+## [29] &quot;concavity_worst&quot;         &quot;concave.points_worst&quot;   
+## [31] &quot;symmetry_worst&quot;          &quot;fractal_dimension_worst&quot;
+## [33] &quot;X&quot;</code></pre>
+<pre><code>##        id            diagnosis  radius_mean      texture_mean  
+##  Min.   :     8670   B:357     Min.   : 6.981   Min.   : 9.71  
+##  1st Qu.:   869218   M:212     1st Qu.:11.700   1st Qu.:16.17  
+##  Median :   906024             Median :13.370   Median :18.84  
+##  Mean   : 30371831             Mean   :14.127   Mean   :19.29  
+##  3rd Qu.:  8813129             3rd Qu.:15.780   3rd Qu.:21.80  
+##  Max.   :911320502             Max.   :28.110   Max.   :39.28  
+##  perimeter_mean     area_mean      smoothness_mean   compactness_mean 
+##  Min.   : 43.79   Min.   : 143.5   Min.   :0.05263   Min.   :0.01938  
+##  1st Qu.: 75.17   1st Qu.: 420.3   1st Qu.:0.08637   1st Qu.:0.06492  
+##  Median : 86.24   Median : 551.1   Median :0.09587   Median :0.09263  
+##  Mean   : 91.97   Mean   : 654.9   Mean   :0.09636   Mean   :0.10434  
+##  3rd Qu.:104.10   3rd Qu.: 782.7   3rd Qu.:0.10530   3rd Qu.:0.13040  
+##  Max.   :188.50   Max.   :2501.0   Max.   :0.16340   Max.   :0.34540  
+##  concavity_mean    concave.points_mean symmetry_mean   
+##  Min.   :0.00000   Min.   :0.00000     Min.   :0.1060  
+##  1st Qu.:0.02956   1st Qu.:0.02031     1st Qu.:0.1619  
+##  Median :0.06154   Median :0.03350     Median :0.1792  
+##  Mean   :0.08880   Mean   :0.04892     Mean   :0.1812  
+##  3rd Qu.:0.13070   3rd Qu.:0.07400     3rd Qu.:0.1957  
+##  Max.   :0.42680   Max.   :0.20120     Max.   :0.3040  
+##  fractal_dimension_mean   radius_se        texture_se      perimeter_se   
+##  Min.   :0.04996        Min.   :0.1115   Min.   :0.3602   Min.   : 0.757  
+##  1st Qu.:0.05770        1st Qu.:0.2324   1st Qu.:0.8339   1st Qu.: 1.606  
+##  Median :0.06154        Median :0.3242   Median :1.1080   Median : 2.287  
+##  Mean   :0.06280        Mean   :0.4052   Mean   :1.2169   Mean   : 2.866  
+##  3rd Qu.:0.06612        3rd Qu.:0.4789   3rd Qu.:1.4740   3rd Qu.: 3.357  
+##  Max.   :0.09744        Max.   :2.8730   Max.   :4.8850   Max.   :21.980  
+##     area_se        smoothness_se      compactness_se      concavity_se    
+##  Min.   :  6.802   Min.   :0.001713   Min.   :0.002252   Min.   :0.00000  
+##  1st Qu.: 17.850   1st Qu.:0.005169   1st Qu.:0.013080   1st Qu.:0.01509  
+##  Median : 24.530   Median :0.006380   Median :0.020450   Median :0.02589  
+##  Mean   : 40.337   Mean   :0.007041   Mean   :0.025478   Mean   :0.03189  
+##  3rd Qu.: 45.190   3rd Qu.:0.008146   3rd Qu.:0.032450   3rd Qu.:0.04205  
+##  Max.   :542.200   Max.   :0.031130   Max.   :0.135400   Max.   :0.39600  
+##  concave.points_se   symmetry_se       fractal_dimension_se
+##  Min.   :0.000000   Min.   :0.007882   Min.   :0.0008948   
+##  1st Qu.:0.007638   1st Qu.:0.015160   1st Qu.:0.0022480   
+##  Median :0.010930   Median :0.018730   Median :0.0031870   
+##  Mean   :0.011796   Mean   :0.020542   Mean   :0.0037949   
+##  3rd Qu.:0.014710   3rd Qu.:0.023480   3rd Qu.:0.0045580   
+##  Max.   :0.052790   Max.   :0.078950   Max.   :0.0298400   
+##   radius_worst   texture_worst   perimeter_worst    area_worst    
+##  Min.   : 7.93   Min.   :12.02   Min.   : 50.41   Min.   : 185.2  
+##  1st Qu.:13.01   1st Qu.:21.08   1st Qu.: 84.11   1st Qu.: 515.3  
+##  Median :14.97   Median :25.41   Median : 97.66   Median : 686.5  
+##  Mean   :16.27   Mean   :25.68   Mean   :107.26   Mean   : 880.6  
+##  3rd Qu.:18.79   3rd Qu.:29.72   3rd Qu.:125.40   3rd Qu.:1084.0  
+##  Max.   :36.04   Max.   :49.54   Max.   :251.20   Max.   :4254.0  
+##  smoothness_worst  compactness_worst concavity_worst  concave.points_worst
+##  Min.   :0.07117   Min.   :0.02729   Min.   :0.0000   Min.   :0.00000     
+##  1st Qu.:0.11660   1st Qu.:0.14720   1st Qu.:0.1145   1st Qu.:0.06493     
+##  Median :0.13130   Median :0.21190   Median :0.2267   Median :0.09993     
+##  Mean   :0.13237   Mean   :0.25427   Mean   :0.2722   Mean   :0.11461     
+##  3rd Qu.:0.14600   3rd Qu.:0.33910   3rd Qu.:0.3829   3rd Qu.:0.16140     
+##  Max.   :0.22260   Max.   :1.05800   Max.   :1.2520   Max.   :0.29100     
+##  symmetry_worst   fractal_dimension_worst    X          
+##  Min.   :0.1565   Min.   :0.05504         Mode:logical  
+##  1st Qu.:0.2504   1st Qu.:0.07146         NA&#39;s:569      
+##  Median :0.2822   Median :0.08004                       
+##  Mean   :0.2901   Mean   :0.08395                       
+##  3rd Qu.:0.3179   3rd Qu.:0.09208                       
+##  Max.   :0.6638   Max.   :0.20750</code></pre>
+<pre><code>## Warning: funs() is soft deprecated as of dplyr 0.8.0
+## please use list() instead
+## 
+## # Before:
+## funs(name = f(.)
+## 
+## # After: 
+## list(name = ~f(.))
+## This warning is displayed once per session.</code></pre>
+<pre><code>## Warning in var(if (is.vector(x) || is.factor(x)) x else as.double(x), na.rm = na.rm): Calling var(x) on a factor x is deprecated and will become an error.
+##   Use something like &#39;all(duplicated(x)[-1L])&#39; to test for a constant vector.</code></pre>
+<p><img src="/post/2019-02-24-PCA_files/figure-html/unnamed-chunk-3-1.png" width="672" /> Note el grado de correlación entre las variables de la muestra. Soporte en favor de la decisión de usar la metodología de PCA. ### Implementación.</p>
+<p>Una pregunta escencial <strong>previo</strong> a la implementación de <strong>PCA</strong> es si debemos estandarizar (scalar) nuestra matriz. ( variables con media=0, std dev=1).(Ver Z-Score Normalization. <em>Standardization involves rescaling the features such that they have the properties of a standard normal distribution with a mean of zero and a standard deviation of one.</em>)</p>
+<p>Nota sobre el proceso de estandarización.</p>
+<p><em>We can think of Principle Component Analysis (PCA) as being a prime example of when normalization is important. In PCA we are interested in the components that maximize the variance. If one component (e.g. human height) varies less than another (e.g. weight) because of their respective scales (meters vs. kilos), PCA might determine that the direction of maximal variance more closely corresponds with the ‘weight’ axis, if those features are not scaled. As a change in height of one meter can be considered much more important than the change in weight of one kilogram, this is clearly incorrect.</em></p>
+<p>La respuesta es directa, cuando las unidades de medida nos son homogéneas es <strong>necesario</strong> escalar los datos.</p>
+<p>Escalar los datos implica utilizar la <strong>matriz de correlación</strong>. Utilizar los datos sin escalar require utilizar la correspondiente <strong>matriz de covarianza</strong>.</p>
+<p>De lo contrario los <strong>eigenvectores</strong> resultantes en el proceso de estimación de <strong>PCA</strong> no aportan información consistente.(ej. la importancia de cada variable y sus unidades de medida tendrá un impacto en la organización de los <strong>eigenvectores</strong> resultantes distorsionando la varianza real explicada por cada componente).</p>
+</div>
+<div id="estimacion-de-pca-usando-la-matriz-de-correlacion." class="section level2">
+<h2>Estimacion de PCA usando la matriz de correlación.</h2>
+<pre><code>## Importance of components:
+##                           PC1    PC2     PC3     PC4     PC5     PC6
+## Standard deviation     3.6444 2.3857 1.67867 1.40735 1.28403 1.09880
+## Proportion of Variance 0.4427 0.1897 0.09393 0.06602 0.05496 0.04025
+## Cumulative Proportion  0.4427 0.6324 0.72636 0.79239 0.84734 0.88759
+##                            PC7     PC8    PC9    PC10   PC11    PC12
+## Standard deviation     0.82172 0.69037 0.6457 0.59219 0.5421 0.51104
+## Proportion of Variance 0.02251 0.01589 0.0139 0.01169 0.0098 0.00871
+## Cumulative Proportion  0.91010 0.92598 0.9399 0.95157 0.9614 0.97007
+##                           PC13    PC14    PC15    PC16    PC17    PC18
+## Standard deviation     0.49128 0.39624 0.30681 0.28260 0.24372 0.22939
+## Proportion of Variance 0.00805 0.00523 0.00314 0.00266 0.00198 0.00175
+## Cumulative Proportion  0.97812 0.98335 0.98649 0.98915 0.99113 0.99288
+##                           PC19    PC20   PC21    PC22    PC23   PC24
+## Standard deviation     0.22244 0.17652 0.1731 0.16565 0.15602 0.1344
+## Proportion of Variance 0.00165 0.00104 0.0010 0.00091 0.00081 0.0006
+## Cumulative Proportion  0.99453 0.99557 0.9966 0.99749 0.99830 0.9989
+##                           PC25    PC26    PC27    PC28    PC29    PC30
+## Standard deviation     0.12442 0.09043 0.08307 0.03987 0.02736 0.01153
+## Proportion of Variance 0.00052 0.00027 0.00023 0.00005 0.00002 0.00000
+## Cumulative Proportion  0.99942 0.99969 0.99992 0.99997 1.00000 1.00000</code></pre>
+<pre><code>##  [1] 13.28  5.69  2.82  1.98  1.65  1.21  0.68  0.48  0.42  0.35  0.29
+## [12]  0.26  0.24  0.16  0.09  0.08  0.06  0.05  0.05  0.03  0.03  0.03
+## [23]  0.02  0.02  0.02  0.01  0.01  0.00  0.00  0.00</code></pre>
+<pre><code>##  [1] 1.328161e+01 5.691355e+00 2.817949e+00 1.980640e+00 1.648731e+00
+##  [6] 1.207357e+00 6.752201e-01 4.766171e-01 4.168948e-01 3.506935e-01
+## [11] 2.939157e-01 2.611614e-01 2.413575e-01 1.570097e-01 9.413497e-02
+## [16] 7.986280e-02 5.939904e-02 5.261878e-02 4.947759e-02 3.115940e-02
+## [21] 2.997289e-02 2.743940e-02 2.434084e-02 1.805501e-02 1.548127e-02
+## [26] 8.177640e-03 6.900464e-03 1.589338e-03 7.488031e-04 1.330448e-04</code></pre>
+<pre><code>##  [1] 0.44 0.19 0.09 0.07 0.05 0.04 0.02 0.02 0.01 0.01 0.01 0.01 0.01 0.01
+## [15] 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00 0.00
+## [29] 0.00 0.00</code></pre>
+<pre><code>##  [1] 0.44 0.63 0.73 0.79 0.85 0.89 0.91 0.93 0.94 0.95 0.96 0.97 0.98 0.98
+## [15] 0.99 0.99 0.99 0.99 0.99 1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00 1.00
+## [29] 1.00 1.00</code></pre>
+<div id="el-89-de-la-varianza-es-explicada-por-los-primeros-6-componentes.-adicionalmente-vemos-que-eigenvalores1-para-los-6-pc-que-explican-el-89-de-la-varianza.-este-serpa-el-criterio-de-seleccion-para-retenter-en-este-caso-los-pc-ej-.-si-los-eigenvalores1." class="section level4">
+<h4>El 89% de la varianza es explicada por los primeros 6 componentes. Adicionalmente vemos que eigenvalores&gt;1 para los 6 pc que explican el 89% de la varianza. Este serpa el criterio de selección para retenter en este caso los pc (ej . si los eigenvalores&gt;1).</h4>
+<p>Scree plot para mostrar la varianza explicada por cada componente.</p>
+<p><img src="/post/2019-02-24-PCA_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code># Plot cumulative proportion of variance explained
+plot(cumsum(pve), xlab = &quot;Principal Component&quot;, 
+     ylab = &quot;Cumulative Proportion of Variance Explained&quot;, 
+     ylim = c(0, 1), type = &quot;b&quot;)</code></pre>
+<p><img src="/post/2019-02-24-PCA_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
+</div>
+<div id="plot-de-observaciones-para-compoenetes-1-y-2." class="section level2">
+<h2>plot de Observaciones para compoenetes 1 y 2.</h2>
+<pre class="r"><code>plot(bc.pr$x[, c(1, 2)], col = (diagnosis + 1), 
+     xlab = &quot;PC1&quot;, ylab = &quot;PC2&quot;)
+legend(x=&quot;topleft&quot;, pch=1, col = c(&quot;red&quot;, &quot;black&quot;), legend = c(&quot;B&quot;, &quot;M&quot;))</code></pre>
+<p><img src="/post/2019-02-24-PCA_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>

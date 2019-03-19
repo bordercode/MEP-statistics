@@ -69,6 +69,136 @@ $$\vec{x_1}  = \begin{bmatrix} 24  \\152 \\ 108 \end{bmatrix}$$
 
 
 ```{r,echo=FALSE}
+library(corrplot)
+getwd()
 
+# Reading  in the data
+
+bc<-read.csv("https://raw.githubusercontent.com/patrickmlong/Breast-Cancer-Wisconsin-Diagnostic-DataSet/master/data.csv")
+
+# Basic overview of data
+str(bc)
+names(bc)
+View(bc)
+
+# descriptive stats para todas las variables:
+summary(bc)
+diagnosis <- as.numeric(bc$diagnosis == "M")
+# Cuantos casos por tipo?
+
+count_diag<-group_by(bc,diagnosis)%>%
+  summarise(total=n())
+
+# Valor promedio de todas las variables  para cada grupo?
+bc_mean<-group_by(bc,diagnosis)%>%
+  summarise_all(funs(mean))
+
+
+# Valor promedio de todas las variables  para cada grupo y tdo el df?
+bc_std<-group_by(bc,diagnosis)%>%
+  summarise_all(funs(sd))
+
+bc_std.all<-(bc)%>%
+  summarise_all((funs(sd)))
+
+# Matriz de correlación
+bc_matrix<-select(bc, -c(diagnosis,id, X))
+
+# Rename cols para mejor interpretación.
+
+cNames <- c("rad_m","txt_m","per_m",
+                 "are_m","smt_m","cmp_m","con_m",
+                 "ccp_m","sym_m","frd_m",
+                 "rad_se","txt_se","per_se","are_se","smt_se",
+                 "cmp_se","con_se","ccp_se","sym_se",
+                 "frd_se","rad_w","txt_w","per_w",
+                 "are_w","smt_w","cmp_w","con_w",
+                 "ccp_w","sym_w","frd_w")
+
+
+colnames(bc_matrix) <- cNames
+
+M <- round(cor(bc_matrix), 2)
+corrplot(M, diag = FALSE, method="color", order="FPC", tl.srt = 90)
+
+```
+Note el grado de correlación entre  las variables de la muestra. Soporte en favor de la decisión de usar la metodología de PCA.
+### Implementación.
+
+Una pregunta escencial **previo** a la implementación de **PCA** es si debemos estandarizar (scalar) nuestra matriz. ( variables con media=0,  std dev=1).(Ver Z-Score Normalization. *Standardization involves rescaling the features such that they have the properties of a standard normal distribution with a mean of zero and a standard deviation of one.*)
+
+Nota sobre el proceso de estandarización.
+
+*We can think of Principle Component Analysis (PCA) as being a prime example of when normalization is important. In PCA we are interested in the components that maximize the variance. If one component (e.g. human height) varies less than another (e.g. weight) because of their respective scales (meters vs. kilos), PCA might determine that the direction of maximal variance more closely corresponds with the 'weight' axis, if those features are not scaled. As a change in height of one meter can be considered much more important than the change in weight of one kilogram, this is clearly incorrect.*
+
+
+La respuesta es directa,  cuando las unidades de medida nos son homogéneas
+es **necesario** escalar los datos.
+
+Escalar los datos implica  utilizar la **matriz de correlación**. Utilizar los datos sin escalar require  utilizar la correspondiente  **matriz de  covarianza**.
+
+De lo contrario los **eigenvectores** resultantes en el proceso de estimación  de **PCA** no aportan información consistente.(ej. la importancia de cada variable y sus unidades de medida  tendrá un impacto en la organización de los **eigenvectores** resultantes distorsionando la  varianza real explicada por cada componente).
+
+## Estimacion de PCA usando la  matriz de correlación.
+
+```{r, echo =FALSE}
+
+bc.pr <- prcomp(bc_matrix, scale = TRUE, center = TRUE)
+summary(bc.pr)
+```
+```{r,echo=FALSE}
+
+# Set up 1 x 2 plotting grid
+par(mfrow = c(1, 2))
+
+# Calculate variability of each component
+pr.var <- bc.pr$sdev ^ 2
+
+# Variance explained by each principal component: pve
+pve <- pr.var/sum(pr.var)
+
+
+# Eigen values  (loadings)
+round(pr.var, 2)
+
+pr.var
+
+# Percent variance explained
+round(pve, 2)
+
+# Cummulative percent explained
+round(cumsum(pve), 2)
+```
+
+####El 89% de la varianza es explicada por los primeros 6 componentes. Adicionalmente vemos que  eigenvalores>1 para los 6 pc que explican el 89% de la varianza.  Este serpa el criterio de selección para retenter en este caso los pc (ej . si los eigenvalores>1).
+
+
+
+
+
+Scree  plot para mostrar la varianza explicada por cada componente.
+
+```{r, echo=FALSE}
+
+# Plot variance explained for each principal component
+
+plot(pve, xlab = "Principal Component", 
+     ylab = "Proporción  de la varianza explicada", 
+     ylim = c(0, 1), type = "b")
+```
+
+```{r}
+# Plot cumulative proportion of variance explained
+plot(cumsum(pve), xlab = "Principal Component", 
+     ylab = "Cumulative Proportion of Variance Explained", 
+     ylim = c(0, 1), type = "b")
+```
+
+## plot de Observaciones para compoenetes 1 y 2.
+```{r}
+
+plot(bc.pr$x[, c(1, 2)], col = (diagnosis + 1), 
+     xlab = "PC1", ylab = "PC2")
+legend(x="topleft", pch=1, col = c("red", "black"), legend = c("B", "M"))
 ```
 
