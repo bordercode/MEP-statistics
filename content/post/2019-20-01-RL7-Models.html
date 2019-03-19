@@ -33,23 +33,23 @@ menu:
 <p>Ahora el reto es generar un modelo de regresión lineal para cada país. El enfoque que usaremos es mediante <strong>programación funcional</strong></p>
 <p>El objetivo es contar con <strong>una</strong> representación visual del comportamiento de la <strong>variable dependiente</strong>: Esperanza de vida en función del tiempo, es decir estimaremos el modelo:</p>
 <p><span class="math display">\[y=\beta_0+\beta_1x+\epsilon\]</span> Donde <span class="math inline">\(y\)</span>=Esperanza de vida, <span class="math inline">\(x=\)</span>años transcurridos desde 1950.</p>
-<p>De tal modo que la interpretación de el parámetro <span class="math inline">\(\beta_1\)</span> es el <strong>incremento en la esperanza de vida</strong> asociado a un año adicional transcurrido desde el inicio de la muestra [1950-2007].</p>
+<p>De tal modo que la interpretación del parámetro <span class="math inline">\(\beta_1\)</span> es el <strong>incremento en la esperanza de vida</strong> asociado a un año adicional transcurrido desde el inicio de la muestra [1950-2007].</p>
+<p>El modelo propuesto entonces permitirá determinar el incremento anual de la <strong>esperanza de vida</strong> aunado a los parámetros básicos que describen el desempeño del modelo como el coeficiente de determianción <strong>R^2</strong> para cada país.</p>
 </div>
 <div id="aplicacion-del-enfoque-de-programacion-funcional." class="section level4">
 <h4>Aplicación del enfoque de programación funcional.</h4>
 <p>Para lograr el análisis necesitamos tres fases:</p>
 <ul>
-<li>nest data. Anidar la base de datos con library(tidyr)</li>
+<li><strong>Nest data</strong>. Anidar la base de datos con library(tidyr)</li>
 </ul>
 <div class="figure">
 <img src="/img/nested.jpg" />
 
 </div>
 <ul>
-<li><p>functional programming con library(purrr), Usando <strong>map</strong> para aplicar la función del modelo a toda la lista de data frames.</p></li>
+<li><p>Crear la función e iterar. <strong>functional programming</strong> con library(purrr), Usando <strong>map</strong> para aplicar la función del modelo a toda la lista de data frames.</p></li>
 <li><p>Extraer parámetros de los modelos con library(broom) y la función glance().</p></li>
 </ul>
-<p>Incremento anual de la <strong>esperanza de vida</strong> aunado a los parámetros básicos que describen el desempeño del modelo como el coeficiente de determianción <strong>R^2</strong> para cada país.</p>
 <pre class="r"><code>#1. Cargamos los datos
 gapminder</code></pre>
 <pre><code>## # A tibble: 1,704 x 6
@@ -81,7 +81,7 @@ continents&lt;-gapminder%&gt;%
 select(country,continent)
 
 
-## Note que tenenos 1704 observaciones, para 5 variables. Estas variables como el GDP percapita, la esperanza de vida, la población   corresponden a 142 países en 5 continentes.
+## Note que tenenos 1704 observaciones, para 5 variables. Estas variables como el GDP percapita, la esperanza de vida, la población, corresponden a 142 países en 5 continentes.
 
 
 #2. Agrupamos y aplicamos la función nest para &quot;anidar los datos de cada país  en, una nueva variable llamada data en forma de lista&quot; 
@@ -90,7 +90,7 @@ by_country&lt;-gapminder%&gt;%
 group_by(country)%&gt;%
 nest()
 
-#2,1 Podemos extraer la información para un pais específico haciendo referencia a su indice. En este caso extraemos el caso de México  (index 83 en la lista).
+#2.1 Podemos extraer la información para un país específico haciendo referencia a su índice. En este caso extraemos el caso de México  (index 83 en la lista).
 
 
 #3. Creamos la función para aplicar a todos los paises:
@@ -105,7 +105,7 @@ model = data %&gt;% map(country_model)
 )
 
 
-#4. Usamos broom para extraer comeponentes  individuales del modelo. En especial tidy para extraer el coeficeinte de determinación **rsq**
+#4. Usamos broom para extraer comeponentes  individuales del modelo. En especial glance  para extraer el coeficeinte de determinación **rsq**
 
 #tidy() component-level (Estimates, Std Errors,  p-value, t test )
 #augment() observation level (like  residuals)
@@ -126,7 +126,7 @@ models&lt;-models%&gt;%
 <img src="/img/purrr-gapminder.jpg" />
 
 </div>
-<p>Observen que para la mayoría de estos países el modelo se ajsuta bastante bien (<span class="math inline">\(R^2\approx.97\)</span>), sin embargo para un grupo de paises particular el modelo parece no tener un ajuste adecuado?</p>
+<p>Observen que para la mayoría de estos países el modelo se ajusta bastante bien (<span class="math inline">\(R^2\approx.97\)</span>), sin embargo, para un grupo de paises particular el modelo parece no tener un ajuste adecuado?</p>
 <p>¿Qué tienen estos países en común?</p>
 <p>Bueno, al parecer todos estos paises son de África, ¿Por qué el modelo de regresión lineal en este caso no se ajusta tan bien como en la mayoría de los países?</p>
 <pre class="r"><code>#Unnest y plot  componentes de interés.
@@ -164,13 +164,14 @@ unnest(models,tidy)</code></pre>
 <div id="algunas-consideraciones-finales-sobre-el-patron-observado-con-la-estimacion-de-los-modelos" class="section level4">
 <h4>Algunas consideraciones finales sobre el patrón observado con la estimación de los modelos:</h4>
 <p>¿Qué representaría un punto en la esquina superior derecha?</p>
-<p>ANs: Un país que tenía una elevada esperanza de vida en 1950 y que ha mejorado rapidamente desde entonces.</p>
+<p>ANs: Un país que tenía una elevada esperanza de vida en 1950 y que ha mejorado rápidamente desde entonces.</p>
 <p>¿Qué indica la ausencia de puntos en la esquina superior derecha?</p>
 <p>De hecho es un buen indicio. la distribución de puntos concentrada en la esquina superior izquierda sugiere que los países que tenian menor EV al inicio de hecho son los que han avanzado más en este indicador.</p>
-<p>Los paises en los que el modelo no se ajusta bien estan en África mayoritariamente. Esta información sobre la magnitud del coeficiente de determianción <span class="math inline">\(r^2\)</span> es valiosa por que nos alerta sobre el riesgo de hacer inferencia con base en los modelos estimados para grupo de países específico en este caso África.</p>
+<p>Los países en los que el modelo no se ajusta bien estan en África mayoritariamente.</p>
+<p>Esta información sobre la magnitud del coeficiente de determianción <span class="math inline">\(r^2\)</span> es valiosa por que nos alerta sobre el riesgo de hacer inferencia con base en los modelos estimados para grupos de países específicos en este caso África.</p>
 <p>Al parecer la mejoría en la esperanza de vida ha sido mayor en aquellos paises cuya población inicialmente moría mas jóven.</p>
 <p>Para explorar el comportamiento de los residuales, como parte del proceso de diagnóstico del modelo usamos los componentes a nivel de observación del modelo obtenidos con la función augment() y el posterior unnest().</p>
-<p>Este componente nos aporta información sobre el cumplimiento de los supuestos del modelo. Observamos que posiblemente es necesario mejorar la estimación de los (modelos!) para grupos específicos de paises en continentes como África (claramente, un comportamiento no lineal) dado que los residuales muestran un patrón no consistente con un modelo lineal.</p>
+<p>Este componente nos aporta información sobre el cumplimiento de los supuestos del modelo.</p>
 <pre class="r"><code>models%&gt;%
   unnest(augment)%&gt;%
   ggplot(aes(year1950,.resid))+
@@ -182,5 +183,6 @@ unnest(models,tidy)</code></pre>
   theme_light()</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
 <p><img src="/post/2019-20-01-RL7-Models_files/figure-html/unnamed-chunk-6-1.png" width="1152" /></p>
+<p>Observamos que posiblemente es necesario mejorar la estimación de los (modelos!) para grupos específicos de paises en continentes como África (claramente, un comportamiento no lineal) dado que los residuales muestran un patrón no consistente con un modelo lineal.</p>
 </div>
 </div>

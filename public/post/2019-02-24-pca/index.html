@@ -9,10 +9,11 @@
 	<meta name="description" content="">
 	<meta name="generator" content="Hugo 0.54.0" />
 	<meta property="og:title" content="PCA" />
-<meta property="og:description" content="Análisis de Componentes Principales (PCA).El método PCA permite reexpresar un conjunto multidimensional de datos (ej. k dimnesiones) que contiene variables altamente correlacionadas ( ej. que aportan información redundante), en un subconjnto de datos de menor dimensión.
-Cada variable puede considerarse como una dimensión.
-Sea \(x_i\) la observación del individuo i tomado de la variable k donde i varia de i a I y k a K
-El PCA es una técnica ´para descubrir como variables numéricas “covarian”." />
+<meta property="og:description" content="Análisis de Componentes Principales (PCA).El método PCA permite reexpresar un conjunto multidimensional de datos (ej. k dimensiones) que contiene variables altamente correlacionadas ( ej. que aportan información redundante), en un subconjnto de datos de menor dimensión.
+Con PCA respondemos preguntas como:
+¿Qué variables estan correlacionadas?
+¿Podemos representar los datos de una manera más clara ej.mediante un menor número de dimensiones?
+¿Qué variables tienen la mayor influencia para explicar la variación de los datos?" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/post/2019-02-24-pca/" />
 <meta property="article:published_time" content="2019-01-28T21:14:14-05:00"/>
@@ -118,17 +119,29 @@ if (!doNotTrack) {
 
 <div id="analisis-de-componentes-principales-pca." class="section level2">
 <h2>Análisis de Componentes Principales (PCA).</h2>
-<p>El método <strong>PCA</strong> permite reexpresar un conjunto multidimensional de datos (ej. k dimnesiones) que contiene variables altamente <strong>correlacionadas</strong> ( ej. que aportan información redundante), en un subconjnto de datos de menor dimensión.</p>
-<p>Cada variable puede considerarse como una dimensión.</p>
+<p>El método <strong>PCA</strong> permite reexpresar un conjunto multidimensional de datos (ej. k dimensiones) que contiene variables altamente <strong>correlacionadas</strong> ( ej. que aportan información redundante), en un subconjnto de datos de menor dimensión.</p>
+<p>Con <strong>PCA</strong> respondemos preguntas como:</p>
+<p>¿Qué variables estan correlacionadas?</p>
+<p>¿Podemos representar los datos de una manera más clara ej.mediante un menor número de dimensiones?</p>
+<p>¿Qué variables tienen la mayor influencia para explicar la variación de los datos?</p>
+<p>Cada variable considerada como una dimensión.</p>
 <p>Sea <span class="math inline">\(x_i\)</span> la observación del individuo <em>i</em> tomado de la variable <strong>k</strong> donde i varia de <strong>i</strong> a <strong>I</strong> y k a <strong>K</strong></p>
 <p>El <strong>PCA</strong> es una técnica ´para descubrir como variables <strong>numéricas</strong> <strong>“covarian”</strong>.</p>
 <p>La aplicación del método reduce a un subconjunto de dimensiones (componentes principales) la información original. En análisis multivariado el concepto <em>Synthetic variable</em> denota la escencia del PCA. Ver a Jean Paul Bencecri sobre orígenes de este vínculo entre Multivariate Analysis DA y PCA.</p>
 <p>La estructura de datos resultante maximiza la variación inherente al conjunto de datos.</p>
 <p>Los componentes son combinaciones lineales de las variables originales, que controlan por el “ruido” (información redundante) en los datos. Nos interesa la <strong>señal</strong> no el <strong>ruido</strong>!</p>
-<p>El <strong>componente principal</strong> es una combinación lineal de la variables consideradas para predicción. este captura la mayyor pate de la variación en los dimensiones consideradas.</p>
+<p>El <strong>componente principal</strong> es una combinación lineal de la variables consideradas para predicción. Este captura la mayor pate de la variación en las dimensiones consideradas.</p>
 <p>El método permite estimar la proporción de la variación que cada dimensión aporta a los componentes principales, de tal forma que podamos identificar las variables de mayor relevancia para el análisis y conocer las variables correlacionadas.</p>
-<p>En la estimación de <strong>PCA</strong>, el monto de la variación que cada componente retiene se captura por el <strong>eigenvalor</strong> y se expresa com cociente de la varización total den los datos.</p>
-<p>Antes avanzar consideremos algunos fundamentos de algebra lineal necesarios para tener un mejor entendimiento de esta técnica:</p>
+<p>En la estimación de <strong>PCA</strong>, el monto de la variación explicada que cada componente retiene se captura por el <strong>eigenvalor</strong> y se expresa como cociente de la variación total en los datos.</p>
+<p>Uno de os uso de esta técnica es elconstrucción de modelos que permiten hacer clasificación como el modeo de regresión logistica que vermos en las sigueintes sesiones.</p>
+<p>El proceso de análisis aplicado de PCA a clasificación es el siguiente:</p>
+<p>1.-Partimos de un conjunto de datos que contienen k dimensiones. La técnica de PCA permite reducir estas dimensiones al determinar los <strong>eigenvectores</strong> y los correspondientes eigenvalores (loadings), estos permiten determinar la proporci[onde la varianza explicada de cada compoente con lo que se tiene un criterio para seleccionar aquellos que capturan la mayor varianza posibel en el conjunto de los datos.</p>
+<p>2.- En el caso supervisado la nueva estrucura de datos de menor dimensión generada por el PCA puede ser utilizada para estimar modelos categóricos como regresión logística, <em>k nearest neighbors</em>, <em>linear discriminant Análysis</em> (<strong>LDA</strong>), etc,.</p>
+<p>Estos permiten determinar la probabilidad de pertenencia a una categoria determinada dadas las caracterisitcas de cada observación.</p>
+<p>Las aplicaciones son muy amplias, ej. estudios poblacionales relacionados a escenarios de salud pública, migración,etc.</p>
+<div id="elementos-teoricos." class="section level3">
+<h3>Elementos teóricos.</h3>
+<p>Antes de avanzar consideremos algunos fundamentos de algebra lineal necesarios para tener un mejor entendimiento de esta técnica:</p>
 <p>Suponga que tiene la sigueinte matriz con dimensiones mxn n=5, m=3,</p>
 <pre><code>##   Age Height  IQ
 ## 1  24    152 108
@@ -136,7 +149,13 @@ if (!doNotTrack) {
 ## 3  17    160  95
 ## 4  35    170  97
 ## 5  65    155  87</code></pre>
-<p>Entonces podemos expresar el primer vector de esta matriz como <span class="math display">\[\vec{x_1}  = \begin{bmatrix} 24  \\152 \\ 108 \end{bmatrix}\]</span></p>
+<p>Entonces podemos expresar el primer vector de esta matriz como <span class="math display">\[\vec{x_1}  = \begin{bmatrix} 24  \\152 \\ 108 \end{bmatrix}\]</span> Suponga que tenomos una matriz <em>A</em> nxn y un vector nx1 <em>v</em>. si multiplicamos <em>v</em> por <em>A</em> Obtenemos otro vector. La matriz A ha realizado una transformación sobre el vector v.</p>
+<p><span class="math inline">\(\begin{bmatrix}2&amp;3\\1&amp;2\end{bmatrix} \begin{bmatrix}2\\5\end{bmatrix}=\begin{bmatrix}19\\12\end{bmatrix}\)</span></p>
+<p><img src="/img/matrix.jpg" /> Recordemos la definición de Eigenvectores (vectores propios/característicos) y Eigenvalores.</p>
+<p><strong>Eigenvectores</strong>. Un vector tal que cuando son transformados por el operador resultan en un múltiplo escalar de si mismos.</p>
+<p>En este contexto el escalar <span class="math inline">\(\lambda\)</span> es denominado Eigenvalor (valor propio, o característico).</p>
+<p><span class="math inline">\(Av=\lambda v\)</span></p>
+<p>Donde <strong>x</strong> es un Eigenvector y <span class="math inline">\(\lambda\)</span> el Eigenvalor.</p>
 <pre><code>## corrplot 0.84 loaded</code></pre>
 <pre><code>## [1] &quot;C:/Users/LENOVO/Desktop/DESK/web/MEP-statistics/content/post&quot;</code></pre>
 <pre><code>## &#39;data.frame&#39;:    569 obs. of  33 variables:
@@ -271,6 +290,7 @@ if (!doNotTrack) {
 <p>La respuesta es directa, cuando las unidades de medida nos son homogéneas es <strong>necesario</strong> escalar los datos.</p>
 <p>Escalar los datos implica utilizar la <strong>matriz de correlación</strong>. Utilizar los datos sin escalar require utilizar la correspondiente <strong>matriz de covarianza</strong>.</p>
 <p>De lo contrario los <strong>eigenvectores</strong> resultantes en el proceso de estimación de <strong>PCA</strong> no aportan información consistente.(ej. la importancia de cada variable y sus unidades de medida tendrá un impacto en la organización de los <strong>eigenvectores</strong> resultantes distorsionando la varianza real explicada por cada componente).</p>
+</div>
 </div>
 <div id="estimacion-de-pca-usando-la-matriz-de-correlacion." class="section level2">
 <h2>Estimacion de PCA usando la matriz de correlación.</h2>
