@@ -171,21 +171,51 @@ if (!doNotTrack) {
 tal que <span class="math inline">\(A\vec{v_i}=\lambda \vec{v_i}\)</span> para <span class="math inline">\(i=1,2,...,n\)</span></p>
 <p>Adicionalmente consideremos la siguientes observaciones:</p>
 <ol style="list-style-type: decimal">
-<li>Sea <span class="math inline">\(A \in \mathbb{R}\)</span>una matriz mXn. Entoces tanto <span class="math inline">\(A^T \cdot A\)</span> como <span class="math inline">\(A \cdot A^T\)</span> son simétricas.</li>
+<li>Sea <span class="math inline">\(A \in \mathbb{R}\)</span> una matriz mXn. Entoces tanto <span class="math inline">\(A^T \cdot A\)</span> como <span class="math inline">\(A \cdot A^T\)</span> son simétricas.</li>
 </ol>
 <p><span class="math inline">\((AA^T)^T=(A^T)^T \cdot A^T=A \cdot A^T\)</span></p>
 <p><span class="math inline">\((A^T A)^T=A^T \cdot (A^T)^T=A^T A\)</span></p>
 <p>2.- Sea A una matriz mxn. Entonces la matriz <span class="math inline">\(AA^T\)</span> y <span class="math inline">\(A^TA\)</span> tienen los mismos valores propios <span class="math inline">\(\neq0\)</span></p>
 <p>Considere un vector propio <span class="math inline">\(v\)</span> <span class="math inline">\(\neq0\)</span> de <span class="math inline">\(A^TA\)</span> con valor propio <span class="math inline">\(\lambda \neq0\)</span> ej. <span class="math inline">\((A^TA)v=\lambda v\)</span></p>
-<p>Ahora multiplicamos la matriz anterior por A tenemos <span class="math display">\[(AA^T)(Av)=\lambda(Av)\]</span> lo que implica que <span class="math inline">\(Av\)</span> es un vector propio de <span class="math inline">\(A A^T\)</span> con Eigenvalor <span class="math inline">\(\lambda\)</span>. Entonces los valores característicos de <span class="math inline">\(A^TA\)</span> son los mismos que <span class="math inline">\(AA^T\)</span>.</p>
+<p>Ahora si multiplicamos la matriz anterior por A tenemos <span class="math display">\[(AA^T)(Av)=\lambda(Av)\]</span> Lo que implica que <span class="math inline">\(Av\)</span> es un vector propio de <span class="math inline">\(A A^T\)</span> con Eigenvalor <span class="math inline">\(\lambda\)</span>. Entonces los valores característicos de <span class="math inline">\(A^TA\)</span> son los mismos que <span class="math inline">\(AA^T\)</span>.</p>
 <p>El uso de esta propuesta es importante por que permite simplificar el computo para estimar los eigenvalores por ejemplo considere una matriz de 400x3 entonces <span class="math inline">\(A^TA\)</span> es una matriz de 400X400 con 400 <span class="math inline">\(\lambda\)</span>’s pero <span class="math inline">\(A^TA\)</span> tiene solo 3 <span class="math inline">\(\lambda\)</span>’s,</p>
 <p>Con la técnica de PCA determinamos los vectores propios, estos vectores capturan el espacio común a lo largo del cuál se registra la variación de los datos y los valores propios, que dan cuenta de la magnitud de la varianza que cada vector propio explica.</p>
+<p>Primero veamos como opera esta tecnica y luego haremos una aplicación para una matriz de 500+ , 30.</p>
+</div>
+</div>
+<div id="pca.-el-proceso-de-calculo." class="section level2">
+<h2>PCA. El proceso de cálculo.</h2>
+<p>Primero obtenemos la media de las <strong>m</strong> variables en nuestra matriz. Y almacenamos estos valores en un vector en el espacio <span class="math inline">\(\mathbb{R}^m\)</span></p>
+<p><span class="math inline">\(\vec{\mu}=\frac{1}{n-1}(\vec{x}_1+\vec{x}_2+\ldots+\vec{x}_n)\)</span></p>
+<p>En segundo lugar estandarizamos los datos (media cero, desviación estándar=1), este paso permite homogeneizar las escalas para evitar que las diferencias en las unidaes de medida generen distorciones en el cálculo de los componentes principales. Las siguiente gráfica muestra el efecto de la estandarización (Scale).</p>
 <div class="figure">
 <img src="/img/v.jpg" />
 
 </div>
+<p>El proceso de estandarización permite obtener una matriz escalada:</p>
+<p><span class="math inline">\(B=\begin{bmatrix}\vec{x}_1-\vec{\mu}|\ldots|\vec{x}_n-\vec{\mu}\end{bmatrix}\)</span></p>
+<p>Ahora estimamos la matriz de covarianza <strong>S</strong> que se define como <span class="math display">\[\displaystyle S=\frac{1}{n-1}BB^T\]</span></p>
+<p>De la discusión previa podemos ver que S es una matriz simétrica mxm.</p>
+<p>Consideremos como ejemplo: <span class="math display">\[\vec{x}_1=\begin{bmatrix}a_1\\a_2\\a_3\end{bmatrix}, \vec{x}_2=\begin{bmatrix}b_1\\b_2\\b_3\end{bmatrix}, \vec{x}_3=\begin{bmatrix}c_1\\c_2\\c_3\end{bmatrix}, \vec{\mu}=\begin{bmatrix}\mu_1\\\mu_2\\\mu_3\end{bmatrix}\]</span> Con matriz escalada <strong>B</strong>: <span class="math display">\[B=\begin{bmatrix}a_1-\mu_1&amp;b_1-\mu_1&amp;c_1-\mu_1\\a_2-\mu_2&amp;b_2-\mu_2&amp;c_2-\mu_2\\a_3-\mu_3&amp;b_3-\mu_3&amp;c_3-\mu_3\end{bmatrix}\]</span> Ahora veamos los elementos de la matriz de covarianza <strong>S</strong></p>
+<p><span class="math display">\[\displaystyle S_{11}=\frac{1}{n-1}((a_1-\mu_1)^2+(b_1-\mu_1)^2+(c_1-\mu_1)^2)=\mbox{ Varianza de la primera variable }\]</span> De manera simira los elementos <span class="math inline">\(S_{22}, S_{33}\)</span> representan la varianza de la segunda y tercera variables respectivamente.</p>
+<p>En segiuida tenemos la covarinza entre la primera y segunda variables:</p>
+<p><span class="math display">\[\displaystyle S_{12}=\frac{1}{n-1}((a_1-\mu_1)(a_2-\mu_2)+(b_1-\mu_1)(b_2-\mu_2)+(c_1-\mu_1)(c_2-\mu_2))=S_{21}\]</span> Y generalizando tenemos que:</p>
+<ul>
+<li><p><span class="math inline">\(S_{ii}\)</span> es la <em>varianza</em> de la <span class="math inline">\(i_{esima}\)</span> variable.</p></li>
+<li><p><span class="math inline">\(S_{ij}\)</span> con <span class="math inline">\(i\neq j\)</span> es la covarianza entre las variables i, j.</p></li>
+</ul>
+<p>El siguiente paso es aplicar el teorema descrito en la sección previa, dado que la matriz <strong>S</strong> es simétrica tendrá Eigencvalores <span class="math inline">\(\lambda_1\geq \lambda_2\geq \ldots\geq\lambda_m\geq 0\)</span> y Eigenvectores ortogonales <span class="math inline">\(\vec{v}_1, \vec{v}_2, \ldots, \vec{v}_m\)</span> Estos vectores son denominados los componentes principales de la base de datos.</p>
+<p>Paso siguiente, determiar la varianza total <strong>T</strong> en los datos, que es igual a la <strong>traza[^1] de la matriz de covarianza</strong>. (Traza: Suma de los elementos de la diagonal de una matriz nxn). Así mismo la traza de la matriz es igual a la suma de sus Eigenvalores: <span class="math display">\[T=\lambda_1+\lambda_2+\ldots+\lambda_m\]</span> ¿Cómo interpretamos los resultados del PCA?</p>
+<p>La dirección dada por el vector <span class="math inline">\(\vec{v_{1}}\)</span> <span class="math inline">\(\mathbb{R}^m\)</span> denominado el <strong>primer componente principal</strong> da cuente de un monto igual a <span class="math inline">\(\lambda_1\)</span> de la varianza total T.</p>
+<p>Es una fracción <span class="math inline">\(\displaystyle\frac{\lambda_1}{T}\)</span> de la varianza total. De igual forma, la segunda dirección principal <span class="math inline">\(\vec{v}_2\)</span>, que da cuenta de una fracción <span class="math inline">\(\displaystyle\frac{\lambda_2}{T}\)</span>.</p>
+<ul>
+<li><p>El vector <span class="math inline">\(\vec{v}_1\in \mathbb{R}^m\)</span> constituye la dirección de mayor importancia en el conjunto de datos.</p></li>
+<li><p>Entre las direcciones ortogonales a <span class="math inline">\(\vec{v}_1\)</span>, <span class="math inline">\(\vec{v}_2\)</span> es la dirección más significativa.</p></li>
+<li><p>De forma similar entre las direcciones ortogonales a <span class="math inline">\(\vec{v}_1\)</span> y <span class="math inline">\(\vec{v}_2\)</span>, <span class="math inline">\(\vec{v}_3\)</span> es la dirección más significativa y así sucesivamentente.</p></li>
+</ul>
+<p>Que conjunto de datps tenemos como resultado del PCA</p>
+<p>El procedimiento de PCA ha generado una nueva estructura de los datos (reducción en las dimensiones) por lo que ahora podemos representar digamos un espacio vectorial que era digamos <span class="math inline">\(\mathbb{R}^{30}\)</span> mediante una estructura de compoentes principales de menor dimensión con las observaciones del conjunto de datos conformando clusters definidos en función de los Eigenvectores.</p>
 <pre><code>## corrplot 0.84 loaded</code></pre>
-<pre><code>## [1] &quot;C:/Users/LENOVO/Desktop/DESK/web/MEP-statistics/content/post&quot;</code></pre>
 <pre><code>## &#39;data.frame&#39;:    569 obs. of  33 variables:
 ##  $ id                     : int  842302 842517 84300903 84348301 84358402 843786 844359 84458202 844981 84501001 ...
 ##  $ diagnosis              : Factor w/ 2 levels &quot;B&quot;,&quot;M&quot;: 2 2 2 2 2 2 2 2 2 2 ...
@@ -318,7 +348,6 @@ tal que <span class="math inline">\(A\vec{v_i}=\lambda \vec{v_i}\)</span> para <
 <p>La respuesta es directa, cuando las unidades de medida nos son homogéneas es <strong>necesario</strong> escalar los datos.</p>
 <p>Escalar los datos implica utilizar la <strong>matriz de correlación</strong>. Utilizar los datos sin escalar require utilizar la correspondiente <strong>matriz de covarianza</strong>.</p>
 <p>De lo contrario los <strong>eigenvectores</strong> resultantes en el proceso de estimación de <strong>PCA</strong> no aportan información consistente.(ej. la importancia de cada variable y sus unidades de medida tendrá un impacto en la organización de los <strong>eigenvectores</strong> resultantes distorsionando la varianza real explicada por cada componente).</p>
-</div>
 </div>
 <div id="estimacion-de-pca-usando-la-matriz-de-correlacion." class="section level2">
 <h2>Estimacion de PCA usando la matriz de correlación.</h2>

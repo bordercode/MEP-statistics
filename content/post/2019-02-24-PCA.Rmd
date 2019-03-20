@@ -123,7 +123,7 @@ tal que $A\vec{v_i}=\lambda \vec{v_i}$ para $i=1,2,...,n$
 Adicionalmente consideremos la siguientes observaciones:
 
 
-1. Sea $A \in \mathbb{R}$una matriz mXn. Entoces tanto  $A^T \cdot A$ como $A \cdot  A^T$ son simétricas.
+1. Sea $A \in \mathbb{R}$ una matriz mXn. Entoces tanto  $A^T \cdot A$ como $A \cdot  A^T$ son simétricas.
 
 $(AA^T)^T=(A^T)^T \cdot A^T=A \cdot A^T$
 
@@ -134,17 +134,78 @@ $(A^T A)^T=A^T \cdot (A^T)^T=A^T A$
 
 Considere un vector propio  $v$ $\neq0$ de $A^TA$ con valor propio  $\lambda \neq0$ ej. $(A^TA)v=\lambda v$
 
-Ahora multiplicamos la matriz anterior por A tenemos $$(AA^T)(Av)=\lambda(Av)$$ lo que implica que $Av$ es un vector propio de $A A^T$ con Eigenvalor $\lambda$. Entonces los valores característicos de $A^TA$ son los mismos que $AA^T$.
+Ahora si multiplicamos la matriz anterior por A tenemos $$(AA^T)(Av)=\lambda(Av)$$ Lo que implica que $Av$ es un vector propio de $A A^T$ con Eigenvalor $\lambda$. Entonces los valores característicos de $A^TA$ son los mismos que $AA^T$.
 
 El uso de esta propuesta es importante por que permite simplificar el computo para estimar los eigenvalores por ejemplo considere una matriz de 400x3 entonces $A^TA$ es una matriz de 400X400 con 400 $\lambda$'s pero $A^TA$ tiene solo 3 $\lambda$'s, 
 
 
 Con la técnica de PCA determinamos los vectores propios, estos vectores capturan el espacio común a lo largo del cuál se registra la variación de los datos  y los valores propios, que dan cuenta de la magnitud de la varianza que cada vector propio explica. 
 
+Primero veamos como opera esta tecnica y luego haremos una aplicación  para una matriz de 500+ , 30.
+
+## PCA. El proceso de cálculo. 
+
+Primero obtenemos la media de las **m** variables en nuestra matriz. Y almacenamos estos valores en un vector en el espacio $\mathbb{R}^m$
+
+$\vec{\mu}=\frac{1}{n-1}(\vec{x}_1+\vec{x}_2+\ldots+\vec{x}_n)$
+
+En segundo lugar estandarizamos los datos (media cero, desviación estándar=1), este paso permite homogeneizar las escalas para evitar que las diferencias en las unidaes de medida generen distorciones en el cálculo de los componentes principales. Las siguiente gráfica muestra el efecto de la estandarización (Scale).
+
+
 ![](/img/v.jpg)
+
+El proceso de estandarización permite obtener una matriz  escalada:
+
+$B=\begin{bmatrix}\vec{x}_1-\vec{\mu}|\ldots|\vec{x}_n-\vec{\mu}\end{bmatrix}$
+
+Ahora estimamos la matriz de covarianza **S** que se define como $$\displaystyle S=\frac{1}{n-1}BB^T$$
+
+De la discusión previa podemos ver que S es una matriz simétrica mxm.
+
+Consideremos como ejemplo: 
+$$\vec{x}_1=\begin{bmatrix}a_1\\a_2\\a_3\end{bmatrix}, \vec{x}_2=\begin{bmatrix}b_1\\b_2\\b_3\end{bmatrix}, \vec{x}_3=\begin{bmatrix}c_1\\c_2\\c_3\end{bmatrix}, \vec{\mu}=\begin{bmatrix}\mu_1\\\mu_2\\\mu_3\end{bmatrix}$$
+Con matriz escalada  **B**:
+$$B=\begin{bmatrix}a_1-\mu_1&b_1-\mu_1&c_1-\mu_1\\a_2-\mu_2&b_2-\mu_2&c_2-\mu_2\\a_3-\mu_3&b_3-\mu_3&c_3-\mu_3\end{bmatrix}$$
+Ahora veamos  los elementos de la matriz de covarianza **S**
+
+$$\displaystyle S_{11}=\frac{1}{n-1}((a_1-\mu_1)^2+(b_1-\mu_1)^2+(c_1-\mu_1)^2)=\mbox{ Varianza de la primera variable }$$
+De manera simira los elementos $S_{22}, S_{33}$ representan la varianza de la segunda y tercera variables respectivamente.
+
+En segiuida tenemos la covarinza entre la primera y segunda variables:
+
+$$\displaystyle S_{12}=\frac{1}{n-1}((a_1-\mu_1)(a_2-\mu_2)+(b_1-\mu_1)(b_2-\mu_2)+(c_1-\mu_1)(c_2-\mu_2))=S_{21}$$
+Y generalizando tenemos   que:
+
++ $S_{ii}$ es la *varianza* de la $i_{esima}$ variable. 
+
++ $S_{ij}$ con $i\neq j$ es la covarianza entre las variables i, j. 
+
+
+El siguiente paso es aplicar el teorema descrito en la sección previa, dado que la matriz **S**  es simétrica tendrá Eigencvalores $\lambda_1\geq \lambda_2\geq \ldots\geq\lambda_m\geq 0$ y Eigenvectores ortogonales $\vec{v}_1, \vec{v}_2, \ldots, \vec{v}_m$ Estos vectores son denominados los componentes principales de la base de datos.
+
+Paso siguiente, determiar la varianza total **T** en los datos, que es igual a la **traza[^1] de la matriz de covarianza**.   (Traza: Suma de los elementos de la diagonal de una matriz nxn). Así mismo la traza de la matriz es igual a la suma de sus Eigenvalores:
+$$T=\lambda_1+\lambda_2+\ldots+\lambda_m$$
+¿Cómo interpretamos los resultados del PCA?
+
+La dirección dada por el vector $\vec{v_{1}}$ $\mathbb{R}^m$ denominado el **primer componente principal** da cuente de un monto igual a $\lambda_1$ de la varianza total T.
+
+Es una fracción $\displaystyle\frac{\lambda_1}{T}$ de la varianza total. De igual forma, la segunda dirección principal $\vec{v}_2$,  que da cuenta de una fracción $\displaystyle\frac{\lambda_2}{T}$.
+
++ El vector $\vec{v}_1\in \mathbb{R}^m$ constituye  la dirección de mayor importancia en el conjunto de datos.
+
++ Entre las direcciones ortogonales a $\vec{v}_1$,  $\vec{v}_2$ es la dirección más significativa.
+
++ De forma similar entre las direcciones ortogonales a $\vec{v}_1$ y  $\vec{v}_2$,  $\vec{v}_3$ es la dirección más significativa y así sucesivamentente.
+
+Que conjunto de datps tenemos como resultado del PCA 
+
+El procedimiento de PCA  ha generado una nueva estructura de los datos (reducción en las dimensiones) por lo que ahora  podemos representar digamos un espacio vectorial que era digamos $\mathbb{R}^{30}$ mediante una estructura de compoentes principales de menor dimensión con las observaciones del conjunto de datos conformando clusters definidos en función de los Eigenvectores.
+
+
+
+
 ```{r,echo=FALSE}
 library(corrplot)
-getwd()
 
 # Reading  in the data
 
