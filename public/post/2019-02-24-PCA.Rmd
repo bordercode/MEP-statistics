@@ -58,11 +58,13 @@ El proceso de análisis aplicado de PCA a clasificación es el siguiente:
 
 1.-Partimos de  un conjunto de datos que  contienen k dimensiones. La técnica de  PCA permite reducir estas dimensiones al determinar los **eigenvectores** y los correspondientes  eigenvalores (loadings), estos permiten determinar la proporci[onde la varianza explicada de cada compoente con lo que se tiene un criterio para seleccionar aquellos que capturan la mayor varianza posibel en el conjunto de los datos.
 
-2.- En el caso  supervisado la nueva estrucura de datos de menor  dimensión generada por el PCA puede ser utilizada para estimar modelos categóricos como  regresión logística,  *k nearest neighbors*, *linear discriminant Análysis* (**LDA**), etc,. 
+2.- En el caso  supervisado la nueva estrucura de datos de menor  dimensión generada por el PCA puede ser utilizada para estimar modelos categóricos (supervisados) como  regresión logística,  *k nearest neighbors*, *linear discriminant Análysis* (**LDA**), etc,. 
 
 Estos permiten determinar la probabilidad de pertenencia a una categoria determinada dadas las caracterisitcas de cada observación.
 
-Las aplicaciones son muy amplias, ej. estudios poblacionales relacionados a escenarios de salud pública, migración,etc. 
+Las aplicaciones son muy amplias y una aproximación inicial al su uso es en la visuañización El dominio de aplicación incluye  estudios poblacionales como, migración,salud pública etc. 
+
+
 
 ### Elementos teóricos.
 
@@ -337,3 +339,8 @@ plot(bc.pr$x[, c(1, 2)], col = (diagnosis + 1),
 legend(x="topleft", pch=1, col = c("red", "black"), legend = c("B", "M"))
 ```
 
+
+
+# Ejemplo 2   Iris.
+
+Ver Jupyter notebook

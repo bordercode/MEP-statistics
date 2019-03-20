@@ -136,9 +136,9 @@ if (!doNotTrack) {
 <p>Uno de os uso de esta técnica es elconstrucción de modelos que permiten hacer clasificación como el modeo de regresión logistica que vermos en las sigueintes sesiones.</p>
 <p>El proceso de análisis aplicado de PCA a clasificación es el siguiente:</p>
 <p>1.-Partimos de un conjunto de datos que contienen k dimensiones. La técnica de PCA permite reducir estas dimensiones al determinar los <strong>eigenvectores</strong> y los correspondientes eigenvalores (loadings), estos permiten determinar la proporci[onde la varianza explicada de cada compoente con lo que se tiene un criterio para seleccionar aquellos que capturan la mayor varianza posibel en el conjunto de los datos.</p>
-<p>2.- En el caso supervisado la nueva estrucura de datos de menor dimensión generada por el PCA puede ser utilizada para estimar modelos categóricos como regresión logística, <em>k nearest neighbors</em>, <em>linear discriminant Análysis</em> (<strong>LDA</strong>), etc,.</p>
+<p>2.- En el caso supervisado la nueva estrucura de datos de menor dimensión generada por el PCA puede ser utilizada para estimar modelos categóricos (supervisados) como regresión logística, <em>k nearest neighbors</em>, <em>linear discriminant Análysis</em> (<strong>LDA</strong>), etc,.</p>
 <p>Estos permiten determinar la probabilidad de pertenencia a una categoria determinada dadas las caracterisitcas de cada observación.</p>
-<p>Las aplicaciones son muy amplias, ej. estudios poblacionales relacionados a escenarios de salud pública, migración,etc.</p>
+<p>Las aplicaciones son muy amplias y una aproximación inicial al su uso es en la visuañización El dominio de aplicación incluye estudios poblacionales como, migración,salud pública etc.</p>
 <div id="elementos-teoricos." class="section level3">
 <h3>Elementos teóricos.</h3>
 <p>Antes de avanzar consideremos algunos fundamentos de algebra lineal necesarios para tener un mejor entendimiento de esta técnica:</p>
@@ -404,6 +404,10 @@ plot(cumsum(pve), xlab = &quot;Principal Component&quot;,
      xlab = &quot;PC1&quot;, ylab = &quot;PC2&quot;)
 legend(x=&quot;topleft&quot;, pch=1, col = c(&quot;red&quot;, &quot;black&quot;), legend = c(&quot;B&quot;, &quot;M&quot;))</code></pre>
 <p><img src="/post/2019-02-24-PCA_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+</div>
+<div id="ejemplo-2-iris." class="section level1">
+<h1>Ejemplo 2 Iris.</h1>
+<p>Ver Jupyter notebook</p>
 </div>
 
 		</div>
