@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Logodds on Estadística II</title>
+    <link>/tags/logodds/</link>
+    <description>Recent content in Logodds on Estadística II</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 28 Feb 2019 21:14:14 -0500</lastBuildDate>
+    
+	<atom:link href="/tags/logodds/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Logistic</title>
+      <link>/post/2019-02-25-logistic/</link>
+      <pubDate>Thu, 28 Feb 2019 21:14:14 -0500</pubDate>
+      
+      <guid>/post/2019-02-25-logistic/</guid>
+      <description>library(ggplot2) library(cowplot) ## NOTE: The data used in this demo comes from the UCI machine learning ## repository. ## http://archive.ics.uci.edu/ml/index.php ## Specifically, this is the heart disease data set. ## http://archive.ics.uci.edu/ml/datasets/Heart+Disease
+url &amp;lt;- “http://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/processed.cleveland.data”
+data &amp;lt;- read.csv(url, header=FALSE)
+
+Reformat the data so that it is1) Easy to use (add nice column names)2) Interpreted correctly by glm()..
+head(data) # you see data, but no column names</description>
+    </item>
+    
+  </channel>
+</rss>

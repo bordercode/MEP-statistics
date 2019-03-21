@@ -1,0 +1,242 @@
+---
+title: "Logistic"
+author: "JLMR"
+date: 2019-02-28T21:14:14-05:00
+categories: ["R"]
+tags: ["Logistic", "log(odds)", "glm"]
+mathjax : true
+menu:
+  main:
+    name: Logistic R
+    weight: 15
+---
+
+
+
+<p>library(ggplot2) library(cowplot) ## NOTE: The data used in this demo comes from the UCI machine learning ## repository. ## <a href="http://archive.ics.uci.edu/ml/index.php" class="uri">http://archive.ics.uci.edu/ml/index.php</a> ## Specifically, this is the heart disease data set. ## <a href="http://archive.ics.uci.edu/ml/datasets/Heart+Disease" class="uri">http://archive.ics.uci.edu/ml/datasets/Heart+Disease</a></p>
+<p>url &lt;- “<a href="http://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/processed.cleveland.data" class="uri">http://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/processed.cleveland.data</a>”</p>
+<p>data &lt;- read.csv(url, header=FALSE)</p>
+<div id="section" class="section level37">
+<p></p>
+</div>
+<div id="section-1" class="section level2">
+<h2></h2>
+</div>
+<div id="reformat-the-data-so-that-it-is" class="section level2">
+<h2>Reformat the data so that it is</h2>
+</div>
+<div id="easy-to-use-add-nice-column-names" class="section level2">
+<h2>1) Easy to use (add nice column names)</h2>
+</div>
+<div id="interpreted-correctly-by-glm.." class="section level2">
+<h2>2) Interpreted correctly by glm()..</h2>
+</div>
+<div id="section-2" class="section level2">
+<h2></h2>
+<div id="section-3" class="section level37">
+<p></p>
+<p>head(data) # you see data, but no column names</p>
+<p>colnames(data) &lt;- c( “age”, “sex”,# 0 = female, 1 = male “cp”, # chest pain # 1 = typical angina, # 2 = atypical angina, # 3 = non-anginal pain, # 4 = asymptomatic “trestbps”, # resting blood pressure (in mm Hg) “chol”, # serum cholestoral in mg/dl “fbs”, # fasting blood sugar if less than 120 mg/dl, 1 = TRUE, 0 = FALSE “restecg”, # resting electrocardiographic results # 1 = normal # 2 = having ST-T wave abnormality # 3 = showing probable or definite left ventricular hypertrophy “thalach”, # maximum heart rate achieved “exang”, # exercise induced angina, 1 = yes, 0 = no “oldpeak”, # ST depression induced by exercise relative to rest “slope”, # the slope of the peak exercise ST segment # 1 = upsloping # 2 = flat # 3 = downsloping “ca”, # number of major vessels (0-3) colored by fluoroscopy “thal”, # this is short of thalium heart scan # 3 = normal (no cold spots) # 6 = fixed defect (cold spots during rest and exercise) # 7 = reversible defect (when cold spots only appear during exercise) “hd” # (the predicted attribute) - diagnosis of heart disease # 0 if less than or equal to 50% diameter narrowing # 1 if greater than 50% diameter narrowing )</p>
+<p>head(data) # now we have data and column names</p>
+<p>str(data) # this shows that we need to tell R which columns contain factors # it also shows us that there are some missing values. There are “?”s # in the dataset. These are in the “ca” and “thal” columns…</p>
+</div>
+</div>
+<div id="first-convert-s-to-nas" class="section level2">
+<h2>First, convert “?”s to NAs…</h2>
+<p>data[data == “?”] &lt;- NA</p>
+</div>
+<div id="now-add-factors-for-variables-that-are-factors-and-clean-up-the-factors" class="section level2">
+<h2>Now add factors for variables that are factors and clean up the factors</h2>
+</div>
+<div id="that-had-missing-data" class="section level2">
+<h2>that had missing data…</h2>
+<p>data[data$sex == 0,]<span class="math inline">\(sex &lt;- &quot;F&quot; data[data\)</span>sex == 1,]<span class="math inline">\(sex &lt;- &quot;M&quot; data\)</span>sex &lt;- as.factor(data$sex)</p>
+<p>data<span class="math inline">\(cp &lt;- as.factor(data\)</span>cp) data<span class="math inline">\(fbs &lt;- as.factor(data\)</span>fbs) data<span class="math inline">\(restecg &lt;- as.factor(data\)</span>restecg) data<span class="math inline">\(exang &lt;- as.factor(data\)</span>exang) data<span class="math inline">\(slope &lt;- as.factor(data\)</span>slope)</p>
+<p>data<span class="math inline">\(ca &lt;- as.integer(data\)</span>ca) # since this column had “?”s in it # R thinks that the levels for the factor are strings, but # we know they are integers, so first convert the strings to integiers… data<span class="math inline">\(ca &lt;- as.factor(data\)</span>ca) # …then convert the integers to factor levels</p>
+<p>data<span class="math inline">\(thal &lt;- as.integer(data\)</span>thal) # “thal” also had “?”s in it. data<span class="math inline">\(thal &lt;- as.factor(data\)</span>thal)</p>
+</div>
+<div id="this-next-line-replaces-0-and-1-with-healthy-and-unhealthy" class="section level2">
+<h2>This next line replaces 0 and 1 with “Healthy” and “Unhealthy”</h2>
+<p>data<span class="math inline">\(hd &lt;- ifelse(test=data\)</span>hd == 0, yes=“Healthy”, no=“Unhealthy”) data<span class="math inline">\(hd &lt;- as.factor(data\)</span>hd) # Now convert to a factor</p>
+<p>str(data) ## this shows that the correct columns are factors</p>
+</div>
+<div id="now-determine-how-many-rows-have-na-aka-missing-data.-if-its-just" class="section level2">
+<h2>Now determine how many rows have “NA” (aka “Missing data”). If it’s just</h2>
+</div>
+<div id="a-few-we-can-remove-them-from-the-dataset-otherwise-we-should-consider" class="section level2">
+<h2>a few, we can remove them from the dataset, otherwise we should consider</h2>
+</div>
+<div id="imputing-the-values-with-a-random-forest-or-some-other-imputation-method." class="section level2">
+<h2>imputing the values with a Random Forest or some other imputation method.</h2>
+<p>nrow(data[is.na(data<span class="math inline">\(ca) | is.na(data\)</span>thal),]) data[is.na(data<span class="math inline">\(ca) | is.na(data\)</span>thal),] ## so 6 of the 303 rows of data have missing values. This isn’t a large ## percentage (2%), so we can just remove them from the dataset ## NOTE: This is different from when we did machine learning with ## Random Forests. When we did that, we imputed values. nrow(data) data &lt;- data[!(is.na(data<span class="math inline">\(ca) | is.na(data\)</span>thal)),] nrow(data)</p>
+<div id="section-4" class="section level37">
+<p></p>
+</div>
+</div>
+<div id="section-5" class="section level2">
+<h2></h2>
+</div>
+<div id="now-we-can-do-some-quality-control-by-making-sure-all-of-the-factor" class="section level2">
+<h2>Now we can do some quality control by making sure all of the factor</h2>
+</div>
+<div id="levels-are-represented-by-people-with-and-without-heart-disease-hd" class="section level2">
+<h2>levels are represented by people with and without heart disease (hd)</h2>
+</div>
+<div id="section-6" class="section level2">
+<h2></h2>
+</div>
+<div id="note-we-also-want-to-exclude-variables-that-only-have-1-or-2-samples-in" class="section level2">
+<h2>NOTE: We also want to exclude variables that only have 1 or 2 samples in</h2>
+</div>
+<div id="a-category-since---one-or-two-samples-can-have-a-large-effect-on-the" class="section level2">
+<h2>a category since +/- one or two samples can have a large effect on the</h2>
+</div>
+<div id="oddslogodds" class="section level2">
+<h2>odds/log(odds)</h2>
+</div>
+<div id="section-7" class="section level2">
+<h2></h2>
+</div>
+<div id="section-8" class="section level2">
+<h2></h2>
+<div id="section-9" class="section level37">
+<p></p>
+<p>xtabs(~ hd + sex, data=data) xtabs(~ hd + cp, data=data) xtabs(~ hd + fbs, data=data) xtabs(~ hd + restecg, data=data) xtabs(~ hd + exang, data=data) xtabs(~ hd + slope, data=data) xtabs(~ hd + ca, data=data) xtabs(~ hd + thal, data=data)</p>
+</div>
+<div id="section-10" class="section level37">
+<p></p>
+</div>
+</div>
+<div id="section-11" class="section level2">
+<h2></h2>
+</div>
+<div id="now-we-are-ready-for-some-logistic-regression.-first-well-create-a-very" class="section level2">
+<h2>Now we are ready for some logistic regression. First we’ll create a very</h2>
+</div>
+<div id="simple-model-that-uses-sex-to-predict-heart-disease" class="section level2">
+<h2>simple model that uses sex to predict heart disease</h2>
+</div>
+<div id="section-12" class="section level2">
+<h2></h2>
+<div id="section-13" class="section level37">
+<p></p>
+</div>
+</div>
+<div id="lets-start-super-simple-and-see-if-sex-femalemale-is-a-good" class="section level2">
+<h2>let’s start super simple and see if sex (female/male) is a good</h2>
+</div>
+<div id="predictor" class="section level2">
+<h2>predictor…</h2>
+</div>
+<div id="first-lets-just-look-at-the-raw-data" class="section level2">
+<h2>First, let’s just look at the raw data…</h2>
+<p>xtabs(~ hd + sex, data=data) # sex # hd F M # Healthy 71 89 # Unhealthy 25 112 ## Most of the females are healthy and most of the males are unhealthy. ## Being female is likely to decrease the odds in being unhealthy. ## In other words, if a sample is female, the odds are against it that it ## will be unhealthy ## Being male is likely to increase the odds in being unhealthy… ## In other words, if a sample is male, the odds are for it being unhealthy</p>
+<div id="section-14" class="section level11">
+<p></p>
+</div>
+</div>
+<div id="section-15" class="section level2">
+<h2></h2>
+</div>
+<div id="now-do-the-actual-logistic-regression" class="section level2">
+<h2>Now do the actual logistic regression</h2>
+</div>
+<div id="section-16" class="section level2">
+<h2></h2>
+<div id="section-17" class="section level11">
+<p></p>
+<p>logistic &lt;- glm(hd ~ sex, data=data, family=“binomial”) summary(logistic) ## (Intercept) -1.0438 0.2326 -4.488 7.18e-06 <strong><em> ## sexM 1.2737 0.2725 4.674 2.95e-06 </em></strong></p>
+</div>
+</div>
+<div id="lets-start-by-going-through-the-first-coefficient" class="section level2">
+<h2>Let’s start by going through the first coefficient…</h2>
+</div>
+<div id="intercept--1.0438-0.2326--4.488-7.18e-06-the-intercept-is-the-logodds-a-female-will-be-unhealthy.-this-is-because-female-is-the-first-factor-in-sex-the-factors-are-ordered-alphabetically-by-defaultfemale-male-female.log.odds---log25-71-female.log.odds" class="section level2">
+<h2>(Intercept) -1.0438 0.2326 -4.488 7.18e-06 *** ## ## The intercept is the log(odds) a female will be unhealthy. This is because ## female is the first factor in “sex” (the factors are ordered, ## alphabetically by default,“female”, “male”) female.log.odds &lt;- log(25 / 71) female.log.odds</h2>
+</div>
+<div id="now-lets-look-at-the-second-coefficient" class="section level2">
+<h2>Now let’s look at the second coefficient…</h2>
+</div>
+<div id="sexm-1.2737-0.2725-4.674-2.95e-06-sexm-is-the-logodds-ratio-that-tells-us-that-if-a-sample-has-sexm-the-odds-of-being-unhealthy-are-on-a-log-scale-1.27-times-greater-than-if-a-sample-has-sexf.-male.log.odds.ratio---log112-89-2571-male.log.odds.ratio" class="section level2">
+<h2>sexM 1.2737 0.2725 4.674 2.95e-06 *** ## ## sexM is the log(odds ratio) that tells us that if a sample has sex=M, the ## odds of being unhealthy are, on a log scale, 1.27 times greater than if ## a sample has sex=F. male.log.odds.ratio &lt;- log((112 / 89) / (25/71)) male.log.odds.ratio</h2>
+</div>
+<div id="now-calculate-the-overall-pseudo-r-squared-and-its-p-value" class="section level2">
+<h2>Now calculate the overall “Pseudo R-squared” and its p-value</h2>
+</div>
+<div id="note-since-we-are-doing-logistic-regression" class="section level2">
+<h2>NOTE: Since we are doing logistic regression…</h2>
+</div>
+<div id="null-devaince-20---loglikelihoodnull-model--2loglikihoodnull-model" class="section level2">
+<h2>Null devaince = 2<em>(0 - LogLikelihood(null model)) ## = -2</em>LogLikihood(null model)</h2>
+</div>
+<div id="residual-deviacne-20---loglikelihoodproposed-model--2loglikelihoodproposed-model" class="section level2">
+<h2>Residual deviacne = 2<em>(0 - LogLikelihood(proposed model)) ## = -2</em>LogLikelihood(proposed model)</h2>
+<p>ll.null &lt;- logistic<span class="math inline">\(null.deviance/-2 ll.proposed &lt;- logistic\)</span>deviance/-2</p>
+</div>
+<div id="mcfaddens-pseudo-r2-llnull---llproposed-llnull" class="section level2">
+<h2>McFadden’s Pseudo R^2 = [ LL(Null) - LL(Proposed) ] / LL(Null)</h2>
+<p>(ll.null - ll.proposed) / ll.null</p>
+</div>
+<div id="chi-square-value-2llproposed---llnull-p-value-1---pchisqchi-square-value-df-2-1-1---pchisq2ll.proposed---ll.null-df1" class="section level2">
+<h2>chi-square value = 2<em>(LL(Proposed) - LL(Null)) ## p-value = 1 - pchisq(chi-square value, df = 2-1) 1 - pchisq(2</em>(ll.proposed - ll.null), df=1)</h2>
+<p>1 - pchisq((logistic<span class="math inline">\(null.deviance - logistic\)</span>deviance), df=1)</p>
+</div>
+<div id="lastly-lets-see-what-this-logistic-regression-predicts-given" class="section level2">
+<h2>Lastly, let’s see what this logistic regression predicts, given</h2>
+</div>
+<div id="that-a-patient-is-either-female-or-male-and-no-other-data-about-them." class="section level2">
+<h2>that a patient is either female or male (and no other data about them).</h2>
+<p>predicted.data &lt;- data.frame( probability.of.hd=logistic<span class="math inline">\(fitted.values,  sex=data\)</span>sex)</p>
+</div>
+<div id="we-can-plot-the-data" class="section level2">
+<h2>We can plot the data…</h2>
+<p>ggplot(data=predicted.data, aes(x=sex, y=probability.of.hd)) + geom_point(aes(color=sex), size=5) + xlab(“Sex”) + ylab(“Predicted probability of getting heart disease”)</p>
+</div>
+<div id="since-there-are-only-two-probabilities-one-for-females-and-one-for-males" class="section level2">
+<h2>Since there are only two probabilities (one for females and one for males),</h2>
+</div>
+<div id="we-can-use-a-table-to-summarize-the-predicted-probabilities." class="section level2">
+<h2>we can use a table to summarize the predicted probabilities.</h2>
+<p>xtabs(~ probability.of.hd + sex, data=predicted.data)</p>
+<div id="section-18" class="section level37">
+<p></p>
+</div>
+</div>
+<div id="section-19" class="section level2">
+<h2></h2>
+</div>
+<div id="now-we-will-use-all-of-the-data-available-to-predict-heart-disease" class="section level2">
+<h2>Now we will use all of the data available to predict heart disease</h2>
+</div>
+<div id="section-20" class="section level2">
+<h2></h2>
+<div id="section-21" class="section level37">
+<p></p>
+<p>logistic &lt;- glm(hd ~ ., data=data, family=“binomial”) summary(logistic)</p>
+</div>
+</div>
+<div id="now-calculate-the-overall-pseudo-r-squared-and-its-p-value-1" class="section level2">
+<h2>Now calculate the overall “Pseudo R-squared” and its p-value</h2>
+<p>ll.null &lt;- logistic<span class="math inline">\(null.deviance/-2 ll.proposed &lt;- logistic\)</span>deviance/-2</p>
+</div>
+<div id="mcfaddens-pseudo-r2-llnull---llproposed-llnull-1" class="section level2">
+<h2>McFadden’s Pseudo R^2 = [ LL(Null) - LL(Proposed) ] / LL(Null)</h2>
+<p>(ll.null - ll.proposed) / ll.null</p>
+</div>
+<div id="the-p-value-for-the-r2" class="section level2">
+<h2>The p-value for the R^2</h2>
+<p>1 - pchisq(2*(ll.proposed - ll.null), df=(length(logistic$coefficients)-1))</p>
+</div>
+<div id="now-we-can-plot-the-data" class="section level2">
+<h2>now we can plot the data</h2>
+<p>predicted.data &lt;- data.frame( probability.of.hd=logistic<span class="math inline">\(fitted.values,  hd=data\)</span>hd)</p>
+<p>predicted.data &lt;- predicted.data[ order(predicted.data$probability.of.hd, decreasing=FALSE),] predicted.data$rank &lt;- 1:nrow(predicted.data)</p>
+</div>
+<div id="lastly-we-can-plot-the-predicted-probabilities-for-each-sample-having" class="section level2">
+<h2>Lastly, we can plot the predicted probabilities for each sample having</h2>
+</div>
+<div id="heart-disease-and-color-by-whether-or-not-they-actually-had-heart-disease" class="section level2">
+<h2>heart disease and color by whether or not they actually had heart disease</h2>
+<p>ggplot(data=predicted.data, aes(x=rank, y=probability.of.hd)) + geom_point(aes(color=hd), alpha=1, shape=4, stroke=2) + xlab(“Index”) + ylab(“Predicted probability of getting heart disease”)</p>
+<p>ggsave(“heart_disease_probabilities.pdf”) Advertisements</p>
+</div>
