@@ -86,8 +86,6 @@ El dominio de aplicación de PCA  incluye  estudios poblacionales en areas como,
 
 ### Elementos teóricos.
 
-Revisar [Material de consulta](https://drive.google.com/file/d/1QIETnbXFvpk1GOOoFnA5l0SL7QDytN6h/view?usp=sharing)
-
 Antes de avanzar consideremos algunos fundamentos de algebra lineal necesarios para tener un mejor entendimiento de esta técnica:
 
 Suponga que tiene la sigueinte  matriz con dimensiones mxn   m=5, n=3
@@ -131,7 +129,7 @@ En este contexto el escalar $\lambda$ es denominado Eigenvalor (valor propio, o 
 
 \(A\vec{v.}=\lambda \vec{v.}\)
 
-Para mayor referencia Considere la definición en el libro de  Anton:
+Para mayor referencia considere la definición en el   [Anton H](https://drive.google.com/file/d/1QIETnbXFvpk1GOOoFnA5l0SL7QDytN6h/view?usp=sharing):
 
 ![](\img\pca3.jpg)
 
@@ -144,7 +142,29 @@ Donde **v** es un Eigenvector, $\lambda$ el Eigenvalor, A una matriz cuadrada.
 Por ejemplo:
 
 $$\begin{bmatrix}1&2&3\\2&4&5\\3&5&6\end{bmatrix}$$
+En general la imagen de un vector **x** bajo  multiplicación por una matriz **A** difiere tanto en dirección como en magnitud. Sin emabargo en el caso especial donde x es un Eigenvector de A; multiplicación por A deja la dirección sin cambio, Por ejemplo en   $\mathbb{R}^2$ o $\mathbb{R}^3$ multiplicación por A proyecta cada eigenvalor **x** de **A** (en caso de existir),  a lo largo de la misma linea de **x** que atraviesa el origen. Dependiendo del signo y magnitud del eigenvalor $\lambda$ correspondiente a **x**, la operacción $Ax=\lambda x$ comprime o expande **x** por un factor igual a $\lambda$, con una dirección inversa en el caso de que $\lambda>0$.
 
+La siguente figura disponible en Anton H. ilustra este efecto.
+
+![])(\img\pca4.jpg)
+
+
+Note de la discusión anterior que la ecuación $Ax=\lambda x$ puede escribirse como $Ax=\lambda I x$ o bien de manera equivalente como: 
+
+$$(\lambda I -A)x=0$$
+
+Para que $\lambda$ sea un eigenvalor de **A**, esta ecuación debe tener una solución $\neq0$ para **x**. Lo cual ocurre **si y sólo si**  si la matriz de coeficientes  $(\lambda I -A)$ tiene un determinate $=0$.
+
+La observación anterior se expresa por la ecuación característica:
+
+$$det(\lambda I -A)=0$$
+En palabras. Si **A** es una matriz nxn, entonces $\lambda$ es un eigen vector de **A** si y solo si, este satisface la ecuación característica. 
+ 
+ 
+El proceso de PCA se basa en estos fundamentos teroricos para la determinación de los eigenvectores y corresppodientes eigenvalores de la matriz de datos.
+
+Entonces los eigenvectores capturan la "dirección" principal en las que ubican los datos en el espacio vectorial y los eigenvalores actuan como ponderadores para determinar la extensión de estos eigenvectores.
+ 
 **Vectores ortogonales:** Dos vectores se consideran ortogonales cuando su producto punto:
 
 $$\vec{u_.}\cdot \vec{v_.}=0$$
@@ -172,10 +192,11 @@ Ahora si multiplicamos la matriz anterior por A tenemos $$(AA^T)(Av)=\lambda(Av)
 
 El uso de esta propuesta es importante por que permite simplificar el computo para estimar los eigenvalores por ejemplo considere una matriz de 400x3 entonces $A^TA$ es una matriz de 400X400 con 400 $\lambda$'s pero $A^TA$ tiene solo 3 $\lambda$'s, 
 
+**Para enfatizar:**
 
 Con la técnica de PCA determinamos los vectores propios, estos vectores capturan el espacio común a lo largo del cuál se registra la variación de los datos  y los valores propios, que dan cuenta de la magnitud de la varianza que cada vector propio explica. 
 
-Primero veamos como opera esta tecnica y luego haremos una aplicación  para una matriz de 500+ , 30.
+Para comprender el potencial del uso de PCA para el análisis de datos primero ubiquemos el proceso que sigue esta técnica en el esquema más amplio del análisis y en seguida haremos una serie de ejemplos comenzando con una  aplicación para una matriz de 500+ , 30.
 
 ## PCA. El proceso de cálculo. 
 
@@ -215,7 +236,7 @@ Y generalizando tenemos   que:
 + $S_{ij}$ con $i\neq j$ es la covarianza entre las variables i, j. 
 
 
-El siguiente paso es aplicar el teorema descrito en la sección previa, dado que la matriz **S**  es simétrica tendrá Eigencvalores $\lambda_1\geq \lambda_2\geq \ldots\geq\lambda_m\geq 0$ y Eigenvectores ortogonales $\vec{v}_1, \vec{v}_2, \ldots, \vec{v}_m$ Estos vectores son denominados los componentes principales de la base de datos.
+El siguiente paso es aplicar el teorema descrito en la sección previa, dado que la matriz **S**  es simétrica tendrá Eigenvalores $\lambda_1\geq \lambda_2\geq \ldots\geq\lambda_m\geq 0$ y Eigenvectores ortogonales $\vec{v}_1, \vec{v}_2, \ldots, \vec{v}_m$ Estos vectores son denominados los componentes principales de la base de datos.
 
 Paso siguiente, determiar la varianza total **T** en los datos, que es igual a la **traza[^1] de la matriz de covarianza**.   (Traza: Suma de los elementos de la diagonal de una matriz nxn). Así mismo la traza de la matriz es igual a la suma de sus Eigenvalores:
 $$T=\lambda_1+\lambda_2+\ldots+\lambda_m$$
