@@ -28,19 +28,29 @@ menu:
 <p>La estructura de datos resultante maximiza la variación inherente al conjunto de datos.</p>
 <p>Los componentes son combinaciones lineales de las variables originales, que controlan por el “ruido” (información redundante) en los datos. Nos interesa la <strong>señal</strong> no el <strong>ruido</strong>!</p>
 <p>El <strong>componente principal</strong> (Eigenvector) es una combinación lineal de las variables consideradas para predicción. Este captura la mayor pate de la variación en las dimensiones consideradas.</p>
+<p><img src="\img\pca1.jpg" /> Note en este caso la linea central en el primer panel. esta captura la dirección por la que las dos variables se relacionan, en cierto sentido este vector sintetiza la realción entre las variables pobalción y gasto en educación para una muestra de 100 ciudades.</p>
+<p>Si tomamos este vector y lo rotamos de tal manera que sea paralelo al eje horizontal ahora vemos un segunda fuente de variación (un segundo vector que capura otra dimensión de la variación en los datos) correspondiente a la variación vertical (representada por la distancia entre cada observación y nuestro primer vector).</p>
+<p>En este ejemplo el plano formado por el vector en verde lo denominamos componente principal del conjunto de datos. note que un segundo compoente principal se forma por el vector en azul.</p>
+<div class="figure">
+<img src="\img\pca2.jpg" />
+
+</div>
+<p>Note que el punto azul representa las coordenadas del valor promedio de las variables población y gasto en educación.</p>
 <p>El método permite estimar la proporción de la variación que cada dimensión (componentes principales), de tal forma que podamos identificar las variables de mayor relevancia para el análisis y conocer las variables correlacionadas. Esa variación generalmente se representa mediante un <strong>Scree plot</strong> ( <strong>x</strong> axis componentes principales, <strong>y</strong> axis proporción de la varianza explicada).</p>
 <p>En la estimación de <strong>PCA</strong>, el monto de la variación explicada que cada componente retiene se captura por el <strong>eigenvalor</strong> y se expresa como cociente de la variación total en los datos.</p>
-<p>Uno de los uso de esta técnica es la construcción de modelos que permiten hacer clasificación como el modelo de regresión logistica (considerado aprte del conjunto de generalized linear models).</p>
+<p>Uno de los uso de esta técnica es la construcción de modelos que permiten hacer clasificación como el modelo de regresión logistica (considerado parte del conjunto de GLM generalized linear models.).</p>
 <p>El proceso de análisis aplicado de PCA a clasificación es el siguiente:</p>
 <p>1.-Partimos de un conjunto de datos que contienen k dimensiones. La técnica de PCA permite reducir estas dimensiones al determinar los <strong>eigenvectores</strong> y los correspondientes eigenvalores (loadings), estos permiten determinar la proporción de la varianza explicada de cada componente con lo que se tiene un criterio para seleccionar aquellos que capturan la mayor varianza posible en el conjunto de los datos.</p>
-<p>El numero de eigenvectores a rentener es una cuestión empirica que depende del escenario de analisi, si bien una treshold comun es considerar aquellos que aporta <span class="math inline">\(\geq 85\%\)</span> de la varianza en los datos. de manera alternativa conservar aquellos Eigenvectores con Eigenvalores <span class="math inline">\(\lambda\geq1\)</span>.</p>
-<p>2.- En el caso supervisado la nueva estrucura de datos de menor dimensión generada por el PCA puede ser utilizada para estimar modelos categóricos (supervisados) como regresión logística, <em>k nearest neighbors</em>, <em>linear discriminant Análysis</em> (<strong>LDA</strong>), etc,.</p>
-<p>Estos permiten determinar la probabilidad de pertenencia a una categoria determinada dadas las caracterisitcas de cada observación.</p>
-<p>Las aplicaciones son muy amplias y una aproximación inicial al su uso es en la visuañización El dominio de aplicación incluye estudios poblacionales como, migración,salud pública etc.</p>
+<p>El número de Eigenvectores a rentener es una cuestión empírica que depende del escenario de análisis, si bien un <em>Threshold</em> común es considerar aquellos pc que aportan <span class="math inline">\(\geq 85\%\)</span> de la varianza en los datos. de manera alternativa conservar aquellos Eigenvectores con Eigenvalores <span class="math inline">\(\lambda\geq1\)</span>.</p>
+<p>2.- En el caso supervisado la nueva estrucura de datos de menor dimensión generada por el PCA puede ser utilizada para estimar modelos categóricos (de aprendizaje supervisado. ej tenemos una variable target para predecir) como regresión logística, <em>k nearest neighbors</em>, <em>linear discriminant Análysis</em> (<strong>LDA</strong>), etc,.</p>
+<p>Estos permiten determinar la probabilidad de pertenencia a una categoría determinada dadas las característcas de cada observación.</p>
+<p>El domino de aplicación es amplio. Una aproximación inicial al su uso es en la visualización, un proceso fundamental para comprender como se comportan nnuestros datos antes de aplicar modelos de mayor complejidad. (VSM Vector Support Machine, NN Neural Networks , RF Random Forest,etc.,).</p>
+<p>El dominio de aplicación de PCA incluye estudios poblacionales en areas como, migración,salud pública, indicadores socioeconómicos etc.</p>
 <div id="elementos-teoricos." class="section level3">
 <h3>Elementos teóricos.</h3>
+<p>Revisar <a href="https://drive.google.com/file/d/1QIETnbXFvpk1GOOoFnA5l0SL7QDytN6h/view?usp=sharing">Material de consulta</a></p>
 <p>Antes de avanzar consideremos algunos fundamentos de algebra lineal necesarios para tener un mejor entendimiento de esta técnica:</p>
-<p>Suponga que tiene la sigueinte matriz con dimensiones mxn n=5, m=3,</p>
+<p>Suponga que tiene la sigueinte matriz con dimensiones mxn m=5, n=3</p>
 <pre><code>##   Age Height  IQ
 ## 1  24    152 108
 ## 2  50    175 102
@@ -52,13 +62,15 @@ menu:
 <img src="/img/matrix.jpg" />
 
 </div>
-<p>Note que el producto resultante la mtriz transformada cambió el tamaño, no la dirección del vector.</p>
+<p>Note que el producto resultante la matriz transformada cambió el tamaño, no la dirección del vector.</p>
 <p><span class="math inline">\(\begin{bmatrix}2&amp;3\\1&amp;2\end{bmatrix} \begin{bmatrix}2\\5\end{bmatrix}=\begin{bmatrix}19\\12\end{bmatrix}\)</span></p>
 <p>Recordemos la definición de Eigenvectores (vectores propios/característicos) y Eigenvalores.</p>
+<p><a href="https://medium.com/@andrew.chamberlain/using-eigenvectors-to-find-steady-state-population-flows-cd938f124764">Sugerencia Post</a></p>
 <p><strong>Eigenvectores</strong>. Un vector tal que cuando son transformados por el operador resultan en un múltiplo escalar de si mismos.</p>
+<p>En otras palabras el vector característico de una transformación lineal es un vector <span class="math inline">\(\neq0\)</span> que cambia únicamente por un factor escalar cuando se le aplica la transformación lineal.</p>
 <p>En este contexto el escalar <span class="math inline">\(\lambda\)</span> es denominado Eigenvalor (valor propio, o característico).</p>
-<p><span class="math inline">\(Av=\lambda v\)</span></p>
-<p>Donde <strong>v</strong> es un Eigenvector y <span class="math inline">\(\lambda\)</span> el Eigenvalor.</p>
+<p><span class="math inline">\(A\vec{v.}=\lambda \vec{v.}\)</span></p>
+<p>Donde <strong>v</strong> es un Eigenvector, <span class="math inline">\(\lambda\)</span> el Eigenvalor, A una matriz cuadrada.</p>
 <p><strong>Matriz simétrica:</strong> Una matriz <span class="math inline">\(mxn\)</span> se dice que es simétrica si <span class="math inline">\(A^T =A\)</span></p>
 <p>Por ejemplo:</p>
 <p><span class="math display">\[\begin{bmatrix}1&amp;2&amp;3\\2&amp;4&amp;5\\3&amp;5&amp;6\end{bmatrix}\]</span></p>
