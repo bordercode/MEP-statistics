@@ -57,7 +57,7 @@ menu:
 ## 3  17    160  95
 ## 4  35    170  97
 ## 5  65    155  87</code></pre>
-<p>Entonces podemos expresar el primer vector de esta matriz como <span class="math display">\[\vec{x_1}  = \begin{bmatrix} 24  \\152 \\ 108 \end{bmatrix}\]</span> Suponga que tenomos una matriz <em>A</em> nxn y un vector nx1 <em>v</em>. si multiplicamos <em>v</em> por <em>A</em> Obtenemos otro vector. La matriz A ha realizado una transformación sobre el vector v.</p>
+<p>Entonces podemos expresar el primer vector de esta matriz como <span class="math display">\[\vec{x_1}  = \begin{bmatrix} 24  \\152 \\ 108 \end{bmatrix}\]</span> Suponga que tenomos una matriz <em>A</em> nxn y un vector nx1 <strong>v</strong>. si multiplicamos <strong>v</strong> por <strong>A</strong> Obtenemos otro vector. La matriz <strong>A</strong>, ha realizado una transformación sobre el vector <strong>v</strong>.</p>
 <div class="figure">
 <img src="/img/matrix.jpg" />
 
@@ -65,17 +65,23 @@ menu:
 <p>Note que el producto resultante la matriz transformada cambió el tamaño, no la dirección del vector.</p>
 <p><span class="math inline">\(\begin{bmatrix}2&amp;3\\1&amp;2\end{bmatrix} \begin{bmatrix}2\\5\end{bmatrix}=\begin{bmatrix}19\\12\end{bmatrix}\)</span></p>
 <p>Recordemos la definición de Eigenvectores (vectores propios/característicos) y Eigenvalores.</p>
-<p><a href="https://medium.com/@andrew.chamberlain/using-eigenvectors-to-find-steady-state-population-flows-cd938f124764">Sugerencia Post</a></p>
+<p><a href="https://medium.com/@andrew.chamberlain/using-eigenvectors-to-find-steady-state-population-flows-cd938f124764">Sugerencia leer Post</a></p>
 <p><strong>Eigenvectores</strong>. Un vector tal que cuando son transformados por el operador resultan en un múltiplo escalar de si mismos.</p>
 <p>En otras palabras el vector característico de una transformación lineal es un vector <span class="math inline">\(\neq0\)</span> que cambia únicamente por un factor escalar cuando se le aplica la transformación lineal.</p>
 <p>En este contexto el escalar <span class="math inline">\(\lambda\)</span> es denominado Eigenvalor (valor propio, o característico).</p>
 <p><span class="math inline">\(A\vec{v.}=\lambda \vec{v.}\)</span></p>
+<p>Para mayor referencia Considere la definición en el libro de Anton:</p>
+<div class="figure">
+<img src="\img\pca3.jpg" />
+
+</div>
+<p>La aplicación de la teoría de vectores es particularmente útil para estudiar problemas de dinámica poblacional.</p>
 <p>Donde <strong>v</strong> es un Eigenvector, <span class="math inline">\(\lambda\)</span> el Eigenvalor, A una matriz cuadrada.</p>
 <p><strong>Matriz simétrica:</strong> Una matriz <span class="math inline">\(mxn\)</span> se dice que es simétrica si <span class="math inline">\(A^T =A\)</span></p>
 <p>Por ejemplo:</p>
 <p><span class="math display">\[\begin{bmatrix}1&amp;2&amp;3\\2&amp;4&amp;5\\3&amp;5&amp;6\end{bmatrix}\]</span></p>
-<p><strong>Vectores ortogonales:</strong> Dos vectores se consideran ortogonales cuando:</p>
-<p><span class="math inline">\(\vec{u_.}\cdot \vec{v_.}=0\)</span></p>
+<p><strong>Vectores ortogonales:</strong> Dos vectores se consideran ortogonales cuando su producto punto:</p>
+<p><span class="math display">\[\vec{u_.}\cdot \vec{v_.}=0\]</span></p>
 <p><strong>Teorema:</strong></p>
 <p>Sea <strong>A</strong> una matriz simétrica. Entonces, existen <strong>valores</strong> propios reales <span class="math inline">\(\lambda_1, \lambda_2,\lambda_3,...,\lambda_n,\)</span> y <strong>vectores</strong> propios ortogonales <span class="math inline">\(\vec{v_1},\vec{v_2},\vec{v_3},...\vec{v_n}\neq 0\)</span><br />
 tal que <span class="math inline">\(A\vec{v_i}=\lambda \vec{v_i}\)</span> para <span class="math inline">\(i=1,2,...,n\)</span></p>

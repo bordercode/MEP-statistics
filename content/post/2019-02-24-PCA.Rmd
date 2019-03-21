@@ -107,7 +107,7 @@ matrix
 
 Entonces podemos expresar el primer vector de esta matriz como 
 $$\vec{x_1}  = \begin{bmatrix} 24  \\152 \\ 108 \end{bmatrix}$$
-Suponga que tenomos una matriz *A* nxn   y un vector nx1 *v*. si multiplicamos *v* por *A* Obtenemos otro vector. La matriz A ha realizado una transformación sobre el vector v.  
+Suponga que tenomos una matriz *A* nxn   y un vector nx1 **v**. si multiplicamos **v** por **A** Obtenemos otro vector. La matriz **A**, ha realizado una transformación sobre el vector **v**.  
 
 ![](/img/matrix.jpg)
 
@@ -121,7 +121,7 @@ Recordemos la definición de Eigenvectores (vectores propios/característicos) y
 
 
 
-[Sugerencia  Post](https://medium.com/@andrew.chamberlain/using-eigenvectors-to-find-steady-state-population-flows-cd938f124764)
+[Sugerencia leer  Post](https://medium.com/@andrew.chamberlain/using-eigenvectors-to-find-steady-state-population-flows-cd938f124764)
 
 **Eigenvectores**. Un vector tal que cuando son transformados por el operador resultan en un múltiplo escalar de si mismos.
 
@@ -131,6 +131,12 @@ En este contexto el escalar $\lambda$ es denominado Eigenvalor (valor propio, o 
 
 \(A\vec{v.}=\lambda \vec{v.}\)
 
+Para mayor referencia Considere la definición en el libro de  Anton:
+
+![](\img\pca3.jpg)
+
+La aplicación de la teoría  de vectores es particularmente útil para estudiar problemas de dinámica poblacional.  
+
 Donde **v** es un Eigenvector, $\lambda$ el Eigenvalor, A una matriz cuadrada. 
 
 **Matriz simétrica:** Una matriz $mxn$ se dice que es simétrica si $A^T =A$
@@ -139,9 +145,9 @@ Por ejemplo:
 
 $$\begin{bmatrix}1&2&3\\2&4&5\\3&5&6\end{bmatrix}$$
 
-**Vectores ortogonales:** Dos vectores se consideran ortogonales cuando:
+**Vectores ortogonales:** Dos vectores se consideran ortogonales cuando su producto punto:
 
-$\vec{u_.}\cdot \vec{v_.}=0$
+$$\vec{u_.}\cdot \vec{v_.}=0$$
 
 **Teorema:**
 
