@@ -23,7 +23,9 @@ library(ggthemes)
 
 ## Análisis de Componentes Principales (PCA).
 
-El método **PCA** permite reexpresar un conjunto multidimensional de datos (ej. k dimensiones) que contiene variables altamente **correlacionadas** ( ej. que aportan información redundante), en un subconjnto de datos de menor dimensión. 
+#### Motivación
+
+El método **PCA** permite reexpresar un conjunto multidimensional de datos (ej. k dimensiones) que contiene variables  **correlacionadas** ( ej. que aportan información redundante), en un subconjnto de datos de menor dimensión. 
 
 Con **PCA** respondemos preguntas como:
 
@@ -36,7 +38,8 @@ Con **PCA** respondemos preguntas como:
 
 En este entorno  cada variable la consideramos una dimensión.
 
-Sea $x_i$ la observación del individuo *i* tomado de la variable **k**  donde i varia de **i** a **I** y k a **K**
+Como ejemplo de la estructura de datos  considere $x_i$ la observación del individuo *i* tomado de la variable **k**  donde i varia de **i** a **I** y k a **K**
+Entonces en esta estructura la idea es reeprezar los datos a partir de  un número de  k´s. menor.
 
 El **PCA** es  una técnica para descubrir como variables **numéricas** **"covarian"**.
 
@@ -51,35 +54,38 @@ Los componentes son combinaciones lineales de las variables originales, que cont
 El **componente principal**  (Eigenvector) es una combinación lineal de las variables consideradas para predicción. Este captura la mayor pate de la variación en las dimensiones consideradas.
 
 ![](\img\pca1.jpg)
-Note en este caso la linea central en el primer panel. esta captura la dirección por la que las dos variables se relacionan, en cierto sentido este vector sintetiza la realción entre las variables pobalción y  gasto en educación para una muestra de 100 ciudades.
-
-Si tomamos este vector y lo rotamos de tal manera que sea paralelo al eje horizontal ahora vemos un segunda fuente de variación (un segundo vector que capura otra dimensión de la  variación en los datos) correspondiente a la variación vertical (representada por la distancia entre cada observación y nuestro  primer vector). 
-
-En este ejemplo el  plano formado por el  vector en verde lo denominamos componente principal del conjunto de datos. note que un segundo compoente principal se forma por el vector en azul.
-
-![](\img\pca2.jpg)
 
 Note que el punto azul representa las coordenadas del valor promedio de las variables población y gasto en educación.
 
 
+Note en este caso la linea central en el primer panel que captura la dirección por la que las dos variables se relacionan, en cierto sentido este vector sintetiza la realción entre las variables pobalción y  gasto en educación para una muestra de 100 ciudades.
 
-El método permite estimar la proporción de la variación que cada dimensión (componentes principales), de tal forma que podamos identificar las variables de mayor relevancia para el análisis y conocer las variables correlacionadas. Esa variación generalmente se representa mediante un **Scree plot** ( **x** axis componentes principales, **y** axis proporción de la varianza explicada).
+Si tomamos este vector y lo rotamos de tal manera que sea paralelo al eje horizontal ahora vemos una segunda fuente de variación (un segundo vector que captura otra dimensión de la  variación en los datos) correspondiente a la variación vertical (representada por la distancia entre cada observación y nuestro  primer vector). 
+
+En este ejemplo el  plano formado por el  vector en verde lo denominamos componente principal del conjunto de datos. Note que un segundo compoente principal se forma por el vector en azul.
+
+![](\img\pca2.jpg)
+
+
+El método permite estimar la proporción de la variación que cada dimensión (componentes principales) captura, de tal forma que podemos identificar las variables de mayor relevancia para el análisis y conocer las variables correlacionadas.
+
+Esa variación generalmente se representa mediante un **Scree plot** ( **x** axis componentes principales, **y** axis proporción de la varianza explicada).
 
 En la estimación de **PCA**, el monto de la variación explicada que cada componente retiene se captura por el **eigenvalor** y se expresa como cociente de la variación total en los datos.
 
 Uno de los uso de esta técnica es la construcción de modelos que permiten hacer clasificación como el modelo de regresión logistica  (considerado parte del conjunto de GLM  generalized linear models.). 
 
-El proceso de análisis aplicado de PCA a clasificación es el siguiente:
+El proceso de PCA aplicado a un problema de clasificación es el siguiente:
 
 1.-Partimos de  un conjunto de datos que  contienen k dimensiones. La técnica de  PCA permite reducir estas dimensiones al determinar los **eigenvectores** y los correspondientes  eigenvalores (loadings), estos permiten determinar la proporción de la varianza explicada de cada componente con lo que se tiene un criterio para seleccionar aquellos que capturan la mayor varianza posible en el conjunto de los datos.
 
-El número de Eigenvectores a rentener es una cuestión empírica que depende del escenario de análisis, si bien un *Threshold* común es considerar aquellos pc que aportan $\geq 85\%$ de la varianza en los datos. de manera alternativa  conservar aquellos Eigenvectores con Eigenvalores  $\lambda\geq1$.
+El número de eigenvectores a rentener es una cuestión empírica que depende del escenario de análisis, si bien un *Threshold* común es considerar aquellos pc que aportan $\geq 85\%$ de la varianza en los datos. de manera alternativa  conservar aquellos Eigenvectores con Eigenvalores  $\lambda\geq1$.
 
 2.- En el caso  supervisado la nueva estrucura de datos de menor  dimensión generada por el PCA puede ser utilizada para estimar modelos categóricos (de aprendizaje supervisado. ej tenemos una variable target para predecir) como  regresión logística,  *k nearest neighbors*, *linear discriminant Análysis* (**LDA**), etc,. 
 
 Estos permiten determinar la probabilidad de pertenencia a una categoría determinada dadas las característcas de cada observación.
 
-El domino de aplicación es amplio. Una aproximación inicial al su uso es en la visualización, un proceso fundamental para comprender como se comportan nnuestros datos antes de aplicar modelos de mayor complejidad. (VSM Vector Support Machine, NN Neural Networks , RF Random Forest,etc.,).
+El domino de aplicación es amplio. Una aproximación inicial a su uso es en la **visualización**, un proceso fundamental para comprender como se comportan nuestros datos antes de aplicar modelos de mayor complejidad. (VSM Vector Support Machine, NN Neural Networks , RF Random Forest,etc.,).
 
 El dominio de aplicación de PCA  incluye  estudios poblacionales en areas como, migración,salud pública, indicadores socioeconómicos etc. 
 
@@ -88,7 +94,7 @@ El dominio de aplicación de PCA  incluye  estudios poblacionales en areas como,
 
 Antes de avanzar consideremos algunos fundamentos de algebra lineal necesarios para tener un mejor entendimiento de esta técnica:
 
-Suponga que tiene la sigueinte  matriz con dimensiones mxn   m=5, n=3
+Suponga que tiene la siguiente  matriz con dimensiones mxn   m=5, n=3
 
 ```{r, echo=FALSE}
 
@@ -109,18 +115,13 @@ Suponga que tenomos una matriz *A* nxn   y un vector nx1 **v**. si multiplicamos
 
 ![](/img/matrix.jpg)
 
-Note que el producto resultante la matriz transformada cambió el tamaño,  no la dirección del vector. 
+El producto resultante, la matriz transformada, cambió el tamaño,  no la dirección del vector. 
 
 \(\begin{bmatrix}2&3\\1&2\end{bmatrix} 
 \begin{bmatrix}2\\5\end{bmatrix}=\begin{bmatrix}19\\12\end{bmatrix}\)
 
 
 Recordemos la definición de Eigenvectores (vectores propios/característicos) y Eigenvalores.
-
-
-
-[Sugerencia leer  Post](https://medium.com/@andrew.chamberlain/using-eigenvectors-to-find-steady-state-population-flows-cd938f124764)
-
 **Eigenvectores**. Un vector tal que cuando son transformados por el operador resultan en un múltiplo escalar de si mismos.
 
 En otras palabras el vector característico de una transformación lineal es un vector $\neq0$ que cambia únicamente por un factor escalar cuando se le aplica la transformación lineal.  
@@ -129,24 +130,32 @@ En este contexto el escalar $\lambda$ es denominado Eigenvalor (valor propio, o 
 
 \(A\vec{v.}=\lambda \vec{v.}\)
 
+Donde **v** es un Eigenvector, $\lambda$ el Eigenvalor, A una matriz cuadrada. 
+
 Para mayor referencia considere la definición en el   [Anton H](https://drive.google.com/file/d/1QIETnbXFvpk1GOOoFnA5l0SL7QDytN6h/view?usp=sharing):
 
 ![](\img\pca3.jpg)
 
 La aplicación de la teoría  de vectores es particularmente útil para estudiar problemas de dinámica poblacional.  
 
-Donde **v** es un Eigenvector, $\lambda$ el Eigenvalor, A una matriz cuadrada. 
+
+[Sugerencia leer  Post](https://medium.com/@andrew.chamberlain/using-eigenvectors-to-find-steady-state-population-flows-cd938f124764)
+
+
 
 **Matriz simétrica:** Una matriz $mxn$ se dice que es simétrica si $A^T =A$
 
 Por ejemplo:
 
 $$\begin{bmatrix}1&2&3\\2&4&5\\3&5&6\end{bmatrix}$$
-En general la imagen de un vector **x** bajo  multiplicación por una matriz **A** difiere tanto en dirección como en magnitud. Sin emabargo en el caso especial donde x es un Eigenvector de A; multiplicación por A deja la dirección sin cambio, Por ejemplo en   $\mathbb{R}^2$ o $\mathbb{R}^3$ multiplicación por A proyecta cada eigenvalor **x** de **A** (en caso de existir),  a lo largo de la misma linea de **x** que atraviesa el origen. Dependiendo del signo y magnitud del eigenvalor $\lambda$ correspondiente a **x**, la operacción $Ax=\lambda x$ comprime o expande **x** por un factor igual a $\lambda$, con una dirección inversa en el caso de que $\lambda>0$.
+En general la imagen de un vector **x** ante la   multiplicación por una matriz **A** difiere tanto en dirección como en magnitud. Sin emabargo en el caso especial donde **x** es un eigenvector de **A**; la multiplicación por **A** deja la dirección sin cambio. 
+Por ejemplo en   $\mathbb{R}^2$ o $\mathbb{R}^3$ la multiplicación por **A** proyecta cada eigenvalor **x** de **A** (en caso de existir),  a lo largo de la misma linea de **x** que atraviesa el origen.
 
-La siguente figura disponible en Anton H. ilustra este efecto.
+Dependiendo del signo y magnitud del eigenvalor $\lambda$ correspondiente a **x**, la operacción $Ax=\lambda x$ comprime o expande **x** por un factor igual a $\lambda$, con una dirección inversa en el caso de que $\lambda<0$.
 
-![])(\img\pca4.jpg)
+La siguiente figura disponible en Anton H. ilustra este efecto.
+
+![](\img\pca4.jpg)
 
 
 Note de la discusión anterior que la ecuación $Ax=\lambda x$ puede escribirse como $Ax=\lambda I x$ o bien de manera equivalente como: 
@@ -158,12 +167,12 @@ Para que $\lambda$ sea un eigenvalor de **A**, esta ecuación debe tener una sol
 La observación anterior se expresa por la ecuación característica:
 
 $$det(\lambda I -A)=0$$
-En palabras. Si **A** es una matriz nxn, entonces $\lambda$ es un eigen vector de **A** si y solo si, este satisface la ecuación característica. 
+En palabras. Si **A** es una matriz nxn, entonces $\lambda$ es un eigen vector de **A** **si y solo si**, este satisface la **ecuación característica**. 
  
  
-El proceso de PCA se basa en estos fundamentos teroricos para la determinación de los eigenvectores y corresppodientes eigenvalores de la matriz de datos.
+El proceso de PCA se basa en estos fundamentos teóricos para la determinación de los eigenvectores y correspondientes eigenvalores de la matriz de datos.
 
-Entonces los eigenvectores capturan la "dirección" principal en las que ubican los datos en el espacio vectorial y los eigenvalores actuan como ponderadores para determinar la extensión de estos eigenvectores.
+Entonces los eigenvectores capturan la "dirección" principal en la que se ubican los datos en el espacio vectorial y los eigenvalores actuan como ponderadores para determinar la extensión de estos eigenvectores.
  
 **Vectores ortogonales:** Dos vectores se consideran ortogonales cuando su producto punto:
 
@@ -171,7 +180,7 @@ $$\vec{u_.}\cdot \vec{v_.}=0$$
 
 **Teorema:**
 
-Sea **A** una matriz simétrica. Entonces, existen **valores** propios reales $\lambda_1, \lambda_2,\lambda_3,...,\lambda_n,$  y **vectores** propios ortogonales $\vec{v_1},\vec{v_2},\vec{v_3},...\vec{v_n}\neq 0$  
+Sea **A** una matriz simétrica. Entonces, existen **valores** propios reales $\lambda_1, \lambda_2,\lambda_3,...,\lambda_n,$  y **vectores** propios ortogonales   $\vec{v_1},\vec{v_2},\vec{v_3},...\vec{v_n}\neq 0$  
 tal que $A\vec{v_i}=\lambda \vec{v_i}$ para $i=1,2,...,n$
 
 Adicionalmente consideremos la siguientes observaciones:
@@ -198,7 +207,7 @@ Con la técnica de PCA determinamos los vectores propios, estos vectores captura
 
 Para comprender el potencial del uso de PCA para el análisis de datos primero ubiquemos el proceso que sigue esta técnica en el esquema más amplio del análisis y en seguida haremos una serie de ejemplos comenzando con una  aplicación para una matriz de 500+ , 30.
 
-## PCA. El proceso de cálculo. 
+## El proceso de cálculo. 
 
 Primero obtenemos la media de las **m** variables en nuestra matriz. Y almacenamos estos valores en un vector en el espacio $\mathbb{R}^m$
 
@@ -224,7 +233,7 @@ $$B=\begin{bmatrix}a_1-\mu_1&b_1-\mu_1&c_1-\mu_1\\a_2-\mu_2&b_2-\mu_2&c_2-\mu_2\
 Ahora veamos  los elementos de la matriz de covarianza **S**
 
 $$\displaystyle S_{11}=\frac{1}{n-1}((a_1-\mu_1)^2+(b_1-\mu_1)^2+(c_1-\mu_1)^2)=\mbox{ Varianza de la primera variable }$$
-De manera simira los elementos $S_{22}, S_{33}$ representan la varianza de la segunda y tercera variables respectivamente.
+De manera similar los elementos $S_{22}, S_{33}$ representan la varianza de la segunda y tercera variables respectivamente.
 
 En segiuida tenemos la covarinza entre la primera y segunda variables:
 
@@ -238,7 +247,9 @@ Y generalizando tenemos   que:
 
 El siguiente paso es aplicar el teorema descrito en la sección previa, dado que la matriz **S**  es simétrica tendrá Eigenvalores $\lambda_1\geq \lambda_2\geq \ldots\geq\lambda_m\geq 0$ y Eigenvectores ortogonales $\vec{v}_1, \vec{v}_2, \ldots, \vec{v}_m$ Estos vectores son denominados los componentes principales de la base de datos.
 
-Paso siguiente, determiar la varianza total **T** en los datos, que es igual a la **traza[^1] de la matriz de covarianza**.   (Traza: Suma de los elementos de la diagonal de una matriz nxn). Así mismo la traza de la matriz es igual a la suma de sus Eigenvalores:
+Note que el segundo componente principal es una combinación lineal de las variables no correlaciondas con pc1, condición  que se deduce de la definición de vectores ortogonales. 
+
+Paso siguiente, determiar la varianza total **T** en los datos, que es igual a la **traza**^[Traza: Suma de los elementos de la diagonal de una matriz nxn] de la matriz de covarianza**. Así mismo la traza de la matriz es igual a la suma de sus Eigenvalores:
 $$T=\lambda_1+\lambda_2+\ldots+\lambda_m$$
 ¿Cómo interpretamos los resultados del PCA?
 
