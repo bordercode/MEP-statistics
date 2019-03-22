@@ -253,7 +253,7 @@ Paso siguiente, determiar la varianza total **T** en los datos, que es igual a l
 $$T=\lambda_1+\lambda_2+\ldots+\lambda_m$$
 ¿Cómo interpretamos los resultados del PCA?
 
-La dirección dada por el vector $\vec{v_{1}}$ $\mathbb{R}^m$ denominado el **primer componente principal** da cuente de un monto igual a $\lambda_1$ de la varianza total T.
+La dirección dada por el vector $\vec{v_{1}}$ $\mathbb{R}^m$ denominado el **primer componente principal** da cuenta de un monto igual a $\lambda_1$ de la varianza total T.
 
 Es una fracción $\displaystyle\frac{\lambda_1}{T}$ de la varianza total. De igual forma, la segunda dirección principal $\vec{v}_2$,  que da cuenta de una fracción $\displaystyle\frac{\lambda_2}{T}$.
 
@@ -263,23 +263,20 @@ Es una fracción $\displaystyle\frac{\lambda_1}{T}$ de la varianza total. De igu
 
 + De forma similar entre las direcciones ortogonales a $\vec{v}_1$ y  $\vec{v}_2$,  $\vec{v}_3$ es la dirección más significativa y así sucesivamentente.
 
-Que conjunto de datos tenemos como resultado del PCA 
+¿Que conjunto de datos tenemos como resultado del PCA? 
 
 El procedimiento de PCA  ha generado una nueva estructura de los datos (reducción en las dimensiones) por lo que ahora  podemos representar digamos un espacio vectorial que era digamos $\mathbb{R}^{30}$ mediante una estructura de compoentes principales de menor dimensión con las observaciones del conjunto de datos conformando clusters definidos en función de los Eigenvectores.
 
 
 ## Ejemplo 1 Base de datos sobre cáncer de mama. 
 
-
-## PCA Intuición. Ejemplo estudio con datos sobre Cáncer de Mama.
-
 El propósito es determinar un subconjunto de variables que capturen la mayor cantidad de información posible (ej. que capturen la mayor variación posible).
 
 Esta técnica permite además visualizar los vectores a lo largo de los cuales la mayor variación posible es capturada (2D).
 
-Este subconjunto de variables consituyen un sístensis que representa los eigenvectores de la matriz original. 
+Este subconjunto de variables consituyen una síntensis que representa los eigenvectores de la matriz original. 
 
-[Datos](http://archive.ics.uci.edu/ml/datasets/breast+cancer+wisconsin+%28diagnostic%29)
+[Background](http://archive.ics.uci.edu/ml/datasets/breast+cancer+wisconsin+%28diagnostic%29)
 ```{r,echo=FALSE}
 library(corrplot)
 
@@ -295,9 +292,11 @@ View(bc)
 Observamos que este **df** contine 569 obsrevaciones, 
 en este caso pacientes con diagnóstico de cáncer de mama. Tenemos  30 variables. el df constituye una matriz nxm: 569x30. 
 
-Sin embargo, es posible que en las 33 variables tenemos cierta correlación entre ellas. La técnica de **PCA** es útil en este caso por que podemos representar las 30 dimensiones mediante un subconjunto menor que capture la mayor variación posible contenida el la matriz. Esta reducción se basa en la trayectoria de los eigenvectores de la matriz original.  
+Sin embargo, es posible que en las 30 variables tenemos cierta correlación entre ellas. La técnica de **PCA** es útil en este caso por que podemos representar las 30 dimensiones mediante un subconjunto menor que capture la mayor variación posible contenida el la matriz. Esta reducción se basa en la trayectoria de los eigenvectores de la matriz original.  
 
-Entre las variables tenemos una denominada diagnosis, esta indica el tipo de tumor benigno **B** o maligno **M**
+Entre las variables tenemos una denominada diagnosis, esta indica el tipo de tumor benigno **B** o maligno **M**. esta variable es considerada el target para la clasificación posterior, por ejemplo mediante un modelo de regresión logística. 
+
+#### 1. Fase EDA.
 
 ```{r}
 
@@ -343,9 +342,10 @@ corrplot(M, diag = FALSE, method="color", order="FPC", tl.srt = 90)
 
 ```
 Note el grado de correlación entre  las variables de la muestra. Soporte en favor de la decisión de usar la metodología de PCA.
-### Implementación.
 
-Una pregunta escencial **previo** a la implementación de **PCA** es si debemos estandarizar (scalar) nuestra matriz. ( variables con media=0,  std dev=1).(Ver Z-Score Normalization. *Standardization involves rescaling the features such that they have the properties of a standard normal distribution with a mean of zero and a standard deviation of one.*)
+### 2. Implementación. Pre proceso (Scaling)
+
+Una pregunta escencial **previo** a la implementación de **PCA** es si debemos estandarizar (scalar) nuestra matriz. ( variables con media=0,  std dev=1).( Z-Score Normalization. *Standardization involves rescaling the features such that they have the properties of a standard normal distribution with a mean of zero and a standard deviation of one.*)
 
 Nota sobre el proceso de estandarización.
 
@@ -359,7 +359,7 @@ Escalar los datos implica  utilizar la **matriz de correlación**. Utilizar los 
 
 De lo contrario los **eigenvectores** resultantes en el proceso de estimación  de **PCA** no aportan información consistente.(ej. la importancia de cada variable y sus unidades de medida  tendrá un impacto en la organización de los **eigenvectores** resultantes distorsionando la  varianza real explicada por cada componente).
 
-## Estimacion de PCA usando la  matriz de correlación.
+#### 3. Estimacion de PCA usando la  matriz de correlación.
 
 ```{r, echo =FALSE}
 
@@ -390,7 +390,7 @@ round(pve, 2)
 round(cumsum(pve), 2)
 ```
 
-El 89% de la varianza es explicada por los primeros 6 componentes. Adicionalmente vemos que  eigenvalores>1 para los 6 pc que explican el 89% de la varianza.  Este serpa el criterio de selección para retenter en este caso los pc (ej . si los eigenvalores>1).
+El 89% de la varianza es explicada por los primeros 6 componentes. Adicionalmente vemos que  eigenvalores>1 para los 6 pc que explican el 89% de la varianza.  Este será el criterio de selección para retenter en este caso los pc (ej . si los eigenvalores>1).
 
 
 
@@ -414,7 +414,7 @@ plot(cumsum(pve), xlab = "Principal Component",
      ylim = c(0, 1), type = "b")
 ```
 
-## plot de Observaciones para compoenetes 1 y 2.
+#### Visualización de los datos. Plot de Observaciones para compoenetes 1 y 2.
 ```{r}
 
 plot(bc.pr$x[, c(1, 2)], col = (diagnosis + 1), 
@@ -423,8 +423,12 @@ legend(x="topleft", pch=1, col = c("red", "black"), legend = c("B", "M"))
 ```
 
 #### Aproximación a la solución del problema como un escenario de *supervised learning*.
-Donde la variable que nos interesa predecir es *diagnosis*, ej. determinar si el tumor es maligno o benigno (variable dependiente) con base en las 32 variables independientes. 
-Primero aplicamos el PCA para reducir las dimensiones del df. esto nos permite clasificar a los pacientes con base en los atributos y visulizar el resultado mendiante un menor número de dimensiones.   See para mayor referencia sobre el caso de estudio.https://www.kaggle.com/shravank/predicting-breast-cancer-using-pca-lda-in-r 
+
+La variable que nos interesa predecir es *diagnosis*, ej. determinar si el tumor es maligno o benigno (variable dependiente) con base en las 30 variables independientes.
+
+Primero aplicamos el PCA para reducir las dimensiones del df. esto nos permite clasificar a los pacientes con base en los atributos y visualizar el resultado mendiante un menor número de dimensiones.   Get jupyter notebook para mayor referencia sobre el caso de estudio en: 
+
+https://www.kaggle.com/shravank/predicting-breast-cancer-using-pca-lda-in-r 
 
 # Ejemplo 2   Iris.
 
