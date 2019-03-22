@@ -430,6 +430,7 @@ Primero aplicamos el PCA para reducir las dimensiones del df. esto nos permite c
 
 https://www.kaggle.com/shravank/predicting-breast-cancer-using-pca-lda-in-r 
 
+
 # Ejemplo 2   Iris.
 
 Ver Jupyter notebook
