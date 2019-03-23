@@ -153,8 +153,18 @@ tal que <span class="math inline">\(A\vec{v_i}=\lambda \vec{v_i}\)</span> para <
 <p>¿Que conjunto de datos tenemos como resultado del PCA?</p>
 <p>El procedimiento de PCA ha generado una nueva estructura de los datos (reducción en las dimensiones) por lo que ahora podemos representar digamos un espacio vectorial que era digamos <span class="math inline">\(\mathbb{R}^{30}\)</span> mediante una estructura de compoentes principales de menor dimensión con las observaciones del conjunto de datos conformando clusters definidos en función de los Eigenvectores.</p>
 </div>
-<div id="ejemplo-1-base-de-datos-sobre-cancer-de-mama." class="section level2">
-<h2>Ejemplo 1 Base de datos sobre cáncer de mama.</h2>
+<div id="practica." class="section level2">
+<h2>Práctica.</h2>
+<div id="ejemplo-1-iris.-pca1iris.ipynb" class="section level3">
+<h3>Ejemplo 1 Iris. PCA1iris.ipynb</h3>
+<p>Ver Jupyter notebook</p>
+</div>
+<div id="ejemplo-2-hipotetico-200-obs.-pca2.ipynb" class="section level3">
+<h3>Ejemplo 2 Hipotético 200 obs. PCA2.ipynb</h3>
+<p>Ver Jupyter notebook</p>
+</div>
+<div id="ejemplo-3-breast-cancer-data-set" class="section level3">
+<h3>Ejemplo 3 Breast cáncer data set</h3>
 <p>El propósito es determinar un subconjunto de variables que capturen la mayor cantidad de información posible (ej. que capturen la mayor variación posible).</p>
 <p>Esta técnica permite además visualizar los vectores a lo largo de los cuales la mayor variación posible es capturada (2D).</p>
 <p>Este subconjunto de variables consituyen una síntensis que representa los eigenvectores de la matriz original.</p>
@@ -328,6 +338,7 @@ M &lt;- round(cor(bc_matrix), 2)
 corrplot(M, diag = FALSE, method=&quot;color&quot;, order=&quot;FPC&quot;, tl.srt = 90)</code></pre>
 <p><img src="/post/2019-02-24-PCA_files/figure-html/unnamed-chunk-4-1.png" width="672" /> Note el grado de correlación entre las variables de la muestra. Soporte en favor de la decisión de usar la metodología de PCA.</p>
 </div>
+</div>
 <div id="implementacion.-pre-proceso-scaling" class="section level3">
 <h3>2. Implementación. Pre proceso (Scaling)</h3>
 <p>Una pregunta escencial <strong>previo</strong> a la implementación de <strong>PCA</strong> es si debemos estandarizar (scalar) nuestra matriz. ( variables con media=0, std dev=1).( Z-Score Normalization. <em>Standardization involves rescaling the features such that they have the properties of a standard normal distribution with a mean of zero and a standard deviation of one.</em>)</p>
@@ -413,10 +424,13 @@ legend(x=&quot;topleft&quot;, pch=1, col = c(&quot;red&quot;, &quot;black&quot;)
 <p><a href="https://www.kaggle.com/shravank/predicting-breast-cancer-using-pca-lda-in-r" class="uri">https://www.kaggle.com/shravank/predicting-breast-cancer-using-pca-lda-in-r</a></p>
 </div>
 </div>
-</div>
-<div id="ejemplo-2-iris." class="section level1">
-<h1>Ejemplo 2 Iris.</h1>
+<div id="ejemplo-4-wine-quality." class="section level3">
+<h3>Ejemplo 4 Wine Quality.</h3>
 <p>Ver Jupyter notebook</p>
+</div>
+<div id="ejemplo-5-emiticons-tweeter-pca." class="section level3">
+<h3>Ejemplo 5 emiticons Tweeter pca.</h3>
+</div>
 </div>
 <div class="footnotes">
 <hr />
