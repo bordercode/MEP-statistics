@@ -140,23 +140,23 @@ if (!doNotTrack) {
 <img src="\img\pca1.jpg" />
 
 </div>
-<p>Note que el punto azul representa las coordenadas del valor promedio de las variables población y gasto en educación.</p>
-<p>Note en este caso la linea central en el primer panel que captura la dirección por la que las dos variables se relacionan, en cierto sentido este vector sintetiza la realción entre las variables pobalción y gasto en educación para una muestra de 100 ciudades.</p>
+<p>En la gráfica anterior el punto azul representa las coordenadas del valor promedio de las variables población y gasto en educación.</p>
+<p>Note en este caso que la linea central en el primer panel captura la dirección por la que las dos variables se relacionan, en cierto sentido este vector sintetiza la relación entre las variables pobalción y gasto en educación para una muestra de 100 ciudades.</p>
 <p>Si tomamos este vector y lo rotamos de tal manera que sea paralelo al eje horizontal ahora vemos una segunda fuente de variación (un segundo vector que captura otra dimensión de la variación en los datos) correspondiente a la variación vertical (representada por la distancia entre cada observación y nuestro primer vector).</p>
 <p>En este ejemplo el plano formado por el vector en verde lo denominamos componente principal del conjunto de datos. Note que un segundo compoente principal se forma por el vector en azul.</p>
 <div class="figure">
 <img src="\img\pca2.jpg" />
 
 </div>
-<p>El método permite estimar la proporción de la variación que cada dimensión (componentes principales) captura, de tal forma que podemos identificar las variables de mayor relevancia para el análisis y conocer las variables correlacionadas.</p>
+<p>El método permite estimar la proporción de la variación que cada dimensión (componentes principales) captura, de tal forma que podemos identificar las variables de ma yor relevancia para el análisis y conocer las variables correlacionadas.</p>
 <p>Esa variación generalmente se representa mediante un <strong>Scree plot</strong> ( <strong>x</strong> axis componentes principales, <strong>y</strong> axis proporción de la varianza explicada).</p>
 <p>En la estimación de <strong>PCA</strong>, el monto de la variación explicada que cada componente retiene se captura por el <strong>eigenvalor</strong> y se expresa como cociente de la variación total en los datos.</p>
-<p>Uno de los uso de esta técnica es la construcción de modelos que permiten hacer clasificación como el modelo de regresión logistica (considerado parte del conjunto de GLM generalized linear models.).</p>
+<p>Uno de los uso de esta técnica es la construcción de modelos que permiten hacer clasificación como el modelo de regresión logistica (considerado parte del conjunto de GLM (<em>generalized linear models</em>)).</p>
 <p>El proceso de PCA aplicado a un problema de clasificación es el siguiente:</p>
-<p>1.-Partimos de un conjunto de datos que contienen k dimensiones. La técnica de PCA permite reducir estas dimensiones al determinar los <strong>eigenvectores</strong> y los correspondientes eigenvalores (loadings), estos permiten determinar la proporción de la varianza explicada de cada componente con lo que se tiene un criterio para seleccionar aquellos que capturan la mayor varianza posible en el conjunto de los datos.</p>
-<p>El número de eigenvectores a rentener es una cuestión empírica que depende del escenario de análisis, si bien un <em>Threshold</em> común es considerar aquellos pc que aportan <span class="math inline">\(\geq 85\%\)</span> de la varianza en los datos. de manera alternativa conservar aquellos Eigenvectores con Eigenvalores <span class="math inline">\(\lambda\geq1\)</span>.</p>
+<p>1.-Partimos de un conjunto de datos que contienen k dimensiones. La técnica de PCA permite reducir estas dimensiones al determinar los <strong>eigenvectores</strong> y los correspondientes <strong>eigenvalores (loadings)</strong>, estos permiten determinar la proporción de la varianza explicada de cada componente con lo que se tiene un criterio para seleccionar aquellos que capturan la mayor varianza posible en el conjunto de los datos.</p>
+<p>El número de eigenvectores a retener es una cuestión empírica que depende del escenario de análisis, si bien, un <em>Threshold</em> común es considerar aquellos pc que aportan <span class="math inline">\(\geq 85\%\)</span> de la varianza en los datos. de manera alternativa conservar aquellos Eigenvectores con Eigenvalores <span class="math inline">\(\lambda\geq1\)</span>.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
 <p>2.- En el caso supervisado la nueva estrucura de datos de menor dimensión generada por el PCA puede ser utilizada para estimar modelos categóricos (de aprendizaje supervisado. ej tenemos una variable target para predecir) como regresión logística, <em>k nearest neighbors</em>, <em>linear discriminant Análysis</em> (<strong>LDA</strong>), etc,.</p>
-<p>Estos permiten determinar la probabilidad de pertenencia a una categoría determinada dadas las característcas de cada observación.</p>
+<p>Estos permiten determinar la probabilidad de pertenencia a una categoría determinada dado un conjunto de característcas que describen las unides de análisis.</p>
 <p>El domino de aplicación es amplio. Una aproximación inicial a su uso es en la <strong>visualización</strong>, un proceso fundamental para comprender como se comportan nuestros datos antes de aplicar modelos de mayor complejidad. (VSM Vector Support Machine, NN Neural Networks , RF Random Forest,etc.,).</p>
 <p>El dominio de aplicación de PCA incluye estudios poblacionales en areas como, migración,salud pública, indicadores socioeconómicos etc.</p>
 </div>
@@ -178,10 +178,10 @@ if (!doNotTrack) {
 <p>El producto resultante, la matriz transformada, cambió el tamaño, no la dirección del vector.</p>
 <p><span class="math inline">\(\begin{bmatrix}2&amp;3\\1&amp;2\end{bmatrix} \begin{bmatrix}2\\5\end{bmatrix}=\begin{bmatrix}19\\12\end{bmatrix}\)</span></p>
 <p>Recordemos la definición de Eigenvectores (vectores propios/característicos) y Eigenvalores. <strong>Eigenvectores</strong>. Un vector tal que cuando son transformados por el operador resultan en un múltiplo escalar de si mismos.</p>
-<p>En otras palabras el vector característico de una transformación lineal es un vector <span class="math inline">\(\neq0\)</span> que cambia únicamente por un factor escalar cuando se le aplica la transformación lineal.</p>
+<p>En otras palabras el vector característico <strong>v</strong> de una transformación lineal es un vector <span class="math inline">\(\neq0\)</span> que cambia únicamente por un factor escalar cuando se le aplica la transformación lineal.</p>
 <p>En este contexto el escalar <span class="math inline">\(\lambda\)</span> es denominado Eigenvalor (valor propio, o característico).</p>
 <p><span class="math inline">\(A\vec{v.}=\lambda \vec{v.}\)</span></p>
-<p>Donde <strong>v</strong> es un Eigenvector, <span class="math inline">\(\lambda\)</span> el Eigenvalor, A una matriz cuadrada.</p>
+<p>Donde <strong>v</strong> es un Eigenvector, <span class="math inline">\(\lambda\)</span> el Eigenvalor y A una matriz cuadrada.</p>
 <p>Para mayor referencia considere la definición en el <a href="https://drive.google.com/file/d/1QIETnbXFvpk1GOOoFnA5l0SL7QDytN6h/view?usp=sharing">Anton H</a>:</p>
 <div class="figure">
 <img src="\img\pca3.jpg" />
@@ -191,7 +191,9 @@ if (!doNotTrack) {
 <p><a href="https://medium.com/@andrew.chamberlain/using-eigenvectors-to-find-steady-state-population-flows-cd938f124764">Sugerencia leer Post</a></p>
 <p><strong>Matriz simétrica:</strong> Una matriz <span class="math inline">\(mxn\)</span> se dice que es simétrica si <span class="math inline">\(A^T =A\)</span></p>
 <p>Por ejemplo:</p>
-<p><span class="math display">\[\begin{bmatrix}1&amp;2&amp;3\\2&amp;4&amp;5\\3&amp;5&amp;6\end{bmatrix}\]</span> En general la imagen de un vector <strong>x</strong> ante la multiplicación por una matriz <strong>A</strong> difiere tanto en dirección como en magnitud. Sin emabargo en el caso especial donde <strong>x</strong> es un eigenvector de <strong>A</strong>; la multiplicación por <strong>A</strong> deja la dirección sin cambio. Por ejemplo en <span class="math inline">\(\mathbb{R}^2\)</span> o <span class="math inline">\(\mathbb{R}^3\)</span> la multiplicación por <strong>A</strong> proyecta cada eigenvalor <strong>x</strong> de <strong>A</strong> (en caso de existir), a lo largo de la misma linea de <strong>x</strong> que atraviesa el origen.</p>
+<p><span class="math display">\[\begin{bmatrix}1&amp;2&amp;3\\2&amp;4&amp;5\\3&amp;5&amp;6\end{bmatrix}\]</span> En general la imagen de un vector <strong>x</strong> ante la multiplicación por una matriz <strong>A</strong> difiere tanto en dirección como en magnitud.</p>
+<p>Sin emabargo, en el caso especial donde <strong>x</strong> es un eigenvector de <strong>A</strong>; la multiplicación por <strong>A</strong> deja la dirección sin cambio.</p>
+<p>Por ejemplo en <span class="math inline">\(\mathbb{R}^2\)</span> o <span class="math inline">\(\mathbb{R}^3\)</span> la multiplicación por <strong>A</strong> proyecta cada <strong>eigenvector</strong> <strong>x</strong> de <strong>A</strong> (en caso de existir), a lo largo de la misma linea de <strong>x</strong> que atraviesa el origen.</p>
 <p>Dependiendo del signo y magnitud del eigenvalor <span class="math inline">\(\lambda\)</span> correspondiente a <strong>x</strong>, la operacción <span class="math inline">\(Ax=\lambda x\)</span> comprime o expande <strong>x</strong> por un factor igual a <span class="math inline">\(\lambda\)</span>, con una dirección inversa en el caso de que <span class="math inline">\(\lambda&lt;0\)</span>.</p>
 <p>La siguiente figura disponible en Anton H. ilustra este efecto.</p>
 <div class="figure">
@@ -203,9 +205,9 @@ if (!doNotTrack) {
 <p>Para que <span class="math inline">\(\lambda\)</span> sea un eigenvalor de <strong>A</strong>, esta ecuación debe tener una solución <span class="math inline">\(\neq0\)</span> para <strong>x</strong>. Lo cual ocurre <strong>si y sólo si</strong> si la matriz de coeficientes <span class="math inline">\((\lambda I -A)\)</span> tiene un determinate <span class="math inline">\(=0\)</span>.</p>
 <p>La observación anterior se expresa por la ecuación característica:</p>
 <p><span class="math display">\[det(\lambda I -A)=0\]</span> En palabras. Si <strong>A</strong> es una matriz nxn, entonces <span class="math inline">\(\lambda\)</span> es un eigen vector de <strong>A</strong> <strong>si y solo si</strong>, este satisface la <strong>ecuación característica</strong>.</p>
-<p>El proceso de PCA se basa en estos fundamentos teóricos para la determinación de los eigenvectores y correspondientes eigenvalores de la matriz de datos.</p>
+<p>El proceso de cálculo <strong>PCA</strong> se basa en estos fundamentos teóricos para la determinación de los <strong>eigenvectores</strong> y correspondientes <strong>eigenvalores</strong> de la matriz de datos.</p>
 <p>Entonces los eigenvectores capturan la “dirección” principal en la que se ubican los datos en el espacio vectorial y los eigenvalores actuan como ponderadores para determinar la extensión de estos eigenvectores.</p>
-<p><strong>Vectores ortogonales:</strong> Dos vectores se consideran ortogonales cuando su producto punto:</p>
+<p><strong>Vectores ortogonales:</strong> Dos vectores se consideran ortogonales cuando su producto punto cumple:</p>
 <p><span class="math display">\[\vec{u_.}\cdot \vec{v_.}=0\]</span></p>
 <p><strong>Teorema:</strong></p>
 <p>Sea <strong>A</strong> una matriz simétrica. Entonces, existen <strong>valores</strong> propios reales <span class="math inline">\(\lambda_1, \lambda_2,\lambda_3,...,\lambda_n,\)</span> y <strong>vectores</strong> propios ortogonales <span class="math inline">\(\vec{v_1},\vec{v_2},\vec{v_3},...\vec{v_n}\neq 0\)</span><br />
@@ -219,7 +221,7 @@ tal que <span class="math inline">\(A\vec{v_i}=\lambda \vec{v_i}\)</span> para <
 <p>2.- Sea A una matriz mxn. Entonces la matriz <span class="math inline">\(AA^T\)</span> y <span class="math inline">\(A^TA\)</span> tienen los mismos valores propios <span class="math inline">\(\neq0\)</span></p>
 <p>Considere un vector propio <span class="math inline">\(v\)</span> <span class="math inline">\(\neq0\)</span> de <span class="math inline">\(A^TA\)</span> con valor propio <span class="math inline">\(\lambda \neq0\)</span> ej. <span class="math inline">\((A^TA)v=\lambda v\)</span></p>
 <p>Ahora si multiplicamos la matriz anterior por A tenemos <span class="math display">\[(AA^T)(Av)=\lambda(Av)\]</span> Lo que implica que <span class="math inline">\(Av\)</span> es un vector propio de <span class="math inline">\(A A^T\)</span> con Eigenvalor <span class="math inline">\(\lambda\)</span>. Entonces los valores característicos de <span class="math inline">\(A^TA\)</span> son los mismos que <span class="math inline">\(AA^T\)</span>.</p>
-<p>El uso de esta propuesta es importante por que permite simplificar el computo para estimar los eigenvalores por ejemplo considere una matriz de 400x3 entonces <span class="math inline">\(A^TA\)</span> es una matriz de 400X400 con 400 <span class="math inline">\(\lambda\)</span>’s pero <span class="math inline">\(A^TA\)</span> tiene solo 3 <span class="math inline">\(\lambda\)</span>’s,</p>
+<p>El uso de esta propuesta es importante por que permite simplificar el computo para estimar los eigenvalores por ejemplo considere una matriz de 400x3 entonces <span class="math inline">\(AA^T\)</span> es una matriz de 400X400 con 400 <span class="math inline">\(\lambda\)</span>’s pero <span class="math inline">\(A^TA\)</span> tiene solo 3 <span class="math inline">\(\lambda\)</span>’s,</p>
 <p><strong>Para enfatizar:</strong></p>
 <p>Con la técnica de PCA determinamos los vectores propios, estos vectores capturan el espacio común a lo largo del cuál se registra la variación de los datos y los valores propios, que dan cuenta de la magnitud de la varianza que cada vector propio explica.</p>
 <p>Para comprender el potencial del uso de PCA para el análisis de datos primero ubiquemos el proceso que sigue esta técnica en el esquema más amplio del análisis y en seguida haremos una serie de ejemplos comenzando con una aplicación para una matriz de 500+ , 30.</p>
@@ -248,7 +250,7 @@ tal que <span class="math inline">\(A\vec{v_i}=\lambda \vec{v_i}\)</span> para <
 </ul>
 <p>El siguiente paso es aplicar el teorema descrito en la sección previa, dado que la matriz <strong>S</strong> es simétrica tendrá Eigenvalores <span class="math inline">\(\lambda_1\geq \lambda_2\geq \ldots\geq\lambda_m\geq 0\)</span> y Eigenvectores ortogonales <span class="math inline">\(\vec{v}_1, \vec{v}_2, \ldots, \vec{v}_m\)</span> Estos vectores son denominados los componentes principales de la base de datos.</p>
 <p>Note que el segundo componente principal es una combinación lineal de las variables no correlaciondas con pc1, condición que se deduce de la definición de vectores ortogonales.</p>
-<p>Paso siguiente, determiar la varianza total <strong>T</strong> en los datos, que es igual a la <strong>traza</strong><a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> de la matriz de covarianza**. Así mismo la traza de la matriz es igual a la suma de sus Eigenvalores: <span class="math display">\[T=\lambda_1+\lambda_2+\ldots+\lambda_m\]</span> ¿Cómo interpretamos los resultados del PCA?</p>
+<p>Paso siguiente, determiar la varianza total <strong>T</strong> en los datos, que es igual a la <strong>traza</strong><a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> de la matriz de covarianza**. Así mismo la traza de la matriz es igual a la suma de sus Eigenvalores: <span class="math display">\[T=\lambda_1+\lambda_2+\ldots+\lambda_m\]</span> ¿Cómo interpretamos los resultados del PCA?</p>
 <p>La dirección dada por el vector <span class="math inline">\(\vec{v_{1}}\)</span> <span class="math inline">\(\mathbb{R}^m\)</span> denominado el <strong>primer componente principal</strong> da cuenta de un monto igual a <span class="math inline">\(\lambda_1\)</span> de la varianza total T.</p>
 <p>Es una fracción <span class="math inline">\(\displaystyle\frac{\lambda_1}{T}\)</span> de la varianza total. De igual forma, la segunda dirección principal <span class="math inline">\(\vec{v}_2\)</span>, que da cuenta de una fracción <span class="math inline">\(\displaystyle\frac{\lambda_2}{T}\)</span>.</p>
 <ul>
@@ -530,8 +532,8 @@ legend(x=&quot;topleft&quot;, pch=1, col = c(&quot;red&quot;, &quot;black&quot;)
 <p><a href="https://www.kaggle.com/shravank/predicting-breast-cancer-using-pca-lda-in-r" class="uri">https://www.kaggle.com/shravank/predicting-breast-cancer-using-pca-lda-in-r</a></p>
 </div>
 </div>
-<div id="ejemplo-4-wine-quality." class="section level3">
-<h3>Ejemplo 4 Wine Quality.</h3>
+<div id="ejemplo-4-wine-quality-pca_4.ipynb" class="section level3">
+<h3>Ejemplo 4 Wine Quality PCA_4.ipynb</h3>
 <p>Ver Jupyter notebook</p>
 </div>
 <div id="ejemplo-5-emiticons-tweeter-pca." class="section level3">
@@ -542,7 +544,8 @@ legend(x=&quot;topleft&quot;, pch=1, col = c(&quot;red&quot;, &quot;black&quot;)
 <hr />
 <ol>
 <li id="fn1"><p>Sugerencia: Jean Paul Bencecri sobre orígenes de este vínculo entre Multivariate Analysis Data Analysis y Principal Componentes<a href="#fnref1">↩</a></p></li>
-<li id="fn2"><p>Traza: Suma de los elementos de la diagonal de una matriz nxn<a href="#fnref2">↩</a></p></li>
+<li id="fn2"><p>Estre criterio , denominado regla de Kaiser, parte de la idea de que un <span class="math inline">\(\lambda=1\)</span> qeuivale a la varaición promedio aportada por un <strong>eigenvalor</strong> cualesquiera en el conjunto, entonces renterner aquellos que aportan mas de la variación promedio intuitivamente tiene sentido.<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>Traza: Suma de los elementos de la diagonal de una matriz nxn<a href="#fnref3">↩</a></p></li>
 </ol>
 </div>
 

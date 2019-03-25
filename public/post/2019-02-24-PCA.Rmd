@@ -47,16 +47,18 @@ La aplicación del método reduce a un subconjunto de  dimensiones (componentes 
 
 La estructura de datos resultante maximiza la variación inherente al conjunto de datos.
 
+
+
 Los componentes son combinaciones lineales de las variables originales, que controlan por el "ruido" (información redundante) en los datos. Nos interesa la **señal** no el **ruido**!
 
 El **componente principal**  (Eigenvector) es una combinación lineal de las variables consideradas para predicción. Este captura la mayor pate de la variación en las dimensiones consideradas.
 
 ![](\img\pca1.jpg)
 
-Note que el punto azul representa las coordenadas del valor promedio de las variables población y gasto en educación.
+En la gráfica anterior el punto azul representa las coordenadas del valor promedio de las variables población y gasto en educación.
 
 
-Note en este caso la linea central en el primer panel que captura la dirección por la que las dos variables se relacionan, en cierto sentido este vector sintetiza la realción entre las variables pobalción y  gasto en educación para una muestra de 100 ciudades.
+Note en este caso que la linea central en el primer panel  captura la dirección por la que las dos variables se relacionan, en cierto sentido este vector sintetiza la relación entre las variables pobalción y  gasto en educación para una muestra de 100 ciudades.
 
 Si tomamos este vector y lo rotamos de tal manera que sea paralelo al eje horizontal ahora vemos una segunda fuente de variación (un segundo vector que captura otra dimensión de la  variación en los datos) correspondiente a la variación vertical (representada por la distancia entre cada observación y nuestro  primer vector). 
 
@@ -65,23 +67,24 @@ En este ejemplo el  plano formado por el  vector en verde lo denominamos compone
 ![](\img\pca2.jpg)
 
 
-El método permite estimar la proporción de la variación que cada dimensión (componentes principales) captura, de tal forma que podemos identificar las variables de mayor relevancia para el análisis y conocer las variables correlacionadas.
+El método permite estimar la proporción de la variación que cada dimensión (componentes principales) captura, de tal forma que podemos identificar las variables de ma yor relevancia para el análisis y conocer las variables correlacionadas.
 
 Esa variación generalmente se representa mediante un **Scree plot** ( **x** axis componentes principales, **y** axis proporción de la varianza explicada).
 
 En la estimación de **PCA**, el monto de la variación explicada que cada componente retiene se captura por el **eigenvalor** y se expresa como cociente de la variación total en los datos.
 
-Uno de los uso de esta técnica es la construcción de modelos que permiten hacer clasificación como el modelo de regresión logistica  (considerado parte del conjunto de GLM  generalized linear models.). 
+Uno de los uso de esta técnica es la construcción de modelos que permiten hacer clasificación como el modelo de regresión logistica  (considerado parte del conjunto de GLM  (*generalized linear models*)). 
 
 El proceso de PCA aplicado a un problema de clasificación es el siguiente:
 
-1.-Partimos de  un conjunto de datos que  contienen k dimensiones. La técnica de  PCA permite reducir estas dimensiones al determinar los **eigenvectores** y los correspondientes  eigenvalores (loadings), estos permiten determinar la proporción de la varianza explicada de cada componente con lo que se tiene un criterio para seleccionar aquellos que capturan la mayor varianza posible en el conjunto de los datos.
+1.-Partimos de  un conjunto de datos que  contienen k dimensiones. La técnica de  PCA permite reducir estas dimensiones al determinar los **eigenvectores** y los correspondientes  **eigenvalores (loadings)**, estos permiten determinar la proporción de la varianza explicada de cada componente con lo que se tiene un criterio para seleccionar aquellos que capturan la mayor varianza posible en el conjunto de los datos.
 
-El número de eigenvectores a rentener es una cuestión empírica que depende del escenario de análisis, si bien un *Threshold* común es considerar aquellos pc que aportan $\geq 85\%$ de la varianza en los datos. de manera alternativa  conservar aquellos Eigenvectores con Eigenvalores  $\lambda\geq1$.
+El número de eigenvectores a retener es una cuestión empírica que depende del escenario de análisis, si bien, un *Threshold* común es considerar aquellos pc que aportan $\geq 85\%$ de la varianza en los datos. de manera alternativa  conservar aquellos Eigenvectores con Eigenvalores  $\lambda\geq1$.^[Estre criterio , denominado regla de Kaiser, parte de la idea de que un $\lambda=1$ qeuivale a la varaición promedio aportada por un **eigenvalor** cualesquiera en el conjunto, entonces renterner aquellos que aportan mas de la variación promedio intuitivamente tiene sentido.]
+
 
 2.- En el caso  supervisado la nueva estrucura de datos de menor  dimensión generada por el PCA puede ser utilizada para estimar modelos categóricos (de aprendizaje supervisado. ej tenemos una variable target para predecir) como  regresión logística,  *k nearest neighbors*, *linear discriminant Análysis* (**LDA**), etc,. 
 
-Estos permiten determinar la probabilidad de pertenencia a una categoría determinada dadas las característcas de cada observación.
+Estos permiten determinar la probabilidad de pertenencia a una categoría determinada dado un conjunto de  característcas que describen las unides de análisis. 
 
 El domino de aplicación es amplio. Una aproximación inicial a su uso es en la **visualización**, un proceso fundamental para comprender como se comportan nuestros datos antes de aplicar modelos de mayor complejidad. (VSM Vector Support Machine, NN Neural Networks , RF Random Forest,etc.,).
 
@@ -122,13 +125,13 @@ El producto resultante, la matriz transformada, cambió el tamaño,  no la direc
 Recordemos la definición de Eigenvectores (vectores propios/característicos) y Eigenvalores.
 **Eigenvectores**. Un vector tal que cuando son transformados por el operador resultan en un múltiplo escalar de si mismos.
 
-En otras palabras el vector característico de una transformación lineal es un vector $\neq0$ que cambia únicamente por un factor escalar cuando se le aplica la transformación lineal.  
+En otras palabras el vector característico **v** de una transformación lineal es un vector $\neq0$ que cambia únicamente por un factor escalar cuando se le aplica la transformación lineal.  
 
 En este contexto el escalar $\lambda$ es denominado Eigenvalor (valor propio, o característico).
 
 \(A\vec{v.}=\lambda \vec{v.}\)
 
-Donde **v** es un Eigenvector, $\lambda$ el Eigenvalor, A una matriz cuadrada. 
+Donde **v** es un Eigenvector, $\lambda$ el Eigenvalor y A una matriz cuadrada. 
 
 Para mayor referencia considere la definición en el   [Anton H](https://drive.google.com/file/d/1QIETnbXFvpk1GOOoFnA5l0SL7QDytN6h/view?usp=sharing):
 
@@ -146,8 +149,12 @@ La aplicación de la teoría  de vectores es particularmente útil para estudiar
 Por ejemplo:
 
 $$\begin{bmatrix}1&2&3\\2&4&5\\3&5&6\end{bmatrix}$$
-En general la imagen de un vector **x** ante la   multiplicación por una matriz **A** difiere tanto en dirección como en magnitud. Sin emabargo en el caso especial donde **x** es un eigenvector de **A**; la multiplicación por **A** deja la dirección sin cambio. 
-Por ejemplo en   $\mathbb{R}^2$ o $\mathbb{R}^3$ la multiplicación por **A** proyecta cada eigenvalor **x** de **A** (en caso de existir),  a lo largo de la misma linea de **x** que atraviesa el origen.
+En general la imagen de un vector **x** ante la   multiplicación por una matriz **A** difiere tanto en dirección como en magnitud. 
+
+Sin emabargo, en el caso especial donde **x** es un eigenvector de **A**; la multiplicación por **A** deja la dirección sin cambio. 
+
+Por ejemplo en   $\mathbb{R}^2$ o $\mathbb{R}^3$ la multiplicación por **A** proyecta cada **eigenvector** **x** de **A** (en caso de existir),  a lo largo de la
+misma linea de **x** que atraviesa el origen.
 
 Dependiendo del signo y magnitud del eigenvalor $\lambda$ correspondiente a **x**, la operacción $Ax=\lambda x$ comprime o expande **x** por un factor igual a $\lambda$, con una dirección inversa en el caso de que $\lambda<0$.
 
@@ -168,11 +175,11 @@ $$det(\lambda I -A)=0$$
 En palabras. Si **A** es una matriz nxn, entonces $\lambda$ es un eigen vector de **A** **si y solo si**, este satisface la **ecuación característica**. 
  
  
-El proceso de PCA se basa en estos fundamentos teóricos para la determinación de los eigenvectores y correspondientes eigenvalores de la matriz de datos.
+El proceso de cálculo  **PCA** se basa en estos fundamentos teóricos para la determinación de los **eigenvectores** y correspondientes **eigenvalores** de la matriz de datos.
 
 Entonces los eigenvectores capturan la "dirección" principal en la que se ubican los datos en el espacio vectorial y los eigenvalores actuan como ponderadores para determinar la extensión de estos eigenvectores.
  
-**Vectores ortogonales:** Dos vectores se consideran ortogonales cuando su producto punto:
+**Vectores ortogonales:** Dos vectores se consideran ortogonales cuando su producto punto cumple:
 
 $$\vec{u_.}\cdot \vec{v_.}=0$$
 
@@ -197,7 +204,7 @@ Considere un vector propio  $v$ $\neq0$ de $A^TA$ con valor propio  $\lambda \ne
 
 Ahora si multiplicamos la matriz anterior por A tenemos $$(AA^T)(Av)=\lambda(Av)$$ Lo que implica que $Av$ es un vector propio de $A A^T$ con Eigenvalor $\lambda$. Entonces los valores característicos de $A^TA$ son los mismos que $AA^T$.
 
-El uso de esta propuesta es importante por que permite simplificar el computo para estimar los eigenvalores por ejemplo considere una matriz de 400x3 entonces $A^TA$ es una matriz de 400X400 con 400 $\lambda$'s pero $A^TA$ tiene solo 3 $\lambda$'s, 
+El uso de esta propuesta es importante por que permite simplificar el computo para estimar los eigenvalores por ejemplo considere una matriz de 400x3 entonces $AA^T$ es una matriz de 400X400 con 400 $\lambda$'s pero $A^TA$ tiene solo 3 $\lambda$'s, 
 
 **Para enfatizar:**
 
@@ -438,8 +445,7 @@ Primero aplicamos el PCA para reducir las dimensiones del df. esto nos permite c
 
 https://www.kaggle.com/shravank/predicting-breast-cancer-using-pca-lda-in-r 
 
-
-### Ejemplo 4 Wine Quality.
+### Ejemplo 4 Wine Quality PCA_4.ipynb
 Ver Jupyter notebook
 
 ### Ejemplo 5 emiticons Tweeter pca. 
