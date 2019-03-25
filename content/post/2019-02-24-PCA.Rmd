@@ -210,7 +210,7 @@ El uso de esta propuesta es importante por que permite simplificar el computo pa
 
 Con la técnica de PCA determinamos los vectores propios, estos vectores capturan el espacio común a lo largo del cuál se registra la variación de los datos  y los valores propios, que dan cuenta de la magnitud de la varianza que cada vector propio explica. 
 
-Para comprender el potencial del uso de PCA para el análisis de datos primero ubiquemos el proceso que sigue esta técnica en el esquema más amplio del análisis y en seguida haremos una serie de ejemplos comenzando con una  aplicación para una matriz de 500+ , 30.
+Para comprender el potencial del uso de PCA en el análisis de datos primero ubiquemos el proceso que sigue esta técnica en el esquema más amplio del análisis y en seguida haremos una serie de ejemplos comenzando con una  aplicación para una matriz de 500+ , 30.
 
 ## El proceso de cálculo. 
 
@@ -218,8 +218,7 @@ Primero obtenemos la media de las **m** variables en nuestra matriz. Y almacenam
 
 $\vec{\mu}=\frac{1}{n-1}(\vec{x}_1+\vec{x}_2+\ldots+\vec{x}_n)$
 
-En segundo lugar estandarizamos los datos (media cero, desviación estándar=1), este paso permite homogeneizar las escalas para evitar que las diferencias en las unidaes de medida generen distorciones en el cálculo de los componentes principales. Las siguiente gráfica muestra el efecto de la estandarización (Scale).
-
+En segundo lugar estandarizamos los datos (media cero, desviación estándar=1), este paso permite homogeneizar las escalas para evitar que las diferencias en las unidades de medida generen distorciones en el cálculo de los componentes principales. Las siguiente gráfica muestra el efecto de la estandarización (Scale).
 
 ![](/img/v.jpg)
 
@@ -254,7 +253,8 @@ El siguiente paso es aplicar el teorema descrito en la sección previa, dado que
 
 Note que el segundo componente principal es una combinación lineal de las variables no correlaciondas con pc1, condición  que se deduce de la definición de vectores ortogonales. 
 
-Paso siguiente, determiar la varianza total **T** en los datos, que es igual a la **traza**^[Traza: Suma de los elementos de la diagonal de una matriz nxn] de la matriz de covarianza**. Así mismo la traza de la matriz es igual a la suma de sus Eigenvalores:
+Paso siguiente, determiar la varianza total **T** en los datos, que es igual a la **traza**^[Traza: Suma de los elementos de la diagonal de una matriz nxn] de la matriz de **covarianza**.
+
 $$T=\lambda_1+\lambda_2+\ldots+\lambda_m$$
 ¿Cómo interpretamos los resultados del PCA?
 
