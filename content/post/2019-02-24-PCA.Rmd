@@ -43,9 +43,7 @@ Entonces en esta estructura la idea es reeprezar los datos a partir de  un núme
 
 El **PCA** es  una técnica para descubrir como variables **numéricas** **"covarian"**.
 
-La aplicación del método reduce a un subconjunto de  dimensiones (componentes principales) la información original. En  análisis multivariado  el concepto *Synthetic variable*  denota la escencia del PCA. 
-
-Sugerencia: Jean Paul Bencecri sobre orígenes de este vínculo entre Multivariate Analysis  DA y PCA. 
+La aplicación del método reduce a un subconjunto de  dimensiones (componentes principales) la información original. En  análisis multivariado  el concepto *Synthetic variable*  denota la escencia del PCA.^[ Sugerencia: Jean Paul Bencecri sobre orígenes de este vínculo entre Multivariate Analysis  Data Analysis y Principal Componentes]. 
 
 La estructura de datos resultante maximiza la variación inherente al conjunto de datos.
 

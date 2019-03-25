@@ -25,8 +25,7 @@ menu:
 <p>En este entorno cada variable la consideramos una dimensión.</p>
 <p>Como ejemplo de la estructura de datos considere <span class="math inline">\(x_i\)</span> la observación del individuo <em>i</em> tomado de la variable <strong>k</strong> donde i varia de <strong>i</strong> a <strong>I</strong> y k a <strong>K</strong> Entonces en esta estructura la idea es reeprezar los datos a partir de un número de k´s. menor.</p>
 <p>El <strong>PCA</strong> es una técnica para descubrir como variables <strong>numéricas</strong> <strong>“covarian”</strong>.</p>
-<p>La aplicación del método reduce a un subconjunto de dimensiones (componentes principales) la información original. En análisis multivariado el concepto <em>Synthetic variable</em> denota la escencia del PCA.</p>
-<p>Sugerencia: Jean Paul Bencecri sobre orígenes de este vínculo entre Multivariate Analysis DA y PCA.</p>
+<p>La aplicación del método reduce a un subconjunto de dimensiones (componentes principales) la información original. En análisis multivariado el concepto <em>Synthetic variable</em> denota la escencia del PCA.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>.</p>
 <p>La estructura de datos resultante maximiza la variación inherente al conjunto de datos.</p>
 <p>Los componentes son combinaciones lineales de las variables originales, que controlan por el “ruido” (información redundante) en los datos. Nos interesa la <strong>señal</strong> no el <strong>ruido</strong>!</p>
 <p>El <strong>componente principal</strong> (Eigenvector) es una combinación lineal de las variables consideradas para predicción. Este captura la mayor pate de la variación en las dimensiones consideradas.</p>
@@ -142,7 +141,7 @@ tal que <span class="math inline">\(A\vec{v_i}=\lambda \vec{v_i}\)</span> para <
 </ul>
 <p>El siguiente paso es aplicar el teorema descrito en la sección previa, dado que la matriz <strong>S</strong> es simétrica tendrá Eigenvalores <span class="math inline">\(\lambda_1\geq \lambda_2\geq \ldots\geq\lambda_m\geq 0\)</span> y Eigenvectores ortogonales <span class="math inline">\(\vec{v}_1, \vec{v}_2, \ldots, \vec{v}_m\)</span> Estos vectores son denominados los componentes principales de la base de datos.</p>
 <p>Note que el segundo componente principal es una combinación lineal de las variables no correlaciondas con pc1, condición que se deduce de la definición de vectores ortogonales.</p>
-<p>Paso siguiente, determiar la varianza total <strong>T</strong> en los datos, que es igual a la <strong>traza</strong><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> de la matriz de covarianza**. Así mismo la traza de la matriz es igual a la suma de sus Eigenvalores: <span class="math display">\[T=\lambda_1+\lambda_2+\ldots+\lambda_m\]</span> ¿Cómo interpretamos los resultados del PCA?</p>
+<p>Paso siguiente, determiar la varianza total <strong>T</strong> en los datos, que es igual a la <strong>traza</strong><a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> de la matriz de covarianza**. Así mismo la traza de la matriz es igual a la suma de sus Eigenvalores: <span class="math display">\[T=\lambda_1+\lambda_2+\ldots+\lambda_m\]</span> ¿Cómo interpretamos los resultados del PCA?</p>
 <p>La dirección dada por el vector <span class="math inline">\(\vec{v_{1}}\)</span> <span class="math inline">\(\mathbb{R}^m\)</span> denominado el <strong>primer componente principal</strong> da cuenta de un monto igual a <span class="math inline">\(\lambda_1\)</span> de la varianza total T.</p>
 <p>Es una fracción <span class="math inline">\(\displaystyle\frac{\lambda_1}{T}\)</span> de la varianza total. De igual forma, la segunda dirección principal <span class="math inline">\(\vec{v}_2\)</span>, que da cuenta de una fracción <span class="math inline">\(\displaystyle\frac{\lambda_2}{T}\)</span>.</p>
 <ul>
@@ -435,6 +434,7 @@ legend(x=&quot;topleft&quot;, pch=1, col = c(&quot;red&quot;, &quot;black&quot;)
 <div class="footnotes">
 <hr />
 <ol>
-<li id="fn1"><p>Traza: Suma de los elementos de la diagonal de una matriz nxn<a href="#fnref1">↩</a></p></li>
+<li id="fn1"><p>Sugerencia: Jean Paul Bencecri sobre orígenes de este vínculo entre Multivariate Analysis Data Analysis y Principal Componentes<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>Traza: Suma de los elementos de la diagonal de una matriz nxn<a href="#fnref2">↩</a></p></li>
 </ol>
 </div>

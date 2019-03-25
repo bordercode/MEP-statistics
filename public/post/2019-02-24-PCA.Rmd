@@ -43,9 +43,7 @@ Entonces en esta estructura la idea es reeprezar los datos a partir de  un núme
 
 El **PCA** es  una técnica para descubrir como variables **numéricas** **"covarian"**.
 
-La aplicación del método reduce a un subconjunto de  dimensiones (componentes principales) la información original. En  análisis multivariado  el concepto *Synthetic variable*  denota la escencia del PCA. 
-
-Sugerencia: Jean Paul Bencecri sobre orígenes de este vínculo entre Multivariate Analysis  DA y PCA. 
+La aplicación del método reduce a un subconjunto de  dimensiones (componentes principales) la información original. En  análisis multivariado  el concepto *Synthetic variable*  denota la escencia del PCA.^[ Sugerencia: Jean Paul Bencecri sobre orígenes de este vínculo entre Multivariate Analysis  Data Analysis y Principal Componentes]. 
 
 La estructura de datos resultante maximiza la variación inherente al conjunto de datos.
 
@@ -267,8 +265,18 @@ Es una fracción $\displaystyle\frac{\lambda_1}{T}$ de la varianza total. De igu
 
 El procedimiento de PCA  ha generado una nueva estructura de los datos (reducción en las dimensiones) por lo que ahora  podemos representar digamos un espacio vectorial que era digamos $\mathbb{R}^{30}$ mediante una estructura de compoentes principales de menor dimensión con las observaciones del conjunto de datos conformando clusters definidos en función de los Eigenvectores.
 
+## Práctica.
 
-## Ejemplo 1 Base de datos sobre cáncer de mama. 
+
+### Ejemplo 1   Iris. PCA1iris.ipynb
+Ver Jupyter notebook
+
+### Ejemplo 2   Hipotético 200 obs.  PCA2.ipynb
+Ver Jupyter notebook
+
+
+### Ejemplo 3 Breast cáncer data set
+
 
 El propósito es determinar un subconjunto de variables que capturen la mayor cantidad de información posible (ej. que capturen la mayor variación posible).
 
@@ -431,6 +439,7 @@ Primero aplicamos el PCA para reducir las dimensiones del df. esto nos permite c
 https://www.kaggle.com/shravank/predicting-breast-cancer-using-pca-lda-in-r 
 
 
-# Ejemplo 2   Iris.
-
+### Ejemplo 4 Wine Quality.
 Ver Jupyter notebook
+
+### Ejemplo 5 emiticons Tweeter pca. 
