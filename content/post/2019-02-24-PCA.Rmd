@@ -23,6 +23,8 @@ library(ggthemes)
 
 ## Análisis de Componentes Principales (PCA).
 
+##### *"Too much of anything is good for nothing!"*
+
 #### Motivación
 
 El método **PCA** permite reexpresar un conjunto multidimensional de datos (ej. k dimensiones) que contiene variables  **correlacionadas** ( ej. que aportan información redundante), en un subconjnto de datos de menor dimensión. 
