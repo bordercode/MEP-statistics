@@ -618,14 +618,27 @@ ggplotly(plt2)
 Creamos una representación gráfica con los scores (datos reproyectados *puntos*) y las variables (**vectrores**) en las misma grafica ("bi").
 
 ```{r}
-biplot(pr)
+library(ggbiplot)
+
+b1<-biplot(pr)
+b1
+
+b2<-ggbiplot(pr, circle = TRUE)+
+    theme_light()+
+  geom_point(color="gray")+
+  geom_abline(intercept = 0, slope = 0, color="blue")+
+  geom_abline(intercept = 0, slope = 90, color="lightgreen")+
+  theme_light()
+b2
 ```
+
 Interpretación: Las variables se encuentran representadas como vectores. En este caso la dirección en la que apuntan indica la correlación positiva entre las variables de la matriz.
 
 Cada punto corresponde al número de la observación en nuestra base de datos ortiginal. Ej. tenemos 100 obs, tenemos 100 datos en el biplot y las coordenadas corresponden con la ubicación en el espacio vectorial generado por los componentes princilaes.
 
 En este caso podriamos usar unicamente una sola dimensión para explicar el desempeño de los alumnos en este grupo, (ej. el primer componente captura el $97.5\%$ de la variación total en los datos).
 
+Note el círculo reresenta  varianza de 1.5 en cada dirección.
 
 ### Ejemplo 5  Nacimientos México 2016
 
@@ -655,9 +668,10 @@ Adicionalmene determinar que variables estan correlacionadas.
 ##### Leemos los datos.
 
 ```{r warning=FALSE, message=FALSE}
-
+library(dplyr)
 library(scales)
 library(corrplot)
+library(ggplot2)
 
 df<-readRDS("nac16set.rds")
 
@@ -675,12 +689,6 @@ summary(df)
 # Eliminamos valores inválidos. ej. 99 0 9999.
 
 df<-filter(df,edad_madre!=999|apgarh!=99,silverman!=99,tallah!=99,gestach!=99,pesoh!=9999)
-
-# Cuantos casos por tipo?
-
-t<-group_by(df,target)%>%
-  summarise(total=n())
-t
 
 # Valor promedio de todas las variables  para cada grupo?
 
