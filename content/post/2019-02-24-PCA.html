@@ -100,7 +100,7 @@ menu:
 <p><span class="math display">\[(\lambda I -A)x=0\]</span></p>
 <p>Para que <span class="math inline">\(\lambda\)</span> sea un eigenvalor de <strong>A</strong>, esta ecuación debe tener una solución <span class="math inline">\(\neq0\)</span> para <strong>x</strong>. Lo cual ocurre <strong>si y sólo si</strong> si la matriz de coeficientes <span class="math inline">\((\lambda I -A)\)</span> tiene un determinate <span class="math inline">\(=0\)</span>.</p>
 <p>La observación anterior se expresa por la ecuación característica:</p>
-<p><span class="math display">\[det(\lambda I -A)=0\]</span> En palabras. Si <strong>A</strong> es una matriz nxn, entonces <span class="math inline">\(\lambda\)</span> es un eigen vector de <strong>A</strong> <strong>si y solo si</strong>, este satisface la <strong>ecuación característica</strong>.</p>
+<p><span class="math display">\[det(\lambda I -A)=0\]</span> En palabras. Si <strong>A</strong> es una matriz nxn, entonces <span class="math inline">\(\lambda\)</span> es un eigen valor de <strong>A</strong> <strong>si y solo si</strong>, este satisface la <strong>ecuación característica</strong>.</p>
 <p>El proceso de cálculo <strong>PCA</strong> se basa en estos fundamentos teóricos para la determinación de los <strong>eigenvectores</strong> y correspondientes <strong>eigenvalores</strong> de la matriz de datos.</p>
 <p>Entonces los eigenvectores capturan la “dirección” principal en la que se ubican los datos en el espacio vectorial y los eigenvalores actuan como ponderadores para determinar la extensión de estos eigenvectores.</p>
 <p><strong>Vectores ortogonales:</strong> Dos vectores se consideran ortogonales cuando su producto punto cumple:</p>
@@ -138,7 +138,7 @@ tal que <span class="math inline">\(A\vec{v_i}=\lambda \vec{v_i}\)</span> para <
 <p>De la discusión previa podemos ver que S es una matriz simétrica mxm.</p>
 <p>Consideremos como ejemplo: <span class="math display">\[\vec{x}_1=\begin{bmatrix}a_1\\a_2\\a_3\end{bmatrix}, \vec{x}_2=\begin{bmatrix}b_1\\b_2\\b_3\end{bmatrix}, \vec{x}_3=\begin{bmatrix}c_1\\c_2\\c_3\end{bmatrix}, \vec{\mu}=\begin{bmatrix}\mu_1\\\mu_2\\\mu_3\end{bmatrix}\]</span> Con matriz escalada <strong>B</strong>: <span class="math display">\[B=\begin{bmatrix}a_1-\mu_1&amp;b_1-\mu_1&amp;c_1-\mu_1\\a_2-\mu_2&amp;b_2-\mu_2&amp;c_2-\mu_2\\a_3-\mu_3&amp;b_3-\mu_3&amp;c_3-\mu_3\end{bmatrix}\]</span> Ahora veamos los elementos de la matriz de covarianza <strong>S</strong></p>
 <p><span class="math display">\[\displaystyle S_{11}=\frac{1}{n-1}((a_1-\mu_1)^2+(b_1-\mu_1)^2+(c_1-\mu_1)^2)=\mbox{ Varianza de la primera variable }\]</span> De manera similar los elementos <span class="math inline">\(S_{22}, S_{33}\)</span> representan la varianza de la segunda y tercera variables respectivamente.</p>
-<p>En segiuida tenemos la covarinza entre la primera y segunda variables:</p>
+<p>En seguida tenemos la covarinza entre la primera y segunda variables:</p>
 <p><span class="math display">\[\displaystyle S_{12}=\frac{1}{n-1}((a_1-\mu_1)(a_2-\mu_2)+(b_1-\mu_1)(b_2-\mu_2)+(c_1-\mu_1)(c_2-\mu_2))=S_{21}\]</span> Y generalizando tenemos que:</p>
 <ul>
 <li><p><span class="math inline">\(S_{ii}\)</span> es la <em>varianza</em> de la <span class="math inline">\(i_{esima}\)</span> variable.</p></li>
@@ -415,8 +415,8 @@ plot(cumsum(pve), xlab = &quot;Principal Component&quot;,
      ylim = c(0, 1), type = &quot;b&quot;)</code></pre>
 <p><img src="/post/2019-02-24-PCA_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
-<div id="visualizacion-de-los-datos.-plot-de-observaciones-para-compoenetes-1-y-2." class="section level4">
-<h4>Visualización de los datos. Plot de Observaciones para compoenetes 1 y 2.</h4>
+<div id="visualizacion-de-los-datos.-plot-de-observaciones-para-componentes-1-y-2." class="section level4">
+<h4>Visualización de los datos. Plot de Observaciones para componentes 1 y 2.</h4>
 <pre class="r"><code>plot(bc.pr$x[, c(1, 2)], col = (diagnosis + 1), 
      xlab = &quot;PC1&quot;, ylab = &quot;PC2&quot;)
 legend(x=&quot;topleft&quot;, pch=1, col = c(&quot;red&quot;, &quot;black&quot;), legend = c(&quot;B&quot;, &quot;M&quot;))</code></pre>
@@ -429,12 +429,156 @@ legend(x=&quot;topleft&quot;, pch=1, col = c(&quot;red&quot;, &quot;black&quot;)
 <p><a href="https://www.kaggle.com/shravank/predicting-breast-cancer-using-pca-lda-in-r" class="uri">https://www.kaggle.com/shravank/predicting-breast-cancer-using-pca-lda-in-r</a></p>
 </div>
 </div>
-<div id="ejemplo-4-wine-quality-pca_4.ipynb" class="section level3">
-<h3>Ejemplo 4 Wine Quality PCA_4.ipynb</h3>
-<p>Ver Jupyter notebook</p>
+<div id="ejemplo-4-nacimientos-mexico-2016" class="section level3">
+<h3>Ejemplo 4 Nacimientos México 2016</h3>
+<p>El siguiente ejemplo considera la base de datos de nacimientos en México para 2017. La matriz contiene 236 774 observaciones (registros de nacimientos) para las siguientes variables:</p>
+<p>GESTACH Semanas de gestación Rango aceptable 13 a 42 semanas</p>
+<p>TALLAH Talla de recién nacido Rango aceptable 7 a 60 centímetros</p>
+<p>PESOH largo 4 Peso del recién nacido Rango aceptable 20 a 6000 gramos,</p>
+<p>APGARH Calificación obtenida del recién nacido a los cinco minutos del nacimiento Entre 0 a 10,</p>
+<p>SILVERMAN Calificación obtenida del recién nacido al momento del nacimiento Entre 10 a 0</p>
+<p>Y la variable categórica target con valores 0,1, Donde 0 denota nacimiento normal y 1 para indicar alguna anomalía o padecimiento.</p>
+<p>El <strong>objetivo</strong> es aplicar el algoritmo <strong>PCA</strong> para explorar si es posible explicar la variación en los datos apartir de una estructura dcon menores dimensiones. Adicionalmene determinar que variables estan correlacionadas.</p>
+<p><a href="http://dgis.salud.gob.mx/contenidos/basesdedatos/std_nacimientos_gobmx.html">Fuente datos</a></p>
+<div id="leemos-los-datos." class="section level5">
+<h5>Leemos los datos.</h5>
+<pre class="r"><code>library(scales)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;scales&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     discard</code></pre>
+<pre class="r"><code>library(corrplot)
+
+df&lt;-readRDS(&quot;nac16set.rds&quot;)
+
+str(df)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    236774 obs. of  7 variables:
+##  $ pesoh     : int  2750 2750 3300 2450 3000 1620 9999 3100 3080 1525 ...
+##  $ tallah    : int  50 50 52 49 50 42 49 51 50 99 ...
+##  $ gestach   : int  38 38 41 36 37 34 41 40 38 33 ...
+##  $ apgarh    : int  8 9 9 9 9 8 9 9 8 7 ...
+##  $ silverman : int  3 0 0 0 0 4 0 2 1 0 ...
+##  $ edad_madre: int  19 23 24 20 37 17 20 19 20 21 ...
+##  $ target    : num  1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+<pre class="r"><code>names(df)</code></pre>
+<pre><code>## [1] &quot;pesoh&quot;      &quot;tallah&quot;     &quot;gestach&quot;    &quot;apgarh&quot;     &quot;silverman&quot; 
+## [6] &quot;edad_madre&quot; &quot;target&quot;</code></pre>
+<pre class="r"><code>head(df,5)</code></pre>
+<pre><code>##   pesoh tallah gestach apgarh silverman edad_madre target
+## 1  2750     50      38      8         3         19      1
+## 2  2750     50      38      9         0         23      1
+## 3  3300     52      41      9         0         24      1
+## 4  2450     49      36      9         0         20      1
+## 5  3000     50      37      9         0         37      1</code></pre>
+<pre class="r"><code>## Descriptivas
+
+summary(df)</code></pre>
+<pre><code>##      pesoh          tallah         gestach          apgarh      
+##  Min.   : 186   Min.   :27.00   Min.   :18.00   Min.   : 0.000  
+##  1st Qu.:2810   1st Qu.:48.00   1st Qu.:38.00   1st Qu.: 9.000  
+##  Median :3152   Median :50.00   Median :39.00   Median : 9.000  
+##  Mean   :3617   Mean   :51.32   Mean   :38.31   Mean   : 9.404  
+##  3rd Qu.:3540   3rd Qu.:52.00   3rd Qu.:40.00   3rd Qu.: 9.000  
+##  Max.   :9999   Max.   :99.00   Max.   :99.00   Max.   :99.000  
+##    silverman       edad_madre         target   
+##  Min.   : 0.00   Min.   :  9.00   Min.   :0.0  
+##  1st Qu.: 0.00   1st Qu.: 20.00   1st Qu.:0.0  
+##  Median : 0.00   Median : 25.00   Median :0.5  
+##  Mean   : 1.64   Mean   : 25.99   Mean   :0.5  
+##  3rd Qu.: 0.00   3rd Qu.: 30.00   3rd Qu.:1.0  
+##  Max.   :99.00   Max.   :999.00   Max.   :1.0</code></pre>
+<pre class="r"><code># Eliminamos valores inválidos. ej. 99 0 9999.
+
+df&lt;-filter(df,edad_madre!=999|apgarh!=99,silverman!=99,tallah!=99,gestach!=99,pesoh!=9999)
+
+# Cuantos casos por tipo?
+
+t&lt;-group_by(df,target)%&gt;%
+  summarise(total=n())
+t</code></pre>
+<pre><code>## # A tibble: 2 x 2
+##   target  total
+##    &lt;dbl&gt;  &lt;int&gt;
+## 1      0 108880
+## 2      1 101139</code></pre>
+<pre class="r"><code># Valor promedio de todas las variables  para cada grupo?
+
+df_mean&lt;-group_by(df,target)%&gt;%
+  summarise_all(list(mean))
+
+df&lt;-mutate(df,target=as.factor(target))
+
+p&lt;-ggplot(df,aes(pesoh,fill=target))+
+  geom_histogram(position= &quot;identity&quot;, alpha=0.4)+
+  theme_light()+
+  labs(fill=&quot;Anomalia&quot;, y=&quot;nacimientos&quot;, x=&quot;Peso (g)&quot;)+
+scale_fill_discrete(labels=c(&quot;No&quot;, &quot;Sí&quot;))
+  p   </code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="/post/2019-02-24-PCA_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<pre class="r"><code># Matriz de correlación
+
+df_matrix&lt;-select(df, -c(target))
+
+M &lt;- round(cor(df_matrix), 2)
+
+corrplot(M, diag = FALSE, method=&quot;color&quot;, order=&quot;FPC&quot;, tl.srt = 90)</code></pre>
+<p><img src="/post/2019-02-24-PCA_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 </div>
-<div id="ejemplo-5-emiticons-tweeter-pca." class="section level3">
-<h3>Ejemplo 5 emiticons Tweeter pca.</h3>
+<div id="estimacion-de-pca." class="section level4">
+<h4>3. Estimacion de PCA.</h4>
+<pre><code>## Standard deviations (1, .., p=6):
+## [1] 1.6188248 1.0035523 1.0000301 0.9547178 0.5151235 0.4420301
+## 
+## Rotation (n x k) = (6 x 6):
+##                    PC1         PC2          PC3         PC4          PC5
+## pesoh       0.56362003 -0.08340421  0.031961539 -0.13013833 -0.472278436
+## tallah      0.56834147 -0.07402666  0.020334921 -0.11463638 -0.317399298
+## gestach     0.55660883 -0.05670072  0.001240849 -0.06991023  0.820836468
+## apgarh      0.05526126  0.92747835 -0.108682130 -0.35340628 -0.003670461
+## silverman  -0.21531967 -0.32794706  0.068827291 -0.91604950  0.046174662
+## edad_madre -0.00952225  0.12877676  0.990966402  0.03150213  0.017108058
+##                     PC6
+## pesoh      -0.659068851
+## tallah      0.746465472
+## gestach    -0.091160032
+## apgarh     -0.002970418
+## silverman   0.008495878
+## edad_madre  0.005137485</code></pre>
+<pre><code>## Importance of components:
+##                           PC1    PC2    PC3    PC4     PC5     PC6
+## Standard deviation     1.6188 1.0036 1.0000 0.9547 0.51512 0.44203
+## Proportion of Variance 0.4368 0.1678 0.1667 0.1519 0.04423 0.03257
+## Cumulative Proportion  0.4368 0.6046 0.7713 0.9232 0.96743 1.00000</code></pre>
+<pre class="r"><code>#  Parámetros para graficar.
+par(mfrow = c(1, 2))
+
+# # Eigenvalores  (loadings). Varianza en cada componente.
+cp.var &lt;- df.cp$sdev ^ 2
+round(cp.var, 2)</code></pre>
+<pre><code>## [1] 2.62 1.01 1.00 0.91 0.27 0.20</code></pre>
+<pre class="r"><code>cp.var</code></pre>
+<pre><code>## [1] 2.6205937 1.0071172 1.0000602 0.9114860 0.2653522 0.1953906</code></pre>
+<pre class="r"><code># Proporción de la varianza de cada componente
+pve &lt;- cp.var/sum(cp.var)
+round(pve, 2)</code></pre>
+<pre><code>## [1] 0.44 0.17 0.17 0.15 0.04 0.03</code></pre>
+<pre class="r"><code># Porcentaje Acumulado explicado.
+round(cumsum(pve), 2)</code></pre>
+<pre><code>## [1] 0.44 0.60 0.77 0.92 0.97 1.00</code></pre>
+<p>El 77% de la varianza es explicada por los primeros 3 componentes. Los tres primeros <span class="math inline">\(\lambda\geq1\)</span>. (Criterio de Kaiser).</p>
+</div>
+<div id="scree-plot-para-mostrar-la-varianza-explicada-por-cada-componente." class="section level4">
+<h4>Scree plot para mostrar la varianza explicada por cada componente.</h4>
+<p><img src="/post/2019-02-24-PCA_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<pre class="r"><code># Plot  proportion acumulada  de varianza explcada 
+
+plot(cumsum(pve), xlab = &quot;Principal Component&quot;, 
+     ylab = &quot;Cumulative Proportion of Variance Explained&quot;, 
+     ylim = c(0, 1), type = &quot;b&quot;)</code></pre>
+<p><img src="/post/2019-02-24-PCA_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+</div>
 </div>
 </div>
 <div class="footnotes">

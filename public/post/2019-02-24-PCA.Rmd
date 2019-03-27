@@ -174,7 +174,7 @@ Para que $\lambda$ sea un eigenvalor de **A**, esta ecuación debe tener una sol
 La observación anterior se expresa por la ecuación característica:
 
 $$det(\lambda I -A)=0$$
-En palabras. Si **A** es una matriz nxn, entonces $\lambda$ es un eigen vector de **A** **si y solo si**, este satisface la **ecuación característica**. 
+En palabras. Si **A** es una matriz nxn, entonces $\lambda$ es un eigen valor de **A** **si y solo si**, este satisface la **ecuación característica**. 
  
  
 El proceso de cálculo  **PCA** se basa en estos fundamentos teóricos para la determinación de los **eigenvectores** y correspondientes **eigenvalores** de la matriz de datos.
@@ -241,7 +241,7 @@ Ahora veamos  los elementos de la matriz de covarianza **S**
 $$\displaystyle S_{11}=\frac{1}{n-1}((a_1-\mu_1)^2+(b_1-\mu_1)^2+(c_1-\mu_1)^2)=\mbox{ Varianza de la primera variable }$$
 De manera similar los elementos $S_{22}, S_{33}$ representan la varianza de la segunda y tercera variables respectivamente.
 
-En segiuida tenemos la covarinza entre la primera y segunda variables:
+En seguida tenemos la covarinza entre la primera y segunda variables:
 
 $$\displaystyle S_{12}=\frac{1}{n-1}((a_1-\mu_1)(a_2-\mu_2)+(b_1-\mu_1)(b_2-\mu_2)+(c_1-\mu_1)(c_2-\mu_2))=S_{21}$$
 Y generalizando tenemos   que:
@@ -379,9 +379,9 @@ De lo contrario los **eigenvectores** resultantes en el proceso de estimación  
 #### 3. Estimacion de PCA usando la  matriz de correlación.
 
 ```{r, echo =FALSE}
-
 bc.pr <- prcomp(bc_matrix, scale = TRUE, center = TRUE)
 summary(bc.pr)
+
 ```
 
 ```{r}
@@ -431,9 +431,9 @@ plot(cumsum(pve), xlab = "Principal Component",
      ylim = c(0, 1), type = "b")
 ```
 
-#### Visualización de los datos. Plot de Observaciones para compoenetes 1 y 2.
-```{r}
+#### Visualización de los datos. Plot de Observaciones para componentes 1 y 2.
 
+```{r}
 plot(bc.pr$x[, c(1, 2)], col = (diagnosis + 1), 
      xlab = "PC1", ylab = "PC2")
 legend(x="topleft", pch=1, col = c("red", "black"), legend = c("B", "M"))
@@ -447,7 +447,133 @@ Primero aplicamos el PCA para reducir las dimensiones del df. esto nos permite c
 
 https://www.kaggle.com/shravank/predicting-breast-cancer-using-pca-lda-in-r 
 
-### Ejemplo 4 Wine Quality PCA_4.ipynb
-Ver Jupyter notebook
+### Ejemplo 4  Nacimientos México 2016
 
-### Ejemplo 5 emiticons Tweeter pca. 
+El siguiente ejemplo considera la base de datos de nacimientos en México para 2017. La matriz contiene  236 774 observaciones (registros de nacimientos) para las siguientes variables:
+
+
+GESTACH	Semanas de gestación	Rango aceptable 13 a 42 semanas
+
+TALLAH 	Talla de recién nacido	Rango aceptable 7 a 60 centímetros
+
+PESOH	 largo	4	Peso del recién nacido	Rango aceptable 20 a 6000 gramos, 
+
+APGARH	Calificación obtenida  del recién nacido a los cinco minutos del nacimiento	Entre 0 a 10, 
+
+SILVERMAN		Calificación obtenida  del recién nacido al momento del nacimiento	Entre 10 a 0
+
+Y la variable categórica target con valores 0,1, Donde 0 denota nacimiento normal y 1 para indicar alguna anomalía o padecimiento.
+
+El **objetivo** es aplicar el algoritmo  **PCA** para explorar si es posible explicar la variación en los datos apartir de una estructura dcon menores dimensiones. Adicionalmene determinar que variables estan correlacionadas.
+
+
+[Fuente datos](http://dgis.salud.gob.mx/contenidos/basesdedatos/std_nacimientos_gobmx.html)
+
+##### Leemos los datos.
+
+```{r}
+library(scales)
+library(corrplot)
+
+df<-readRDS("nac16set.rds")
+
+str(df)
+names(df)
+
+head(df,5)
+```
+
+```{r}
+## Descriptivas
+
+summary(df)
+
+# Eliminamos valores inválidos. ej. 99 0 9999.
+
+df<-filter(df,edad_madre!=999|apgarh!=99,silverman!=99,tallah!=99,gestach!=99,pesoh!=9999)
+
+# Cuantos casos por tipo?
+
+t<-group_by(df,target)%>%
+  summarise(total=n())
+t
+
+# Valor promedio de todas las variables  para cada grupo?
+
+df_mean<-group_by(df,target)%>%
+  summarise_all(list(mean))
+
+df<-mutate(df,target=as.factor(target))
+
+p<-ggplot(df,aes(pesoh,fill=target))+
+  geom_histogram(position= "identity", alpha=0.4)+
+  theme_light()+
+  labs(fill="Anomalia", y="nacimientos", x="Peso (g)")+
+scale_fill_discrete(labels=c("No", "Sí"))
+  p   
+
+```
+
+```{r}
+# Matriz de correlación
+
+df_matrix<-select(df, -c(target))
+
+M <- round(cor(df_matrix), 2)
+
+corrplot(M, diag = FALSE, method="color", order="FPC", tl.srt = 90)
+```
+
+
+#### 3. Estimacion de PCA.
+
+```{r, echo =FALSE}
+
+df.cp <- prcomp(df_matrix, scale = TRUE, center = TRUE)
+df.cp
+summary(df.cp)
+```
+
+```{r}
+
+#  Parámetros para graficar.
+par(mfrow = c(1, 2))
+
+# # Eigenvalores  (loadings). Varianza en cada componente.
+cp.var <- df.cp$sdev ^ 2
+round(cp.var, 2)
+cp.var
+
+
+# Proporción de la varianza de cada componente
+pve <- cp.var/sum(cp.var)
+round(pve, 2)
+
+
+# Porcentaje Acumulado explicado.
+round(cumsum(pve), 2)
+```
+
+El 77% de la varianza es explicada por los primeros 3 componentes. Los tres primeros $\lambda\geq1$. (Criterio de Kaiser).
+
+#### Scree  plot para mostrar la varianza explicada por cada componente.
+
+```{r, echo=FALSE}
+
+# Plot variance explained para cada  componente principal 
+
+plot(pve, xlab = "Principal Component", 
+     ylab = "Pr varianza explicada", 
+     ylim = c(0, 1), type = "b")
+```
+
+```{r}
+
+# Plot  proportion acumulada  de varianza explcada 
+
+plot(cumsum(pve), xlab = "Principal Component", 
+     ylab = "Cumulative Proportion of Variance Explained", 
+     ylim = c(0, 1), type = "b")
+```
+
+
