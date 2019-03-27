@@ -434,6 +434,7 @@ plot(cumsum(pve), xlab = "Principal Component",
 #### Visualización de los datos. Plot de Observaciones para componentes 1 y 2.
 
 ```{r}
+
 plot(bc.pr$x[, c(1, 2)], col = (diagnosis + 1), 
      xlab = "PC1", ylab = "PC2")
 legend(x="topleft", pch=1, col = c("red", "black"), legend = c("B", "M"))
@@ -447,7 +448,186 @@ Primero aplicamos el PCA para reducir las dimensiones del df. esto nos permite c
 
 https://www.kaggle.com/shravank/predicting-breast-cancer-using-pca-lda-in-r 
 
-### Ejemplo 4  Nacimientos México 2016
+
+### Ejemplo 4  Calificaciones de posgrado.
+
+En el siguiente ejemplo considere un conjunto de calificaciones para  alumnos de posgrado en dos asignaturas. El objetivo es: a) obtener los componentes principales y eigenvalores b) determinar la proporción de la varianza que explican c) representar los eigenvectores graficamente.
+
+
+La base de datos contiene  100 observaciones correspondientes a calificaciones en las asignaturas de historia y geografia. La matriz conformada por los datos tiene dimensiones 100x2.
+
+En este ejemplo la intención es enfatizar la estructura conceptual del algoritmo PCA. Note que ya de hecho se tiene 2 dimensiones que facilmente permiten tener una aproximación visual al comportamiento y correlación de los datos, no obstante, la aplicación de PCA permite reforzar los coceptos involucrados en la estimación del  algoritmo. 
+
+
+### 1. Leemos la base de datos.
+
+```{r, warning=FALSE, message=FALSE}
+
+library(dplyr)
+library(ggplot2)
+
+datos<-readRDS("datos.rds")
+getwd()
+names(datos)
+str(datos)
+head(datos)
+```
+
+#### 1.1 Visualización  y estadísticas descriptivas.
+
+```{r, warning=FALSE, message=FALSE}
+library(plotly)
+
+p<-ggplot(datos, aes(historia,geografía))+
+  geom_point(color="deepskyblue4", alpha = 0.5)+
+  theme_bw()+
+  labs(title="Calificaciones", x="Historia (0-100)", y="Geografía (0-100)")
+
+ggplotly(p)
+
+summary(datos)
+
+```
+
+```{r}
+
+d <- mutate(datos,mh=mean(historia), mg=mean(geografía),historia=historia-mh,geografía=geografía-mg)%>%
+  select(-c(mh,mg))
+
+plt<-ggplot(d,aes(historia,geografía))+
+  geom_point()+
+  geom_point(color="red", alpha = 0.5)+
+  theme_bw()+
+  labs(title="Calificaciones (Escala 0-100)", x="Historia", y="Geografía ")+
+  xlim(c(-30,30))
+
+ggplotly(plt)
+
+```
+###  Determinación de matriz de covarianza. Estimación de eigenvectores (CP) y eigenvalores.
+
+```{r}
+mcov <- cov(d)
+eigenv <- eigen(mcov)
+colnames(eigenv$vectors) <-c("PC1","PC")
+rownames(eigenv$vectors) <- c("Historia","Heografía")
+eigenv
+
+pr <- prcomp(d,  center = TRUE)
+summary(pr)
+pr
+# Hemos obtenido los eigenvalores (Standard deviations^2) y la matrz de eigenvectores eigenvectores (rotation). 
+
+# Calculate variability of each component  (loadings)
+pr.var <- pr$sdev ^ 2
+round(pr.var, 2)
+# Proporción Variance explained by each principal component: pve
+pve <- pr.var/sum(pr.var)
+round(pve, 2)
+
+# Acumulado
+round(cumsum(pve), 3)
+
+```
+
+Note que cada componente principal es una combinación lineal de las variables en los datos. ej. CP1 es una combinación lineal de las variables historia y geografía. 
+
+El componente principal 1 captura el $97.5\%$ de la variación de los datos. 
+
+Note: El algoritmo PCA aporta la toda la información requerida (eigenvalores  std^2 ), eigenvectores (rotation), valores de la matriz original reproyectados con el espacio vectorial de los componentes principales (scores= loadings*datos originales). 
+
+#### Comprobando que los eigenvalores capturan varianza total en los datos. 
+```{r}
+sum(eigenv$values)
+var(d[,1]) + var(d[,2])
+```
+##### Graficamos los eigenvectores.
+
+```{r}
+
+cp1 <- eigenv$vectors[1,1]/eigenv$vectors[2,1]
+cp2 <- eigenv$vectors[1,2]/eigenv$vectors[2,2]
+
+# Representamos cada los eigebvectores
+
+pc1 <- pr$rotation[1,1]/pr$rotation[2,1]
+pc2 <- pr$rotation[1,2]/pr$rotation[2,2]
+
+
+plt<-ggplot(d,aes(historia,geografía))+
+  geom_point()+
+  geom_point(color="red", alpha = 0.5)+
+  theme_bw()+
+  labs(title="Calificaciones (Escala 0-100)", x="Historia", y="Geografía ")+
+  xlim(c(-30,30))+
+  geom_abline(intercept = 0, slope = pc1, color="deepskyblue4")+
+  geom_abline(intercept = 0, slope = pc2, color="orange")+
+  annotate(geom="text", x=24, y=11, label="(-0.710,-0.695)",
+              color="deepskyblue4")+
+  annotate(geom="text", x=-24, y=11, label="(0.695,-0.719)",
+              color="orange")
+  
+ggplotly(plt)
+
+```
+Note que son ortogonales (perpendiculares). 
+
+
+```{r}
+
+# Plot de la varianza explicada por cada componente
+
+plot(pve, xlab = "Principal Component", 
+     ylab = "Proporción  de la varianza explicada", 
+ ylim = c(0, 1), type = "b")
+
+```
+
+
+```{r}
+# Plot proporción acumulada.
+plot(cumsum(pve), xlab = "Principal Component", 
+     ylab = "Cumulative Proportion of Variance Explained", 
+     ylim = c(0, 1), type = "b")
+```
+
+#### Proyección de los datos al nuevo espacio vectorial conformado por los compornetes principales.
+```{r}
+# Multiplicamos  los datos (estandarizados) por la matriz de componentes principales.
+
+loadings <- pr$rotation
+scores <- pr$x
+scores <- as.data.frame(scores)
+```
+
+```{r}
+plt2<-ggplot(scores,aes(PC1,PC2))+
+         geom_point(color="darkblue", alpha=.5)+
+         labs(title="Scores.Datos reproyectados con EigenVectores / PCs")+
+   geom_abline(intercept = 0, slope = 0, color="yellow")+
+  geom_abline(intercept = 0, slope = 90, color="red")+
+  theme_light()+
+  ylim(-10,10)+
+  xlim(-30,30)+
+  labs(x="PC1  97.5% var",y="PC2 2.5% var")
+  
+ggplotly(plt2)
+```
+
+#### Representación de scores y variables con Biplot
+Creamos una representación gráfica con los scores (datos reproyectados *puntos*) y las variables (**vectrores**) en las misma grafica ("bi").
+
+```{r}
+biplot(pr)
+```
+Interpretación: Las variables se encuentran representadas como vectores. En este caso la dirección en la que apuntan indica la correlación positiva entre las variables de la matriz.
+
+Cada punto corresponde al número de la observación en nuestra base de datos ortiginal. Ej. tenemos 100 obs, tenemos 100 datos en el biplot y las coordenadas corresponden con la ubicación en el espacio vectorial generado por los componentes princilaes.
+
+En este caso podriamos usar unicamente una sola dimensión para explicar el desempeño de los alumnos en este grupo, (ej. el primer componente captura el $97.5\%$ de la variación total en los datos).
+
+
+### Ejemplo 5  Nacimientos México 2016
 
 El siguiente ejemplo considera la base de datos de nacimientos en México para 2017. La matriz contiene  236 774 observaciones (registros de nacimientos) para las siguientes variables:
 
