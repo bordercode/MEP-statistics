@@ -544,17 +544,14 @@ legend(x=&quot;topleft&quot;, pch=1, col = c(&quot;red&quot;, &quot;black&quot;)
 <p>APGARH Calificación obtenida del recién nacido a los cinco minutos del nacimiento Entre 0 a 10,</p>
 <p>SILVERMAN Calificación obtenida del recién nacido al momento del nacimiento Entre 10 a 0</p>
 <p>Y la variable categórica target con valores 0,1, Donde 0 denota nacimiento normal y 1 para indicar alguna anomalía o padecimiento.</p>
-<p>El <strong>objetivo</strong> es aplicar el algoritmo <strong>PCA</strong> para explorar si es posible explicar la variación en los datos apartir de una estructura dcon menores dimensiones. Adicionalmene determinar que variables estan correlacionadas.</p>
+<p>El <strong>objetivo</strong> es aplicar el algoritmo <strong>PCA</strong> para explorar si es posible explicar la variación en los datos apartir de una estructura con menores dimensiones.</p>
+<p>¿Con cuantos componentes principales podemos explicar el <span class="math inline">\(70\%\)</span> de la variación?</p>
+<p>Adicionalmene determinar que variables estan correlacionadas.</p>
 <p><a href="http://dgis.salud.gob.mx/contenidos/basesdedatos/std_nacimientos_gobmx.html">Fuente datos</a></p>
 <div id="leemos-los-datos." class="section level5">
 <h5>Leemos los datos.</h5>
-<pre class="r"><code>library(scales)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;scales&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:purrr&#39;:
-## 
-##     discard</code></pre>
-<pre class="r"><code>library(corrplot)
+<pre class="r"><code>library(scales)
+library(corrplot)
 
 df&lt;-readRDS(&quot;nac16set.rds&quot;)
 
@@ -613,7 +610,13 @@ t</code></pre>
 df_mean&lt;-group_by(df,target)%&gt;%
   summarise_all(list(mean))
 
-df&lt;-mutate(df,target=as.factor(target))
+df_mean</code></pre>
+<pre><code>## # A tibble: 2 x 7
+##   target pesoh tallah gestach apgarh silverman edad_madre
+##    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+## 1      0 3152.   50.0    38.8   9.29     0.219       25.9
+## 2      1 2967.   48.8    37.8   8.93     0.639       25.9</code></pre>
+<pre class="r"><code>df&lt;-mutate(df,target=as.factor(target))
 
 p&lt;-ggplot(df,aes(pesoh,fill=target))+
   geom_histogram(position= &quot;identity&quot;, alpha=0.4)+
@@ -621,7 +624,6 @@ p&lt;-ggplot(df,aes(pesoh,fill=target))+
   labs(fill=&quot;Anomalia&quot;, y=&quot;nacimientos&quot;, x=&quot;Peso (g)&quot;)+
 scale_fill_discrete(labels=c(&quot;No&quot;, &quot;Sí&quot;))
   p   </code></pre>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 <p><img src="/post/2019-02-24-PCA_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <pre class="r"><code># Matriz de correlación
 
@@ -634,6 +636,8 @@ corrplot(M, diag = FALSE, method=&quot;color&quot;, order=&quot;FPC&quot;, tl.sr
 </div>
 <div id="estimacion-de-pca." class="section level4">
 <h4>3. Estimacion de PCA.</h4>
+<pre class="r"><code>df.cp &lt;- prcomp(df_matrix, scale = TRUE, center = TRUE)
+df.cp</code></pre>
 <pre><code>## Standard deviations (1, .., p=6):
 ## [1] 1.6188248 1.0035523 1.0000301 0.9547178 0.5151235 0.4420301
 ## 
@@ -652,11 +656,6 @@ corrplot(M, diag = FALSE, method=&quot;color&quot;, order=&quot;FPC&quot;, tl.sr
 ## apgarh     -0.002970418
 ## silverman   0.008495878
 ## edad_madre  0.005137485</code></pre>
-<pre><code>## Importance of components:
-##                           PC1    PC2    PC3    PC4     PC5     PC6
-## Standard deviation     1.6188 1.0036 1.0000 0.9547 0.51512 0.44203
-## Proportion of Variance 0.4368 0.1678 0.1667 0.1519 0.04423 0.03257
-## Cumulative Proportion  0.4368 0.6046 0.7713 0.9232 0.96743 1.00000</code></pre>
 <pre class="r"><code>#  Parámetros para graficar.
 par(mfrow = c(1, 2))
 
@@ -673,10 +672,15 @@ round(pve, 2)</code></pre>
 <pre class="r"><code># Porcentaje Acumulado explicado.
 round(cumsum(pve), 2)</code></pre>
 <pre><code>## [1] 0.44 0.60 0.77 0.92 0.97 1.00</code></pre>
-<p>El 77% de la varianza es explicada por los primeros 3 componentes. Los tres primeros <span class="math inline">\(\lambda\geq1\)</span>. (Criterio de Kaiser).</p>
+<p>El 77% de la varianza es explicada por los primeros 3 componentes. Los tres primeros <span class="math inline">\(\lambda\geq1\)</span>, acorde al criterio de Kaiser podriamos mantener 3 cp.</p>
 </div>
 <div id="scree-plot-para-mostrar-la-varianza-explicada-por-cada-componente." class="section level4">
 <h4>Scree plot para mostrar la varianza explicada por cada componente.</h4>
+<pre class="r"><code># Plot variance explained para cada  componente principal 
+
+plot(pve, xlab = &quot;Principal Component&quot;, 
+     ylab = &quot;Pr varianza explicada&quot;, 
+     ylim = c(0, 1), type = &quot;b&quot;)</code></pre>
 <p><img src="/post/2019-02-24-PCA_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <pre class="r"><code># Plot  proportion acumulada  de varianza explcada 
 

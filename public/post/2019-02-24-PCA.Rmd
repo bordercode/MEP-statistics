@@ -464,14 +464,18 @@ SILVERMAN		Calificación obtenida  del recién nacido al momento del nacimiento	
 
 Y la variable categórica target con valores 0,1, Donde 0 denota nacimiento normal y 1 para indicar alguna anomalía o padecimiento.
 
-El **objetivo** es aplicar el algoritmo  **PCA** para explorar si es posible explicar la variación en los datos apartir de una estructura dcon menores dimensiones. Adicionalmene determinar que variables estan correlacionadas.
+El **objetivo** es aplicar el algoritmo  **PCA** para explorar si es posible explicar la variación en los datos apartir de una estructura con menores dimensiones.
 
+¿Con cuantos componentes principales podemos explicar el $70\%$ de la variación?
+
+Adicionalmene determinar que variables estan correlacionadas.
 
 [Fuente datos](http://dgis.salud.gob.mx/contenidos/basesdedatos/std_nacimientos_gobmx.html)
 
 ##### Leemos los datos.
 
-```{r}
+```{r  warning=FALSE, message=FALSE}
+
 library(scales)
 library(corrplot)
 
@@ -483,7 +487,7 @@ names(df)
 head(df,5)
 ```
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 ## Descriptivas
 
 summary(df)
@@ -503,6 +507,8 @@ t
 df_mean<-group_by(df,target)%>%
   summarise_all(list(mean))
 
+df_mean
+
 df<-mutate(df,target=as.factor(target))
 
 p<-ggplot(df,aes(pesoh,fill=target))+
@@ -514,7 +520,7 @@ scale_fill_discrete(labels=c("No", "Sí"))
 
 ```
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 # Matriz de correlación
 
 df_matrix<-select(df, -c(target))
@@ -527,14 +533,14 @@ corrplot(M, diag = FALSE, method="color", order="FPC", tl.srt = 90)
 
 #### 3. Estimacion de PCA.
 
-```{r, echo =FALSE}
+```{r, warning=FALSE, message=FALSE}
 
 df.cp <- prcomp(df_matrix, scale = TRUE, center = TRUE)
 df.cp
-summary(df.cp)
+
 ```
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 
 #  Parámetros para graficar.
 par(mfrow = c(1, 2))
@@ -554,11 +560,11 @@ round(pve, 2)
 round(cumsum(pve), 2)
 ```
 
-El 77% de la varianza es explicada por los primeros 3 componentes. Los tres primeros $\lambda\geq1$. (Criterio de Kaiser).
+El 77% de la varianza es explicada por los primeros 3 componentes. Los tres primeros $\lambda\geq1$, acorde al  criterio de Kaiser podriamos mantener 3  cp.
 
 #### Scree  plot para mostrar la varianza explicada por cada componente.
 
-```{r, echo=FALSE}
+```{r, warning=FALSE, message=FALSE}
 
 # Plot variance explained para cada  componente principal 
 
@@ -567,7 +573,7 @@ plot(pve, xlab = "Principal Component",
      ylim = c(0, 1), type = "b")
 ```
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 
 # Plot  proportion acumulada  de varianza explcada 
 
