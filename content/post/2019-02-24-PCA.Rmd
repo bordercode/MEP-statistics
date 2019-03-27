@@ -504,6 +504,7 @@ plt<-ggplot(d,aes(historia,geografía))+
 ggplotly(plt)
 
 ```
+
 ###  Determinación de matriz de covarianza. Estimación de eigenvectores (CP) y eigenvalores.
 
 ```{r}
@@ -518,7 +519,7 @@ summary(pr)
 pr
 # Hemos obtenido los eigenvalores (Standard deviations^2) y la matrz de eigenvectores eigenvectores (rotation). 
 
-# Calculate variability of each component  (loadings)
+# Calculate variability of each component
 pr.var <- pr$sdev ^ 2
 round(pr.var, 2)
 # Proporción Variance explained by each principal component: pve
@@ -617,7 +618,7 @@ ggplotly(plt2)
 #### Representación de scores y variables con Biplot
 Creamos una representación gráfica con los scores (datos reproyectados *puntos*) y las variables (**vectrores**) en las misma grafica ("bi").
 
-```{r}
+```{r, fig.width=12, fig.height=8}
 library(ggbiplot)
 
 b1<-biplot(pr)
