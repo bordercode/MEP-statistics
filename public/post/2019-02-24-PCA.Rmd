@@ -12,13 +12,11 @@ menu:
 ---
 
 ```{r,echo=FALSE, message=FALSE,warning=FALSE}
-library(gapminder)
 library(dplyr)
-library(purrr)
-library(tidyr)
 library(ggplot2)
-library(broom)
-library(ggthemes)
+library(plotly)
+library(scales)
+library(corrplot)
 ```
 
 ## Análisis de Componentes Principales (PCA).
@@ -294,8 +292,8 @@ Esta técnica permite además visualizar los vectores a lo largo de los cuales l
 Este subconjunto de variables consituyen una síntensis que representa los eigenvectores de la matriz original. 
 
 [Background](http://archive.ics.uci.edu/ml/datasets/breast+cancer+wisconsin+%28diagnostic%29)
+
 ```{r,echo=FALSE}
-library(corrplot)
 
 # Reading  in the data
 
@@ -318,12 +316,14 @@ Entre las variables tenemos una denominada diagnosis, esta indica el tipo de tum
 ```{r}
 
 # descriptive stats para todas las variables:
+
 summary(bc)
 diagnosis <- as.numeric(bc$diagnosis == "M")
+
 # Cuantos casos por tipo?
 
 count_diag<-group_by(bc,diagnosis)%>%
-  summarise(total=n())
+summarize(total=n())
 
 # Valor promedio de todas las variables  para cada grupo?
 bc_mean<-group_by(bc,diagnosis)%>%
@@ -463,9 +463,6 @@ En este ejemplo la intención es enfatizar la estructura conceptual del algoritm
 
 ```{r, warning=FALSE, message=FALSE}
 
-library(dplyr)
-library(ggplot2)
-
 datos<-readRDS("datos.rds")
 getwd()
 names(datos)
@@ -476,7 +473,7 @@ head(datos)
 #### 1.1 Visualización  y estadísticas descriptivas.
 
 ```{r, warning=FALSE, message=FALSE}
-library(plotly)
+
 
 p<-ggplot(datos, aes(historia,geografía))+
   geom_point(color="deepskyblue4", alpha = 0.5)+
@@ -616,10 +613,8 @@ ggplotly(plt2)
 #### Representación de scores y variables con Biplot
 Creamos una representación gráfica con los scores (datos reproyectados *puntos*) y las variables (**vectrores**) en las misma grafica ("bi").
 
-```{r, fig.width=12, fig.height=8, message=FALSE, warning=FALSE}
-
+```{r, fig.width=6, fig.height=6, message=FALSE, warning=FALSE}
 library(ggbiplot)
-library(plotly)
 
 b2<-ggbiplot(pr, circle = TRUE)+
     theme_light()+
@@ -627,9 +622,8 @@ b2<-ggbiplot(pr, circle = TRUE)+
   geom_abline(intercept = 0, slope = 0, color="blue")+
   geom_abline(intercept = 0, slope = 90, color="lightgreen")+
   theme_light()
-b2
 
-ggplotly(b2)
+b2
 
 ```
 
@@ -669,11 +663,6 @@ Adicionalmene determinar que variables estan correlacionadas.
 ##### Leemos los datos.
 
 ```{r warning=FALSE, message=FALSE}
-library(dplyr)
-library(scales)
-library(corrplot)
-library(ggplot2)
-
 df<-readRDS("nac16set.rds")
 
 str(df)
