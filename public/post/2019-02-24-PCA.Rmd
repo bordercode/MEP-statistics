@@ -618,11 +618,10 @@ ggplotly(plt2)
 #### Representación de scores y variables con Biplot
 Creamos una representación gráfica con los scores (datos reproyectados *puntos*) y las variables (**vectrores**) en las misma grafica ("bi").
 
-```{r, fig.width=12, fig.height=8}
-library(ggbiplot)
+```{r, fig.width=12, fig.height=8, message=FALSE, warning=FALSE}
 
-b1<-biplot(pr)
-b1
+library(ggbiplot)
+library(plotly)
 
 b2<-ggbiplot(pr, circle = TRUE)+
     theme_light()+
@@ -631,6 +630,9 @@ b2<-ggbiplot(pr, circle = TRUE)+
   geom_abline(intercept = 0, slope = 90, color="lightgreen")+
   theme_light()
 b2
+
+ggplotly(b2)
+
 ```
 
 Interpretación: Las variables se encuentran representadas como vectores. En este caso la dirección en la que apuntan indica la correlación positiva entre las variables de la matriz.
