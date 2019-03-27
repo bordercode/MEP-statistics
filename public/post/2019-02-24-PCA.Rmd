@@ -514,14 +514,16 @@ colnames(eigenv$vectors) <-c("PC1","PC")
 rownames(eigenv$vectors) <- c("Historia","Heografía")
 eigenv
 
+
 pr <- prcomp(d,  center = TRUE)
 summary(pr)
 pr
-# Hemos obtenido los eigenvalores (Standard deviations^2) y la matrz de eigenvectores eigenvectores (rotation). 
+# Hemos obtenido los eigenvalores (Standard deviations^2) y la matrz de eigenvectores  (rotation). 
 
-# Calculate variability of each component
+# Eigenvalores
 pr.var <- pr$sdev ^ 2
 round(pr.var, 2)
+
 # Proporción Variance explained by each principal component: pve
 pve <- pr.var/sum(pr.var)
 round(pve, 2)
@@ -545,10 +547,6 @@ var(d[,1]) + var(d[,2])
 ##### Graficamos los eigenvectores.
 
 ```{r}
-
-cp1 <- eigenv$vectors[1,1]/eigenv$vectors[2,1]
-cp2 <- eigenv$vectors[1,2]/eigenv$vectors[2,2]
-
 # Representamos cada los eigebvectores
 
 pc1 <- pr$rotation[1,1]/pr$rotation[2,1]

@@ -19,6 +19,10 @@ library(tidyr)
 library(ggplot2)
 library(broom)
 library(ggthemes)
+library(plotly)
+library(ggbiplot)
+library(scales)
+library(corrplot)
 ```
 
 ## Análisis de Componentes Principales (PCA).
@@ -476,7 +480,7 @@ head(datos)
 #### 1.1 Visualización  y estadísticas descriptivas.
 
 ```{r, warning=FALSE, message=FALSE}
-library(plotly)
+
 
 p<-ggplot(datos, aes(historia,geografía))+
   geom_point(color="deepskyblue4", alpha = 0.5)+
@@ -514,14 +518,16 @@ colnames(eigenv$vectors) <-c("PC1","PC")
 rownames(eigenv$vectors) <- c("Historia","Heografía")
 eigenv
 
+
 pr <- prcomp(d,  center = TRUE)
 summary(pr)
 pr
-# Hemos obtenido los eigenvalores (Standard deviations^2) y la matrz de eigenvectores eigenvectores (rotation). 
+# Hemos obtenido los eigenvalores (Standard deviations^2) y la matrz de eigenvectores  (rotation). 
 
-# Calculate variability of each component
+# Eigenvalores
 pr.var <- pr$sdev ^ 2
 round(pr.var, 2)
+
 # Proporción Variance explained by each principal component: pve
 pve <- pr.var/sum(pr.var)
 round(pve, 2)
@@ -545,10 +551,6 @@ var(d[,1]) + var(d[,2])
 ##### Graficamos los eigenvectores.
 
 ```{r}
-
-cp1 <- eigenv$vectors[1,1]/eigenv$vectors[2,1]
-cp2 <- eigenv$vectors[1,2]/eigenv$vectors[2,2]
-
 # Representamos cada los eigebvectores
 
 pc1 <- pr$rotation[1,1]/pr$rotation[2,1]
@@ -620,9 +622,6 @@ Creamos una representación gráfica con los scores (datos reproyectados *puntos
 
 ```{r, fig.width=12, fig.height=8, message=FALSE, warning=FALSE}
 
-library(ggbiplot)
-library(plotly)
-
 b2<-ggbiplot(pr, circle = TRUE)+
     theme_light()+
   geom_point(color="gray")+
@@ -671,11 +670,6 @@ Adicionalmene determinar que variables estan correlacionadas.
 ##### Leemos los datos.
 
 ```{r warning=FALSE, message=FALSE}
-library(dplyr)
-library(scales)
-library(corrplot)
-library(ggplot2)
-
 df<-readRDS("nac16set.rds")
 
 str(df)
