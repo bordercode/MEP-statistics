@@ -21,7 +21,6 @@ library(corrplot)
 
 ## Análisis de Componentes Principales (PCA).
 
-##### *"Too much of anything is good for nothing!"*
 
 #### Motivación
 

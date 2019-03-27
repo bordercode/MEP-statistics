@@ -17,10 +17,11 @@
       <pubDate>Mon, 28 Jan 2019 21:14:14 -0500</pubDate>
       
       <guid>/post/2019-02-24-pca/</guid>
-      <description>Análisis de Componentes Principales (PCA).“Too much of anything is good for nothing!”MotivaciónEl método PCA permite reexpresar un conjunto multidimensional de datos (ej. k dimensiones) que contiene variables correlacionadas ( ej. que aportan información redundante), en un subconjnto de datos de menor dimensión.
+      <description>Análisis de Componentes Principales (PCA).MotivaciónEl método PCA permite reexpresar un conjunto multidimensional de datos (ej. k dimensiones) que contiene variables correlacionadas ( ej. que aportan información redundante), en un subconjnto de datos de menor dimensión.
 Con PCA respondemos preguntas como:
 ¿Qué variables estan correlacionadas?
-¿Podemos representar los datos de una manera más clara ej.</description>
+¿Podemos representar los datos de una manera más clara ej.mediante un menor número de dimensiones?
+¿Qué variables tienen la mayor influencia para explicar la variación de los datos?</description>
     </item>
     
   </channel>
