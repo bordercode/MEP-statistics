@@ -474,7 +474,7 @@ Adicionalmene determinar que variables estan correlacionadas.
 
 ##### Leemos los datos.
 
-```{r  warning=FALSE, message=FALSE}
+```{r warning=FALSE, message=FALSE}
 
 library(scales)
 library(corrplot)
@@ -531,7 +531,7 @@ corrplot(M, diag = FALSE, method="color", order="FPC", tl.srt = 90)
 ```
 
 
-#### 3. Estimacion de PCA.
+#### 3. Estimación de PCA.
 
 ```{r, warning=FALSE, message=FALSE}
 
