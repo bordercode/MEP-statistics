@@ -31,6 +31,7 @@ knitr::opts_chunk$set(eval = TRUE,
 library(tidyverse)
 library(ISLR)
 library(foreign)
+library(scales)
 ```
 
 
@@ -39,6 +40,66 @@ library(foreign)
 
 En los casos anteriores hemos considerado que nuestros datos son númericos (variables contínuas o discretas pero de naturaleza cuantitaiva).
 
-Para el caso de el modelo de regresión logistica nos interesa hacer predicciones para  variables **categóricas**.  
+Para el caso de el **modelo de regresión logistica** nos interesa hacer predicciones para  variables **categóricas**.  
 
-Reponder preguntas como: Cual es 
+Reponder preguntas como: Cuál es la probabilidad de que un individuo partenezca la categoría i? dado un conjunto de características ($x_i, ...,x_n$).
+
+Ejemplo  1. Dado un conjunto de textos de Twitter, determinar cuales pertenecen a un sentimiento positivo y cuáles a un sentimiento negativo.
+
+Ejemplo 2. Dadas las características de la madre, como edad, sexo, semanas de gestación, procedimiento cesárea o no, peso y talla del bebé determinar la probabilidad de que el bebé presente el padecimiento x. 
+
+
+El modelo de regressión logistica nos permite **clasificar**. Predecir una respuesta cualitativa ej. asignar a una categoria determinada las observaciones de la base de datos se puede realizar mediante el modelo  de regressión logística.
+
+El proceso de clasificación implica determinar la **probabilidad** de que la observación *i* pretenezca a una determinada categoría. Lo que se puede lograr a partir del modelo de regresión logistica.
+
+Escenario 1
+
+Dado el nivel de ingreso (variable *income*) y el saldo (variable *balance*)  de la targeta de crédito en una muestra de 10,000 estudiantes, ¿Cuál es la probabilidad de que un inidviduo de la muestra, incumpla el pago de su deuda (*Default*). 
+
+
+El primer paso para aproximar la solución de este problema de clasificación es representar las variables de interés. 
+
+Note que la variable dependiente (**Y**)es *Default* y las explicativas (**x_1,...,X_n**) son *income* y *balance*.
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+d<-Default
+str(d)
+names(d)
+
+p<-ggplot(d,aes(balance, income, colour=default, shape=default))+
+  geom_point()+
+  theme_light()+
+  scale_shape_manual(values=c(1,3))+
+  scale_colour_manual(values = c("orange", "darkgreen"))+
+  scale_x_continuous(labels = dollar_format())+
+  scale_y_continuous(labels = dollar_format())
+
+p
+```
+## Districuión con un Boxplot
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+library(gridExtra)
+
+bxp1<-ggplot(d,aes(default, balance))+
+  geom_boxplot(aes(fill=default))+
+  theme_light()+
+  scale_y_continuous(labels = dollar_format())+
+  scale_fill_manual(values = c("orange", "darkgreen"))
+
+
+bxp2<-ggplot(d,aes(default, income))+
+  geom_boxplot(aes(fill=default))+
+  theme_light()+
+  scale_y_continuous(labels = dollar_format())+
+  scale_fill_manual(values = c("orange", "darkgreen"))
+
+
+grid.arrange(bxp1, bxp2, nrow = 1)
+
+```
+
+
+Note la relación positiva entre la variable saldo 
+y el incumplimiento. Así mismo relación inversa respecto al ingreso, aparentemente aquellos individuos de menor ingreso tiene mayor problema de incumplimiento. 

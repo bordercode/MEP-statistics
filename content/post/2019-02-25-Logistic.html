@@ -16,6 +16,23 @@ menu:
 <div id="por-que-el-modelo-de-regresion-logistica" class="section level3">
 <h3>Por qué el modelo de Regresión Logistica?</h3>
 <p>En los casos anteriores hemos considerado que nuestros datos son númericos (variables contínuas o discretas pero de naturaleza cuantitaiva).</p>
-<p>Para el caso de el modelo de regresión logistica nos interesa hacer predicciones para variables <strong>categóricas</strong>.</p>
-<p>Reponder preguntas como: Cual es</p>
+<p>Para el caso de el <strong>modelo de regresión logistica</strong> nos interesa hacer predicciones para variables <strong>categóricas</strong>.</p>
+<p>Reponder preguntas como: Cuál es la probabilidad de que un individuo partenezca la categoría i? dado un conjunto de características (<span class="math inline">\(x_i, ...,x_n\)</span>).</p>
+<p>Ejemplo 1. Dado un conjunto de textos de Twitter, determinar cuales pertenecen a un sentimiento positivo y cuáles a un sentimiento negativo.</p>
+<p>Ejemplo 2. Dadas las características de la madre, como edad, sexo, semanas de gestación, procedimiento cesárea o no, peso y talla del bebé determinar la probabilidad de que el bebé presente el padecimiento x.</p>
+<p>El modelo de regressión logistica nos permite <strong>clasificar</strong>. Predecir una respuesta cualitativa ej. asignar a una categoria determinada las observaciones de la base de datos se puede realizar mediante el modelo de regressión logística.</p>
+<p>El proceso de clasificación implica determinar la <strong>probabilidad</strong> de que la observación <em>i</em> pretenezca a una determinada categoría. Lo que se puede lograr a partir del modelo de regresión logistica.</p>
+<p>Escenario 1</p>
+<p>Dado el nivel de ingreso (variable <em>income</em>) y el saldo (variable <em>balance</em>) de la targeta de crédito en una muestra de 10,000 estudiantes, ¿Cuál es la probabilidad de que un inidviduo de la muestra, incumpla el pago de su deuda (<em>Default</em>).</p>
+<p>El primer paso para aproximar la solución de este problema de clasificación es representar las variables de interés.</p>
+<p>Note que la variable dependiente (<strong>Y</strong>)es <em>Default</em> y las explicativas (<strong>x_1,…,X_n</strong>) son <em>income</em> y <em>balance</em>.</p>
+<pre><code>## &#39;data.frame&#39;:    10000 obs. of  4 variables:
+##  $ default: Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ student: Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 1 2 1 1 1 2 1 2 1 1 ...
+##  $ balance: num  730 817 1074 529 786 ...
+##  $ income : num  44362 12106 31767 35704 38463 ...</code></pre>
+<pre><code>## [1] &quot;default&quot; &quot;student&quot; &quot;balance&quot; &quot;income&quot;</code></pre>
+<p><img src="/post/2019-02-25-Logistic_files/figure-html/unnamed-chunk-1-1.png" width="672" /> ## Districuión con un Boxplot</p>
+<p><img src="/post/2019-02-25-Logistic_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Note la relación positiva entre la variable saldo y el incumplimiento. Así mismo relación inversa respecto al ingreso, aparentemente aquellos individuos de menor ingreso tiene mayor problema de incumplimiento.</p>
 </div>
