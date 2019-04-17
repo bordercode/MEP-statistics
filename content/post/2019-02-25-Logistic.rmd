@@ -99,7 +99,7 @@ bxp2<-ggplot(d,aes(default, income))+
 
 
 
-
+5/8
 grid.arrange(bxp1, bxp2, nrow = 1)
 
 ```
@@ -133,3 +133,84 @@ Sin embargo, nuestros estimados de **MCO** no necesariamente se ubicarian en el 
 Aún más, el enfoque de **MCO** para variables cualitativas en un caso no binario, ej. 3 o 4 categor[ias, carece de sentido totalmente, ya que lo que importa es el significado de cada categoría pero su orden no tiene mayor implicación cuando estimamos el modelo de regresión logística.
 
 Mientras que al cambiar el orden de la variable dependiente en el modelo lineal generariamos resultados diferentes y predicciones inconsistentes. 
+
+
+
+#### Modelo de Regressión logística.
+
+Este enfoque está diseñado explicitamente para tratar con variables categóricas (factores en el lenguaje de R, Python, etc,.). 
+
+En este caso podemos estimar la probabilidad de que  **Y** pertenzca a una categoría particular.
+
+
+Antes de avanzar veamos un par de conceptos preeliminares. Momios y ratio de Momios. 
+
+
+Qué son los Momios (chances de que algo ocurra el ratio o cociente)(odds)?  Suponga que tenemos un escenario en el que un equipo participa en 5 partidos.  Gana uno y pierde 4 en este caso podemos calcular los **Odds** de ganar como el cociente:$$1/4=.25$$,
+
+En palabras tenemos un change de ganar (odds) de .25.  
+
+**Note que Odds no son probabilidades.**  Para llegar a estimar la probilidades que  un evento ocurra dado un conjunto de variables el modelo de regresión logística considera una serie de supuestos adicionales. 
+
+Las probabiliadades son el ratio de que algo ocurran respecto a **todo** lo que podria suceder. 
+En el caso previo tenemos un total de 5 juegos así que la probabilid de  que mi equipo gane es: $$1/5=.20$$
+
+Nuevamente suponga ahora que nuestro equipo participa en un total de  8 partidos. Gana 5 pierder 3. Igualmente podemos calcular los momios de ganar como $$5/3=1.7$$ Y la probabilidad de ganar como $$5/8=0.625$$
+
+Note que la probabilidad de que mi equipo gane es *diferente** a los **Odds** (Momios) de que mi equipo gane.  
+
+
+Ahora bien calculemos ahora la probabilidad de que el equipo pierda en el ejemplo anterior. Sigueindo la lógica de la probabilidad de que el eauipo gane entonces  la probabilida de perder es: $$3/5=0.375$$  o bien 1-prob.  de ganar=1-0.625=0.375
+
+Ahora note que podemos calcular los momios (Odds) de ganar  como el ratio de las probabilidades esto es: 
+
+$$\frac{5/8}{1-5/8}=\frac{5/8}{3/8}=5/3=1.7$$
+
+poemos sintetizar la discusi[on anterior en la expresión. $$Odds=
+\frac{p}{1-p}$$
+
+**Log Odds**= Por qué considerar el logaritmo de los Momios (**log Odds**). 
+
+Considermos nuestro ejemplo inicial. Nuestro equipo juega 5 partidos, gana 1. Entonces tiene Odds de ganar de $$1/4=0.25$$ de forma similar: 
+
+Si juega 9 partidos $$1/8=0.125$$
+Si juega 17 partidos $$1/16=0.062$$
+Si juega 33 partidos $$1/32=0.031$$
+
+**Note** que los momios en contra (mi equipo pierde) parte de 1 y tienden a cero a medida que el número de partidos tiende a inifnito ($\infty$), se ubican en el intervalo cerrado [1,0]. 
+
+Ahora observemos que sucede con los momios  a favor de ganar. 
+```{r}
+14/3
+1/6
+
+log(6/1)
+log(1/6)
+```
+
+Si juega 9 partidos y gana 3  $$6/3=2$$
+Si juega 17 partidos $$14/3=4.6$$
+Si juega 33 partidos $$30/3=10$$
+Note que los momios se incrementan a media que el numero de jeugos aumenta y de hecho  tienden a $\infty$. Se ubican en el intervalo $[1,\infty]$. 
+
+Note que entre los momios de perder y los de ganar se tiene una asimetría mientras lo sprimeros se ubican en $[0,1]$, los segundos viven en $[1,\infty]$. Una diferencia abismal en la magnitud !!!
+
+Por ejemplo  Si tenemos 7 juegos. Los momios en contra por ejemplo son $1/6=.16$, pero los momios a favor son> $6/1=6$. 
+
+Tenemos una magnitud completamente desproporcionada a pesar de que en cada caso solo se gana o se pierde un solo juego. 
+
+Este problema de asimetría se resuelve tomando el logaritmo de los momios.
+
+Ejemplo: $$log(1/6)=-1.791759log(6/1)=1.791759$$ 
+
+Ahora la magnitud en los momios es la misma, es **simetrica**!!
+
+** El log del ratio de probabilidades e.j. log(Odds) $$log(\frac{p}{1-p})$$ Se denomina la función ** logit. 
+
+**Importante** esta expresión tiene como distribución asociada  la clásica standard (NORMAL) y por lo tanto estimar probabilides como áreas debajo de la curva de esta distribución resulta pertinente.
+
+
+
+$$p(X)=\frac{e^{ \beta_0 +\beta_1 X}}{1 + e^{ \beta_0 +\beta_1 X}}$$
+
+
