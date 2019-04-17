@@ -147,7 +147,7 @@ En este caso podemos estimar la probabilidad de que  **Y** pertenzca a una categ
 Antes de avanzar veamos un par de conceptos preeliminares. Momios y ratio de Momios. 
 
 
-Qué son los **Momios** (chances de que algo ocurra el ratio o cociente)(**odds**)?  Suponga que tenemos un escenario en el que un equipo participa en 5 partidos.  Gana uno y pierde 4 en este caso podemos calcular los **Odds** de ganar como el cociente:$$1/4=.25$$
+Qué son los **Momios** (chances de que algo ocurra un ratio o cociente)(**odds**)?  Suponga que tenemos un escenario en el que un equipo participa en 5 partidos.  Gana uno y pierde 4 en este caso podemos calcular los **Odds** de ganar como el cociente:$$1/4=.25$$
 
 En palabras tenemos un chance de ganar (odds) de 0.25.  
 
@@ -204,15 +204,100 @@ Ahora la magnitud en los momios es la misma, es **simetrica**!!
 
 **Importante** esta expresión tiene como distribución asociada  la clásica standard (NORMAL) y por lo tanto estimar probabilides como áreas debajo de la curva de esta distribución resulta pertinente.
 
+Un punto adicional, los Odds son un ratio un cociente entre dos eventos (las veces que ocuren un resultado entre las veces que no ocurre ese resultado).
+
+A pesar de que los **momios** se calculan como un ratio, no son lo mismo a cuando nos referiemos a el **ratio de momios**. En este segundo caso estamos hablando de un cociente entre dos momios. ej. Momio 1: $8/5$, Momio 2: $3/7$ ratio de momios 1 y 2= $\frac{8/5}{3/7}=3.73$
+
+
 ##Función logit. derivación:  
 
 
-Sea $$p(x)=Pr(Y=1|X)$$ y considerando una representación lineal  $$p(x)=\beta_0 +\beta_1 X$$
+Sea $$p(X)=Pr(Y=1|X)$$ y considerando una representación lineal  $$p(X)=\beta_0 +\beta_1 X$$
 
 Aplicando la definicón del log Odds, tenemos: 
+$$log\bigg(\frac{P(X)}{1-P(X)}\bigg)= \beta_0 +\beta_1 X$$
+Donde el lago izquierdo es nombrado función **logit** o log Odds.
 
 $$\frac{P(X)}{1-P(X)}=e^{ \beta_0 +\beta_1 X}$$
-Despejando  p(x), tenemos la **función logit**
+
+
+Note que Eliminamos el logaritmo aplicando la operación inversa el *e* para ambos lados de la equiación. En palabras la estimación de los momios es igual a la exponencial la la equaición lineal $\beta_0+\beta_1X$.
+
+El lado izquierdo es el ratio de las probabilidades o de manera equivalente los **momios** (Odds). 
+
+
+Despejando  p(x), tenemos el **modelo de regresión  logística**
 $$p(X)=\frac{e^{ \beta_0 +\beta_1 X}}{1 + e^{ \beta_0 +\beta_1 X}}$$
+Que de hecho tiene una **función logit** que es lineal en x.
+
+La estimación de los coeficientes del modelo que haremos genera precisamente el valor del **log(odds)**, no de la **probabilidad**. 
+
+La probabilidad se obtiene a partir de substituir el coeficiente en la función de regresión logistica para valores especificos de las variables independientes **x**.
+
+##### Estimación de coeficientes en el modelo de regresión logistica. 
+
+Usamos el procedimiento de **Máxima verosimilitud** a diferencia del caso del modelo de regressión lineal en donde se uso **MCO**
+
+Este permite seleccionar los coeficientes $\beta_0 , \beta_1$ que maximizan la **función de verosimilitud**.
+
+La estimación busca que determinar aquella  probabilidad $\hat{p}(x_i)$ que sea lo más apegada posible al valor observado. 
+
+En nuestro ejemplo con la base de datos sobre incumplimiento (*default*) del pago en tarjeta de crédito, buscamos los valores de $\hat{\beta_0}, \hat{\beta_1}$ que al substituirlos en la función $p(X)$, resulten en un número lo mas cercano posible a 1 para los individuos en la catergoría default y cercano a cero en caso contrario. 
+
+##### Determinación si el log(odds ratio) es estadisticametne significativo. 
+
+Usamos la prueba de Wald. (**Wald´s test**).
+Con esta obtenemos los intervalos de confianza así como los p-values para determinar la significancia estadística de los coeficientes.
+
+Notese que la hipótesis nula $H_0: \hat{\beta_1}=0$ lo que implica que
+
+$$p(X)=\frac{e^{\beta_0}}{1+e^{\beta_0}}$$
+Y tal como hacemos en cualquier prueba de hipótesis, rechazams la **hipótesis nula** si el $p-value<\alpha$ threshld de contraste, usualmente 0.05.
+
+El valor del intercepto en el modelo permite el ajuste de las probabilidades a la proporción observada de valores positivos en los datos (ej. Y=1)
+
+
+#### Ejecicio 1 Modelo de regressión logística.
+
+
+```{r}
+names(d)
+logistic<-glm(default~balance, data=d,family=binomial)
+
+summary(logistic)
+```
+Un incremento de una unidad en la variable Balance se relaciona con  un incremento de .00549 en los log(odds) de la variable *default* y esta relación es estadisticamente significativa al 0.05. 
+
+Hacemos ahora prediciones con base en los log(odds) estimados. Por ejemplo para un individuo cuyo balance=$\$1,000$
+  
+$$\hat {p}(X)=\frac{e^{ \hat{\beta_0} +\hat{\beta_1} X}}{1 + e^{\hat{ \beta_0} +\hat{\beta_1 }X}}=\frac{e^{−10.6513+0.0055×1,000}}{1+e^{−10.6513+0.0055×1,000}}=0.00576$$
+Una probanilidad de default de $0.57\%$. 
+
+Ahora hacemos lapreduicción para un  individuo con $\$2,000$.
+
+$$\hat {p}(X)=\frac{e^{ \hat{\beta_0} +\hat{\beta_1} X}}{1 + e^{\hat{ \beta_0} +\hat{\beta_1 }X}}=\frac{e^{−10.6513+0.0055×2,000}}{1+e^{−10.6513+0.0055×2,000}}=0.586$$
+Un individuo con un balance de 2000 en su tarjeta tiene una probabilidad de $58.6\%$
+
+![](/img/l1.jpg)
+
+
+
+##### Ejemplo 2. Estimación de modelo de regresión logística con una variable dicotómica.
+
+Considere el escenario de la variable dicotomica student. que toma los valores 1 si el individuo es es estudiante y 0 en caso contrario. Estimaremos el modelo igual para la variable dependiente Default y ahora con la variable independiente dicotomica  student. 
+
+```{r}
+l2<-glm(default~student, data=d, family=binomial)
+summary(l2)
+```
+El resultado indica que de hecho que ser estudiante incrementa el  log(odds) de incumplimiento en .40.
+
+Ahora podemos estimar las probabilidades de incumplimiento para un individuo particular usando el coeficiente estimado y la ecuación del modelo de regresión logística que ya conocemos.
+
+$$\hat {pr}(D=si|E=si)=\frac{e^{−3.5041+0.4049×1}{1 + e^{−3.5041+0.4049×1}}=0.0431$$
+
+$$\hat{pr}(D=si|E=no)=\frac{e^{−3.5041}}{1 + e^{−3.5041}}=0.0292$$
+
+La probabilidad de incumplimiento para un estudiante es de $4.31\%$ minetras que para individuo no estudiante es $2.92\%$.
 
 
