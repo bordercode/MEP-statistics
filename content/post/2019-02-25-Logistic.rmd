@@ -298,6 +298,11 @@ summary(l2)
 ```
 El resultado indica que de hecho el ser estudiante incrementa el  **log(odds)** de incumplimiento en .40. (**NO LA PROBABILID pero el log(odds)**).
 
+
+Note que el estadístico **z** tiene el mismo papel que el estadístico **t** en el modelo de **RL** Y se estima a partir del cociente $\frac{\hat {\beta_1}}{SE\hat{\beta_1}}$
+
+
+
 Ahora podemos estimar las probabilidades de incumplimiento para un individuo particular usando el coeficiente estimado y la ecuación del modelo de regresión logística que ya conocemos.
 
 $$\hat{pr} (D=si|E=si)=\frac{e^{−3.5041+0.4049×1}}{1 + e^{−3.5041+0.4049×1}}=0.0431$$

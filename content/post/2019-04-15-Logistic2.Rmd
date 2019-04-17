@@ -1,0 +1,69 @@
+---
+title: "Logistic2"
+author: "JLMR"
+date: 2019-04-08T21:14:14-05:00
+categories: ["R"]
+tags: ["Logistic", "log(odds)", "glm"]
+mathjax : true
+menu:
+  main:
+    name: Logistic2 R
+    weight: 16
+---
+
+
+```{r set-global-options, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(eval = TRUE, 
+                      echo = TRUE, 
+                      cache = FALSE,
+                      include = TRUE,
+                      collapse = FALSE,
+                      dependson = NULL,
+                      engine = "R", # Chunks will always have R code, unless noted
+                      error = FALSE)   
+
+
+```
+
+
+
+```{r silent-packages, echo = FALSE, eval = TRUE, message=FALSE, include = FALSE}
+library(tidyverse)
+library(ISLR)
+library(foreign)
+library(scales)
+```
+
+
+#### Regresión Logistica Multiple.
+
+Consideremos ahora el esceario de la predicción de una **variable binaria** a partir de un conjunto de variables independientes.
+
+
+El modelo es:
+
+
+
+$$log\bigg(\frac{P(X)}{1-P(X)}\bigg)= \beta_0 +\beta_1 X+...+\beta_p X_p$$
+Donde $X=(X_1...,X_p)$ son *p* variables explicativas, independientes o regresores.
+
+Podemos reescribir la ecuación anterior como:
+
+
+$$P(X)=\frac{e^{\beta_0 +\beta_1 X+...+\beta_p X_p}}{1+e^{\beta_0 +\beta_1 X+...+\beta_p X_p}}$$
+Usando el **método de máxima verosimilitud** estimamos los coeficientes del modelo **log(odds)** que nos permiten posteriormente determinar las **probabilidades** asociadas.
+
+
+
+```{r}
+d<-Default
+l3<-glm(default~., data=d, family=binomial)
+
+summary(l3)
+```
+
+Note dos puntos, primero la variable income no es estadisticamente significativa, segundo ahora la variable student tiene un impacto negativo.
+
+La interpretación para la variable student indica que dado un nivel fijo en las variables **balance e income** el log(odds) decrece en $0.6468$ si la persona es estudiante.
+
+Para la variable **balance** el log(odds) de incumplimiento (default) se incrementa en  **0.0057** con una unidad de balance adicional.

@@ -1,0 +1,54 @@
+---
+title: "Logistic2"
+author: "JLMR"
+date: 2019-04-08T21:14:14-05:00
+categories: ["R"]
+tags: ["Logistic", "log(odds)", "glm"]
+mathjax : true
+menu:
+  main:
+    name: Logistic2 R
+    weight: 16
+---
+
+
+
+<div id="regresion-logistica-multiple." class="section level4">
+<h4>Regresión Logistica Multiple.</h4>
+<p>Consideremos ahora el esceario de la predicción de una <strong>variable binaria</strong> a partir de un conjunto de variables independientes.</p>
+<p>El modelo es:</p>
+<p><span class="math display">\[log\bigg(\frac{P(X)}{1-P(X)}\bigg)= \beta_0 +\beta_1 X+...+\beta_p X_p\]</span> Donde <span class="math inline">\(X=(X_1...,X_p)\)</span> son <em>p</em> variables explicativas, independientes o regresores.</p>
+<p>Podemos reescribir la ecuación anterior como:</p>
+<p><span class="math display">\[P(X)=\frac{e^{\beta_0 +\beta_1 X+...+\beta_p X_p}}{1+e^{\beta_0 +\beta_1 X+...+\beta_p X_p}}\]</span> Usando el <strong>método de máxima verosimilitud</strong> estimamos los coeficientes del modelo <strong>log(odds)</strong> que nos permiten posteriormente determinar las <strong>probabilidades</strong> asociadas.</p>
+<pre class="r"><code>d&lt;-Default
+l3&lt;-glm(default~., data=d, family=binomial)
+
+summary(l3)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = default ~ ., family = binomial, data = d)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -2.4691  -0.1418  -0.0557  -0.0203   3.7383  
+## 
+## Coefficients:
+##               Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -1.087e+01  4.923e-01 -22.080  &lt; 2e-16 ***
+## studentYes  -6.468e-01  2.363e-01  -2.738  0.00619 ** 
+## balance      5.737e-03  2.319e-04  24.738  &lt; 2e-16 ***
+## income       3.033e-06  8.203e-06   0.370  0.71152    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 2920.6  on 9999  degrees of freedom
+## Residual deviance: 1571.5  on 9996  degrees of freedom
+## AIC: 1579.5
+## 
+## Number of Fisher Scoring iterations: 8</code></pre>
+<p>Note dos puntos, primero la variable income no es estadisticamente significativa, segundo ahora la variable student tiene un impacto negativo.</p>
+<p>La interpretación para la variable student indica que dado un nivel fijo en las variables <strong>balance e income</strong> el log(odds) decrece en <span class="math inline">\(0.6468\)</span> si la persona es estudiante.</p>
+<p>Para la variable <strong>balance</strong> el log(odds) de incumplimiento (default) se incrementa en <strong>0.0057</strong> con una unidad de balance adicional.</p>
+</div>

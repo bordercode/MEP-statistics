@@ -6,10 +6,23 @@
     <description>Recent content in Posts on Estadística II</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 28 Feb 2019 21:14:14 -0500</lastBuildDate>
+    <lastBuildDate>Mon, 08 Apr 2019 21:14:14 -0500</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Logistic2</title>
+      <link>/post/2019-04-15-logistic2/</link>
+      <pubDate>Mon, 08 Apr 2019 21:14:14 -0500</pubDate>
+      
+      <guid>/post/2019-04-15-logistic2/</guid>
+      <description>Regresión Logistica Multiple.Consideremos ahora el esceario de la predicción de una variable binaria a partir de un conjunto de variables independientes.
+El modelo es:
+\[log\bigg(\frac{P(X)}{1-P(X)}\bigg)= \beta_0 +\beta_1 X+...+\beta_p X_p\] Donde \(X=(X_1...,X_p)\) son p variables explicativas, independientes o regresores.
+Podemos reescribir la ecuación anterior como:
+\[P(X)=\frac{e^{\beta_0 +\beta_1 X+...+\beta_p X_p}}{1+e^{\beta_0 +\beta_1 X+...+\beta_p X_p}}\] Usando el método de máxima verosimilitud estimamos los coeficientes del modelo log(odds) que nos permiten posteriormente determinar las probabilidades asociadas.</description>
+    </item>
     
     <item>
       <title>Logistic</title>
