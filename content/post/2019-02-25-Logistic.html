@@ -23,9 +23,10 @@ menu:
 <p>El modelo de regressión logística nos permite <strong>clasificar</strong>. Predecir una respuesta cualitativa ej. asignar a una categoria determinada las observaciones en un conjunto de datos se puede realizar mediante el modelo de regressión logística.</p>
 <p>El proceso de clasificación implica determinar la <strong>probabilidad</strong> de que la observación <em>i</em> pretenezca a una determinada categoría. Lo que se puede lograr a partir del modelo de regresión logística.</p>
 <p><strong>Escenario 1</strong></p>
-<p>Dado el nivel de ingreso (variable <em>income</em>) y el saldo (variable <em>balance</em>) de la targeta de crédito en una muestra de 10,000 estudiantes, ¿Cuál es la probabilidad de que un individuo de la muestra, incumpla el pago de su deuda? (<em>Default</em>).</p>
+<p>Dado el nivel de ingreso (variable <em>income</em>) y el saldo de la targeta de crédito (variable <em>balance</em>) en una muestra de 10,000 individuos incluidos estudiantes, ¿Cuál es la probabilidad de que un individuo de la muestra, incumpla el pago de su deuda? (<em>Default</em>).</p>
 <p>El primer paso para aproximar la solución de este problema de clasificación es representar las variables de interés.</p>
 <p>Note que la variable dependiente (<strong>Y</strong>) es <em>Default</em> y las explicativas (<strong>x_1,…,X_n</strong>) son <em>income</em> y <em>balance</em>.</p>
+<p><strong>Scatter plot</strong> entre las variables independientes (income y balance) para observar su interacción.</p>
 <pre><code>## &#39;data.frame&#39;:    10000 obs. of  4 variables:
 ##  $ default: Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ student: Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 1 2 1 1 1 2 1 2 1 1 ...
@@ -33,16 +34,14 @@ menu:
 ##  $ income : num  44362 12106 31767 35704 38463 ...</code></pre>
 <pre><code>## [1] &quot;default&quot; &quot;student&quot; &quot;balance&quot; &quot;income&quot;</code></pre>
 <p><img src="/post/2019-02-25-Logistic_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-</div>
-<div id="distribucion-de-lso-datos-boxplot." class="section level2">
-<h2>Distribución de lso datos (Boxplot).</h2>
+<p>Distribución de los datos con un <strong>Boxplot</strong>.</p>
 <pre><code>## [1] 0.625</code></pre>
 <p><img src="/post/2019-02-25-Logistic_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>Note la relación positiva entre la variable saldo y el incumplimiento. Así mismo relación inversa respecto al ingreso, aparentemente aquellos individuos de menor ingreso tiene mayor problema de incumplimiento.</p>
-<div id="preeliminares-contraste-de-regresion-logistica-respecto-a-regresion-linear-con-ols." class="section level5">
-<h5>Preeliminares Contraste de regresión logística respecto a regresión linear con OLS.</h5>
-<p><strong>Escenatio 2</strong></p>
-<p>Suponga que tenemos una situación en la que debemos clasificar el estado de un paciente en sobredosis o paro cardiaco</p>
+<p>Note la relación positiva entre las variables saldo e incumplimiento. Así mismo relación inversa respecto al ingreso, aparentemente aquellos individuos de menor ingreso tiene mayor problema de incumplimiento.</p>
+<div id="preeliminares.-contraste-de-regresion-logistica-respecto-a-regresion-linear-con-ols." class="section level5">
+<h5>Preeliminares. Contraste de regresión logística respecto a regresión linear con OLS.</h5>
+<p><strong>Escenario 2</strong></p>
+<p>Suponga que tenemos una situación en la que debemos clasificar el padecimiento de un paciente que llega a la sala de emergencias de un hospital en las categorias: sobredosis o paro cardiáco</p>
 <span class="math display">\[\begin{equation}
   Y=\left\{
   \begin{array}{@{}ll@{}}
@@ -50,9 +49,9 @@ menu:
     1, &amp; \text{sobredosis}
   \end{array}\right.
 \end{equation}\]</span>
-<p>En este caso particular <strong>binario</strong> podríamos estimar un modelo <strong>RL</strong> con <strong>MCO</strong> y considerar sobredosis si $Y&gt;.5 $</p>
-<p>Sin embargo, nuestros estimados de <strong>MCO</strong> no necesariamente se ubicarian en el intervalo [0,1] y por lo tanto su interpretación como probabilidades no es intutiva.</p>
-<p>Aún más, el enfoque de <strong>MCO</strong> para variables cualitativas en un caso no binario, ej. 3 o 4 categor[ias, carece de sentido totalmente, ya que lo que importa es el significado de cada categoría pero su orden no tiene mayor implicación cuando estimamos el modelo de regresión logística.</p>
+<p>En este caso particular <strong>binario</strong> podríamos estimar un modelo <strong>RL</strong> con <strong>MCO</strong> y considerar sobredosis si $&gt;.5 $</p>
+<p>Sin embargo, nuestros estimados de <strong>MCO</strong> no necesariamente se ubicarian en el intervalo [0,1] de hecho es psible probar que es posible predecir <span class="math inline">\(p(x)&lt;0\)</span> para algunos valores de x así como <span class="math inline">\(p(x)&gt;1\)</span> para otros valores. Por lo tanto su interpretación como probabilidades no tiene sentido.</p>
+<p>Aún más, el enfoque de <strong>MCO</strong> para variables cualitativas en un caso no binario, ej. 3 o 4 categorías, carece de sentido totalmente, ya que lo que importa es el significado de cada categoría pero su orden no tiene mayor implicación cuando estimamos el modelo de regresión logística.</p>
 <p>Mientras que al cambiar el orden de la variable dependiente en el modelo lineal generariamos resultados diferentes y predicciones inconsistentes.</p>
 </div>
 <div id="modelo-de-regression-logistica." class="section level4">
@@ -60,39 +59,37 @@ menu:
 <p>Este enfoque está diseñado explicitamente para tratar con variables categóricas (factores en el lenguaje de R, Python, etc,.).</p>
 <p>En este caso podemos estimar la probabilidad de que <strong>Y</strong> pertenzca a una categoría particular.</p>
 <p>Antes de avanzar veamos un par de conceptos preeliminares. Momios y ratio de Momios.</p>
-<p>Qué son los Momios (chances de que algo ocurra el ratio o cociente)(odds)? Suponga que tenemos un escenario en el que un equipo participa en 5 partidos. Gana uno y pierde 4 en este caso podemos calcular los <strong>Odds</strong> de ganar como el cociente:<span class="math display">\[1/4=.25\]</span>,</p>
-<p>En palabras tenemos un change de ganar (odds) de .25.</p>
+<p>Qué son los <strong>Momios</strong> (chances de que algo ocurra el ratio o cociente)(<strong>odds</strong>)? Suponga que tenemos un escenario en el que un equipo participa en 5 partidos. Gana uno y pierde 4 en este caso podemos calcular los <strong>Odds</strong> de ganar como el cociente:<span class="math display">\[1/4=.25\]</span></p>
+<p>En palabras tenemos un chance de ganar (odds) de 0.25.</p>
 <p><strong>Note que Odds no son probabilidades.</strong> Para llegar a estimar la probilidades que un evento ocurra dado un conjunto de variables el modelo de regresión logística considera una serie de supuestos adicionales.</p>
-<p>Las probabiliadades son el ratio de que algo ocurran respecto a <strong>todo</strong> lo que podria suceder. En el caso previo tenemos un total de 5 juegos así que la probabilid de que mi equipo gane es: <span class="math display">\[1/5=.20\]</span></p>
+<p>Las probabiliadades son la tasa (<strong>ratio</strong>) de que algo ocurran respecto a <strong>todo</strong> lo que podria suceder. En el caso previo tenemos un total de 5 juegos así que la probabilid de que mi equipo gane es: <span class="math display">\[1/5=.20\]</span></p>
 <p>Nuevamente suponga ahora que nuestro equipo participa en un total de 8 partidos. Gana 5 pierder 3. Igualmente podemos calcular los momios de ganar como <span class="math display">\[5/3=1.7\]</span> Y la probabilidad de ganar como <span class="math display">\[5/8=0.625\]</span></p>
-<p>Note que la probabilidad de que mi equipo gane es *diferente<strong> a los </strong>Odds** (Momios) de que mi equipo gane.</p>
-<p>Ahora bien calculemos ahora la probabilidad de que el equipo pierda en el ejemplo anterior. Sigueindo la lógica de la probabilidad de que el eauipo gane entonces la probabilida de perder es: <span class="math display">\[3/5=0.375\]</span> o bien 1-prob. de ganar=1-0.625=0.375</p>
+<p>Note que la probabilidad de que mi equipo gane es <strong>diferente</strong> a los <strong>Odds</strong> (Momios) de que mi equipo gane.</p>
+<p>Ahora bien calculemos ahora la probabilidad de que el equipo pierda en el ejemplo anterior.equipo gane entonces la probabilidad de perder es: <span class="math display">\[ 3/8=0.375\]</span> o bien 1-prob. de ganar=1-0.625=0.375</p>
 <p>Ahora note que podemos calcular los momios (Odds) de ganar como el ratio de las probabilidades esto es:</p>
 <p><span class="math display">\[\frac{5/8}{1-5/8}=\frac{5/8}{3/8}=5/3=1.7\]</span></p>
-<p>poemos sintetizar la discusi[on anterior en la expresión. <span class="math display">\[Odds=
+<p>Podemos sintetizar la discusión anterior en la expresión. <span class="math display">\[Odds=
 \frac{p}{1-p}\]</span></p>
 <p><strong>Log Odds</strong>= Por qué considerar el logaritmo de los Momios (<strong>log Odds</strong>).</p>
 <p>Considermos nuestro ejemplo inicial. Nuestro equipo juega 5 partidos, gana 1. Entonces tiene Odds de ganar de <span class="math display">\[1/4=0.25\]</span> de forma similar:</p>
-<p>Si juega 9 partidos <span class="math display">\[1/8=0.125\]</span> Si juega 17 partidos <span class="math display">\[1/16=0.062\]</span> Si juega 33 partidos <span class="math display">\[1/32=0.031\]</span></p>
-<p><strong>Note</strong> que los momios en contra (mi equipo pierde) parte de 1 y tienden a cero a medida que el número de partidos tiende a inifnito (<span class="math inline">\(\infty\)</span>), se ubican en el intervalo cerrado [1,0].</p>
-<p>Ahora observemos que sucede con los momios a favor de ganar.</p>
-<pre class="r"><code>14/3</code></pre>
-<pre><code>## [1] 4.666667</code></pre>
-<pre class="r"><code>1/6</code></pre>
-<pre><code>## [1] 0.1666667</code></pre>
-<pre class="r"><code>log(6/1)</code></pre>
-<pre><code>## [1] 1.791759</code></pre>
-<pre class="r"><code>log(1/6)</code></pre>
-<pre><code>## [1] -1.791759</code></pre>
-<p>Si juega 9 partidos y gana 3 <span class="math display">\[6/3=2\]</span> Si juega 17 partidos <span class="math display">\[14/3=4.6\]</span> Si juega 33 partidos <span class="math display">\[30/3=10\]</span> Note que los momios se incrementan a media que el numero de jeugos aumenta y de hecho tienden a <span class="math inline">\(\infty\)</span>. Se ubican en el intervalo <span class="math inline">\([1,\infty]\)</span>.</p>
-<p>Note que entre los momios de perder y los de ganar se tiene una asimetría mientras lo sprimeros se ubican en <span class="math inline">\([0,1]\)</span>, los segundos viven en <span class="math inline">\([1,\infty]\)</span>. Una diferencia abismal en la magnitud !!!</p>
-<p>Por ejemplo Si tenemos 7 juegos. Los momios en contra por ejemplo son <span class="math inline">\(1/6=.16\)</span>, pero los momios a favor son&gt; <span class="math inline">\(6/1=6\)</span>.</p>
-<p>Tenemos una magnitud completamente desproporcionada a pesar de que en cada caso solo se gana o se pierde un solo juego.</p>
-<p>Este problema de asimetría se resuelve tomando el logaritmo de los momios.</p>
+<p>Si juega 9 partidos y gana 1, los Odds de ganar son: <span class="math display">\[1/8=0.125\]</span> Si juega 17 partidos y gana 1, los Odds de ganar son: <span class="math display">\[1/16=0.062\]</span> Si juega 33 partidos y gana 1, los Odds de ganar son: <span class="math display">\[1/32=0.031\]</span></p>
+<p><strong>Note</strong> que si mi equipo es malo, los momios de ganar a medida que le número de partidos aumenta (a medida que el número de partidos tiende a inifnito (<span class="math inline">\(\infty\)</span>)), tienden a cero. de hecho si los Odds estan <strong>encontra</strong> de que mi equipo gane los momios se ubican en el intervalo cerrado [0,1]. Cero si pierde todos los partidos jugados, 1 si gana el mismo número de los que pierde.</p>
+<p>Ahora observemos que sucede con los momios si estos estan a favor de ganar.</p>
+<p>Si juega 9 partidos y gana 6 <span class="math display">\[6/3=2\]</span> Si juega 17 partidos y gana <span class="math display">\[14/3=4.6\]</span> Si juega 33 partidos y gana <span class="math display">\[30/3=10\]</span></p>
+<p>Note que los momios a favor de ganar se incrementan a media que el número de juegos aumenta y de hecho tienden a <span class="math inline">\(\infty\)</span>. Pero esta vez se ubican en el intervalo <span class="math inline">\([1,\infty)\)</span>. Uno si al menos gana los mismos partidos de los que pierde, tiende a <span class="math inline">\(\infty\)</span> si gana todos los juegos jugados <span class="math inline">\(n/0\)</span> (no esta definido paro tiende a <strong>infinito</strong>).</p>
+<p>Note que entre los momios a favor de perder y los de ganar se tiene una asimetría mientras los primeros se ubican en <span class="math inline">\([0,1]\)</span>, los segundos se ubican en el intervalo <span class="math inline">\([1,\infty)\)</span>. Una diferencia abismal en la magnitud !!!</p>
+<p>Por ejemplo Si tenemos 7 juegos. Los momios en contra por ejemplo son <span class="math inline">\(1/6=.16\)</span>, pero los momios a favor son: <span class="math inline">\(6/1=6\)</span>. Una magnitud completamente desproporcionada!!!</p>
+<p>A pesar de que en cada caso sólo se gana o se pierde un sólo juego.</p>
+<p>Este problema de asimetría en los momios se resuelve tomando el logaritmo de los momios.</p>
 <p>Ejemplo: <span class="math display">\[log(1/6)=-1.791759log(6/1)=1.791759\]</span></p>
 <p>Ahora la magnitud en los momios es la misma, es <strong>simetrica</strong>!!</p>
-<p>** El log del ratio de probabilidades e.j. log(Odds) <span class="math display">\[log(\frac{p}{1-p})\]</span> Se denomina la función ** logit.</p>
+<p>** El log del ratio de probabilidades e.j. log(Odds) Se denomina la función logit**. <span class="math display">\[log(\frac{p}{1-p})\]</span></p>
 <p><strong>Importante</strong> esta expresión tiene como distribución asociada la clásica standard (NORMAL) y por lo tanto estimar probabilides como áreas debajo de la curva de esta distribución resulta pertinente.</p>
-<p><span class="math display">\[p(X)=\frac{e^{ \beta_0 +\beta_1 X}}{1 + e^{ \beta_0 +\beta_1 X}}\]</span></p>
 </div>
+</div>
+<div id="funcion-logit.-derivacion" class="section level2">
+<h2>Función logit. derivación:</h2>
+<p>Sea <span class="math display">\[p(x)=Pr(Y=1|X)\]</span> y considerando una representación lineal <span class="math display">\[p(x)=\beta_0 +\beta_1 X\]</span></p>
+<p>Aplicando la definicón del log Odds, tenemos:</p>
+<p><span class="math display">\[\frac{P(X)}{1-P(X)}=e^{ \beta_0 +\beta_1 X}\]</span> Despejando p(x), tenemos la <strong>función logit</strong> <span class="math display">\[p(X)=\frac{e^{ \beta_0 +\beta_1 X}}{1 + e^{ \beta_0 +\beta_1 X}}\]</span></p>
 </div>
