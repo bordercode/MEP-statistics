@@ -48,8 +48,12 @@ Ejemplo  1. Dado un conjunto de textos de Twitter, determinar cuales pertenecen 
 
 Ejemplo 2. Dadas las características de la madre, como edad, sexo, semanas de gestación, procedimiento cesárea o no, peso y talla del bebé determinar la probabilidad de que el bebé presente el padecimiento x. 
 
+Ejemplo 3. Considere una muestra de individuos con sus perfiles de uso de tarjeta de crédito. Nos interesa predecir la probabilidad de que un individuo incumpla en los pagos de su tarjeta de crédito (incumplir =1 ,0 en caso contrario).
 
-El modelo de regressión logística nos permite **clasificar**. Predecir una respuesta cualitativa ej. asignar a una categoria determinada las observaciones en un conjunto de datos se puede realizar mediante el modelo  de regressión logística.
+Ejemplo 4. Dadas las características de un conjunto de individuos (perfiles biométricos) determinar la probabilidad de que un individuo presente un padecimiento cardiáco.
+
+
+El modelo de **regresión logística** nos permite **clasificar**. Predecir una respuesta cualitativa ej. asignar a una categoria determinada las observaciones en un conjunto de datos se puede realizar mediante el modelo  de regressión logística.
 
 El proceso de clasificación implica determinar la **probabilidad** de que la observación *i* pretenezca a una determinada categoría. Lo que se puede lograr a partir del modelo de regresión logística.
 
@@ -107,7 +111,7 @@ grid.arrange(bxp1, bxp2, nrow = 1)
 ```
 
 
-Note la relación positiva entre las variables saldo e incumplimiento. Así mismo relación inversa respecto al ingreso, aparentemente aquellos individuos de menor ingreso tiene mayor problema de incumplimiento. 
+Note la relación positiva entre las variables saldo e incumplimiento. Así mismo una relación inversa respecto al ingreso, aparentemente aquellos individuos de menor ingreso tiene mayor problema de incumplimiento. 
 
 
 ##### Preeliminares. Contraste de regresión logística respecto a regresión linear con OLS. 
@@ -127,13 +131,14 @@ Suponga que tenemos una situación en la que debemos clasificar el padecimiento 
 \end{equation} 
 
 
-En este caso particular **binario** podríamos estimar un modelo **RL** con **MCO**  y considerar sobredosis si $\hat {Y}>.5 $ 
+En este caso particular **binario** podríamos estimar un modelo **RL** con **MCO**  y considerar sobredosis si
+$\hat{Y}>.5$ 
 
-Sin embargo, nuestros estimados de **MCO** no necesariamente se ubicarian en el intervalo [0,1] de hecho es psible probar que es posible predecir $p(x)<0$ para algunos valores de x así como $p(x)>1$ para otros valores. Por lo tanto su interpretación como probabilidades no tiene sentido.
+Sin embargo, nuestros estimados de **MCO** no necesariamente se ubicarian en el intervalo [0,1] de hecho es psible probar que que se pueden predecir $p(x)<0$ para algunos valores de x así como $p(x)>1$ para otros valores. Por lo tanto su interpretación como probabilidades no tiene sentido.
 
-Aún más, el enfoque de **MCO** para variables cualitativas en un caso no binario, ej. 3 o 4 categorías, carece de sentido totalmente, ya que lo que importa es el significado de cada categoría pero su orden no tiene mayor implicación cuando estimamos el modelo de regresión logística.
+Aún más, el enfoque de **MCO** para variables cualitativas en un caso no binario, ej. 3 o 4 categorías, carece de sentido totalmente, ya que al cambiar el orden de la variable dependiente en el modelo lineal generariamos resultados diferentes y predicciones inconsistentes. 
 
-Mientras que al cambiar el orden de la variable dependiente en el modelo lineal generariamos resultados diferentes y predicciones inconsistentes. 
+Cuando estimamos el modelo de regresión logística lo que importa es el significado de cada categoría pero su orden no tiene mayor implicación.
 
 
 
@@ -147,30 +152,30 @@ En este caso podemos estimar la probabilidad de que  **Y** pertenzca a una categ
 Antes de avanzar veamos un par de conceptos preeliminares. Momios y ratio de Momios. 
 
 
-Qué son los **Momios** (chances de que algo ocurra un ratio o cociente)(**odds**)?  Suponga que tenemos un escenario en el que un equipo participa en 5 partidos.  Gana uno y pierde 4 en este caso podemos calcular los **Odds** de ganar como el cociente:$$1/4=.25$$
+Qué son los **Momios** (chances de que algo ocurra,  un ratio o cociente)(**odds**)?  Suponga que tenemos un escenario en el que un equipo participa en 5 partidos.  Gana uno y pierde 4 en este caso podemos calcular los **Odds** de ganar como el cociente:$$1/4=.25$$
 
 En palabras tenemos un chance de ganar (odds) de 0.25.  
 
-**Note que Odds no son probabilidades.**  Para llegar a estimar la probilidades que  un evento ocurra dado un conjunto de variables el modelo de regresión logística considera una serie de supuestos adicionales. 
+**Note que Odds no son probabilidades.**  Para llegar a estimar la probilidades que  un evento ocurra dado un conjunto de variables explicativas el modelo de regresión logística considera una serie de supuestos adicionales, e especial es importante incorporar la función logit, que veremos enseguida. 
 
 Las probabiliadades son la tasa (**ratio**) de que algo ocurran respecto a **todo** lo que podria suceder. 
 En el caso previo tenemos un total de 5 juegos así que la probabilid de  que mi equipo gane es: $$1/5=.20$$
 
-Nuevamente suponga ahora que nuestro equipo participa en un total de  8 partidos. Gana 5 pierder 3. Igualmente podemos calcular los momios de ganar como $$5/3=1.7$$ Y la probabilidad de ganar como $$5/8=0.625$$
+Nuevamente suponga ahora que nuestro equipo participa en un total de  8 partidos. Gana 5 pierder 3. Igualmente podemos calcular los momios de ganar como $$5/3=1.7$$ Pero la probabilidad de ganar es: $$5/8=0.625$$
 
 Note que la probabilidad de que mi equipo gane es **diferente** a los **Odds** (Momios) de que mi equipo gane.  
 
 
-Ahora bien calculemos ahora la probabilidad de que el equipo pierda en el ejemplo anterior.equipo gane entonces  la probabilidad de perder es: $$ 3/8=0.375$$  o bien 1-prob.  de ganar=1-0.625=0.375
+Ahora bien calculemos ahora la probabilidad de que el equipo pierda en el ejemplo anterior la probabilidad de que el equipo gane es 5/8, entonces  la probabilidad de perder es: $$ 3/8=0.375$$  o bien **1-prob** de ganar=1-0.625=0.375
 
-Ahora note que podemos calcular los momios (Odds) de ganar  como el ratio de las probabilidades esto es: 
+Ahora note que podemos calcular los **momios** (Odds) de ganar  como el ratio de las probabilidades esto es: 
 
 $$\frac{5/8}{1-5/8}=\frac{5/8}{3/8}=5/3=1.7$$
 
 Podemos sintetizar la discusión anterior en la expresión. $$Odds=
 \frac{p}{1-p}$$
 
-**Log Odds**= Por qué considerar el logaritmo de los Momios (**log Odds**). 
+**Log Odds** Por qué considerar el logaritmo de los Momios (**log Odds**). 
 
 Considermos nuestro ejemplo inicial. Nuestro equipo juega 5 partidos, gana 1. Entonces tiene Odds de ganar de $$1/4=0.25$$ de forma similar: 
 
@@ -180,15 +185,15 @@ Si juega 33 partidos y gana 1, los Odds de ganar son: $$1/32=0.031$$
 
 **Note** que si mi equipo es malo, los momios de ganar a medida que le número de partidos aumenta (a medida que el número de partidos tiende a inifnito ($\infty$)),  tienden a cero. de hecho si los Odds estan **encontra** de que mi equipo gane los momios se ubican en el intervalo cerrado [0,1]. Cero si pierde todos los partidos jugados, 1 si gana el mismo número de los que pierde.
 
-Ahora observemos que sucede con los momios  si estos estan a favor de ganar. 
+Ahora observemos qué sucede con los momios  si estos estan a favor de ganar. 
 
 Si juega 9 partidos y gana 6  $$6/3=2$$
-Si juega 17 partidos y gana $$14/3=4.6$$
-Si juega 33 partidos y gana $$30/3=10$$
+Si juega 17 partidos y gana 14 $$14/3=4.6$$
+Si juega 33 partidos y gana 30 $$30/3=10$$
 
-Note que los momios a favor de ganar se incrementan a media que el número de juegos aumenta y de hecho  tienden a $\infty$. Pero esta vez se ubican en el intervalo $[1,\infty)$.  Uno si al menos gana los mismos partidos de los que pierde, tiende a $\infty$ si gana todos los juegos jugados $n/0$ (no esta definido paro tiende a **infinito**).
+Note que los momios a favor de ganar se incrementan a media que el número de juegos aumenta y de hecho  tienden a $\infty$. Pero esta vez se ubican en el intervalo $[1,\infty)$.  Uno si al menos gana los mismos partidos de los que pierde y tiende a $\infty$ si gana todos los juegos jugados $n/0$ (no esta definido paro tiende a **infinito**).
 
-Note que entre los momios a favor de perder  y los de ganar se tiene una asimetría mientras los primeros se ubican en $[0,1]$, los segundos se ubican en el intervalo $[1,\infty)$. Una diferencia abismal en la magnitud !!!
+Note que entre los momios a favor de perder  y los de ganar se tiene una NOTABLE asimetría.  Mientras los primeros se ubican en $[0,1]$, los segundos se ubican en el intervalo $[1,\infty)$. Una diferencia abismal en la magnitud !!!
 
 Por ejemplo  Si tenemos 7 juegos. Los momios en contra por ejemplo son $1/6=.16$, pero los momios a favor son: $6/1=6$. Una magnitud completamente desproporcionada!!!
 
@@ -196,15 +201,15 @@ A pesar de que en cada caso sólo se gana o se pierde un sólo juego.
 
 Este problema de asimetría en los momios se resuelve tomando el logaritmo de los momios.
 
-Ejemplo: $$log(1/6)=-1.791759log(6/1)=1.791759$$ 
+Ejemplo: $$log(1/6)=-1.791759$$ $$log(6/1)=1.791759$$ 
 
 Ahora la magnitud en los momios es la misma, es **simetrica**!!
 
-** El log del ratio de probabilidades e.j. log(Odds) Se denomina la función  logit**. $$log(\frac{p}{1-p})$$ 
+**El log del ratio de probabilidades e.j. log(Odds) Se denomina la función  logit**. $$LOGIT=log(\frac{p}{1-p})$$ 
 
 **Importante** esta expresión tiene como distribución asociada  la clásica standard (NORMAL) y por lo tanto estimar probabilides como áreas debajo de la curva de esta distribución resulta pertinente.
 
-Un punto adicional, los Odds son un ratio un cociente entre dos eventos (las veces que ocuren un resultado entre las veces que no ocurre ese resultado).
+Un punto adicional, los Odds son un ratio un cociente entre dos eventos (las veces que ocurre un resultado entre las veces que **no** ocurre ese resultado).
 
 A pesar de que los **momios** se calculan como un ratio, no son lo mismo a cuando nos referiemos a el **ratio de momios**. En este segundo caso estamos hablando de un cociente entre dos momios. ej. Momio 1: $8/5$, Momio 2: $3/7$ ratio de momios 1 y 2= $\frac{8/5}{3/7}=3.73$
 
@@ -221,38 +226,40 @@ Donde el lago izquierdo es nombrado función **logit** o log Odds.
 $$\frac{P(X)}{1-P(X)}=e^{ \beta_0 +\beta_1 X}$$
 
 
-Note que Eliminamos el logaritmo aplicando la operación inversa el *e* para ambos lados de la equiación. En palabras la estimación de los momios es igual a la exponencial la la equaición lineal $\beta_0+\beta_1X$.
+Note que eliminamos el logaritmo aplicando la operación inversa el *e* para ambos lados de la ecuación. En palabras, la estimación de los momios es igual a la exponencial de la ecuación lineal $\beta_0+\beta_1X$.
 
 El lado izquierdo es el ratio de las probabilidades o de manera equivalente los **momios** (Odds). 
 
 
 Despejando  p(x), tenemos el **modelo de regresión  logística**
 $$p(X)=\frac{e^{ \beta_0 +\beta_1 X}}{1 + e^{ \beta_0 +\beta_1 X}}$$
-Que de hecho tiene una **función logit** que es lineal en x.
+Que de hecho incorpora la **función logit** y es lineal en x.
 
 La estimación de los coeficientes del modelo que haremos genera precisamente el valor del **log(odds)**, no de la **probabilidad**. 
 
-La probabilidad se obtiene a partir de substituir el coeficiente en la función de regresión logistica para valores especificos de las variables independientes **x**.
+La probabilidad se obtiene a partir de substituir los coeficientes en la función de regresión logistica para valores específicos de las variables independientes **x**.
 
 ##### Estimación de coeficientes en el modelo de regresión logistica. 
 
-Usamos el procedimiento de **Máxima verosimilitud** a diferencia del caso del modelo de regressión lineal en donde se uso **MCO**
+Usamos el procedimiento de **Máxima verosimilitud** a diferencia del caso del modelo de regressión lineal en donde se aplicó  **MCO**
 
 Este permite seleccionar los coeficientes $\beta_0 , \beta_1$ que maximizan la **función de verosimilitud**.
 
-La estimación busca que determinar aquella  probabilidad $\hat{p}(x_i)$ que sea lo más apegada posible al valor observado. 
+Maximizar la función de verosimilitud implica determinar aquella  probabilidad $\hat{p}(x_i)$ que es lo más apegada posible al valor observado. 
 
 En nuestro ejemplo con la base de datos sobre incumplimiento (*default*) del pago en tarjeta de crédito, buscamos los valores de $\hat{\beta_0}, \hat{\beta_1}$ que al substituirlos en la función $p(X)$, resulten en un número lo mas cercano posible a 1 para los individuos en la catergoría default y cercano a cero en caso contrario. 
 
-##### Determinación si el log(odds ratio) es estadisticametne significativo. 
+##### Prueba para determinar si el log(odds ratio) es estadisticamente significativo. 
 
 Usamos la prueba de Wald. (**Wald´s test**).
 Con esta obtenemos los intervalos de confianza así como los p-values para determinar la significancia estadística de los coeficientes.
 
-Notese que la hipótesis nula $H_0: \hat{\beta_1}=0$ lo que implica que
+Note que la hipótesis nula $H_0: \hat{\beta_1}=0$ lo que implica que
 
 $$p(X)=\frac{e^{\beta_0}}{1+e^{\beta_0}}$$
-Y tal como hacemos en cualquier prueba de hipótesis, rechazams la **hipótesis nula** si el $p-value<\alpha$ threshld de contraste, usualmente 0.05.
+O bien que las variables independientes no tienen impacto o son irrelevantes para explicar la variable dependiente.
+
+Tal como hacemos en cualquier prueba de hipótesis, rechazams la **hipótesis nula** si el $p-value<\alpha$ threshld de contraste, usualmente 0.05.
 
 El valor del intercepto en el modelo permite el ajuste de las probabilidades a la proporción observada de valores positivos en los datos (ej. Y=1)
 
@@ -261,22 +268,21 @@ El valor del intercepto en el modelo permite el ajuste de las probabilidades a l
 
 
 ```{r}
-names(d)
 logistic<-glm(default~balance, data=d,family=binomial)
 
 summary(logistic)
 ```
-Un incremento de una unidad en la variable Balance se relaciona con  un incremento de .00549 en los log(odds) de la variable *default* y esta relación es estadisticamente significativa al 0.05. 
+Un incremento de una unidad en la variable **Balance** se relaciona con  un incremento de .00549 en los **log(odds)** de la variable *default* y esta relación es estadísticamente significativa al 0.05. 
 
-Hacemos ahora prediciones con base en los log(odds) estimados. Por ejemplo para un individuo cuyo balance=$\$1,000$
+Hacemos ahora predicciones de rpobabilidades con base en los log(odds) estimados. Por ejemplo para un individuo cuyo balance=$\$1,000$
   
 $$\hat {p}(X)=\frac{e^{ \hat{\beta_0} +\hat{\beta_1} X}}{1 + e^{\hat{ \beta_0} +\hat{\beta_1 }X}}=\frac{e^{−10.6513+0.0055×1,000}}{1+e^{−10.6513+0.0055×1,000}}=0.00576$$
 Una probanilidad de default de $0.57\%$. 
 
-Ahora hacemos lapreduicción para un  individuo con $\$2,000$.
+Ahora hacemos la preduicción para un  individuo con un saldo (*balance*) de $\$2,000$.
 
 $$\hat {p}(X)=\frac{e^{ \hat{\beta_0} +\hat{\beta_1} X}}{1 + e^{\hat{ \beta_0} +\hat{\beta_1 }X}}=\frac{e^{−10.6513+0.0055×2,000}}{1+e^{−10.6513+0.0055×2,000}}=0.586$$
-Un individuo con un balance de 2000 en su tarjeta tiene una probabilidad de $58.6\%$
+Un individuo con un balance de 2000 en su tarjeta tiene una probabilidad de incumplimiento (*default*) $58.6\%$
 
 ![](/img/l1.jpg)
 
@@ -284,17 +290,17 @@ Un individuo con un balance de 2000 en su tarjeta tiene una probabilidad de $58.
 
 ##### Ejemplo 2. Estimación de modelo de regresión logística con una variable dicotómica.
 
-Considere el escenario de la variable dicotomica student. que toma los valores 1 si el individuo es es estudiante y 0 en caso contrario. Estimaremos el modelo igual para la variable dependiente Default y ahora con la variable independiente dicotomica  student. 
+Considere el escenario de la variable dicotomica *student*. que toma los valores 1 si el individuo es estudiante y 0 en caso contrario. Estimaremos el modelo  para la variable dependiente **Default** y ahora con la variable independiente dicotomica  **student**. 
 
 ```{r}
 l2<-glm(default~student, data=d, family=binomial)
 summary(l2)
 ```
-El resultado indica que de hecho que ser estudiante incrementa el  log(odds) de incumplimiento en .40.
+El resultado indica que de hecho el ser estudiante incrementa el  **log(odds)** de incumplimiento en .40. (**NO LA PROBABILID pero el log(odds)**).
 
 Ahora podemos estimar las probabilidades de incumplimiento para un individuo particular usando el coeficiente estimado y la ecuación del modelo de regresión logística que ya conocemos.
 
-$$\hat {pr}(D=si|E=si)=\frac{e^{−3.5041+0.4049×1}{1 + e^{−3.5041+0.4049×1}}=0.0431$$
+$$\hat{pr} (D=si|E=si)=\frac{e^{−3.5041+0.4049×1}}{1 + e^{−3.5041+0.4049×1}}=0.0431$$
 
 $$\hat{pr}(D=si|E=no)=\frac{e^{−3.5041}}{1 + e^{−3.5041}}=0.0292$$
 
