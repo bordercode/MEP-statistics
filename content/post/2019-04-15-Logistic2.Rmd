@@ -66,7 +66,9 @@ Note dos puntos: Primero la variable **income** no es estadísticamente signific
 
 La interpretación para la variable binaria **student** indica que dado un nivel fijo en las variables **balance e income** el log(odds) decrece en $0.6468$ si la persona es estudiante.
 
-Ahora utilizamos los coeficientes estimados log (odds) en la ecuación logistica para estimar las probabilides de incumplimiento. 
+Para la variable **balance** el log(odds) de incumplimiento (default) se incrementa en  **0.0057** con una unidad de balance adicional.
+
+Ahora utilizamos estos coeficientes estimados [log (odds)] en la ecuación logistica para calcular las probabilides de incumplimiento. 
 
 $$\hat{p}(X)=\frac{e^{−10.869+0.00574×1,500+0.003×40,000−0.6468×1}}
 {1+e^{−10.869+0.00574×1,500+0.003×40,000−0.6468×1}}=0.058$$
@@ -84,7 +86,8 @@ $$\hat{p}(X)=\frac{e^{−10.869+0.00574×1,500+0.003×40,000}}
 Veámos la siguiente gráfica que muestra la tasa de incumplimiento en función del saldo de la tarjeta de crédito (variable balance). 
 
 
-```{r, echo=FALSE,message=FALSE,warning=FALSE}
+```{r echo=FALSE, fig.width=10, message=FALSE, warning=FALSE}
+
 library(gridExtra)
 
 d<-Default
@@ -110,8 +113,6 @@ mutate(Rate=total/sum(total),
   filter(default=="Yes")
 
 
-str(rates)
-
 p1<-ggplot(rates,aes(balance,Rate,colour=student))+
   geom_line()+
   theme_classic()+
@@ -119,7 +120,7 @@ p1<-ggplot(rates,aes(balance,Rate,colour=student))+
   geom_hline(yintercept=0.04313859,linetype="dashed", size=.5, colour="darkgreen")+
   geom_hline(yintercept=0.02919501,linetype="dashed", size=.5, colour="orange")+
   labs(x="Saldo", y="Tasa de incumplimiento")+
-  scale_y_continuous(labels = dollar_format())+
+  scale_y_continuous(labels =percent_format())+
   scale_x_continuous(labels = dollar_format())+
    labs(colour="Estudiante")+
   theme(legend.position = "none")
@@ -139,15 +140,12 @@ grid.arrange(p2, p1, nrow = 1)
 ```
 
 
-Note que la tasa de incumplimiento general (sin considerar la variable balance) es mayor para los estudiantes. Ej. el modelo simple muestra una probabilidad mayor de incumplimiento para los estudientes. De hecho vemos en la grafica 1 (der.) que la tasa de incumplimiento general para estudiantes es del $4.3\%>2.9\%$ a la de los no estudiantes.
+Note que la tasa de incumplimiento general (sin considerar la variable balance) es mayor para los estudiantes. Ej. el modelo simple muestra una probabilidad mayor de incumplimiento para los estudientes. De hecho vemos en la grafica 1 (der.) que la tasa de incumplimiento general (linea punteada) para estudiantes es del $4.3\%>2.9\%$ a la de los no estudiantes.
 
-Por su parte en el modelo que incluimos la variable balance, el **log(odds)** de inclumplimiento decrece para los estudinantes debido a que  si bien las variables estudiante y balance estan correlacionadas: los estudiantes tienden a registrar mayores niveles de deuda, ej. el saldo (balance) promedio de la deuda de los estudiantes es $\$987.8 > \$771.7$ de los no estudiantes.  (fig 1 izq. boxplot). Lo que a su vez esta relacionado positivamente con una probabilidad de incumplimeinto mayor, en realidad la tasa de incumplimiento para cada nivel de balance es inferior para los estudiantes!! 
-
- 
+Por su parte en el modelo que incluimos la variable balance, el **log(odds)** de inclumplimiento decrece para los estudinantes debido a que  si bien las variables estudiante y balance estan correlacionadas: los estudiantes tienden a registrar mayores niveles de deuda, ej. el saldo (balance) promedio de la deuda de los estudiantes es $\$987.8 > \$771.7$ de los no estudiantes.  (fig 1 izq. boxplot), Lo que a su vez esta relacionado positivamente con una probabilidad de incumplimeinto mayor, en realidad la tasa de incumplimiento para cada nivel de balance es inferior para los estudiantes!!  (linea verde  fig. derecha )
 
  
 
+ 
 
 
-
-Para la variable **balance** el log(odds) de incumplimiento (default) se incrementa en  **0.0057** con una unidad de balance adicional.

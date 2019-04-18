@@ -1,0 +1,35 @@
+---
+title: "Logistic3"
+author: "JLMR"
+date: 2019-04-09T21:14:14-05:00
+categories: ["R"]
+tags: ["Logistic", "log(odds)", "glm"]
+mathjax : true
+menu:
+  main:
+    name: Logistic3 R
+    weight: 17
+---
+
+
+```{r set-global-options, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(eval = TRUE, 
+                      echo = TRUE, 
+                      cache = FALSE,
+                      include = TRUE,
+                      collapse = FALSE,
+                      dependson = NULL,
+                      engine = "R", # Chunks will always have R code, unless noted
+                      error = FALSE)   
+
+
+```
+
+
+
+```{r silent-packages, echo = FALSE, eval = TRUE, message=FALSE, include = FALSE}
+library(tidyverse)
+library(ISLR)
+library(foreign)
+library(scales)
+```

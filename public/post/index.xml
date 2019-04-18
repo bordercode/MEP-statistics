@@ -6,10 +6,19 @@
     <description>Recent content in Posts on Estadística II</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 08 Apr 2019 21:14:14 -0500</lastBuildDate>
+    <lastBuildDate>Tue, 09 Apr 2019 21:14:14 -0500</lastBuildDate>
     
 	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Logistic3</title>
+      <link>/post/2019-04-16-logistic2/</link>
+      <pubDate>Tue, 09 Apr 2019 21:14:14 -0500</pubDate>
+      
+      <guid>/post/2019-04-16-logistic2/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Logistic2</title>
