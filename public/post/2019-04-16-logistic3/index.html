@@ -9,9 +9,13 @@
 	<meta name="description" content="">
 	<meta name="generator" content="Hugo 0.54.0" />
 	<meta property="og:title" content="Logistic3" />
-<meta property="og:description" content="" />
+<meta property="og:description" content="Ejecicio estime un modelo de regresión logística considerando el siguiente escenario.
+Se tienen una serie de características sociodemograficas (ej. sexo, edad, )incluidos marcadores clínicos para una muestra 297 individuos.
+El objetivo es determinar la probabilidad de que la persona tenga un padecimiento cardiáco (heart disease).
+La variable dependiente es hd con dos categorías: Healthy=0, o Unhealthy=1
+A continuación la descrición de la informción disponible y la codificación de las variables." />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="/post/2019-04-16-logistic2/" />
+<meta property="og:url" content="/post/2019-04-16-logistic3/" />
 <meta property="article:published_time" content="2019-04-09T21:14:14-05:00"/>
 <meta property="article:modified_time" content="2019-04-09T21:14:14-05:00"/>
 
@@ -93,7 +97,7 @@ if (!doNotTrack) {
 			<a class="menu__link" href="/post/2019-04-15-logistic2/">Logistic2 R</a>
 		</li>
 		<li class="menu__item menu__item--active">
-			<a class="menu__link" href="/post/2019-04-16-logistic2/">Logistic3 R</a>
+			<a class="menu__link" href="/post/2019-04-16-logistic3/">Logistic3 R</a>
 		</li>
 	</ul>
 </nav>
@@ -122,7 +126,153 @@ if (!doNotTrack) {
 			
 
 
+<p>Ejecicio estime un modelo de regresión logística considerando el siguiente escenario.</p>
+<p>Se tienen una serie de características sociodemograficas (ej. sexo, edad, )incluidos marcadores clínicos para una muestra 297 individuos.</p>
+<p>El objetivo es determinar la probabilidad de que la persona tenga un padecimiento cardiáco (heart disease).</p>
+<p>La variable dependiente es <strong>hd</strong> con dos categorías: Healthy=0, o Unhealthy=1</p>
+<p>A continuación la descrición de la informción disponible y la codificación de las variables.</p>
+<p>age“,”sex“,# 0 = female, 1 = male”cp“, # chest pain # 1 = typical angina, # 2 = atypical angina, # 3 = non-anginal pain, # 4 = asymptomatic”trestbps“, # resting blood pressure (in mm Hg)”chol“, # serum cholestoral in mg/dl”fbs“, # fasting blood sugar if less than 120 mg/dl, 1 = TRUE, 0 = FALSE”restecg“, # resting electrocardiographic results # 1 = normal # 2 = having ST-T wave abnormality # 3 = showing probable or definite left ventricular hypertrophy”thalach“, # maximum heart rate achieved”exang“, # exercise induced angina, 1 = yes, 0 = no”oldpeak“, # ST depression induced by exercise relative to rest”slope“, # the slope of the peak exercise ST segment # 1 = upsloping # 2 = flat # 3 = downsloping”ca“, # number of major vessels (0-3) colored by fluoroscopy”thal“, # this is short of thalium heart scan # 3 = normal (no cold spots) # 6 = fixed defect (cold spots during rest and exercise) # 7 = reversible defect (when cold spots only appear during exercise)”hd&quot; # (the predicted attribute) - diagnosis of heart disease # 0 if less than or equal to 50% diameter narrowing # 1 if greater than 50% diameter narrowing</p>
+<p>Estime un modelo de regresión logistica simple para la variable padecimiento cardiaco (variable hd) considerando como variable independiente el <strong>sexo</strong> de la persona.</p>
+<p>Determine el log del ratio de los momios <strong>log(odds ratio)</strong> indique su magnitud, dirección y sin son estadísticamente significativos al <span class="math inline">\(0.05\%\)</span>.</p>
+<p><strong>Primero una observación básica de los datos </strong></p>
+<pre class="r"><code>data&lt;-readRDS(&quot;heartd.rds&quot;)
 
+names(data)</code></pre>
+<pre><code>##  [1] &quot;age&quot;      &quot;sex&quot;      &quot;cp&quot;       &quot;trestbps&quot; &quot;chol&quot;     &quot;fbs&quot;     
+##  [7] &quot;restecg&quot;  &quot;thalach&quot;  &quot;exang&quot;    &quot;oldpeak&quot;  &quot;slope&quot;    &quot;ca&quot;      
+## [13] &quot;thal&quot;     &quot;hd&quot;</code></pre>
+<pre class="r"><code>glimpse(data)</code></pre>
+<pre><code>## Observations: 297
+## Variables: 14
+## $ age      &lt;dbl&gt; 63, 67, 67, 37, 41, 56, 62, 57, 63, 53, 57, 56, 56, 4...
+## $ sex      &lt;fct&gt; M, M, M, M, F, M, F, F, M, M, M, F, M, M, M, M, M, M,...
+## $ cp       &lt;fct&gt; 1, 4, 4, 3, 2, 2, 4, 4, 4, 4, 4, 2, 3, 2, 3, 3, 2, 4,...
+## $ trestbps &lt;dbl&gt; 145, 160, 120, 130, 130, 120, 140, 120, 130, 140, 140...
+## $ chol     &lt;dbl&gt; 233, 286, 229, 250, 204, 236, 268, 354, 254, 203, 192...
+## $ fbs      &lt;fct&gt; 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0,...
+## $ restecg  &lt;fct&gt; 2, 2, 2, 0, 2, 0, 2, 0, 2, 2, 0, 2, 2, 0, 0, 0, 0, 0,...
+## $ thalach  &lt;dbl&gt; 150, 108, 129, 187, 172, 178, 160, 163, 147, 155, 148...
+## $ exang    &lt;fct&gt; 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0,...
+## $ oldpeak  &lt;dbl&gt; 2.3, 1.5, 2.6, 3.5, 1.4, 0.8, 3.6, 0.6, 1.4, 3.1, 0.4...
+## $ slope    &lt;fct&gt; 3, 2, 2, 3, 1, 1, 3, 1, 2, 3, 2, 2, 2, 1, 1, 1, 3, 1,...
+## $ ca       &lt;fct&gt; 2, 5, 4, 2, 2, 2, 4, 2, 3, 2, 2, 2, 3, 2, 2, 2, 2, 2,...
+## $ thal     &lt;fct&gt; 3, 2, 4, 2, 2, 2, 2, 2, 4, 4, 3, 2, 3, 4, 4, 2, 4, 2,...
+## $ hd       &lt;fct&gt; Healthy, Unhealthy, Unhealthy, Healthy, Healthy, Heal...</code></pre>
+<pre class="r"><code>xtabs(~ hd + sex, data=data)</code></pre>
+<pre><code>##            sex
+## hd            F   M
+##   Healthy    71  89
+##   Unhealthy  25 112</code></pre>
+<p>Note que tenemos aparentemente un mayor problema para el sexo masculino.</p>
+<pre class="r"><code>logistic &lt;- glm(hd ~ sex, data=data, family=&quot;binomial&quot;)
+
+summary(logistic)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = hd ~ sex, family = &quot;binomial&quot;, data = data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.2765  -1.2765  -0.7768   1.0815   1.6404  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)  -1.0438     0.2326  -4.488 7.18e-06 ***
+## sexM          1.2737     0.2725   4.674 2.95e-06 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 409.95  on 296  degrees of freedom
+## Residual deviance: 386.12  on 295  degrees of freedom
+## AIC: 390.12
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+<pre class="r"><code>male.log.odds.ratio &lt;- log((112 / 89) / (25/71))
+male.log.odds.ratio</code></pre>
+<pre><code>## [1] 1.273667</code></pre>
+<div id="prediccion-de-probabilidaes-directamente." class="section level5">
+<h5>Predicción de probabilidaes directamente.</h5>
+<pre class="r"><code>predic&lt;- data.frame(
+  prob.hd=logistic$fitted.values,
+  sexo=data$sex)
+glimpse(predic)</code></pre>
+<pre><code>## Observations: 297
+## Variables: 2
+## $ prob.hd &lt;dbl&gt; 0.5572139, 0.5572139, 0.5572139, 0.5572139, 0.2604167,...
+## $ sexo    &lt;fct&gt; M, M, M, M, F, M, F, F, M, M, M, F, M, M, M, M, M, M, ...</code></pre>
+</div>
+<div id="graficamos-el-resultado." class="section level5">
+<h5>Graficamos el resultado.</h5>
+<pre class="r"><code>ggplot(predic, aes(sexo, prob.hd, size=prob.hd)) +
+  geom_point(aes(colour=sexo)) +
+  xlab(&quot;Sex&quot;) +
+  ylab(&quot;Prob padecimiento cardiáco&quot;)+
+  theme_classic()+
+  theme(legend.position = &quot;none&quot;)</code></pre>
+<p><img src="/post/2019-04-16-Logistic3_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="estmacion-rl-multiple-todas-las-variables" class="section level4">
+<h4>Estmación RL Multiple (todas las variables)</h4>
+<pre class="r"><code>logistic2 &lt;- glm(hd ~ ., data=data, family=&quot;binomial&quot;)
+summary(logistic2)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = hd ~ ., family = &quot;binomial&quot;, data = data)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -3.0490  -0.4847  -0.1213   0.3039   2.9086  
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -6.253978   2.960399  -2.113 0.034640 *  
+## age         -0.023508   0.025122  -0.936 0.349402    
+## sexM         1.670152   0.552486   3.023 0.002503 ** 
+## cp2          1.448396   0.809136   1.790 0.073446 .  
+## cp3          0.393353   0.700338   0.562 0.574347    
+## cp4          2.373287   0.709094   3.347 0.000817 ***
+## trestbps     0.027720   0.011748   2.359 0.018300 *  
+## chol         0.004445   0.004091   1.087 0.277253    
+## fbs1        -0.574079   0.592539  -0.969 0.332622    
+## restecg1     1.000887   2.638393   0.379 0.704424    
+## restecg2     0.486408   0.396327   1.227 0.219713    
+## thalach     -0.019695   0.011717  -1.681 0.092781 .  
+## exang1       0.653306   0.447445   1.460 0.144267    
+## oldpeak      0.390679   0.239173   1.633 0.102373    
+## slope2       1.302289   0.486197   2.679 0.007395 ** 
+## slope3       0.606760   0.939324   0.646 0.518309    
+## ca3          2.237444   0.514770   4.346 1.38e-05 ***
+## ca4          3.271852   0.785123   4.167 3.08e-05 ***
+## ca5          2.188715   0.928644   2.357 0.018428 *  
+## thal3       -0.168439   0.810310  -0.208 0.835331    
+## thal4        1.433319   0.440567   3.253 0.001141 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 409.95  on 296  degrees of freedom
+## Residual deviance: 183.10  on 276  degrees of freedom
+## AIC: 225.1
+## 
+## Number of Fisher Scoring iterations: 6</code></pre>
+<pre class="r"><code>predicted.data &lt;- data.frame(
+  probability.of.hd=logistic2$fitted.values,
+  hd=data$hd)
+
+predicted.data &lt;- predicted.data[
+  order(predicted.data$probability.of.hd, decreasing=FALSE),]
+predicted.data$rank &lt;- 1:nrow(predicted.data)
+
+
+ggplot(data=predicted.data, aes(x=rank, y=probability.of.hd)) +
+  geom_point(aes(color=hd), alpha=1, shape=4, stroke=2) +
+  xlab(&quot;Index&quot;) +
+  ylab(&quot;Predicted probability of getting heart disease&quot;)</code></pre>
+<p><img src="/post/2019-04-16-Logistic3_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
 
 		</div>
 		
@@ -151,7 +301,7 @@ if (!doNotTrack) {
 
 <nav class="post-nav flex">
 	<div class="post-nav__item post-nav__item--prev">
-		<a class="post-nav__link" href="/post/2019-04-16-logistic3/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">Logistic3</p></a>
+		<a class="post-nav__link" href="/post/2019-04-15-logistic2/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">Logistic2</p></a>
 	</div>
 </nav>
 
@@ -193,11 +343,11 @@ if (!doNotTrack) {
 	<h4 class="widget__title">Recent Posts</h4>
 	<div class="widget__content">
 		<ul class="widget__list">
-			<li class="widget__item"><a class="widget__link" href="/post/2019-04-16-logistic2/">Logistic3</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/2019-04-16-logistic3/">Logistic3</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/2019-04-15-logistic2/">Logistic2</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/2019-02-25-logistic/">Logistic</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/2019-02-05-rl6/">RL-Diagnóstico</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/2019-02-24-pca/">PCA</a></li>
 		</ul>
 	</div>
 </div>

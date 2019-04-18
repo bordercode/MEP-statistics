@@ -13,11 +13,15 @@
     
     <item>
       <title>Logistic3</title>
-      <link>/post/2019-04-16-logistic2/</link>
+      <link>/post/2019-04-16-logistic3/</link>
       <pubDate>Tue, 09 Apr 2019 21:14:14 -0500</pubDate>
       
-      <guid>/post/2019-04-16-logistic2/</guid>
-      <description></description>
+      <guid>/post/2019-04-16-logistic3/</guid>
+      <description>Ejecicio estime un modelo de regresión logística considerando el siguiente escenario.
+Se tienen una serie de características sociodemograficas (ej. sexo, edad, )incluidos marcadores clínicos para una muestra 297 individuos.
+El objetivo es determinar la probabilidad de que la persona tenga un padecimiento cardiáco (heart disease).
+La variable dependiente es hd con dos categorías: Healthy=0, o Unhealthy=1
+A continuación la descrición de la informción disponible y la codificación de las variables.</description>
     </item>
     
     <item>
