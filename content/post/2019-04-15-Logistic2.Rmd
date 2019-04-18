@@ -62,8 +62,92 @@ l3<-glm(default~., data=d, family=binomial)
 summary(l3)
 ```
 
-Note dos puntos, primero la variable income no es estadisticamente significativa, segundo ahora la variable student tiene un impacto negativo.
+Note dos puntos: Primero la variable **income** no es estadísticamente significativa, segundo ahora la variable **student** tiene un impacto negativo.
 
-La interpretación para la variable student indica que dado un nivel fijo en las variables **balance e income** el log(odds) decrece en $0.6468$ si la persona es estudiante.
+La interpretación para la variable binaria **student** indica que dado un nivel fijo en las variables **balance e income** el log(odds) decrece en $0.6468$ si la persona es estudiante.
+
+Ahora utilizamos los coeficientes estimados log (odds) en la ecuación logistica para estimar las probabilides de incumplimiento. 
+
+$$\hat{p}(X)=\frac{e^{−10.869+0.00574×1,500+0.003×40,000−0.6468×1}}
+{1+e^{−10.869+0.00574×1,500+0.003×40,000−0.6468×1}}=0.058$$
+
+Un **estudiante** con un balance de $\$1,500$ e ingreso de $\$40,000$ tiene una probabilidad de incumplimiento de $5.8\%$. 
+
+Mientras que la probabilidad de incumplimiento para una persona no estudiante es de $10.5\%$ 
+
+$$\hat{p}(X)=\frac{e^{−10.869+0.00574×1,500+0.003×40,000}}
+{1+e^{−10.869+0.00574×1,500+0.003×40,000}}=0.105$$
+
+
+¿Por qué la variable student tiene ahora una menor probabilidad de incumplimiento y en el modelo simple su impacto fue positivo?
+
+Veámos la siguiente gráfica que muestra la tasa de incumplimiento en función del saldo de la tarjeta de crédito (variable balance). 
+
+
+```{r, echo=FALSE,message=FALSE,warning=FALSE}
+library(gridExtra)
+
+d<-Default
+
+d<-mutate(d,c=as.factor(ifelse(balance<=500,1,
+ifelse(balance>500&balance<=1000,2,
+ifelse(balance>1000&balance<=1250,3,
+ifelse(balance>1250&balance<=1750,4,
+ifelse(balance>1750&balance<=2000,5,6)))))))
+
+der<-group_by(d,student,default)%>%
+  summarize(total=n())%>%
+  mutate(r=total/sum(total))
+
+rates<-group_by(d,c, student, default)%>%
+summarize(total=n())%>%
+mutate(Rate=total/sum(total), 
+      balance=ifelse(c==1,500,
+                  ifelse(c==2,1000,
+                  ifelse(c==3,1250, 
+                  ifelse(c==4,1750,
+                  ifelse(c==5,2000,2650))))))%>%
+  filter(default=="Yes")
+
+
+str(rates)
+
+p1<-ggplot(rates,aes(balance,Rate,colour=student))+
+  geom_line()+
+  theme_classic()+
+  scale_colour_manual(values = c("orange", "darkgreen"))+
+  geom_hline(yintercept=0.04313859,linetype="dashed", size=.5, colour="darkgreen")+
+  geom_hline(yintercept=0.02919501,linetype="dashed", size=.5, colour="orange")+
+  labs(x="Saldo", y="Tasa de incumplimiento")+
+  scale_y_continuous(labels = dollar_format())+
+  scale_x_continuous(labels = dollar_format())+
+   labs(colour="Estudiante")+
+  theme(legend.position = "none")
+
+p2<-ggplot(d,aes(student,balance))+
+  geom_boxplot(aes(fill=student))+
+theme_classic()+
+scale_y_continuous(labels = dollar_format())+
+scale_fill_manual(values = c("orange","darkgreen"))+
+  labs(x="Estudiante", y="Saldo (Balance)")+
+  theme(legend.position = "none")
+
+
+grid.arrange(p2, p1, nrow = 1)
+
+
+```
+
+
+Note que la tasa de incumplimiento general (sin considerar la variable balance) es mayor para los estudiantes. Ej. el modelo simple muestra una probabilidad mayor de incumplimiento para los estudientes. De hecho vemos en la grafica 1 (der.) que la tasa de incumplimiento general para estudiantes es del $4.3\%>2.9\%$ a la de los no estudiantes.
+
+Por su parte en el modelo que incluimos la variable balance, el **log(odds)** de inclumplimiento decrece para los estudinantes debido a que  si bien las variables estudiante y balance estan correlacionadas: los estudiantes tienden a registrar mayores niveles de deuda, ej. el saldo (balance) promedio de la deuda de los estudiantes es $\$987.8 > \$771.7$ de los no estudiantes.  (fig 1 izq. boxplot). Lo que a su vez esta relacionado positivamente con una probabilidad de incumplimeinto mayor, en realidad la tasa de incumplimiento para cada nivel de balance es inferior para los estudiantes!! 
+
+ 
+
+ 
+
+
+
 
 Para la variable **balance** el log(odds) de incumplimiento (default) se incrementa en  **0.0057** con una unidad de balance adicional.

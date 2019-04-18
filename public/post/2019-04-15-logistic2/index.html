@@ -158,8 +158,40 @@ summary(l3)</code></pre>
 ## AIC: 1579.5
 ## 
 ## Number of Fisher Scoring iterations: 8</code></pre>
-<p>Note dos puntos, primero la variable income no es estadisticamente significativa, segundo ahora la variable student tiene un impacto negativo.</p>
-<p>La interpretación para la variable student indica que dado un nivel fijo en las variables <strong>balance e income</strong> el log(odds) decrece en <span class="math inline">\(0.6468\)</span> si la persona es estudiante.</p>
+<p>Note dos puntos: Primero la variable <strong>income</strong> no es estadísticamente significativa, segundo ahora la variable <strong>student</strong> tiene un impacto negativo.</p>
+<p>La interpretación para la variable binaria <strong>student</strong> indica que dado un nivel fijo en las variables <strong>balance e income</strong> el log(odds) decrece en <span class="math inline">\(0.6468\)</span> si la persona es estudiante.</p>
+<p>Ahora utilizamos los coeficientes estimados log (odds) en la ecuación logistica para estimar las probabilides de incumplimiento.</p>
+<p><span class="math display">\[\hat{p}(X)=\frac{e^{−10.869+0.00574×1,500+0.003×40,000−0.6468×1}}
+{1+e^{−10.869+0.00574×1,500+0.003×40,000−0.6468×1}}=0.058\]</span></p>
+<p>Un <strong>estudiante</strong> con un balance de <span class="math inline">\(\$1,500\)</span> e ingreso de <span class="math inline">\(\$40,000\)</span> tiene una probabilidad de incumplimiento de <span class="math inline">\(5.8\%\)</span>.</p>
+<p>Mientras que la probabilidad de incumplimiento para una persona no estudiante es de <span class="math inline">\(10.5\%\)</span></p>
+<p><span class="math display">\[\hat{p}(X)=\frac{e^{−10.869+0.00574×1,500+0.003×40,000}}
+{1+e^{−10.869+0.00574×1,500+0.003×40,000}}=0.105\]</span></p>
+<p>¿Por qué la variable student tiene ahora una menor probabilidad de incumplimiento y en el modelo simple su impacto fue positivo?</p>
+<p>Veámos la siguiente gráfica que muestra la tasa de incumplimiento en función del saldo de la tarjeta de crédito (variable balance).</p>
+<pre><code>## Classes &#39;grouped_df&#39;, &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:  9 obs. of  6 variables:
+##  $ c      : Factor w/ 6 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,..: 2 3 3 4 4 5 5 6 6
+##  $ student: Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 1 1 2 1 2 1 2 1 2
+##  $ default: Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 2 2 2 2 2 2 2 2 2
+##  $ total  : int  6 15 5 91 39 58 38 36 45
+##  $ Rate   : num  0.00221 0.0142 0.00867 0.09146 0.06009 ...
+##  $ balance: num  1000 1250 1250 1750 1750 2000 2000 2650 2650
+##  - attr(*, &quot;groups&quot;)=Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:   9 obs. of  3 variables:
+##   ..$ c      : Factor w/ 6 levels &quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,..: 2 3 3 4 4 5 5 6 6
+##   ..$ student: Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 1 1 2 1 2 1 2 1 2
+##   ..$ .rows  :List of 9
+##   .. ..$ : int 1
+##   .. ..$ : int 2
+##   .. ..$ : int 3
+##   .. ..$ : int 4
+##   .. ..$ : int 5
+##   .. ..$ : int 6
+##   .. ..$ : int 7
+##   .. ..$ : int 8
+##   .. ..$ : int 9</code></pre>
+<p><img src="/post/2019-04-15-Logistic2_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>Note que la tasa de incumplimiento general (sin considerar la variable balance) es mayor para los estudiantes. Ej. el modelo simple muestra una probabilidad mayor de incumplimiento para los estudientes. De hecho vemos en la grafica 1 (der.) que la tasa de incumplimiento general para estudiantes es del <span class="math inline">\(4.3\%&gt;2.9\%\)</span> a la de los no estudiantes.</p>
+<p>Por su parte en el modelo que incluimos la variable balance, el <strong>log(odds)</strong> de inclumplimiento decrece para los estudinantes debido a que si bien las variables estudiante y balance estan correlacionadas: los estudiantes tienden a registrar mayores niveles de deuda, ej. el saldo (balance) promedio de la deuda de los estudiantes es <span class="math inline">\(\$987.8 &gt; \$771.7\)</span> de los no estudiantes. (fig 1 izq. boxplot). Lo que a su vez esta relacionado positivamente con una probabilidad de incumplimeinto mayor, en realidad la tasa de incumplimiento para cada nivel de balance es inferior para los estudiantes!!</p>
 <p>Para la variable <strong>balance</strong> el log(odds) de incumplimiento (default) se incrementa en <strong>0.0057</strong> con una unidad de balance adicional.</p>
 </div>
 
