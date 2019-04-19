@@ -45,37 +45,35 @@ La variable dependiente es **hd** con dos categorías: Healthy=0, o Unhealthy=1
 
 A continuación la descrición de la informción disponible y la codificación de las variables.   
 
-age",
-  "sex",# 0 = female, 1 = male
-  "cp", # chest pain
-  # 1 = typical angina,
-  # 2 = atypical angina,
-  # 3 = non-anginal pain,
-  # 4 = asymptomatic
-  "trestbps", # resting blood pressure (in mm Hg)
-  "chol", # serum cholestoral in mg/dl
-  "fbs",  # fasting blood sugar if less than 120 mg/dl, 1 = TRUE, 0 = FALSE
-  "restecg", # resting electrocardiographic results
-  # 1 = normal
-  # 2 = having ST-T wave abnormality
-  # 3 = showing probable or definite left ventricular hypertrophy
-  "thalach", # maximum heart rate achieved
-  "exang",   # exercise induced angina, 1 = yes, 0 = no
-  "oldpeak", # ST depression induced by exercise relative to rest
-  "slope", # the slope of the peak exercise ST segment
-  # 1 = upsloping
-  # 2 = flat
-  # 3 = downsloping
-  "ca", # number of major vessels (0-3) colored by fluoroscopy
-  "thal", # this is short of thalium heart scan
-  # 3 = normal (no cold spots)
-  # 6 = fixed defect (cold spots during rest and exercise)
-  # 7 = reversible defect (when cold spots only appear during exercise)
-  "hd" # (the predicted attribute) - diagnosis of heart disease
-  # 0 if less than or equal to 50% diameter narrowing
-  # 1 if greater than 50% diameter narrowing
+**age** variable contínua para edad. 
 
+**sexo** 0 = Femenino, 1 = Masculino
 
+**cp** Dolor en pecho  (chest pain)
+
+1 = typical angina,
+
+2 = atypical angina,
+
+3 = non-anginal pain,
+
+4 = asymptomatic
+  
+**trestbps** Presión alterial. (resting blood pressure) (medida en mm Hg)  (variable Contínua).
+
+**ca**, number of major vessels (2-5) colored by fluoroscopy. (marcador sobre daño arterial)
+
+**thal**,  Short of thalium heart scan: A thallium heart scan is a test using a special camera and a small amount of radioactive substance injected into the bloodstream to make an image of the blood flow to the heart.
+
+2 = normal (no cold spots)
+
+3 = fixed defect (cold spots during rest and exercise)
+
+4 = reversible defect (when cold spots only appear during exercise)
+  
+**hd** Variable dependiente (diagnosis of heart disease):  0 if less than or equal to 50% diameter narrowing  1 if greater than 50% diameter narrowing
+
+**Instruccones:**
 
 Estime un modelo de regresión logistica simple para la variable  padecimiento cardiaco (variable hd) considerando como variable independiente  el **sexo** de la persona.
 
@@ -88,12 +86,12 @@ data<-readRDS("heartd.rds")
 names(data)
 glimpse(data)
 
-xtabs(~ hd + sex, data=data)
+xtabs(~ hd + sexo, data=data)
 ```
 Note que tenemos aparentemente un mayor problema para el sexo masculino. 
 
 ```{r}
-logistic <- glm(hd ~ sex, data=data, family="binomial")
+logistic <- glm(hd ~ sexo, data=data, family="binomial")
 
 summary(logistic)
 
@@ -101,52 +99,87 @@ male.log.odds.ratio <- log((112 / 89) / (25/71))
 male.log.odds.ratio
 ```
 
+
+Donde **(Intercept)**  -1.0438  es el log (odds) para la categoría base en este caso  **Mujer** y el coeficiente  **sexM=** 1.2737 es el log(odds ratio) cuando el paciente es hombre. 
+
+Interpretación: Para los Hombres se incrementa el logaritmo en el ratio de Momios de tener el pedecimiento, lo que se traduce en una **proabilidad** más elevada para un paciente del sexo masculino. **NOTE** que directamente el coeficiente estimado **NO** es la probabilidad todavía, aunque dado esse resultado sabemos que las probabilidades son mayores par loa hombres respecto a las mujeres de tener el padecimiento. 
+
+Para determinar las **probabilidades** a partir del logaritmo del cociente de momios (coef. de nuestro modelo), extraemos  las predicciones (*fitted.values*) que estan almacenadas como parte de los resultados del modelo. La siguiente estimación permite muestra este cálculo.
+
 ##### Predicción de probabilidaes directamente.
 
 
 ```{r}
 predic<- data.frame(
   prob.hd=logistic$fitted.values,
-  sexo=data$sex)
+  sexo=data$sexo)
+
 glimpse(predic)
 ```
-##### Graficamos el resultado.
+
+Note que la probabilidad de tener el padecimiento para un individuo del sexo masculino es $= 0.55>0.26$ a la de una mujer. 
+
+##### Graficamos las probabilidades.
 
 ```{r}
-ggplot(predic, aes(sexo, prob.hd, size=prob.hd)) +
-  geom_point(aes(colour=sexo)) +
-  xlab("Sex") +
-  ylab("Prob padecimiento cardiáco")+
+ggplot(predic, aes(sexo,prob.hd, size=sexo)) +
+  geom_point(aes(color=sexo))+
+  xlab("Sexo") +
+  ylab("Pr padecimiento cardiáco")+
   theme_classic()+
-  theme(legend.position = "none")
-
+  theme(legend.position = "none")+
+  scale_color_manual(values =c("deeppink","deepskyblue3"))+
+  labs(x="Sexo")
 ```
 
-#### Estmación RL Multiple  (todas las variables)
+#### Estmación RL Multiple  (todas las )
+
+##### Ejercicio 2 
+
+Estime el modelo de regresión logistica para la siguiente especificación: 
+
+$$\hat{p}(X)=\frac{e^{\beta_0+\beta_1age+\beta_2sexo+\beta_3cp+\beta_4ca+\beta_5thal}}{1+e^{\beta_0+\beta_1age+\beta_2sexo+\beta_3cp+\beta_4ca+\beta_5thal}}$$
+a) Indique el valor de el ratio de momios para las variables independientes del modelo. Qué variables son estadisticamente significativas?
+
+b) Genera la predicción de las probabilidades de que los individuos tengan  padecimiento cardiáco, grafique.
+
 
 
 ```{r}
-logistic2 <- glm(hd ~ ., data=data, family="binomial")
+logistic2 <- glm(hd ~age+sexo+cp+ca+thal, data=data, family="binomial")
 summary(logistic2)
 ```
-
+Note que la variable **age** no es estadisticamente significativa. Un resultado contraintuitivo. Sin embargo, observando la distribución de los datos notamos  que la mayoria de las personas de la muestra son de edad avanzada (ej. mediana=56 años). 
 
 ```{r}
-predicted.data <- data.frame(
-  probability.of.hd=logistic2$fitted.values,
-  hd=data$hd)
-
-predicted.data <- predicted.data[
-  order(predicted.data$probability.of.hd, decreasing=FALSE),]
-predicted.data$rank <- 1:nrow(predicted.data)
-
-
-ggplot(data=predicted.data, aes(x=rank, y=probability.of.hd)) +
-  geom_point(aes(color=hd), alpha=1, shape=4, stroke=2) +
-  xlab("Index") +
-  ylab("Predicted probability of getting heart disease")
+summary(data$age)
 ```
 
+
+Note un **Akaike Information criterion** mucho mas pequeño para este modelo que incluye un conjunto de variables explicativas mayor.
+
+Generalmente el**AIC** es un estadístico que comparamos entre especificaciones distintas de  modelos para seleccionar el modelo final  (ej.  AIC menor).
+
+```{r}
+pred<- data.frame(
+  pr=logistic2$fitted.values,
+  hd=data$hd)
+
+pred<-arrange(pred,pr)%>%
+  mutate(id=1:nrow(pred))
+
+
+ggplot(pred, aes(id, pr)) +
+  geom_point(aes(color=hd), 
+  alpha=1, shape=21) +
+  xlab("Individuos") +
+  ylab("Pr(de tener pad. cardíaco)")+
+  theme_classic()+
+  scale_color_manual(values =c("darkgreen","orange"))+
+  labs(color="Status")
+
+
+```
 
 
 

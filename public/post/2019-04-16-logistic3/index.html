@@ -131,21 +131,35 @@ if (!doNotTrack) {
 <p>El objetivo es determinar la probabilidad de que la persona tenga un padecimiento cardiáco (heart disease).</p>
 <p>La variable dependiente es <strong>hd</strong> con dos categorías: Healthy=0, o Unhealthy=1</p>
 <p>A continuación la descrición de la informción disponible y la codificación de las variables.</p>
-<p>age“,”sex“,# 0 = female, 1 = male”cp“, # chest pain # 1 = typical angina, # 2 = atypical angina, # 3 = non-anginal pain, # 4 = asymptomatic”trestbps“, # resting blood pressure (in mm Hg)”chol“, # serum cholestoral in mg/dl”fbs“, # fasting blood sugar if less than 120 mg/dl, 1 = TRUE, 0 = FALSE”restecg“, # resting electrocardiographic results # 1 = normal # 2 = having ST-T wave abnormality # 3 = showing probable or definite left ventricular hypertrophy”thalach“, # maximum heart rate achieved”exang“, # exercise induced angina, 1 = yes, 0 = no”oldpeak“, # ST depression induced by exercise relative to rest”slope“, # the slope of the peak exercise ST segment # 1 = upsloping # 2 = flat # 3 = downsloping”ca“, # number of major vessels (0-3) colored by fluoroscopy”thal“, # this is short of thalium heart scan # 3 = normal (no cold spots) # 6 = fixed defect (cold spots during rest and exercise) # 7 = reversible defect (when cold spots only appear during exercise)”hd&quot; # (the predicted attribute) - diagnosis of heart disease # 0 if less than or equal to 50% diameter narrowing # 1 if greater than 50% diameter narrowing</p>
+<p><strong>age</strong> variable contínua para edad.</p>
+<p><strong>sexo</strong> 0 = Femenino, 1 = Masculino</p>
+<p><strong>cp</strong> Dolor en pecho (chest pain)</p>
+<p>1 = typical angina,</p>
+<p>2 = atypical angina,</p>
+<p>3 = non-anginal pain,</p>
+<p>4 = asymptomatic</p>
+<p><strong>trestbps</strong> Presión alterial. (resting blood pressure) (medida en mm Hg) (variable Contínua).</p>
+<p><strong>ca</strong>, number of major vessels (2-5) colored by fluoroscopy. (marcador sobre daño arterial)</p>
+<p><strong>thal</strong>, Short of thalium heart scan: A thallium heart scan is a test using a special camera and a small amount of radioactive substance injected into the bloodstream to make an image of the blood flow to the heart.</p>
+<p>2 = normal (no cold spots)</p>
+<p>3 = fixed defect (cold spots during rest and exercise)</p>
+<p>4 = reversible defect (when cold spots only appear during exercise)</p>
+<p><strong>hd</strong> Variable dependiente (diagnosis of heart disease): 0 if less than or equal to 50% diameter narrowing 1 if greater than 50% diameter narrowing</p>
+<p><strong>Instruccones:</strong></p>
 <p>Estime un modelo de regresión logistica simple para la variable padecimiento cardiaco (variable hd) considerando como variable independiente el <strong>sexo</strong> de la persona.</p>
 <p>Determine el log del ratio de los momios <strong>log(odds ratio)</strong> indique su magnitud, dirección y sin son estadísticamente significativos al <span class="math inline">\(0.05\%\)</span>.</p>
 <p><strong>Primero una observación básica de los datos </strong></p>
 <pre class="r"><code>data&lt;-readRDS(&quot;heartd.rds&quot;)
 
 names(data)</code></pre>
-<pre><code>##  [1] &quot;age&quot;      &quot;sex&quot;      &quot;cp&quot;       &quot;trestbps&quot; &quot;chol&quot;     &quot;fbs&quot;     
+<pre><code>##  [1] &quot;age&quot;      &quot;sexo&quot;     &quot;cp&quot;       &quot;trestbps&quot; &quot;chol&quot;     &quot;fbs&quot;     
 ##  [7] &quot;restecg&quot;  &quot;thalach&quot;  &quot;exang&quot;    &quot;oldpeak&quot;  &quot;slope&quot;    &quot;ca&quot;      
 ## [13] &quot;thal&quot;     &quot;hd&quot;</code></pre>
 <pre class="r"><code>glimpse(data)</code></pre>
 <pre><code>## Observations: 297
 ## Variables: 14
 ## $ age      &lt;dbl&gt; 63, 67, 67, 37, 41, 56, 62, 57, 63, 53, 57, 56, 56, 4...
-## $ sex      &lt;fct&gt; M, M, M, M, F, M, F, F, M, M, M, F, M, M, M, M, M, M,...
+## $ sexo     &lt;chr&gt; &quot;M&quot;, &quot;M&quot;, &quot;M&quot;, &quot;M&quot;, &quot;F&quot;, &quot;M&quot;, &quot;F&quot;, &quot;F&quot;, &quot;M&quot;, &quot;M&quot;, &quot;M&quot;...
 ## $ cp       &lt;fct&gt; 1, 4, 4, 3, 2, 2, 4, 4, 4, 4, 4, 2, 3, 2, 3, 3, 2, 4,...
 ## $ trestbps &lt;dbl&gt; 145, 160, 120, 130, 130, 120, 140, 120, 130, 140, 140...
 ## $ chol     &lt;dbl&gt; 233, 286, 229, 250, 204, 236, 268, 354, 254, 203, 192...
@@ -158,18 +172,18 @@ names(data)</code></pre>
 ## $ ca       &lt;fct&gt; 2, 5, 4, 2, 2, 2, 4, 2, 3, 2, 2, 2, 3, 2, 2, 2, 2, 2,...
 ## $ thal     &lt;fct&gt; 3, 2, 4, 2, 2, 2, 2, 2, 4, 4, 3, 2, 3, 4, 4, 2, 4, 2,...
 ## $ hd       &lt;fct&gt; Healthy, Unhealthy, Unhealthy, Healthy, Healthy, Heal...</code></pre>
-<pre class="r"><code>xtabs(~ hd + sex, data=data)</code></pre>
-<pre><code>##            sex
+<pre class="r"><code>xtabs(~ hd + sexo, data=data)</code></pre>
+<pre><code>##            sexo
 ## hd            F   M
 ##   Healthy    71  89
 ##   Unhealthy  25 112</code></pre>
 <p>Note que tenemos aparentemente un mayor problema para el sexo masculino.</p>
-<pre class="r"><code>logistic &lt;- glm(hd ~ sex, data=data, family=&quot;binomial&quot;)
+<pre class="r"><code>logistic &lt;- glm(hd ~ sexo, data=data, family=&quot;binomial&quot;)
 
 summary(logistic)</code></pre>
 <pre><code>## 
 ## Call:
-## glm(formula = hd ~ sex, family = &quot;binomial&quot;, data = data)
+## glm(formula = hd ~ sexo, family = &quot;binomial&quot;, data = data)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
@@ -178,7 +192,7 @@ summary(logistic)</code></pre>
 ## Coefficients:
 ##             Estimate Std. Error z value Pr(&gt;|z|)    
 ## (Intercept)  -1.0438     0.2326  -4.488 7.18e-06 ***
-## sexM          1.2737     0.2725   4.674 2.95e-06 ***
+## sexoM         1.2737     0.2725   4.674 2.95e-06 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -192,86 +206,102 @@ summary(logistic)</code></pre>
 <pre class="r"><code>male.log.odds.ratio &lt;- log((112 / 89) / (25/71))
 male.log.odds.ratio</code></pre>
 <pre><code>## [1] 1.273667</code></pre>
+<p>Donde <strong>(Intercept)</strong> -1.0438 es el log (odds) para la categoría base en este caso <strong>Mujer</strong> y el coeficiente <strong>sexM=</strong> 1.2737 es el log(odds ratio) cuando el paciente es hombre.</p>
+<p>Interpretación: Para los Hombres se incrementa el logaritmo en el ratio de Momios de tener el pedecimiento, lo que se traduce en una <strong>proabilidad</strong> más elevada para un paciente del sexo masculino. <strong>NOTE</strong> que directamente el coeficiente estimado <strong>NO</strong> es la probabilidad todavía, aunque dado esse resultado sabemos que las probabilidades son mayores par loa hombres respecto a las mujeres de tener el padecimiento.</p>
+<p>Para determinar las <strong>probabilidades</strong> a partir del logaritmo del cociente de momios (coef. de nuestro modelo), extraemos las predicciones (<em>fitted.values</em>) que estan almacenadas como parte de los resultados del modelo. La siguiente estimación permite muestra este cálculo.</p>
 <div id="prediccion-de-probabilidaes-directamente." class="section level5">
 <h5>Predicción de probabilidaes directamente.</h5>
 <pre class="r"><code>predic&lt;- data.frame(
   prob.hd=logistic$fitted.values,
-  sexo=data$sex)
+  sexo=data$sexo)
+
 glimpse(predic)</code></pre>
 <pre><code>## Observations: 297
 ## Variables: 2
 ## $ prob.hd &lt;dbl&gt; 0.5572139, 0.5572139, 0.5572139, 0.5572139, 0.2604167,...
 ## $ sexo    &lt;fct&gt; M, M, M, M, F, M, F, F, M, M, M, F, M, M, M, M, M, M, ...</code></pre>
+<p>Note que la probabilidad de tener el padecimiento para un individuo del sexo masculino es <span class="math inline">\(= 0.55&gt;0.26\)</span> a la de una mujer.</p>
 </div>
-<div id="graficamos-el-resultado." class="section level5">
-<h5>Graficamos el resultado.</h5>
-<pre class="r"><code>ggplot(predic, aes(sexo, prob.hd, size=prob.hd)) +
-  geom_point(aes(colour=sexo)) +
-  xlab(&quot;Sex&quot;) +
-  ylab(&quot;Prob padecimiento cardiáco&quot;)+
+<div id="graficamos-las-probabilidades." class="section level5">
+<h5>Graficamos las probabilidades.</h5>
+<pre class="r"><code>ggplot(predic, aes(sexo,prob.hd, size=sexo)) +
+  geom_point(aes(color=sexo))+
+  xlab(&quot;Sexo&quot;) +
+  ylab(&quot;Pr padecimiento cardiáco&quot;)+
   theme_classic()+
-  theme(legend.position = &quot;none&quot;)</code></pre>
+  theme(legend.position = &quot;none&quot;)+
+  scale_color_manual(values =c(&quot;deeppink&quot;,&quot;deepskyblue3&quot;))+
+  labs(x=&quot;Sexo&quot;)</code></pre>
+<pre><code>## Warning: Using size for a discrete variable is not advised.</code></pre>
 <p><img src="/post/2019-04-16-Logistic3_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
-<div id="estmacion-rl-multiple-todas-las-variables" class="section level4">
-<h4>Estmación RL Multiple (todas las variables)</h4>
-<pre class="r"><code>logistic2 &lt;- glm(hd ~ ., data=data, family=&quot;binomial&quot;)
+<div id="estmacion-rl-multiple-todas-las" class="section level4">
+<h4>Estmación RL Multiple (todas las )</h4>
+<div id="ejercicio-2" class="section level5">
+<h5>Ejercicio 2</h5>
+<p>Estime el modelo de regresión logistica para la siguiente especificación:</p>
+<p><span class="math display">\[\hat{p}(X)=\frac{e^{\beta_0+\beta_1age+\beta_2sexo+\beta_3cp+\beta_4ca+\beta_5thal}}{1+e^{\beta_0+\beta_1age+\beta_2sexo+\beta_3cp+\beta_4ca+\beta_5thal}}\]</span> a) Indique el valor de el ratio de momios para las variables independientes del modelo. Qué variables son estadisticamente significativas?</p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>Genera la predicción de las probabilidades de que los individuos tengan padecimiento cardiáco, grafique.</li>
+</ol>
+<pre class="r"><code>logistic2 &lt;- glm(hd ~age+sexo+cp+ca+thal, data=data, family=&quot;binomial&quot;)
 summary(logistic2)</code></pre>
 <pre><code>## 
 ## Call:
-## glm(formula = hd ~ ., family = &quot;binomial&quot;, data = data)
+## glm(formula = hd ~ age + sexo + cp + ca + thal, family = &quot;binomial&quot;, 
+##     data = data)
 ## 
 ## Deviance Residuals: 
 ##     Min       1Q   Median       3Q      Max  
-## -3.0490  -0.4847  -0.1213   0.3039   2.9086  
+## -2.6957  -0.6072  -0.2197   0.6045   2.4424  
 ## 
 ## Coefficients:
-##              Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept) -6.253978   2.960399  -2.113 0.034640 *  
-## age         -0.023508   0.025122  -0.936 0.349402    
-## sexM         1.670152   0.552486   3.023 0.002503 ** 
-## cp2          1.448396   0.809136   1.790 0.073446 .  
-## cp3          0.393353   0.700338   0.562 0.574347    
-## cp4          2.373287   0.709094   3.347 0.000817 ***
-## trestbps     0.027720   0.011748   2.359 0.018300 *  
-## chol         0.004445   0.004091   1.087 0.277253    
-## fbs1        -0.574079   0.592539  -0.969 0.332622    
-## restecg1     1.000887   2.638393   0.379 0.704424    
-## restecg2     0.486408   0.396327   1.227 0.219713    
-## thalach     -0.019695   0.011717  -1.681 0.092781 .  
-## exang1       0.653306   0.447445   1.460 0.144267    
-## oldpeak      0.390679   0.239173   1.633 0.102373    
-## slope2       1.302289   0.486197   2.679 0.007395 ** 
-## slope3       0.606760   0.939324   0.646 0.518309    
-## ca3          2.237444   0.514770   4.346 1.38e-05 ***
-## ca4          3.271852   0.785123   4.167 3.08e-05 ***
-## ca5          2.188715   0.928644   2.357 0.018428 *  
-## thal3       -0.168439   0.810310  -0.208 0.835331    
-## thal4        1.433319   0.440567   3.253 0.001141 ** 
+##             Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -4.47870    1.35653  -3.302 0.000961 ***
+## age          0.02279    0.02050   1.111 0.266376    
+## sexoM        0.89501    0.42478   2.107 0.035117 *  
+## cp2         -0.05905    0.66069  -0.089 0.928779    
+## cp3         -0.39502    0.62134  -0.636 0.524936    
+## cp4          1.83340    0.56271   3.258 0.001121 ** 
+## ca3          1.85376    0.43779   4.234 2.29e-05 ***
+## ca4          2.32602    0.59820   3.888 0.000101 ***
+## ca5          2.24263    0.78411   2.860 0.004235 ** 
+## thal3        0.99575    0.66700   1.493 0.135466    
+## thal4        1.92956    0.38275   5.041 4.62e-07 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## (Dispersion parameter for binomial family taken to be 1)
 ## 
 ##     Null deviance: 409.95  on 296  degrees of freedom
-## Residual deviance: 183.10  on 276  degrees of freedom
-## AIC: 225.1
+## Residual deviance: 225.49  on 286  degrees of freedom
+## AIC: 247.49
 ## 
-## Number of Fisher Scoring iterations: 6</code></pre>
-<pre class="r"><code>predicted.data &lt;- data.frame(
-  probability.of.hd=logistic2$fitted.values,
+## Number of Fisher Scoring iterations: 5</code></pre>
+<p>Note que la variable <strong>age</strong> no es estadisticamente significativa. Un resultado contraintuitivo. Sin embargo, observando la distribución de los datos notamos que la mayoria de las personas de la muestra son de edad avanzada (ej. mediana=56 años).</p>
+<pre class="r"><code>summary(data$age)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   29.00   48.00   56.00   54.54   61.00   77.00</code></pre>
+<p>Note un <strong>Akaike Information criterion</strong> mucho mas pequeño para este modelo que incluye un conjunto de variables explicativas mayor.</p>
+<p>Generalmente el<strong>AIC</strong> es un estadístico que comparamos entre especificaciones distintas de modelos para seleccionar el modelo final (ej. AIC menor).</p>
+<pre class="r"><code>pred&lt;- data.frame(
+  pr=logistic2$fitted.values,
   hd=data$hd)
 
-predicted.data &lt;- predicted.data[
-  order(predicted.data$probability.of.hd, decreasing=FALSE),]
-predicted.data$rank &lt;- 1:nrow(predicted.data)
+pred&lt;-arrange(pred,pr)%&gt;%
+  mutate(id=1:nrow(pred))
 
 
-ggplot(data=predicted.data, aes(x=rank, y=probability.of.hd)) +
-  geom_point(aes(color=hd), alpha=1, shape=4, stroke=2) +
-  xlab(&quot;Index&quot;) +
-  ylab(&quot;Predicted probability of getting heart disease&quot;)</code></pre>
-<p><img src="/post/2019-04-16-Logistic3_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+ggplot(pred, aes(id, pr)) +
+  geom_point(aes(color=hd), 
+  alpha=1, shape=21) +
+  xlab(&quot;Individuos&quot;) +
+  ylab(&quot;Pr(de tener pad. cardíaco)&quot;)+
+  theme_classic()+
+  scale_color_manual(values =c(&quot;darkgreen&quot;,&quot;orange&quot;))+
+  labs(color=&quot;Status&quot;)</code></pre>
+<p><img src="/post/2019-04-16-Logistic3_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+</div>
 </div>
 
 		</div>
