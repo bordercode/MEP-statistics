@@ -284,7 +284,28 @@ Ahora hacemos la preduicción para un  individuo con un saldo (*balance*) de $\$
 $$\hat {p}(X)=\frac{e^{ \hat{\beta_0} +\hat{\beta_1} X}}{1 + e^{\hat{ \beta_0} +\hat{\beta_1 }X}}=\frac{e^{−10.6513+0.0055×2,000}}{1+e^{−10.6513+0.0055×2,000}}=0.586$$
 Un individuo con un balance de 2000 en su tarjeta tiene una probabilidad de incumplimiento (*default*) $58.6\%$
 
-![](/img/l1.jpg)
+```{r}
+pred<- data.frame(
+  pr=logistic$fitted.values,
+  default=d$default, b=d$balance)
+
+pred<-arrange(pred,pr)%>%
+  mutate(id=1:nrow(pred))
+glimpse(pred)
+
+ggplot(pred, aes(b, pr)) +
+  geom_point(aes(color=default), 
+  alpha=1, shape=21) +
+    xlab("Balance") +
+  ylab("Pr(de incumplimiento)")+
+  theme_classic()+
+  scale_color_manual(values =c("darkgreen","orange"))+
+  labs(color="Default")+
+  geom_hline(yintercept=0,linetype="dashed", size=.5, , color="blue")+
+   geom_hline(yintercept=1,linetype="dashed", size=.5, color="red")
+
+```
+
 
 
 

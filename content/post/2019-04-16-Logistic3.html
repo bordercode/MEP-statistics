@@ -17,7 +17,7 @@ menu:
 <p>Se tienen una serie de características sociodemograficas (ej. sexo, edad, )incluidos marcadores clínicos para una muestra 297 individuos.</p>
 <p>El objetivo es determinar la probabilidad de que la persona tenga un padecimiento cardiáco (heart disease).</p>
 <p>La variable dependiente es <strong>hd</strong> con dos categorías: Healthy=0, o Unhealthy=1</p>
-<p>A continuación la descrición de la informción disponible y la codificación de las variables.</p>
+<p>A continuación la descripción de la información disponible y la codificación de las variables.</p>
 <p><strong>age</strong> variable contínua para edad.</p>
 <p><strong>sexo</strong> 0 = Femenino, 1 = Masculino</p>
 <p><strong>cp</strong> Dolor en pecho (chest pain)</p>
@@ -26,7 +26,7 @@ menu:
 <p>3 = non-anginal pain,</p>
 <p>4 = asymptomatic</p>
 <p><strong>trestbps</strong> Presión alterial. (resting blood pressure) (medida en mm Hg) (variable Contínua).</p>
-<p><strong>ca</strong>, number of major vessels (2-5) colored by fluoroscopy. (marcador sobre daño arterial)</p>
+<p><strong>ca</strong>, number of major vessels colored by fluoroscopy. (2-5) (Marcador bimétrico sobre daño arterial)</p>
 <p><strong>thal</strong>, Short of thalium heart scan: A thallium heart scan is a test using a special camera and a small amount of radioactive substance injected into the bloodstream to make an image of the blood flow to the heart.</p>
 <p>2 = normal (no cold spots)</p>
 <p>3 = fixed defect (cold spots during rest and exercise)</p>
@@ -94,10 +94,10 @@ summary(logistic)</code></pre>
 male.log.odds.ratio</code></pre>
 <pre><code>## [1] 1.273667</code></pre>
 <p>Donde <strong>(Intercept)</strong> -1.0438 es el log (odds) para la categoría base en este caso <strong>Mujer</strong> y el coeficiente <strong>sexM=</strong> 1.2737 es el log(odds ratio) cuando el paciente es hombre.</p>
-<p>Interpretación: Para los Hombres se incrementa el logaritmo en el ratio de Momios de tener el pedecimiento, lo que se traduce en una <strong>proabilidad</strong> más elevada para un paciente del sexo masculino. <strong>NOTE</strong> que directamente el coeficiente estimado <strong>NO</strong> es la probabilidad todavía, aunque dado esse resultado sabemos que las probabilidades son mayores par loa hombres respecto a las mujeres de tener el padecimiento.</p>
-<p>Para determinar las <strong>probabilidades</strong> a partir del logaritmo del cociente de momios (coef. de nuestro modelo), extraemos las predicciones (<em>fitted.values</em>) que estan almacenadas como parte de los resultados del modelo. La siguiente estimación permite muestra este cálculo.</p>
-<div id="prediccion-de-probabilidaes-directamente." class="section level5">
-<h5>Predicción de probabilidaes directamente.</h5>
+<p>Interpretación: Para los Hombres se incrementa el logaritmo en el ratio de Momios de tener el pedecimiento, lo que se traduce en una <strong>proabilidad</strong> más elevada para un paciente del sexo masculino. <strong>NOTE</strong> que directamente el coeficiente estimado <strong>NO</strong> es la probabilidad todavía, aunque dado ese resultado sabemos que las probabilidades de tener el padecimiento son mayores par los hombres respecto a las mujeres.</p>
+<p>Para determinar las <strong>probabilidades</strong> a partir del logaritmo del cociente de momios (coef. de nuestro modelo), extraemos las predicciones (<em>fitted.values</em>) que estan almacenadas como parte de los resultados del modelo. La siguiente estimación muestra el cálculo.</p>
+<div id="prediccion-de-probabilidades." class="section level5">
+<h5>Predicción de probabilidades.</h5>
 <pre class="r"><code>predic&lt;- data.frame(
   prob.hd=logistic$fitted.values,
   sexo=data$sexo)
@@ -119,15 +119,14 @@ glimpse(predic)</code></pre>
   theme(legend.position = &quot;none&quot;)+
   scale_color_manual(values =c(&quot;deeppink&quot;,&quot;deepskyblue3&quot;))+
   labs(x=&quot;Sexo&quot;)</code></pre>
-<pre><code>## Warning: Using size for a discrete variable is not advised.</code></pre>
 <p><img src="/post/2019-04-16-Logistic3_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
-<div id="estmacion-rl-multiple-todas-las" class="section level4">
-<h4>Estmación RL Multiple (todas las )</h4>
+<div id="estmacion-rl-multiple-mas-de-una-variable-independiente." class="section level4">
+<h4>Estmación RL Multiple Más de una variable independiente.)</h4>
 <div id="ejercicio-2" class="section level5">
 <h5>Ejercicio 2</h5>
-<p>Estime el modelo de regresión logistica para la siguiente especificación:</p>
-<p><span class="math display">\[\hat{p}(X)=\frac{e^{\beta_0+\beta_1age+\beta_2sexo+\beta_3cp+\beta_4ca+\beta_5thal}}{1+e^{\beta_0+\beta_1age+\beta_2sexo+\beta_3cp+\beta_4ca+\beta_5thal}}\]</span> a) Indique el valor de el ratio de momios para las variables independientes del modelo. Qué variables son estadisticamente significativas?</p>
+<p>Estime el modelo de regresión logística para la siguiente especificación:</p>
+<p><span class="math display">\[\hat{p}(X)=\frac{e^{\beta_0+\beta_1age+\beta_2sexo+\beta_3cp+\beta_4ca+\beta_5thal}}{1+e^{\beta_0+\beta_1age+\beta_2sexo+\beta_3cp+\beta_4ca+\beta_5thal}}\]</span> a) Indique el valor del cociente de momios para las variables independientes del modelo. ¿Qué variables son estadísticamente significativas? ¿Cual es el nivel de significancia para la variable sexo? Argumente sobre la rezón de este resultado.</p>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>Genera la predicción de las probabilidades de que los individuos tengan padecimiento cardiáco, grafique.</li>
 </ol>
@@ -169,7 +168,7 @@ summary(logistic2)</code></pre>
 <pre class="r"><code>summary(data$age)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 ##   29.00   48.00   56.00   54.54   61.00   77.00</code></pre>
-<p>Note un <strong>Akaike Information criterion</strong> mucho mas pequeño para este modelo que incluye un conjunto de variables explicativas mayor.</p>
+<p>Note un <strong>Akaike Information Criterion</strong> mucho más pequeño para este modelo que incluye un conjunto de variables explicativas mayor.</p>
 <p>Generalmente el<strong>AIC</strong> es un estadístico que comparamos entre especificaciones distintas de modelos para seleccionar el modelo final (ej. AIC menor).</p>
 <pre class="r"><code>pred&lt;- data.frame(
   pr=logistic2$fitted.values,
@@ -188,5 +187,7 @@ ggplot(pred, aes(id, pr)) +
   scale_color_manual(values =c(&quot;darkgreen&quot;,&quot;orange&quot;))+
   labs(color=&quot;Status&quot;)</code></pre>
 <p><img src="/post/2019-04-16-Logistic3_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>En una primera inspección general, el hecho de que la mayoria de los individuos con el padecimiento cardiáco se ubiquen con una pr&gt;.5, indica que el modelo de hecho funciona bien, sin embargo, para evaluar <strong>la precisión del modelo</strong> es necesario hacer el <strong>proceso de validación</strong> (ej. determinar cuantos casos que se predicen en la categoría 1, de hecho pertenecen a esa categoría).</p>
+<p>Dissclaimer: “Some of the figures in this presentation are taken from”An Introduction to Statistical Learning, with applications in R&quot; (Springer, 2013) with permission from the authors: G. James, D. Witten, T. Hastie and R. Tibshirani &quot;</p>
 </div>
 </div>

@@ -43,7 +43,7 @@ El objetivo es determinar la probabilidad de que la persona  tenga un padecimien
 
 La variable dependiente es **hd** con dos categorías: Healthy=0, o Unhealthy=1
 
-A continuación la descrición de la informción disponible y la codificación de las variables.   
+A continuación la descripción de la información disponible y la codificación de las variables.   
 
 **age** variable contínua para edad. 
 
@@ -61,7 +61,7 @@ A continuación la descrición de la informción disponible y la codificación d
   
 **trestbps** Presión alterial. (resting blood pressure) (medida en mm Hg)  (variable Contínua).
 
-**ca**, number of major vessels (2-5) colored by fluoroscopy. (marcador sobre daño arterial)
+**ca**, number of major vessels  colored by fluoroscopy. (2-5) (Marcador bimétrico sobre daño arterial)
 
 **thal**,  Short of thalium heart scan: A thallium heart scan is a test using a special camera and a small amount of radioactive substance injected into the bloodstream to make an image of the blood flow to the heart.
 
@@ -102,11 +102,11 @@ male.log.odds.ratio
 
 Donde **(Intercept)**  -1.0438  es el log (odds) para la categoría base en este caso  **Mujer** y el coeficiente  **sexM=** 1.2737 es el log(odds ratio) cuando el paciente es hombre. 
 
-Interpretación: Para los Hombres se incrementa el logaritmo en el ratio de Momios de tener el pedecimiento, lo que se traduce en una **proabilidad** más elevada para un paciente del sexo masculino. **NOTE** que directamente el coeficiente estimado **NO** es la probabilidad todavía, aunque dado esse resultado sabemos que las probabilidades son mayores par loa hombres respecto a las mujeres de tener el padecimiento. 
+Interpretación: Para los Hombres se incrementa el logaritmo en el ratio de Momios de tener el pedecimiento, lo que se traduce en una **proabilidad** más elevada para un paciente del sexo masculino. **NOTE** que directamente el coeficiente estimado **NO** es la probabilidad todavía, aunque dado ese resultado sabemos que las probabilidades de tener el padecimiento son mayores par los hombres respecto a las mujeres. 
 
-Para determinar las **probabilidades** a partir del logaritmo del cociente de momios (coef. de nuestro modelo), extraemos  las predicciones (*fitted.values*) que estan almacenadas como parte de los resultados del modelo. La siguiente estimación permite muestra este cálculo.
+Para determinar las **probabilidades** a partir del logaritmo del cociente de momios (coef. de nuestro modelo), extraemos  las predicciones (*fitted.values*) que estan almacenadas como parte de los resultados del modelo. La siguiente estimación  muestra el cálculo.
 
-##### Predicción de probabilidaes directamente.
+##### Predicción de probabilidades.
 
 
 ```{r}
@@ -121,7 +121,7 @@ Note que la probabilidad de tener el padecimiento para un individuo del sexo mas
 
 ##### Graficamos las probabilidades.
 
-```{r}
+```{r, warning=FALSE}
 ggplot(predic, aes(sexo,prob.hd, size=sexo)) +
   geom_point(aes(color=sexo))+
   xlab("Sexo") +
@@ -132,14 +132,15 @@ ggplot(predic, aes(sexo,prob.hd, size=sexo)) +
   labs(x="Sexo")
 ```
 
-#### Estmación RL Multiple  (todas las )
+#### Estmación RL Multiple  Más de una variable independiente.)
 
 ##### Ejercicio 2 
 
-Estime el modelo de regresión logistica para la siguiente especificación: 
+Estime el modelo de regresión logística para la siguiente especificación: 
 
 $$\hat{p}(X)=\frac{e^{\beta_0+\beta_1age+\beta_2sexo+\beta_3cp+\beta_4ca+\beta_5thal}}{1+e^{\beta_0+\beta_1age+\beta_2sexo+\beta_3cp+\beta_4ca+\beta_5thal}}$$
-a) Indique el valor de el ratio de momios para las variables independientes del modelo. Qué variables son estadisticamente significativas?
+a) Indique el valor del cociente de momios para las variables independientes del modelo. 
+¿Qué variables son estadísticamente significativas? ¿Cual es el nivel de significancia para la variable sexo? Argumente sobre la rezón de este resultado.
 
 b) Genera la predicción de las probabilidades de que los individuos tengan  padecimiento cardiáco, grafique.
 
@@ -156,7 +157,7 @@ summary(data$age)
 ```
 
 
-Note un **Akaike Information criterion** mucho mas pequeño para este modelo que incluye un conjunto de variables explicativas mayor.
+Note un **Akaike Information Criterion** mucho más pequeño para este modelo que incluye un conjunto de variables explicativas mayor.
 
 Generalmente el**AIC** es un estadístico que comparamos entre especificaciones distintas de  modelos para seleccionar el modelo final  (ej.  AIC menor).
 
@@ -177,9 +178,12 @@ ggplot(pred, aes(id, pr)) +
   theme_classic()+
   scale_color_manual(values =c("darkgreen","orange"))+
   labs(color="Status")
-
-
 ```
 
 
+En una primera inspección general, el hecho de que la mayoria de los individuos con el padecimiento cardiáco se ubiquen con una pr>.5, indica que el modelo de hecho funciona bien, sin embargo, para evaluar **la precisión del modelo** es necesario hacer el **proceso de validación** (ej. determinar cuantos casos que se predicen en la categoría 1, de hecho pertenecen a esa  categoría). 
 
+
+
+
+Dissclaimer: "Some of the figures in this presentation are taken from "An Introduction to Statistical Learning, with applications in R"  (Springer, 2013) with permission from the authors: G. James, D. Witten,  T. Hastie and R. Tibshirani " 
