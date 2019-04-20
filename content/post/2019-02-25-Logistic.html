@@ -122,7 +122,10 @@ menu:
 </div>
 <div id="mcfaddens-pseudo-r2.-prueba-para-determinar-si-el-modelo-es-util." class="section level4">
 <h4>McFadden’s Pseudo R^2. Prueba para determinar si el modelo es útil.</h4>
-<p>Ahora como analogía de los modelos de RL MCO, es posible estimar una medida que nos indique en el modelos de <strong>RL</strong> es válido. Este ese el indicador Pseudo <span class="math inline">\(R^2\)</span> de McFadden. <span class="math display">\[R^2=\frac{ll(null )-ll(fit)}{ll(null)}\]</span> Donde: <span class="math display">\[ll(fit)=log(likelyhood) max\]</span> <span class="math display">\[ll(null)=overall prob=log(likelyhood|1)\]</span> #### Ejemplo 1 Modelo de regressión logística.</p>
+<p>Ahora como analogía de los modelos de RL MCO, es posible estimar una medida que nos indique en el modelos de <strong>RL</strong> es válido. Este ese el indicador Pseudo <span class="math inline">\(R^2\)</span> de McFadden. <span class="math display">\[R^2=\frac{ll(null )-ll(fit)}{ll(null)}\]</span> Donde: <span class="math display">\[ll(fit)=log(likelyhood) max\]</span> <span class="math display">\[ll(null)=overall prob=log(likelyhood|1)\]</span></p>
+</div>
+<div id="ejemplo-1-modelo-de-regression-logistica." class="section level4">
+<h4>Ejemplo 1 Modelo de regressión logística.</h4>
 <pre class="r"><code>logistic&lt;-glm(default~balance, data=d,family=binomial)
 
 summary(logistic)</code></pre>
@@ -150,7 +153,7 @@ summary(logistic)</code></pre>
 ## Number of Fisher Scoring iterations: 8</code></pre>
 <p>Un incremento de una unidad en la variable <strong>Balance</strong> se relaciona con un incremento de .00549 en los <strong>log(odds)</strong> de la variable <em>default</em> y esta relación es estadísticamente significativa al 0.05.</p>
 <p>Hacemos ahora predicciones de rpobabilidades con base en los log(odds) estimados. Por ejemplo para un individuo cuyo balance=<span class="math inline">\(\$1,000\)</span></p>
-<p><span class="math display">\[\hat {p}(X)=\frac{e^{ \hat{\beta_0} +\hat{\beta_1} X}}{1 + e^{\hat{ \beta_0} +\hat{\beta_1 }X}}=\frac{e^{−10.6513+0.0055×1,000}}{1+e^{−10.6513+0.0055×1,000}}=0.00576\]</span> Una probanilidad de default de <span class="math inline">\(0.57\%\)</span>.</p>
+<p><span class="math display">\[\hat {p}(X)=\frac{e^{ \hat{\beta_0} +\hat{\beta_1} X}}{1 + e^{\hat{ \beta_0} +\hat{\beta_1 }X}}=\frac{e^{−10.6513+0.0055×1,000}}{1+e^{−10.6513+0.0055×1,000}}=0.00576\]</span> Una probabilidad de default de <span class="math inline">\(0.57\%\)</span>.</p>
 <p>Ahora hacemos la preduicción para un individuo con un saldo (<em>balance</em>) de <span class="math inline">\(\$2,000\)</span>.</p>
 <p><span class="math display">\[\hat {p}(X)=\frac{e^{ \hat{\beta_0} +\hat{\beta_1} X}}{1 + e^{\hat{ \beta_0} +\hat{\beta_1 }X}}=\frac{e^{−10.6513+0.0055×2,000}}{1+e^{−10.6513+0.0055×2,000}}=0.586\]</span> Un individuo con un balance de 2000 en su tarjeta tiene una probabilidad de incumplimiento (<em>default</em>) <span class="math inline">\(58.6\%\)</span></p>
 <p>Estimamos el <span class="math inline">\(R^2\)</span> como :</p>
@@ -161,9 +164,12 @@ ll.fit &lt;- logistic$deviance/-2
 ## McFadden&#39;s Pseudo R^2 = [ LL(Null) - LL(fit) ] / LL(Null)
 (ll.null - ll.fit) / ll.null</code></pre>
 <pre><code>## [1] 0.4533916</code></pre>
-<pre class="r"><code>## El p-value for the R^2
+<pre class="r"><code>## El p-value para el  R^2 a partir de la distribución chi cuadrada.
+
 1 - pchisq(2*(ll.fit - ll.null), df=(length(logistic$coefficients)-1))</code></pre>
 <pre><code>## [1] 0</code></pre>
+<p>El <span class="math inline">\(R^2\)</span> es estadísticamente significativo, el modelo es útil.</p>
+<p>Graficamos la distribución de probabilidades estimada por el modelo.</p>
 <pre class="r"><code>pred&lt;- data.frame(
   pr=logistic$fitted.values,
   default=d$default, b=d$balance)

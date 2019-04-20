@@ -297,7 +297,8 @@ $$R^2=\frac{ll(null )-ll(fit)}{ll(null)}$$
 Donde:
 $$ll(fit)=log(likelyhood) max$$
 $$ll(null)=overall prob=log(likelyhood|1)$$
-#### Ejemplo 1 Modelo de regressión logística.
+
+####Ejemplo 1 Modelo de regressión logística.
 
 
 ```{r}
@@ -310,7 +311,7 @@ Un incremento de una unidad en la variable **Balance** se relaciona con  un incr
 Hacemos ahora predicciones de rpobabilidades con base en los log(odds) estimados. Por ejemplo para un individuo cuyo balance=$\$1,000$
   
 $$\hat {p}(X)=\frac{e^{ \hat{\beta_0} +\hat{\beta_1} X}}{1 + e^{\hat{ \beta_0} +\hat{\beta_1 }X}}=\frac{e^{−10.6513+0.0055×1,000}}{1+e^{−10.6513+0.0055×1,000}}=0.00576$$
-Una probanilidad de default de $0.57\%$. 
+Una probabilidad de default de $0.57\%$. 
 
 Ahora hacemos la preduicción para un  individuo con un saldo (*balance*) de $\$2,000$.
 
@@ -328,10 +329,15 @@ ll.fit <- logistic$deviance/-2
 ## McFadden's Pseudo R^2 = [ LL(Null) - LL(fit) ] / LL(Null)
 (ll.null - ll.fit) / ll.null
 
-## El p-value for the R^2
+## El p-value para el  R^2 a partir de la distribución chi cuadrada.
+
 1 - pchisq(2*(ll.fit - ll.null), df=(length(logistic$coefficients)-1))
 ```
 
+El $R^2$ es estadísticamente significativo,  el modelo es útil.
+
+
+Graficamos la distribución de probabilidades estimada por el modelo.
 
 ```{r}
 pred<- data.frame(
