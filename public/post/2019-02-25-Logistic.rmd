@@ -243,9 +243,12 @@ La probabilidad se obtiene a partir de substituir los coeficientes en la funció
 
 Usamos el procedimiento de **Máxima verosimilitud** a diferencia del caso del modelo de regressión lineal en donde se aplicó  **MCO**
 
-Este permite seleccionar los coeficientes $\beta_0 , \beta_1$ que maximizan la **función de verosimilitud**.
+Este permite seleccionar los coeficientes $\beta_0 , \beta_1$ que maximizan la **función de verosimilitud**. 
 
-Maximizar la función de verosimilitud implica determinar aquella  probabilidad $\hat{p}(x_i)$ que es lo más apegada posible al valor observado. 
+$$\ell ({\beta_0, \beta_1})=\prod_{i:y_{i}=1}p(x_i)\prod_{i':y_{i'}=0}(1-p(x_{i'}))$$
+En palabras la función de máxima verosimilitud  realiza un proceso interativo para seleccionar la linea que maximiza el log(likelihood) calculando  el producto de  cada probabilidad de que el evento ocurra por el producto de las probabilidades estimadas de que el evento no odurra. 
+
+Maximizar la función de verosimilitud implica determinar aquella  probabilidad $\hat{p}(x_i)$ que es lo más apegada posible al valor observado de los datos. 
 
 En nuestro ejemplo con la base de datos sobre incumplimiento (*default*) del pago en tarjeta de crédito, buscamos los valores de $\hat{\beta_0}, \hat{\beta_1}$ que al substituirlos en la función $p(X)$, resulten en un número lo mas cercano posible a 1 para los individuos en la catergoría default y cercano a cero en caso contrario. 
 
@@ -270,7 +273,7 @@ randomdeviates<-rnorm(1000,0,1)
  
 par(mfrow=c(1,3), mar=c(3,4,4,2))
 
-plot(xseq, densities, col="darkgreen",xlab="", ylab="Densidad", type="l",lwd=2, cex=2, main="Función Densidad de Probabilidades PDF Standard Normal", cex.axis=.8)
+plot(xseq, densities, col="darkgreen",xlab="", ylab="Densidad", type="l",lwd=2, cex=2, main="Función Densidad de Probabilidades PDF", cex.axis=.8)
 
 plot(xseq, cumulative, col="darkorange", xlab="", ylab="Probabilidad Acumulada",type="l",lwd=2, cex=2, main="CDF de Standard Normal", cex.axis=.8)
 

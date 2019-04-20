@@ -217,7 +217,8 @@ if (!doNotTrack) {
 <h5>Estimación de coeficientes en el modelo de regresión logistica.</h5>
 <p>Usamos el procedimiento de <strong>Máxima verosimilitud</strong> a diferencia del caso del modelo de regressión lineal en donde se aplicó <strong>MCO</strong></p>
 <p>Este permite seleccionar los coeficientes <span class="math inline">\(\beta_0 , \beta_1\)</span> que maximizan la <strong>función de verosimilitud</strong>.</p>
-<p>Maximizar la función de verosimilitud implica determinar aquella probabilidad <span class="math inline">\(\hat{p}(x_i)\)</span> que es lo más apegada posible al valor observado.</p>
+<p><span class="math display">\[\ell ({\beta_0, \beta_1})=\prod_{i:y_{i}=1}p(x_i)\prod_{i&#39;:y_{i&#39;}=0}(1-p(x_{i&#39;}))\]</span> En palabras la función de máxima verosimilitud realiza un proceso interativo para seleccionar la linea que maximiza el log(likelihood) calculando el producto de cada probabilidad de que el evento ocurra por el producto de las probabilidades estimadas de que el evento no odurra.</p>
+<p>Maximizar la función de verosimilitud implica determinar aquella probabilidad <span class="math inline">\(\hat{p}(x_i)\)</span> que es lo más apegada posible al valor observado de los datos.</p>
 <p>En nuestro ejemplo con la base de datos sobre incumplimiento (<em>default</em>) del pago en tarjeta de crédito, buscamos los valores de <span class="math inline">\(\hat{\beta_0}, \hat{\beta_1}\)</span> que al substituirlos en la función <span class="math inline">\(p(X)\)</span>, resulten en un número lo mas cercano posible a 1 para los individuos en la catergoría default y cercano a cero en caso contrario.</p>
 </div>
 <div id="prueba-para-determinar-si-el-logodds-ratio-es-estadisticamente-significativo." class="section level5">
