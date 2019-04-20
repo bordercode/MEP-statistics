@@ -222,14 +222,15 @@ if (!doNotTrack) {
 </div>
 <div id="prueba-para-determinar-si-el-logodds-ratio-es-estadisticamente-significativo." class="section level5">
 <h5>Prueba para determinar si el log(odds ratio) es estadisticamente significativo.</h5>
-<p>Usamos la prueba de Wald. (<strong>Wald´s test</strong>). Con esta obtenemos los intervalos de confianza así como los p-values para determinar la significancia estadística de los coeficientes.</p>
-<p>Note que la hipótesis nula <span class="math inline">\(H_0: \hat{\beta_1}=0\)</span> lo que implica que</p>
+<p>Usamos la prueba de Wald. (<strong>Wald´s test</strong>). Con esta obtenemos los intervalos de confianza así como los p-values para determinar la significancia estadística de los coeficientes. Importante recordar que los log odd (log de los momios) y los log(odd) (cociente de momios), se distribuyen acorde a la <strong>normal</strong> con: <span class="math inline">\(N\approx(\mu=0,\sigma=1)\)</span> y recordando los fundamentos del <strong>Teorema de limite Central</strong> podemos estimar <strong>intervalos de confianza</strong> y <em>p values</em> como areas de bajo de la curva de la distribución.</p>
+<p><img src="/post/2019-02-25-Logistic_files/figure-html/unnamed-chunk-3-1.png" width="672" /> <a href="https://www.r-bloggers.com/normal-distribution-functions/">Source:</a></p>
+<p>Regresando a la estimación de la prueba de <strong>Wald</strong> para determinar la significancia estadística de los coeficientes obtenidos en el modelo de regresión logística (log(odd) y log(odds ratios) observe que la hipótesis nula <span class="math inline">\(H_0: \hat{\beta_1}=0\)</span> lo que implica que:</p>
 <p><span class="math display">\[p(X)=\frac{e^{\beta_0}}{1+e^{\beta_0}}\]</span> O bien que las variables independientes no tienen impacto o son irrelevantes para explicar la variable dependiente.</p>
-<p>Tal como hacemos en cualquier prueba de hipótesis, rechazams la <strong>hipótesis nula</strong> si el <span class="math inline">\(p-value&lt;\alpha\)</span> threshld de contraste, usualmente 0.05.</p>
+<p>Tal como hacemos en cualquier prueba de hipótesis, rechazamos la <strong>hipótesis nula</strong> si el <span class="math inline">\(p-value&lt;\alpha\)</span> threshold de contraste, usualmente 0.05.</p>
 <p>El valor del intercepto en el modelo permite el ajuste de las probabilidades a la proporción observada de valores positivos en los datos (ej. Y=1)</p>
 </div>
-<div id="ejecicio-1-modelo-de-regression-logistica." class="section level4">
-<h4>Ejecicio 1 Modelo de regressión logística.</h4>
+<div id="ejemplo-1-modelo-de-regression-logistica." class="section level4">
+<h4>Ejemplo 1 Modelo de regressión logística.</h4>
 <pre class="r"><code>logistic&lt;-glm(default~balance, data=d,family=binomial)
 
 summary(logistic)</code></pre>
@@ -283,7 +284,7 @@ glimpse(pred)</code></pre>
   labs(color=&quot;Default&quot;)+
   geom_hline(yintercept=0,linetype=&quot;dashed&quot;, size=.5, , color=&quot;blue&quot;)+
    geom_hline(yintercept=1,linetype=&quot;dashed&quot;, size=.5, color=&quot;red&quot;)</code></pre>
-<p><img src="/post/2019-02-25-Logistic_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="/post/2019-02-25-Logistic_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <div id="ejemplo-2.-estimacion-de-modelo-de-regresion-logistica-con-una-variable-dicotomica." class="section level5">
 <h5>Ejemplo 2. Estimación de modelo de regresión logística con una variable dicotómica.</h5>
 <p>Considere el escenario de la variable dicotomica <em>student</em>. que toma los valores 1 si el individuo es estudiante y 0 en caso contrario. Estimaremos el modelo para la variable dependiente <strong>Default</strong> y ahora con la variable independiente dicotomica <strong>student</strong>.</p>
