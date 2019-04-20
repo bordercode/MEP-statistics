@@ -206,6 +206,11 @@ summary(logistic)</code></pre>
 <pre class="r"><code>male.log.odds.ratio &lt;- log((112 / 89) / (25/71))
 male.log.odds.ratio</code></pre>
 <pre><code>## [1] 1.273667</code></pre>
+<p>Por su parte la prueba de Wald toma el cociente entre el log (odd ratio ) y la desviación estandar de la muesta <strong>SE</strong> en este caso <span class="math inline">\(1.2737/0.2725=4.674\)</span>. Este valor corresponde al estadístico de prueba <strong>Z</strong>.</p>
+<pre class="r"><code>1.2737/0.2725</code></pre>
+<pre><code>## [1] 4.674128</code></pre>
+<p>Lo que inidica cuantas desviaciones estándar el <strong>log(odd ratio)</strong> está de cero. Considerando lo que ya sabemos sobre prueba de hipótesis un valor de peruba (<strong>Z</strong> en este caso) mayor a 1.96 tendrá un <em>p-value&lt;0.05</em> y por lo tanto será estadísticamente significativo. En este caso el estadístico de prueba <strong>Z=4.674</strong> y tiene un p-value de 0.00000295.</p>
+<p>La variable <strong>sexo</strong> tiene una relación estadísticamente significativa con la variable dependiente (padecimiento cardiáco).</p>
 <p>Donde <strong>(Intercept)</strong> -1.0438 es el log (odds) para la categoría base en este caso <strong>Mujer</strong> y el coeficiente <strong>sexM=</strong> 1.2737 es el log(odds ratio) cuando el paciente es hombre.</p>
 <p>Interpretación: Para los Hombres se incrementa el logaritmo en el ratio de Momios de tener el pedecimiento, lo que se traduce en una <strong>proabilidad</strong> más elevada para un paciente del sexo masculino. <strong>NOTE</strong> que directamente el coeficiente estimado <strong>NO</strong> es la probabilidad todavía, aunque dado ese resultado sabemos que las probabilidades de tener el padecimiento son mayores par los hombres respecto a las mujeres.</p>
 <p>Para determinar las <strong>probabilidades</strong> a partir del logaritmo del cociente de momios (coef. de nuestro modelo), extraemos las predicciones (<em>fitted.values</em>) que estan almacenadas como parte de los resultados del modelo. La siguiente estimación muestra el cálculo.</p>
@@ -232,7 +237,7 @@ glimpse(predic)</code></pre>
   theme(legend.position = &quot;none&quot;)+
   scale_color_manual(values =c(&quot;deeppink&quot;,&quot;deepskyblue3&quot;))+
   labs(x=&quot;Sexo&quot;)</code></pre>
-<p><img src="/post/2019-04-16-Logistic3_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="/post/2019-04-16-Logistic3_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
 <div id="estmacion-rl-multiple-mas-de-una-variable-independiente." class="section level4">
 <h4>Estmación RL Multiple Más de una variable independiente.)</h4>
@@ -299,7 +304,7 @@ ggplot(pred, aes(id, pr)) +
   theme_classic()+
   scale_color_manual(values =c(&quot;darkgreen&quot;,&quot;orange&quot;))+
   labs(color=&quot;Status&quot;)</code></pre>
-<p><img src="/post/2019-04-16-Logistic3_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="/post/2019-04-16-Logistic3_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>En una primera inspección general, el hecho de que la mayoria de los individuos con el padecimiento cardiáco se ubiquen con una pr&gt;.5, indica que el modelo de hecho funciona bien, sin embargo, para evaluar <strong>la precisión del modelo</strong> es necesario hacer el <strong>proceso de validación</strong> (ej. determinar cuantos casos que se predicen en la categoría 1, de hecho pertenecen a esa categoría).</p>
 <p>Dissclaimer: “Some of the figures in this presentation are taken from”An Introduction to Statistical Learning, with applications in R&quot; (Springer, 2013) with permission from the authors: G. James, D. Witten, T. Hastie and R. Tibshirani &quot;</p>
 </div>

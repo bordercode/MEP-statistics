@@ -99,6 +99,17 @@ male.log.odds.ratio <- log((112 / 89) / (25/71))
 male.log.odds.ratio
 ```
 
+Por su parte la prueba de Wald toma el cociente entre el log (odd ratio ) y  la desviación estandar de la muesta **SE** en este caso $1.2737/0.2725=4.674$. Este valor corresponde al estadístico de prueba  **Z**.
+
+```{r}
+1.2737/0.2725
+```
+
+
+Lo que inidica cuantas desviaciones estándar el **log(odd ratio)** está de cero. Considerando lo que ya sabemos sobre prueba de hipótesis un valor de peruba (**Z** en este caso)  mayor a 1.96 tendrá un *p-value<0.05* y por lo tanto será estadísticamente significativo. 
+En este caso el estadístico de prueba **Z=4.674** y tiene un p-value de 0.00000295.
+
+La variable **sexo** tiene una relación estadísticamente significativa con la variable dependiente (padecimiento cardiáco).
 
 Donde **(Intercept)**  -1.0438  es el log (odds) para la categoría base en este caso  **Mujer** y el coeficiente  **sexM=** 1.2737 es el log(odds ratio) cuando el paciente es hombre. 
 

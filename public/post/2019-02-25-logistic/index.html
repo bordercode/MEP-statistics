@@ -222,7 +222,9 @@ if (!doNotTrack) {
 </div>
 <div id="prueba-para-determinar-si-el-logodds-ratio-es-estadisticamente-significativo." class="section level5">
 <h5>Prueba para determinar si el log(odds ratio) es estadisticamente significativo.</h5>
-<p>Usamos la prueba de Wald. (<strong>Wald´s test</strong>). Con esta obtenemos los intervalos de confianza así como los p-values para determinar la significancia estadística de los coeficientes. Importante recordar que los log odd (log de los momios) y los log(odd) (cociente de momios), se distribuyen acorde a la <strong>normal</strong> con: <span class="math inline">\(N\approx(\mu=0,\sigma=1)\)</span> y recordando los fundamentos del <strong>Teorema de limite Central</strong> podemos estimar <strong>intervalos de confianza</strong> y <em>p values</em> como areas de bajo de la curva de la distribución.</p>
+<p>Usamos la prueba de Wald. (<strong>Wald´s test</strong>).</p>
+<p>Con esta obtenemos los intervalos de confianza así como los p-values para determinar la significancia estadística de los coeficientes.</p>
+<p>Importante recordar que los log odd (log de los momios) y los log(odd) (cociente de momios), se distribuyen acorde a la <strong>normal</strong> con: <span class="math inline">\(N\approx(\mu=0,\sigma=1)\)</span> y recordando los fundamentos del <strong>Teorema de limite Central</strong> podemos estimar <strong>intervalos de confianza</strong> y <em>p values</em> como areas de bajo de la curva de la distribución.</p>
 <p><img src="/post/2019-02-25-Logistic_files/figure-html/unnamed-chunk-3-1.png" width="672" /> <a href="https://www.r-bloggers.com/normal-distribution-functions/">Source:</a></p>
 <p>Regresando a la estimación de la prueba de <strong>Wald</strong> para determinar la significancia estadística de los coeficientes obtenidos en el modelo de regresión logística (log(odd) y log(odds ratios) observe que la hipótesis nula <span class="math inline">\(H_0: \hat{\beta_1}=0\)</span> lo que implica que:</p>
 <p><span class="math display">\[p(X)=\frac{e^{\beta_0}}{1+e^{\beta_0}}\]</span> O bien que las variables independientes no tienen impacto o son irrelevantes para explicar la variable dependiente.</p>

@@ -252,7 +252,10 @@ En nuestro ejemplo con la base de datos sobre incumplimiento (*default*) del pag
 ##### Prueba para determinar si el log(odds ratio) es estadisticamente significativo. 
 
 Usamos la prueba de Wald. (**Wald´s test**).
-Con esta obtenemos los intervalos de confianza así como los p-values para determinar la significancia estadística de los coeficientes.  Importante recordar que los log odd  (log de los momios) y los log(odd) (cociente de momios), se distribuyen acorde a la **normal** con:   $N\approx(\mu=0,\sigma=1)$ y recordando los fundamentos del **Teorema de limite Central**  podemos estimar **intervalos de confianza** y  *p values* como areas de bajo de la curva de la distribución. 
+
+Con esta obtenemos los intervalos de confianza así como los p-values para determinar la significancia estadística de los coeficientes. 
+
+Importante recordar que los log odd  (log de los momios) y los log(odd) (cociente de momios), se distribuyen acorde a la **normal** con:   $N\approx(\mu=0,\sigma=1)$ y recordando los fundamentos del **Teorema de limite Central**  podemos estimar **intervalos de confianza** y  *p values* como areas de bajo de la curva de la distribución. 
 
 ```{r, echo=FALSE}
 
