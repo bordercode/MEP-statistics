@@ -120,8 +120,9 @@ menu:
 <p>Tal como hacemos en cualquier prueba de hipótesis, rechazamos la <strong>hipótesis nula</strong> si el <span class="math inline">\(p-value&lt;\alpha\)</span> threshold de contraste, usualmente 0.05.</p>
 <p>El valor del intercepto en el modelo permite el ajuste de las probabilidades a la proporción observada de valores positivos en los datos (ej. Y=1)</p>
 </div>
-<div id="ejemplo-1-modelo-de-regression-logistica." class="section level4">
-<h4>Ejemplo 1 Modelo de regressión logística.</h4>
+<div id="mcfaddens-pseudo-r2.-prueba-para-determinar-si-el-modelo-es-util." class="section level4">
+<h4>McFadden’s Pseudo R^2. Prueba para determinar si el modelo es útil.</h4>
+<p>Ahora como analogía de los modelos de RL MCO, es posible estimar una medida que nos indique en el modelos de <strong>RL</strong> es válido. Este ese el indicador Pseudo <span class="math inline">\(R^2\)</span> de McFadden. <span class="math display">\[R^2=\frac{ll(null )-ll(fit)}{ll(null)}\]</span> Donde: <span class="math display">\[ll(fit)=log(likelyhood) max\]</span> <span class="math display">\[ll(null)=overall prob=log(likelyhood|1)\]</span> #### Ejemplo 1 Modelo de regressión logística.</p>
 <pre class="r"><code>logistic&lt;-glm(default~balance, data=d,family=binomial)
 
 summary(logistic)</code></pre>
@@ -152,6 +153,17 @@ summary(logistic)</code></pre>
 <p><span class="math display">\[\hat {p}(X)=\frac{e^{ \hat{\beta_0} +\hat{\beta_1} X}}{1 + e^{\hat{ \beta_0} +\hat{\beta_1 }X}}=\frac{e^{−10.6513+0.0055×1,000}}{1+e^{−10.6513+0.0055×1,000}}=0.00576\]</span> Una probanilidad de default de <span class="math inline">\(0.57\%\)</span>.</p>
 <p>Ahora hacemos la preduicción para un individuo con un saldo (<em>balance</em>) de <span class="math inline">\(\$2,000\)</span>.</p>
 <p><span class="math display">\[\hat {p}(X)=\frac{e^{ \hat{\beta_0} +\hat{\beta_1} X}}{1 + e^{\hat{ \beta_0} +\hat{\beta_1 }X}}=\frac{e^{−10.6513+0.0055×2,000}}{1+e^{−10.6513+0.0055×2,000}}=0.586\]</span> Un individuo con un balance de 2000 en su tarjeta tiene una probabilidad de incumplimiento (<em>default</em>) <span class="math inline">\(58.6\%\)</span></p>
+<p>Estimamos el <span class="math inline">\(R^2\)</span> como :</p>
+<pre class="r"><code>## Calculamos el  &quot;Pseudo R-squared&quot; y su  p-value
+ll.null &lt;- logistic$null.deviance/-2
+ll.fit &lt;- logistic$deviance/-2
+
+## McFadden&#39;s Pseudo R^2 = [ LL(Null) - LL(fit) ] / LL(Null)
+(ll.null - ll.fit) / ll.null</code></pre>
+<pre><code>## [1] 0.4533916</code></pre>
+<pre class="r"><code>## El p-value for the R^2
+1 - pchisq(2*(ll.fit - ll.null), df=(length(logistic$coefficients)-1))</code></pre>
+<pre><code>## [1] 0</code></pre>
 <pre class="r"><code>pred&lt;- data.frame(
   pr=logistic$fitted.values,
   default=d$default, b=d$balance)
@@ -175,7 +187,7 @@ glimpse(pred)</code></pre>
   labs(color=&quot;Default&quot;)+
   geom_hline(yintercept=0,linetype=&quot;dashed&quot;, size=.5, , color=&quot;blue&quot;)+
    geom_hline(yintercept=1,linetype=&quot;dashed&quot;, size=.5, color=&quot;red&quot;)</code></pre>
-<p><img src="/post/2019-02-25-Logistic_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="/post/2019-02-25-Logistic_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <div id="ejemplo-2.-estimacion-de-modelo-de-regresion-logistica-con-una-variable-dicotomica." class="section level5">
 <h5>Ejemplo 2. Estimación de modelo de regresión logística con una variable dicotómica.</h5>
 <p>Considere el escenario de la variable dicotomica <em>student</em>. que toma los valores 1 si el individuo es estudiante y 0 en caso contrario. Estimaremos el modelo para la variable dependiente <strong>Default</strong> y ahora con la variable independiente dicotomica <strong>student</strong>.</p>
