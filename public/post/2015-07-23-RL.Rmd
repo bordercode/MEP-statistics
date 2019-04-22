@@ -158,7 +158,7 @@ Una ventaja importante de la estructura de datos de panel sobre cross-section es
 
 ### Tipo de variables.
 
-Las variables utilizadas serán de dos tipos: **numéricas** ó **categoricas**. A su vez estas corresponden con los siguientes tipos de datos identificados en los programas utilizadso en el curso **Rstudio** y **STATA**: *doubles, integers, characters, logicals.* 
+Las variables utilizadas serán de dos tipos: **numéricas** ó **categoricas**. A su vez estas corresponden con los siguientes tipos de datos identificados en los programas y leguajes utilizados en el curso **Python** (Jupyter Notebook), **Rstudio**,  **STATA**: *doubles, integers, characters, logicals.* 
 
 Los dos primeros son valores numéricos, decimales o enteros, mientras el tipo characters puede representar **factores** (fct), ej. categorias como hombre, mujer, estado: BC, Jalisco, Sonora,etc.
 
@@ -213,7 +213,7 @@ c) ¿Cúal es el valor promedio del GTS?
 
 d) La tasa promedio de sucidio para las mujeres en México. 
 
-
+e) Ver presentación sobre el tema en [Topic](https://speech-infotec.netlify.com/)
 
 
 ```{r,eval=FALSE,echo=FALSE}

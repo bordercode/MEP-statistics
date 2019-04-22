@@ -48,7 +48,7 @@ El proyecto contempla la recolección de variables, la estimación del modelo, e
 
 El formato del reporte incluye la siguiente estructura: Introducción, Datos y métodos, resultados discusión y conclusiones.
 
-Fecha de entrega y presentación: Viernes 3 de Mayo 2019
+Fecha de entrega y presentación: martes 3o de Mayo, 2019
 
 # Bibliografía
 
