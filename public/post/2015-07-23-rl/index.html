@@ -164,6 +164,9 @@ if (!doNotTrack) {
 <p><strong>Corte transversal.</strong> Datos organizados con relación a una unidad de análisis, por ejemplo: una <strong>muestra</strong> de individuos, familias, empresas, ciudades, estados, paises, tomados para un punto determinado en el tiempo. Ejemplo: ENIGH, ENGASTO.ENSANUT, ENOE, SINAIS, DENUE. En algunos casos los datos corresponden a encuestas realizadas a lo largo de un perido en distintas semanas, estos datos se consieran de corte transversal.</p>
 <p>Este es el tipo de datos que estudiaremos en este curso principalmente.</p>
 <p>Pregunta, la siguiente base contiene datos de corte transversal.</p>
+<pre class="r"><code>TASA15&lt;-readRDS(&quot;TASA15.rds&quot;)%&gt;%
+  select(-c(id_ent,espT,pstd))
+TASA15</code></pre>
 <pre><code>##    Sexo Tasa              Estado
 ## 1     1  145             Sinaloa
 ## 2     1  138              Sonora
@@ -229,6 +232,10 @@ if (!doNotTrack) {
 ## 62    2   24             Yucatán
 ## 63    2   24            Campeche
 ## 64    2   23             Hidalgo</code></pre>
+<pre class="r"><code>TASA15_M&lt;-TASA15%&gt;%
+  filter(Sexo==2)
+
+TASA15_M</code></pre>
 <pre><code>##    Sexo Tasa              Estado
 ## 1     2   67      Aguascalientes
 ## 2     2   62           Chihuahua

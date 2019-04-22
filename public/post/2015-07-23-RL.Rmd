@@ -89,7 +89,8 @@ Este es el tipo de datos que estudiaremos en este curso principalmente.
 
 Pregunta, la siguiente base contiene datos de corte transversal.
 
-```{r, echo=FALSE}
+```{r, echo=TRUE}
+
 TASA15<-readRDS("TASA15.rds")%>%
   select(-c(id_ent,espT,pstd))
 TASA15
