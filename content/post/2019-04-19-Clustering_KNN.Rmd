@@ -1,0 +1,46 @@
+---
+title: "Clasifiación"
+author: "JLMR"
+date: 2019-04-18T21:14:14-05:00
+categories: ["R"]
+tags: ["LDA", "KNN"]
+mathjax : true
+menu:
+  main:
+    name: Clustering
+    weight: 18
+---
+
+
+
+```{r set-global-options, echo=FALSE, message=FALSE, warning=FALSE}
+knitr::opts_chunk$set(eval = TRUE, 
+                      echo = TRUE, 
+                      cache = FALSE,
+                      include = TRUE,
+                      collapse = FALSE,
+                      dependson = NULL,
+                      engine = "R", # Chunks will always have R code, unless noted
+                      error = FALSE)   
+
+
+```
+
+
+
+```{r silent-packages, echo = FALSE, eval = TRUE, message=FALSE, include = FALSE}
+library(tidyverse)
+library(ISLR)
+library(foreign)
+library(scales)
+```
+
+
+## Linear Discriminant Analysis LDA.
+
+
+
+Una ventaja de este **método de clasificación** respecto a otros como por ejemplo Modelos de **regresión  logística** es que podemos aplicarlos a $k>2$. En el modelo de regresión logísitica generalmente nuestra variable target de predicción tenemos dos ategorias (i.e la variable dependiente es dicotómica),  si bien es posible estimar el modelo para k>2, la especificación logit  en esos casos suele no ser tan estable).    
+
+El método de elección para esta tarea ($k>2$) es **LDA** 
+

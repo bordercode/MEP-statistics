@@ -109,10 +109,10 @@ TASA15_M
 
 #### Comportamiento de la Temperatura Mundial 1880-2000 (°C). ![](/img/tseries.png)
 
-Otras estructuras incluyen  **datos de panel** que básicamente agrupan series de corte transversal para diferentes momentos en el tiempo (ej. varios años).
-
 #### Cociente de localización para Diabetes 1998-2015 Frontera Norte y Frontera Sur, México.
 ![](/img/panel.jpg)
+
+Otras estructuras incluyen  **datos de panel** que básicamente agrupan series de corte transversal para diferentes momentos en el tiempo (ej. varios años).
 
 ```{r, echo=FALSE}
 
@@ -124,6 +124,8 @@ mutate(year1950=year-1950)%>%
 
 gapminder
 ```
+
+
 
 Note la variable que distingue la unidad de análisis **(country)** y la variable que incorpora la dimensión temporal para la estructura de panel **(year)**.
 

@@ -6,10 +6,20 @@
     <description>Recent content in R on Estadística II</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 09 Apr 2019 21:14:14 -0500</lastBuildDate>
+    <lastBuildDate>Thu, 18 Apr 2019 21:14:14 -0500</lastBuildDate>
     
 	<atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Clasifiación</title>
+      <link>/post/2019-04-19-clustering_knn/</link>
+      <pubDate>Thu, 18 Apr 2019 21:14:14 -0500</pubDate>
+      
+      <guid>/post/2019-04-19-clustering_knn/</guid>
+      <description>Linear Discriminant Analysis LDA.Una ventaja de este método de clasificación respecto a otros como por ejemplo Modelos de regresión logística es que podemos aplicarlos a \(k&amp;gt;2\). En el modelo de regresión logísitica generalmente nuestra variable target de predicción tenemos dos ategorias (i.e la variable dependiente es dicotómica), si bien es posible estimar el modelo para k&amp;gt;2, la especificación logit en esos casos suele no ser tan estable).
+El método de elección para esta tarea (\(k&amp;gt;2\)) es LDA</description>
+    </item>
     
     <item>
       <title>Logistic3</title>
