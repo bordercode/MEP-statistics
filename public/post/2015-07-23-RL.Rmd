@@ -249,7 +249,7 @@ c) Determine si la diferencia entre la tasa promedio de morbilidad  de ambos sex
 
 d) La variable tasa se distribuye a corde con los supuestos de normalidad?
 
-e) Estime el coeficeinte de correlación entre tasa de diabetes y la variable sobrepeso (imc promedio por estado  segÚn ENSANUT). 
+e) Estime el coeficiente de correlación entre tasa de diabetes y la variable sobrepeso (imc promedio por estado  segÚn ENSANUT). 
 
 ```{r,eval=FALSE,echo=FALSE}
 
