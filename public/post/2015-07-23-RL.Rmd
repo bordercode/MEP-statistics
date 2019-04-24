@@ -221,7 +221,7 @@ c) ¿Cúal es el valor promedio del GTS?
 
 d) La tasa promedio de sucidio para las mujeres en México. 
 
-e) Ver presentación sobre el tema en [Topic](https://speech-infotec.netlify.com/)
+e) Ver presentación sobre el tema en [Topic](https://www.youtube.com/watch?v=hlPkDETcKmk&feature=youtu.be)
 
 
 ```{r,eval=FALSE,echo=FALSE}
