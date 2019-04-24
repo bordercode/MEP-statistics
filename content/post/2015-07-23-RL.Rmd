@@ -323,7 +323,7 @@ Y comente en disqus los siguientes puntos.
 2.-Rasgos principales de la  estimacion paramétrica en contraste con la estimación  no parametrica. Mencione un ejemplo de modelo basasdo en estimacion paramétrica y uno no-paramétrica.
 
 
-3. Indique los rasgos  principales del enfoque supervisado y no supervisado en el modelado estadístico.
+3.-Indique los rasgos  principales del enfoque supervisado y no supervisado en el modelado estadístico.
 
 
 Tiempo estimado 30 minutos
