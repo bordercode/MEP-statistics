@@ -9,8 +9,8 @@
 	<meta name="description" content="">
 	<meta name="generator" content="Hugo 0.54.0" />
 	<meta property="og:title" content="Clasifiación" />
-<meta property="og:description" content="Linear Discriminant Analysis LDA.Una ventaja de este método de clasificación respecto a otros como por ejemplo Modelos de regresión logística es que podemos aplicarlos a \(k&gt;2\). En el modelo de regresión logísitica generalmente nuestra variable target de predicción tenemos dos ategorias (i.e la variable dependiente es dicotómica), si bien es posible estimar el modelo para k&gt;2, la especificación logit en esos casos suele no ser tan estable).
-El método de elección para esta tarea (\(k&gt;2\)) es LDA" />
+<meta property="og:description" content="Clustering.Un escenario de análisis en el que tenemos una serie de características y deseamos clasificar las observaciones de acuerdo a su similitud corresponde con un típico problema de CLUSTERING. En especial podemos abordarlo desde la perspectiva de unsupervised learning (no hay variable dependiente nattural que buscamos predecir, lo que buscamos es clasificar.)
+A diferencia de los otros enfoques (R Lineal (MCO), R Logística), en este no estamos tratando de predecir una variable dependiente, más bien estamos buscando determinar a que grupo pertenece cada observación." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/post/2019-04-19-clustering_knn/" />
 <meta property="article:published_time" content="2019-04-18T21:14:14-05:00"/>
@@ -126,6 +126,11 @@ if (!doNotTrack) {
 			
 
 
+<div id="clustering." class="section level2">
+<h2>Clustering.</h2>
+<p>Un escenario de análisis en el que tenemos una serie de características y deseamos clasificar las observaciones de acuerdo a su similitud corresponde con un típico problema de <strong>CLUSTERING</strong>. En especial podemos abordarlo desde la perspectiva de unsupervised learning (no hay variable dependiente nattural que buscamos predecir, lo que buscamos es clasificar.)</p>
+<p>A diferencia de los otros enfoques (R Lineal (MCO), R Logística), en este no estamos tratando de predecir una variable dependiente, más bien estamos buscando determinar a que grupo pertenece cada observación.</p>
+</div>
 <div id="linear-discriminant-analysis-lda." class="section level2">
 <h2>Linear Discriminant Analysis LDA.</h2>
 <p>Una ventaja de este <strong>método de clasificación</strong> respecto a otros como por ejemplo Modelos de <strong>regresión logística</strong> es que podemos aplicarlos a <span class="math inline">\(k&gt;2\)</span>. En el modelo de regresión logísitica generalmente nuestra variable target de predicción tenemos dos ategorias (i.e la variable dependiente es dicotómica), si bien es posible estimar el modelo para k&gt;2, la especificación logit en esos casos suele no ser tan estable).</p>

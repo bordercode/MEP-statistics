@@ -17,8 +17,8 @@
       <pubDate>Thu, 18 Apr 2019 21:14:14 -0500</pubDate>
       
       <guid>/post/2019-04-19-clustering_knn/</guid>
-      <description>Linear Discriminant Analysis LDA.Una ventaja de este método de clasificación respecto a otros como por ejemplo Modelos de regresión logística es que podemos aplicarlos a \(k&amp;gt;2\). En el modelo de regresión logísitica generalmente nuestra variable target de predicción tenemos dos ategorias (i.e la variable dependiente es dicotómica), si bien es posible estimar el modelo para k&amp;gt;2, la especificación logit en esos casos suele no ser tan estable).
-El método de elección para esta tarea (\(k&amp;gt;2\)) es LDA</description>
+      <description>Clustering.Un escenario de análisis en el que tenemos una serie de características y deseamos clasificar las observaciones de acuerdo a su similitud corresponde con un típico problema de CLUSTERING. En especial podemos abordarlo desde la perspectiva de unsupervised learning (no hay variable dependiente nattural que buscamos predecir, lo que buscamos es clasificar.)
+A diferencia de los otros enfoques (R Lineal (MCO), R Logística), en este no estamos tratando de predecir una variable dependiente, más bien estamos buscando determinar a que grupo pertenece cada observación.</description>
     </item>
     
   </channel>
