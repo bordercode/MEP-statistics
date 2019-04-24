@@ -307,7 +307,7 @@ summarize(c=cor(Tasa, IMC, method = "spearman", use = "complete.obs"))
 
 ## Tarea
 
-Leer  Capítulo 1. [An Introduction to Statistical Learning](https://drive.google.com/file/d/1zaKc1XWvELsUgZrS32QdpHoM4-w0y7Qx/view?usp=sharing)
+Leer  Capítulo 1. [An Introduction to Statistical Learning](https://drive.google.com/file/d/1zaKc1XWvELsUgZrS32QdpHoM4-w0y7Qx/view?usp=sharing) section: *A Brief History of Statistical Learning*
 
 Y comente en disqus los siguientes puntos.
 
