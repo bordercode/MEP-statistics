@@ -41,16 +41,16 @@ menu:
 <p><strong>Recomendación</strong> <a href="https://drive.google.com/file/d/1peEQsZpHYhGscI6PGUQJ5gCFrM59sT35/view?usp=sharing">Linear regression Analysis.Xin Yan, 2009</a></p>
 <p>El proceso de modelar la relación entre la variable dependiente y las explicativas incluye la determinación de la <strong>significancia estadística</strong> esto es, el grado de confianza sobre que tanto la forma funcional utilizada reproduce la verdadera forma funcional que subyace a los datos.</p>
 <p>El análisis de regresión es un proceso que permite <strong>predecir</strong> los valores de la variable de respuesta con base en los valores que toman las variables explicativas o indepedientes.</p>
-<p>Este proceso se realiza mediante la estimación de los <strong>parámetros</strong> de la función lineal seleccionada y a partir del criterio estadisticao de referencia, en el particular, OLE.</p>
-<p>Es una <strong>técnica de estimación es paramétrica</strong>. En contraste regresiones de tipo no parametrico donde el objetivo no es estimar los parámetros de la función que describe la relación entre las variables del modelo.</p>
+<p>Este proceso se realiza mediante la estimación de los <strong>parámetros</strong> de la función lineal seleccionada y a partir del criterio estadística de referencia. En el particular, OLE.</p>
+<p>Es una <strong>técnica de estimación paramétrica</strong>. En contraste regresiones de tipo no parametrico donde el objetivo no es estimar los parámetros de la función que describe la relación entre las variables del modelo.</p>
 </div>
 </div>
-<div id="caracteristcas-y-utilidad-de-los-modelos-de-regresion" class="section level2">
-<h2>Característcas y utilidad de los modelos de regresión,</h2>
-<p>Uno de los rasgos de interés de la técnica de <strong>regresión</strong> desde la perspectiva de su aplicación es su capacidad para hacer <strong>predicción</strong> y su uso para hacer inferencia, por ejemplo cuando el objetivo es determinar que variables se relacionan con la variable de respuesta de interés o la relación de la variable dependiente con cada una de las variables explicativas.</p>
-<p>Desde la determinación de indicadores en el contexto del análisis de política públíca en áreas como sociología, salud, economía o bien cuestiones como el efecto de los gastos de camapaña sobre los resultados de votaciones, los efectos del presupuesto en educación sobre el desempeño educativo,etc,.</p>
+<div id="caracteristcas-y-utilidad-de-los-modelos-de-regresion." class="section level2">
+<h2>Característcas y utilidad de los modelos de regresión.</h2>
+<p>Uno de los rasgos de interés de la técnica de <strong>regresión</strong> desde la perspectiva de su aplicación es su capacidad para hacer <strong>predicción</strong> y su uso para hacer inferencia, por ejemplo cuando el objetivo es determinar qué variables se relacionan con la variable de respuesta de interés o qué relación existe entre la variable dependiente y cada una de las variables explicativas.</p>
+<p>Desde la determinación de indicadores en el contexto del análisis de política públíca en áreas como sociología, salud, economía o bien cuestiones como mortalidad por diabetes, migración y mercados laborales, el efecto de los gastos de camapaña sobre los resultados de votaciones, los efectos del presupuesto en educación sobre el desempeño educativo,etc,.</p>
 <p>Para responder las preguntas de investigación de interés la formulación de un modelo (expresión matématica de las relaciones entre las variables que nos interesan) es útil.</p>
-<p>El énfasis en los modelos presentados en nuestro curso es en <strong>datos no experimentales</strong>, datos que no se generan mediante experimentos contralados sobre individuos. Un tipo de datos común en ciencias sociales.</p>
+<p>El énfasis en los modelos presentados en nuestro curso es en <strong>datos no experimentales</strong>,(Un tipo de datos común en ciencias sociales). Datos que no se generan mediante experimentos contralados sobre individuos, este ultimo tipo común en otras disciplinas como Biología, ciencias de la salud con los ensayos clínicos por ejemplo.</p>
 </div>
 <div id="modelos-y-relacion-funcional-entre-variables." class="section level2">
 <h2>Modelos y relación funcional entre variables.</h2>
@@ -87,11 +87,11 @@ menu:
 <p><img src="/post/2019-01-11-RL2_files/figure-html/unnamed-chunk-2-1.png" width="960" /></p>
 <p>Note que para cada variable se observa una de posible relación positiva de distinta magnitud.</p>
 <p>El siguiente ejemplo presenta la relación de tres posibles variables explicativas para una variable dependiente denominada ventas.</p>
+<p>La gráfica muestra la relación entre la variable dependiente ventas (expresada en miles) y los gastos en publicidad en tres diferentes medios (variables independientes, expresada en miles de USD). n=200.</p>
 <div class="figure">
 <img src="/img/r1.jpg" />
 
 </div>
-<p>La gráfica siguiente muestra la relación entre la variable dependiente ventas (expresada en miles) y los gastos en publicidad en tres diferentes medios (variables independientes, expresada en miles de USD). n=200.</p>
 <p>Cada linea azul representa un modelo que puede usarse para predecir la variable <strong>dependiente</strong> <strong>ventas</strong> usando el procedimiento de mínimos cuadrados (ordinary least squres <strong>OLS</strong>).</p>
 <p>En términos de notación la relación previa puede generalizarse como:</p>
 <p><span class="math display">\[Y=f(X)+\epsilon\]</span> Aquí <span class="math inline">\(\epsilon\)</span> representa un error aleatorio y <span class="math inline">\(f()\)</span> representa la forma funcional que caracteriza la relación entre la variable dependiente y las variables explicativas. Esta forma funcional se <strong>asume lineal</strong> en el modelo de regresión que estudiamos en este curso.</p>
@@ -127,12 +127,11 @@ menu:
 <div id="actividad-2" class="section level2">
 <h2>Actividad 2</h2>
 <p>Tiempo estimado: 25 min.</p>
-<p>1.- Determine la relación que se observa por las variables en los siguientes escenarios. Indique el valor <strong>n</strong> Identifique la variable dependiente y la variable independiente.</p>
+<p>1.- Determine la relación que se observa por las variables en los siguientes escenarios. Indique el valor de <strong>n</strong> (tamaño de la muestra), Identifique la variable dependiente y la variable independiente.</p>
 <ol style="list-style-type: lower-alpha">
 <li><p>Tasas de mortalidad por suicidio y Google trends scores por entidad federativa.</p></li>
 <li><p>Tasa de mortalidad por cáncer de pulmón y proporción del gasto destinado a tabaco por hogar en México por entidad federativa.</p></li>
-<li><p>Tasa de mortalidad por cáncer de pulmón y proporción del gasto destinado a tabaco por hogar en México según sexo por entidad federativa.</p></li>
-<li><p>relación salario medio y proporción mujeres/hombres en profesiones más comunes según disciplina del conocimiento.</p></li>
+<li><p>Relación salario medio y proporción mujeres/hombres en profesiones más comunes según disciplina del conocimiento.</p></li>
 <li><p>Tasa de morbilidad por diabetes tipo II e índice de masa corporal promedio por entidad federativa.</p></li>
 </ol>
 <p>2.- Utilice la bases de datos College y comente sobre la estructura de los datos.</p>
@@ -141,8 +140,8 @@ menu:
 </ol>
 <p>3.- Utilice la base de datos <strong>birthwt</strong> y comente sobre la estructura de los datos.</p>
 <ol style="list-style-type: lower-alpha">
-<li><p>Explore la distribución de la variable peso (bwt) según la raza de la madre (variable race). Utilice un histograma.</p></li>
-<li><p>Utilice un histograma para representar la ditribución de la variable <strong>bwt</strong> según la madre fumó o no durante el embarazo (variable smoke).</p></li>
+<li><p>Explore la distribución de la variable peso (bwt) según la raza de la madre (variable race). Construya un histograma.</p></li>
+<li><p>Construya un histograma para representar la ditribución de la variable <strong>bwt</strong> según la madre fumó o no durante el embarazo (variable smoke).</p></li>
 </ol>
 </div>
 <div id="sobre-el-proceso-de-modelado" class="section level2">
@@ -152,22 +151,22 @@ menu:
 <p>Este es un modelo lineal con <span class="math inline">\(p+1\)</span> parámetros a estimar, (uno por cada variable explicativa y el intercepto.)</p>
 <p>El objetivo es estimar los parámetros con base en la forma funcional tal que se aproxime lo mas posible a la forma funcional real. Para lo cual un <strong>método paramétrico clásico</strong> es el de <strong>minimos cuadrados</strong> (OLS).</p>
 <p><span class="math display">\[Y \approx \beta_0 + \beta_1 X_1 + \beta_2 X_2 + ...+\beta_p X_p \]</span> Una desventaja potencial del este <strong>método paramétrico</strong> es que la pre-definición de la forma funcional limita la precisión en comparación a estimaciones con métodos no paramétricos.</p>
-<p>La siguiente representación gráfica corresponde al caso de la forma funcional lineal estimada con métodos paramétricos mediante MCO a), b) la forma funcional real y la estimación de un modelo no-parámetrico en c).<br />
-La desventaja en métodos no-parámetricos es que su misma precisión implica cierta rigidez para su replica en muestras distintas o con observaciones nuevas.</p>
-<p>El punto en la selección del modelo empleado para representar la forma funcional es el <strong>balance entre interpretabilidad y precisión</strong> (entendiendo la precisión respecto a la flexibilidad para reproducir diversas formas funcionales no solo formas lineales como es el caso del método de RL por MCO.).</p>
-<p>De hecho el modelo de regresión lineal es conveniente cuando buscamos <strong>hacer inferencias</strong> dada su relativa facilidad de interpretación.</p>
-<p>En síntesis es importante tener en mente que hay un <strong>trade off</strong> entre el nivel de precisión en los estimados que pueden generarse por el modelo (el grado de sesgo <em>Bias</em> ej. Qué tanto nuestra forma funcional se aproxima a la forma funcional real que subyace a los datos) y la varianza, entendida esta como la magnitud en la que <span class="math inline">\(\hat{Y}\)</span> cambia con la estimación de otras muestras o bases de datos.</p>
+<p>La siguiente representación gráfica corresponde al caso de la forma funcional lineal estimada con métodos paramétricos mediante MCO a), b) la forma funcional real y la estimación de un modelo no-parámetrico en c).</p>
 <div class="figure">
 <img src="/img/lm3.jpg" />
 
 </div>
+<p>La desventaja en métodos no-parámetricos es que su misma precisión implica cierta rigidez para su replica en muestras distintas o con observaciones nuevas.</p>
+<p>El punto en la selección del modelo empleado para representar la forma funcional es el <strong>balance entre interpretabilidad y precisión</strong> (entendiendo la precisión respecto a la flexibilidad para reproducir diversas formas funcionales no solo formas lineales como es el caso del método de RL por MCO.).</p>
+<p>De hecho el modelo de regresión lineal es conveniente cuando buscamos <strong>hacer inferencias</strong> dada su relativa facilidad de interpretación.</p>
+<p>En síntesis es importante tener en mente que hay un <strong>trade off</strong> entre el nivel de precisión en los estimados que pueden generarse por el modelo (el grado de sesgo <em>Bias</em> ej. Qué tanto nuestra forma funcional se aproxima a la forma funcional real que subyace a los datos) y la varianza, entendida esta como la magnitud en la que <span class="math inline">\(\hat{Y}\)</span> cambia con la estimación de otras muestras o bases de datos.</p>
 <div id="preguntas-relevantes-en-las-que-el-analisis-de-regresion-lineal-puede-ser-util." class="section level3">
 <h3>Preguntas relevantes en las que el análisis de regresión lineal puede ser útil.</h3>
 <p>Sea <span class="math display">\[y = \beta_0 + \beta_1 x +\epsilon\]</span> un modelo lineal.</p>
 <p>1.-Exsiste una relación entre las variables propuestas. Ej. salario y años de educación, peso del recien nacido y fumar durante el embarazo, ventas y gastos en publicidad para diferentes medios, flujos migratorios y características de los estados (USA), etc,.?</p>
 <p>En este sentido nuestra meta es <strong>proporcionar evidencia</strong> de la existencia de una relación entre variable dependiente y explicativas.</p>
 <p>2.- ¿Qué tan fuerte es la relación, entre las variables estudiadas. ¿Cuál es la magnitud de este grado de asociación en caso de existir?</p>
-<p>Nos permite esta asociación hacer predicciones con un alto grado de exactitud? O la predicción es solo ligeramente mejor que una hacha de amnera aleatoria.</p>
+<p>Nos permite esta asociación hacer predicciones con un alto grado de exactitud? O la predicción es solo ligeramente mejor que una hecha de manera aleatoria.</p>
 <p>3.- ¿De entre un conjunto de posibles variables explicativas ¿cuál variable contribuye con mayor peso para el comportamiento de la variable dependiente.</p>
 <p>Para responder esta pregunta necesitamos determinar de los efectos individuales para cada variable.</p>
 <p>4.¿Qué tan preciso es nuestro estimado del efecto individual que las variables explicativas tienen sobre la variable dependiente? Para un incremento de una unidad en las variables independientes cuales el efecto en al variale dependiente.</p>

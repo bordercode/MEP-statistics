@@ -92,20 +92,20 @@ El proceso de modelar la relación entre la variable dependiente y las explicati
 
 El análisis de regresión es un proceso que permite **predecir** los valores de la variable de respuesta con base en los valores que toman las variables explicativas o indepedientes.
 
-Este proceso se realiza mediante la estimación de los **parámetros** de la función lineal seleccionada y  a partir del criterio estadisticao de referencia, en el particular, OLE.  
+Este proceso se realiza mediante la estimación de los **parámetros** de la función lineal seleccionada y  a partir del criterio estadística de referencia. En el particular, OLE.  
 
-Es una **técnica de estimación es paramétrica**. En contraste regresiones de tipo no parametrico donde el objetivo no es estimar los parámetros de la función que describe la relación entre las variables del modelo.
+Es una **técnica de estimación paramétrica**. En contraste regresiones de tipo no parametrico donde el objetivo no es estimar los parámetros de la función que describe la relación entre las variables del modelo.
 
 
-## Característcas y utilidad de los modelos de regresión,
+## Característcas y utilidad de los modelos de regresión.
 
-Uno de los rasgos de interés de la técnica de **regresión** desde la perspectiva de su aplicación es su capacidad para hacer **predicción** y su uso para hacer inferencia, por ejemplo cuando el objetivo es determinar  que variables se relacionan con la variable de respuesta de interés o la relación de la variable dependiente con cada una de las variables explicativas. 
+Uno de los rasgos de interés de la técnica de **regresión** desde la perspectiva de su aplicación es su capacidad para hacer **predicción** y su uso para hacer inferencia, por ejemplo cuando el objetivo es determinar  qué variables se relacionan con la variable de respuesta de interés o qué relación existe entre la variable dependiente y cada una de las variables explicativas. 
 
-Desde la determinación de indicadores en el contexto del análisis de política públíca en áreas como sociología, salud, economía o bien cuestiones como el efecto de los gastos de camapaña sobre los resultados de votaciones, los efectos del presupuesto en educación sobre el desempeño educativo,etc,.
+Desde la determinación de indicadores en el contexto del análisis de política públíca en áreas como sociología, salud, economía o bien cuestiones como  mortalidad por diabetes, migración y mercados laborales, el efecto de los gastos de camapaña sobre los resultados de votaciones, los efectos del presupuesto en educación sobre el desempeño educativo,etc,.
 
 Para responder las preguntas de investigación de interés la formulación de un modelo (expresión  matématica de las relaciones entre las variables que nos interesan) es útil.
 
-El énfasis en los modelos presentados en nuestro curso es en **datos no experimentales**, datos que no se generan mediante experimentos contralados sobre individuos. Un tipo de datos común en ciencias sociales.
+El énfasis en los modelos presentados en nuestro curso es en **datos no experimentales**,(Un tipo de datos común en ciencias sociales). Datos que no se generan mediante experimentos contralados sobre individuos, este ultimo tipo común en otras disciplinas como Biología, ciencias de la salud con los ensayos clínicos por ejemplo. 
 
 ##  Modelos y relación funcional entre variables.
 
@@ -167,12 +167,12 @@ Note que  para cada variable se observa una  de posible relación positiva de di
 
 El siguiente ejemplo  presenta la relación de tres posibles variables explicativas para una variable dependiente denominada ventas. 
 
+La gráfica  muestra la relación entre la variable dependiente ventas (expresada en miles) y los gastos en publicidad en tres diferentes medios  (variables independientes, expresada en miles de USD). n=200.
+
 ![](/img/r1.jpg)
 
 
 
-
-La gráfica siguiente muestra la relación entre la variable dependiente ventas (expresada en miles) y los gastos en publicidad en tres diferentes medios  (variables independientes, expresada en miles de USD). n=200.
 
 Cada linea azul representa un modelo que puede usarse para predecir la variable **dependiente** **ventas** usando el procedimiento de mínimos cuadrados  (ordinary least squres **OLS**).
 
@@ -234,18 +234,16 @@ Lectura **Recomendada** [Sanford Weisberg ,2010](https://drive.google.com/file/d
 Tiempo estimado: 25 min.
 
 
-1.- Determine la relación que se observa por las variables en los siguientes escenarios. Indique el valor  **n** Identifique la variable dependiente y la variable independiente.
+1.- Determine la relación que se observa por las variables en los siguientes escenarios. Indique el valor de **n** (tamaño de la muestra), Identifique la variable dependiente y la variable independiente.
 
 
 a) Tasas de mortalidad por suicidio  y Google trends scores por entidad federativa. 
 
 b) Tasa de mortalidad por cáncer de pulmón y proporción del gasto destinado a tabaco por hogar en México por entidad federativa.
 
-c) Tasa de mortalidad por cáncer de pulmón y proporción del gasto destinado a tabaco por hogar en México según sexo por entidad federativa.
+c) Relación salario medio  y proporción mujeres/hombres en profesiones más comunes según disciplina del conocimiento.
 
-d) relación salario medio  y proporción mujeres/hombres en profesiones más comunes según disciplina del conocimiento.
-
-e) Tasa de morbilidad por diabetes tipo II e índice de masa corporal promedio por entidad federativa. 
+d) Tasa de morbilidad por diabetes tipo II e índice de masa corporal promedio por entidad federativa. 
 
 2.- Utilice la bases de datos College y comente sobre la estructura de los datos.
 
@@ -253,9 +251,9 @@ a) Explore la distribución (mediante un boxplot) de la variable  pago de colegi
 
 3.- Utilice la base de datos **birthwt** y comente sobre la estructura de los datos. 
 
-a) Explore la  distribución de la variable peso (bwt) según la raza de la madre (variable race). Utilice un histograma. 
+a) Explore la  distribución de la variable peso (bwt) según la raza de la madre (variable race). Construya un histograma. 
 
-b) Utilice un histograma para representar la ditribución de la variable **bwt** según  la madre fumó o no durante el embarazo (variable smoke).
+b) Construya  un histograma para representar la ditribución de la variable **bwt** según  la madre fumó o no durante el embarazo (variable smoke).
 
 ## Sobre el proceso de modelado
 
@@ -272,6 +270,11 @@ $$Y \approx \beta_0 + \beta_1 X_1 + \beta_2 X_2 + ...+\beta_p X_p $$
 Una desventaja potencial del este **método paramétrico** es que la pre-definición  de la forma funcional limita la precisión en comparación a estimaciones con métodos no paramétricos. 
 
 La siguiente representación gráfica corresponde al caso de la forma funcional lineal estimada con métodos paramétricos mediante  MCO a), b) la forma funcional real y la estimación de un modelo no-parámetrico en c).  
+
+
+
+![](/img/lm3.jpg)
+
 La desventaja en métodos no-parámetricos es que su misma precisión implica cierta rigidez para su replica en muestras distintas o con observaciones nuevas.
 
 El punto en la selección del modelo empleado para  representar la forma funcional es el **balance entre interpretabilidad y precisión** (entendiendo la precisión respecto a la flexibilidad para reproducir diversas formas funcionales no solo formas lineales como es el caso del método de RL por MCO.).
@@ -280,7 +283,6 @@ De hecho el modelo de regresión lineal es conveniente cuando buscamos **hacer i
 
 En síntesis es importante tener en mente que hay un **trade off** entre el nivel de precisión en los estimados que pueden generarse por el modelo (el grado de sesgo *Bias* ej. Qué tanto nuestra forma funcional se aproxima a la forma funcional real que subyace a los datos) y la varianza, entendida esta como  la magnitud en la que $\hat{Y}$ cambia con la estimación de otras muestras o bases de datos.  
 
-![](/img/lm3.jpg)
 
 ### Preguntas relevantes en las que el análisis de regresión lineal puede ser  útil.
 
@@ -294,7 +296,7 @@ En este sentido nuestra meta es **proporcionar evidencia** de la existencia de u
 
 2.- ¿Qué tan fuerte es la relación, entre las variables estudiadas. ¿Cuál es la magnitud de este grado de asociación en caso de existir?  
 
-Nos permite esta asociación hacer predicciones  con un alto grado de exactitud? O la predicción es solo ligeramente mejor que una hacha de amnera aleatoria.
+Nos permite esta asociación hacer predicciones  con un alto grado de exactitud? O la predicción es solo ligeramente mejor que una hecha de manera aleatoria.
 
 3.- ¿De entre un conjunto de posibles variables explicativas ¿cuál  variable contribuye con mayor peso para el comportamiento de la  variable dependiente.
 
