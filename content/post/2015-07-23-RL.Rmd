@@ -136,8 +136,15 @@ En el ejemplo siguiente la unidad de análisis es la ciudad y la dimensión temp
 ```{r,echo=FALSE}
 
 library(wooldridge)
+library(tidyverse)
+
 
 data(crime2)
+
+crime2
+
+glimpse(crime2)
+
 
 crime2<-crime2%>%group_by(year)%>%
 mutate(city_id=row_number())%>%
@@ -219,8 +226,13 @@ e) Ver presentación sobre el tema en [Topic](https://speech-infotec.netlify.com
 
 ```{r,eval=FALSE,echo=FALSE}
 
+getwd()
+setwd("")
+
 strend<-readRDS("Suicidetrend.rds")
 glimpse(strend)
+
+summary(strend)
 
 # Descriptive: Media, max, min
 
@@ -266,7 +278,11 @@ descriptive<-TASA15a%>%
   group_by(Sexo)%>%
   summarize(mean=round(mean(Tasa),0),max=max(Tasa), sd=sd(Tasa), var=var(Tasa))
 
+
+summary(strend$s)
+
 # t- test H0 mediaH = mediaM,  H1 diff !=0
+
 t.test(Tasa ~ Sexo, data = TASA15a)
 
 #No rechazamos H0. La diferencia entre las tasas promedio no es estadísticamente significativa. 
@@ -309,7 +325,7 @@ summarize(c=cor(Tasa, IMC, method = "spearman", use = "complete.obs"))
 
 Leer  Capítulo 2. [An Introduction to Statistical Learning](https://drive.google.com/file/d/1zaKc1XWvELsUgZrS32QdpHoM4-w0y7Qx/view?usp=sharing) secs: 
 
-*What Is Statistical Learning?*
+*2.1.1 What Is Statistical Learning?*
 
 *2.1.2 How Do We Estimate f?*
 
