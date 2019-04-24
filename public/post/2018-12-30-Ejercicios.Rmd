@@ -161,7 +161,7 @@ summarize(c=cor(Tasa, IMC, method = "spearman", use = "complete.obs"))
 
 ### Ejercicio 1
 
-```{r, echo=FALSE, message = FALSE, warning = FALSE}
+```{r,  message = FALSE, warning = FALSE}
 strend<-readRDS("Suicidetrend.rds")
 
 ph<-ggplot(filter(strend,Sexo==1), aes(x=s, y=Tasa)) + 
@@ -176,7 +176,7 @@ ph
 ```
 
 
-```{r , echo=FALSE, message = FALSE, warning = FALSE}
+```{r , message = FALSE, warning = FALSE}
 
 theme_set(theme_light())
 
@@ -207,7 +207,7 @@ tabaco_mg<-readRDS("tabaco.rds")
 ### Correlación entre Salario medio y participación de la Mujer en empleo.
 #### Carreras más populares por categoria.
 
-```{r, echo=FALSE, message = FALSE, warning = FALSE, fig.width=10, fig.height=6}
+```{r, message = FALSE, warning = FALSE, fig.width=10, fig.height=6}
 
 library(plotly)
 theme_set(theme_light())
@@ -229,7 +229,7 @@ graduados<-readRDS("graduados.rds")
 ```
 
 
-```{r, echo=FALSE, message = FALSE, warning = FALSE}
+```{r, message = FALSE, warning = FALSE}
 TASA15<-readRDS("tasa15diabetes.rds")
 
 ggplot(TASA15,aes(IMC,Tasa))+
