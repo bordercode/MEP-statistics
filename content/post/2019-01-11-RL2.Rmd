@@ -48,7 +48,7 @@ library(wooldridge)
 En el curso estamos interesados en modelar relaciones estadísticas (estocásticas) no deterministas, esto es, en las variables análizadas tenemos cierto grado de incertidumbre. 
 
 
-### Origenes de la noción de regresión
+### Orígenes de la noción de regresión
 
 La noción de Regresión lineal. ¿Qué entendemos por regresión?
 
@@ -302,7 +302,7 @@ Nos permite esta asociación hacer predicciones  con un alto grado de exactitud?
 
 Para responder esta pregunta necesitamos determinar de los efectos individuales para cada variable.
 
-4.¿Qué tan preciso es nuestro estimado del efecto individual que las variables explicativas tienen sobre la variable dependiente? Para un incremento de una unidad en las variables independientes cuales el efecto en al variale dependiente.
+4.¿Qué tan preciso es nuestro estimado del efecto individual que las variables explicativas tienen sobre la variable dependiente? Para un incremento de una unidad en las variables independientes ¿cuál es el efecto en al variale dependiente.
 
 Suponiendo.
 
