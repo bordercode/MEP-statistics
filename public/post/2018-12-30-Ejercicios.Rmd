@@ -36,7 +36,7 @@ library(ggpubr)
 
 ```{r, echo=FALSE, include = FALSE}
 # Data sets 
-
+getwd()
 library(wooldridge)
 library(ISLR)
 library(MASS)
@@ -252,12 +252,17 @@ geom_label_repel(aes(label = Estado),box.padding= 0.35,point.padding = .5,segmen
 
 data(College)
 str(College)
+
+
+
+
 # Creando una variable para identificar a las universidades de elite. Donde el porcentaje de nuevos estudiantes que vienen del top 10% de su clase supera el 50% de los aetudiantes 
 
 College_e<-College%>%
   mutate(elite=ifelse(Top10perc>50,1,0))
 
-## Un box plot para examinar la distribución de las variables  pago de colegiatura y tipo de estitución. 
+## Un box plot para examinar la distribución de las variables  pago de colegiatura y tipo de institución. 
+
 ggplot(College_e, aes(Private,Outstate))+
 geom_boxplot()+
   labs(y="Pago de Colegiatura ($)", x="Privada?")

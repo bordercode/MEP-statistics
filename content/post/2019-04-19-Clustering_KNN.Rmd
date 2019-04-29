@@ -40,16 +40,55 @@ library(scales)
 
 Un escenario de análisis en el que tenemos una serie de características y deseamos clasificar las observaciones de acuerdo a su similitud corresponde con un típico problema de **CLUSTERING**. En especial podemos abordarlo desde la perspectiva de *unsupervised learning* (no hay variable dependiente natural que deseamos predecir, lo que  buscamos es clasificar.)
 
-A diferencia de los otros enfoques (R Lineal (MCO), R Logística), en este no estamos tratando de predecir una variable dependiente, más bien estamos buscando determinar a que grupo pertenece cada observación.
+A diferencia de los otros enfoques (R Lineal (MCO), R Logística), en este no estamos tratando de predecir una variable dependiente, más bien estamos buscando determinar a qué grupo pertenece cada observación.
 
 
- 
+## K-Nearest Neighbors 
+
+Método no paramétrico. ie, no asume que los datos toman una forma funcional predeterminada.
+
+
+Calcula la distancia de un punto x en el espacio Euclidiano con el resto de las observaciones.
+
+Un supuesto central de este algoritmo es que observaciones que son similares tenderan a localizarse cerca.
+
+##Teoría.
+
+## Implementación:
+
+Dos puntos importantes para la implementación, la clasificación es para variables categóricas por definición pero las variables explicativas (features) idealmente son  numéricas, este modelo no tiene un buen desempeño cuando usamos variables categóricas como insumo  o cuando el número  de dimensiones *p*, (var explicativas) es muy grande (p>3).
+
+
+### Ejemplo 1.
+
+##### Descripción 
+
+##### Clasifiación de personas: 
+
+Conisdere un escenario sobre  transacciones realizadas en una tienda departamental en el que se busca determinar el comportamiento de las personas a partir de algunas características de las transacciones  como el valor de compras y la ocupación de la persona.
+
+Este es un problema de clasificación en el que buscamos determinar si la persona es hombre o mujer (variable target) con base en  dos variables explicativas el monto gastado en sus compras   y su ocupación.
+
+
+**Determine:**
+
+a) Estime el modelo con un parámetro **K=3** y genere la predicción para el sexo de la persona utilizando las variables: *Purchase* y *Occupation*. Para la estimación del modelo considere una proporción del $30 \%$ para separar la base de datos de entrenamiento (train) de la base de validación (test)
+
+b) Estime el nivel de precisión del modelo.(i.e.¿Cuál es el porcentaje de casos con clasificados correctamente? 
+
+
+c) Determine el valor de cluster óptimo. (ie. el valor de k , para el que el score de precisión es el mas alto.) 
+
+d) Grafique sus resultados.
+
+
+
+
 
 ## Linear Discriminant Analysis LDA.
 
 
-
-Una ventaja de este **método de clasificación** respecto a otros como por ejemplo Modelos de **regresión  logística** es que podemos aplicarlos a $k>2$. En el modelo de regresión logísitica generalmente nuestra variable target de predicción tenemos dos ategorias (i.e la variable dependiente es dicotómica),  si bien es posible estimar el modelo para k>2, la especificación logit  en esos casos suele no ser tan estable).    
+Una ventaja de este **método de clasificación** respecto a otros como por ejemplo Modelos de **regresión  logística** es que podemos aplicarlos a $k>2 target variables$. En el modelo de regresión logísitica generalmente nuestra variable target de predicción tenemos dos ategorias (i.e la variable dependiente es dicotómica),  si bien es posible estimar el modelo para k>2, la especificación logit  en esos casos suele no ser tan estable).    
 
 El método de elección para esta tarea ($k>2$) es **LDA** 
 

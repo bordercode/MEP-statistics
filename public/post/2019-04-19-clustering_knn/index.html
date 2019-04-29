@@ -10,7 +10,7 @@
 	<meta name="generator" content="Hugo 0.54.0" />
 	<meta property="og:title" content="Clasifiación" />
 <meta property="og:description" content="Clustering.Un escenario de análisis en el que tenemos una serie de características y deseamos clasificar las observaciones de acuerdo a su similitud corresponde con un típico problema de CLUSTERING. En especial podemos abordarlo desde la perspectiva de unsupervised learning (no hay variable dependiente natural que deseamos predecir, lo que buscamos es clasificar.)
-A diferencia de los otros enfoques (R Lineal (MCO), R Logística), en este no estamos tratando de predecir una variable dependiente, más bien estamos buscando determinar a que grupo pertenece cada observación." />
+A diferencia de los otros enfoques (R Lineal (MCO), R Logística), en este no estamos tratando de predecir una variable dependiente, más bien estamos buscando determinar a qué grupo pertenece cada observación." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/post/2019-04-19-clustering_knn/" />
 <meta property="article:published_time" content="2019-04-18T21:14:14-05:00"/>
@@ -129,11 +129,42 @@ if (!doNotTrack) {
 <div id="clustering." class="section level2">
 <h2>Clustering.</h2>
 <p>Un escenario de análisis en el que tenemos una serie de características y deseamos clasificar las observaciones de acuerdo a su similitud corresponde con un típico problema de <strong>CLUSTERING</strong>. En especial podemos abordarlo desde la perspectiva de <em>unsupervised learning</em> (no hay variable dependiente natural que deseamos predecir, lo que buscamos es clasificar.)</p>
-<p>A diferencia de los otros enfoques (R Lineal (MCO), R Logística), en este no estamos tratando de predecir una variable dependiente, más bien estamos buscando determinar a que grupo pertenece cada observación.</p>
+<p>A diferencia de los otros enfoques (R Lineal (MCO), R Logística), en este no estamos tratando de predecir una variable dependiente, más bien estamos buscando determinar a qué grupo pertenece cada observación.</p>
+</div>
+<div id="k-nearest-neighbors" class="section level2">
+<h2>K-Nearest Neighbors</h2>
+<p>Método no paramétrico. ie, no asume que los datos toman una forma funcional predeterminada.</p>
+<p>Calcula la distancia de un punto x en el espacio Euclidiano con el resto de las observaciones.</p>
+<p>Un supuesto central de este algoritmo es que observaciones que son similares tenderan a localizarse cerca.</p>
+</div>
+<div id="teoria." class="section level2">
+<h2>Teoría.</h2>
+</div>
+<div id="implementacion" class="section level2">
+<h2>Implementación:</h2>
+<p>Dos puntos importantes para la implementación, la clasificación es para variables categóricas por definición pero las variables explicativas (features) idealmente son numéricas, este modelo no tiene un buen desempeño cuando usamos variables categóricas como insumo o cuando el número de dimensiones <em>p</em>, (var explicativas) es muy grande (p&gt;3).</p>
+<div id="ejemplo-1." class="section level3">
+<h3>Ejemplo 1.</h3>
+<div id="descripcion" class="section level5">
+<h5>Descripción</h5>
+</div>
+<div id="clasifiacion-de-personas" class="section level5">
+<h5>Clasifiación de personas:</h5>
+<p>Conisdere un escenario sobre transacciones realizadas en una tienda departamental en el que se busca determinar el comportamiento de las personas a partir de algunas características de las transacciones como el valor de compras y la ocupación de la persona.</p>
+<p>Este es un problema de clasificación en el que buscamos determinar si la persona es hombre o mujer (variable target) con base en dos variables explicativas el monto gastado en sus compras y su ocupación.</p>
+<p><strong>Determine:</strong></p>
+<ol style="list-style-type: lower-alpha">
+<li><p>Estime el modelo con un parámetro <strong>K=3</strong> y genere la predicción para el sexo de la persona utilizando las variables: <em>Purchase</em> y <em>Occupation</em>. Para la estimación del modelo considere una proporción del <span class="math inline">\(30 \%\)</span> para separar la base de datos de entrenamiento (train) de la base de validación (test)</p></li>
+<li><p>Estime el nivel de precisión del modelo.(i.e.¿Cuál es el porcentaje de casos con clasificados correctamente?</p></li>
+<li><p>Determine el valor de cluster óptimo. (ie. el valor de k , para el que el score de precisión es el mas alto.)</p></li>
+<li><p>Grafique sus resultados.</p></li>
+</ol>
+</div>
+</div>
 </div>
 <div id="linear-discriminant-analysis-lda." class="section level2">
 <h2>Linear Discriminant Analysis LDA.</h2>
-<p>Una ventaja de este <strong>método de clasificación</strong> respecto a otros como por ejemplo Modelos de <strong>regresión logística</strong> es que podemos aplicarlos a <span class="math inline">\(k&gt;2\)</span>. En el modelo de regresión logísitica generalmente nuestra variable target de predicción tenemos dos ategorias (i.e la variable dependiente es dicotómica), si bien es posible estimar el modelo para k&gt;2, la especificación logit en esos casos suele no ser tan estable).</p>
+<p>Una ventaja de este <strong>método de clasificación</strong> respecto a otros como por ejemplo Modelos de <strong>regresión logística</strong> es que podemos aplicarlos a <span class="math inline">\(k&gt;2 target variables\)</span>. En el modelo de regresión logísitica generalmente nuestra variable target de predicción tenemos dos ategorias (i.e la variable dependiente es dicotómica), si bien es posible estimar el modelo para k&gt;2, la especificación logit en esos casos suele no ser tan estable).</p>
 <p>El método de elección para esta tarea (<span class="math inline">\(k&gt;2\)</span>) es <strong>LDA</strong></p>
 <p>tdl…</p>
 <p>Inlcuir <em>Cross-Validation</em> ISL Chp.5. after logistic.</p>

@@ -104,7 +104,7 @@ E(y|x)= \beta_0+ \beta_1 X
 <img src="/img/lm6.jpg" width="400" />
 
 </div>
-<p>Lo que se significa que <strong>un incremento de una unidad en <span class="math inline">\(x\)</span> cambia el valor esperado de <span class="math inline">\(y\)</span> por el monto denotado <span class="math inline">\(\hat \beta_1\)</span></strong>, para cualquier valor dado de <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span> que está centrado alrededor de <span class="math inline">\(E(y|x)\)</span>.</p>
+<p>Lo que significa que <strong>un incremento de una unidad en <span class="math inline">\(x\)</span> cambia el valor esperado de <span class="math inline">\(y\)</span> por el monto denotado <span class="math inline">\(\hat \beta_1\)</span></strong>, para cualquier valor dado de <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span> que está centrado alrededor de <span class="math inline">\(E(y|x)\)</span>.</p>
 <p>En términos de la ecuación lineal el estimado de la pendiente es: <span class="math display">\[\hat \beta_1= \frac{\Delta \hat y}{\Delta  x}\]</span> <span class="math display">\[\Delta \hat y=\hat \beta_1 \Delta  x\]</span></p>
 <p>En la siguiente figura se presenta ésta idea con una muestra teórica de valores aleatorios para <span class="math inline">\(x\)</span> y <span class="math inline">\(y\)</span>.</p>
 <p>El panel a) muestra en linea roja la verdadera relación en entre <span class="math inline">\(x\)</span> y <span class="math inline">\(y\)</span>, la linea azul es la linea de regresión obtenidad por MCO que se basa en los datos observados (scatter points).</p>
@@ -150,7 +150,7 @@ E(y|x)= \beta_0+ \beta_1 X
 </div>
 <div id="ejemplo-2" class="section level4">
 <h4>Ejemplo 2</h4>
-<p>Consideremos ahora la base de datos: Height and weight of schoolchildren de Lewis, T., &amp; Taylor, L.R. (1967) en el estudio introduction to Experimental Ecology, que contiene 236 observaciones para 5 variables en una muestra de niños en edades entre 11 A 17 años, para estudiar la relación entre dos variables la altura y la edad. En términos teóricos se ha demostrado que entre la población munidal se tiene una estrecha relación entre estas variables.</p>
+<p>Consideremos ahora la base de datos: <em>Height and weight of school children</em> de Lewis, T., &amp; Taylor, L.R. (1967) en el estudio introduction to Experimental Ecology, que contiene 236 observaciones para 5 variables en una muestra de niños en edades entre 11 A 17 años, para estudiar la relación entre dos variables la altura y la edad. En términos teóricos se ha demostrado que entre la población munidal se tiene una estrecha relación entre estas variables.</p>
 <p><img src="/post/2019-01-15-RL3_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <pre><code>## 
 ## Call:
@@ -237,7 +237,7 @@ E(y|x)= \beta_0+ \beta_1 X
 <div id="ejemplo-4" class="section level4">
 <h4>Ejemplo 4</h4>
 <p>Consideremos ahora la relación entre el Sueldo que perciben los CEO’s (Chief Executive Officer) y el indicador de desempeño financiero <em>return on equity</em> <strong>roe</strong> este es un indicador clásico que es utilizado como <em>proxy</em> para medir el desempeño de un CEO. La muestra contiene 209 observaciones y 12 variables con información financiera publicadas por un estudio de <em>Businessweek</em> de Mayo 6, 1991.</p>
-<p>La variable dependiente es el Suelso (expresado en miles USD), en términos teóricos se supone que existe una relación positiva entre el Sueldo que un CEO percibe e indicadores de desempeño de la compañia, en este sentido el <strong>roe</strong> es una variable que recoge el desempeño financiero (variable que se encuentra expresada en porcentaje).</p>
+<p>La variable dependiente es el Sueldo (expresado en miles USD). En términos teóricos se supone que existe una relación positiva entre el Sueldo que un CEO percibe e indicadores de desempeño de la compañia, en este sentido el <strong>roe</strong> es una variable que recoge el desempeño financiero (variable que se encuentra expresada en porcentaje).</p>
 <p>Estimaremos ahora el modelo de regresión lineal <span class="math display">\[y=\hat \beta_0 + \hat \beta_1 x+\epsilon\]</span> <span class="math display">\[salario=\beta_0 + \hat \beta_1 roe+\epsilon\]</span> para conocer si la hipótesis sobre la relación entre las variables se cumple y en su caso la magnitud de los parámetros <span class="math inline">\(\hat \beta_0, \hat \beta_1\)</span></p>
 <pre><code>## &#39;data.frame&#39;:    209 obs. of  12 variables:
 ##  $ salary  : int  1095 1001 1122 578 1368 1145 1078 1094 1237 833 ...
