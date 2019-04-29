@@ -212,7 +212,7 @@ Recordamos que  $\epsilon$ integra un conjunto de variables que se asumen consta
 La gráfica siguiente muestra la linea de regresión (rojo) para las variables salarios y educación con las observaciones (azul) como un scatter plot. 
 
 
-```{r, echo=FALSE}
+```{r, echo=TRUE}
 data(wage1)
 theme_set(theme_light())
 
