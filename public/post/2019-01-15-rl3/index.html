@@ -169,7 +169,7 @@ RSS= (y_1- \hat \beta_0 - \hat \beta_1 x_1)^2 + (y_2- \hat \beta_0 - \hat \beta_
 \end{align}\]</span>
 <p>El parámetro <span class="math inline">\(\hat \beta_1\)</span> es el cociente de la covarianza de <span class="math inline">\((x,y)\)</span> y la varianza de <span class="math inline">\(x\)</span>. Dividir por <span class="math inline">\(\frac{1}{n}\)</span> ambos factores no hace diferencia alguna.</p>
 <p><span class="math display">\[\hat \beta_0 =\bar y- \hat \beta_1 \bar{x}\]</span> Donde <span class="math display">\[\bar{y}\equiv\frac{1}{n} \sum_{i=1}^{n} y_i\]</span> y <span class="math display">\[\bar{x} \equiv \frac{1}{n} \sum_{i=1}^{n} x_i\]</span></p>
-<p>Note por la definición que si <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span> tienen correlación positiva, <span class="math inline">\(\Rightarrow \hat \beta_1&gt;0\)</span> y si <span class="math inline">\(\sum_{i=1}^{n} (x_i-\bar{x})(y_i-\bar{y})&lt;0 \Rightarrow \hat \beta_1&lt;0\)</span> dado que <span class="math inline">\(\sigma^2\)</span> tiene un min val=0, ie. <span class="math inline">\(\sigma^2 nunca es negativo\)</span></p>
+<p>Note por la definición que si <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span> tienen correlación positiva, <span class="math inline">\(\Rightarrow \hat \beta_1&gt;0\)</span> y si <span class="math inline">\(\sum_{i=1}^{n} (x_i-\bar{x})(y_i-\bar{y})&lt;0 \Rightarrow \hat \beta_1&lt;0\)</span> dado que <span class="math inline">\(\sigma^2\)</span> tiene un min val=0, ie. <span class="math inline">\(\sigma^2\)</span> nunca es negativo$</p>
 <p>Considere la siguiente representación del modelo lineal a partir del valor esperado y con los supuestos <span class="math inline">\(E(\epsilon)=0\)</span> e independencia entre la parte aleatoria del modelo y las variables explicativas: y <span class="math inline">\(cov(x,\epsilon)=E(x \epsilon)=0\)</span></p>
 <span class="math display" id="eq:ve">\[\begin{align}
 E(y-\beta_0-\beta_1 x)=0
@@ -407,7 +407,7 @@ E(y|x)= \beta_0+ \beta_1 X
 <ol style="list-style-type: lower-alpha">
 <li><p>Estime el modelo de regresión y determine <span class="math inline">\(\hat \beta_0, \hat \beta_1\)</span>.</p></li>
 <li><p>¿Cuál es el efecto en el porcentaje del voto ante un incremento de <span class="math inline">\(1\%\)</span> en los gastos de campaña del candidato.</p></li>
-<li><p>Estime el porcetaje del voto recibido si la proporción en gasto de campaña es de <span class="math inline">\(62\%\)</span> <span class="math inline">\(\Delta \hat voto= \hat \beta_1 \Delta gasto\)</span></p></li>
+<li><p>Estime el porcentaje del voto recibido si la proporción en gasto de campaña es de <span class="math inline">\(62\%\)</span> <span class="math inline">\(\Delta \hat voto= \hat \beta_1 \Delta gasto\)</span></p></li>
 </ol>
 <p><img src="/post/2019-01-15-RL3_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>

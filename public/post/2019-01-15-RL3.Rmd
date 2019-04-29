@@ -100,7 +100,7 @@ $$\hat \beta_0 =\bar y- \hat \beta_1 \bar{x}$$
 Donde $$\bar{y}\equiv\frac{1}{n} \sum_{i=1}^{n} y_i$$ y  $$\bar{x} \equiv \frac{1}{n} \sum_{i=1}^{n} x_i$$
 
 Note por la definición  que si $x$ e $y$ tienen correlación positiva, $\Rightarrow \hat \beta_1>0$ y si $\sum_{i=1}^{n} (x_i-\bar{x})(y_i-\bar{y})<0 \Rightarrow \hat \beta_1<0$
-dado que $\sigma^2$ tiene un min val=0, ie. $\sigma^2 nunca es negativo$
+dado que $\sigma^2$ tiene un min val=0, ie. $\sigma^2$ nunca es negativo$
 
 Considere la siguiente representación del modelo lineal a partir del valor esperado y con los supuestos $E(\epsilon)=0$ e independencia entre la parte aleatoria del modelo  y las variables explicativas:  y  $cov(x,\epsilon)=E(x \epsilon)=0$
 
@@ -389,7 +389,7 @@ a) Estime el modelo de regresión y determine $\hat \beta_0, \hat \beta_1$.
 
 b) ¿Cuál es el efecto en el porcentaje del voto ante un incremento de $1\%$ en los gastos de campaña del candidato. 
 
-c) Estime el porcetaje del voto recibido si la proporción en gasto de campaña es de $62\%$   $\Delta \hat voto= \hat \beta_1  \Delta gasto$
+c) Estime el porcentaje del voto recibido si la proporción en gasto de campaña es de $62\%$   $\Delta \hat voto= \hat \beta_1  \Delta gasto$
 
 
 ```{r, eval=FALSE, echo=FALSE}
@@ -402,6 +402,8 @@ str(vote1)
 
 lm(voteA~shareA,data=vote1)%>%
 summary()
+
+351.687/(351.687+50.532)
 ```
 
 ```{r,echo=FALSE}
