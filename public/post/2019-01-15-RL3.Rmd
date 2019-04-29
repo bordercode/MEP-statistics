@@ -410,6 +410,7 @@ ggplot(aes(shareA,voteA))+
   geom_point(shape=1)+
   geom_smooth(method=lm, se=FALSE, fullrange=TRUE)+
   labs(x="Gastos en campaña (%)", y="Voto (%)")
+vote1
 ```
 
 
