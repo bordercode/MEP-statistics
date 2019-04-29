@@ -151,7 +151,7 @@ Y \approx \beta_0 + \beta_1 X
 <h4>Supuesto de Media condicional cero.</h4>
 <p>Sean <span class="math inline">\(x\)</span> y <span class="math inline">\(\epsilon\)</span> variables aleatorias.</p>
 <p>Suponemos que el valor promedio de las características no observadas no depende del valor particular que tome <span class="math inline">\(x\)</span> <span class="math display">\[E(\epsilon|x)=E(\epsilon)=0\]</span></p>
-<p>El valor esperado de las características no observadas, (que se captura por los errores) es independiente de <span class="math inline">\(x\)</span> y en términos promedio es cero.</p>
+<p>El valor esperado de las características no observadas, es independiente de <span class="math inline">\(x\)</span> y en términos promedio es cero.</p>
 <p>Definición:</p>
 <p><em>Residual Sum of Squares</em> <strong>RSS</strong>.</p>
 <span class="math display">\[RSS=e_1^2 +e_2^2+...+e_n^2\]</span>
@@ -169,7 +169,7 @@ RSS= (y_1- \hat \beta_0 - \hat \beta_1 x_1)^2 + (y_2- \hat \beta_0 - \hat \beta_
 \end{align}\]</span>
 <p>El parámetro <span class="math inline">\(\hat \beta_1\)</span> es el cociente de la covarianza de <span class="math inline">\((x,y)\)</span> y la varianza de <span class="math inline">\(x\)</span>. Dividir por <span class="math inline">\(\frac{1}{n}\)</span> ambos factores no hace diferencia alguna.</p>
 <p><span class="math display">\[\hat \beta_0 =\bar y- \hat \beta_1 \bar{x}\]</span> Donde <span class="math display">\[\bar{y}\equiv\frac{1}{n} \sum_{i=1}^{n} y_i\]</span> y <span class="math display">\[\bar{x} \equiv \frac{1}{n} \sum_{i=1}^{n} x_i\]</span></p>
-<p>Note por la definición que si <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span> tienen correlación positiva, <span class="math inline">\(\Rightarrow \hat \beta_1&gt;0\)</span> y si <span class="math inline">\(\sum_{i=1}^{n} (x_i-\bar{x})(y_i-\bar{y})&lt;0 \Rightarrow \hat \beta_1&lt;0\)</span></p>
+<p>Note por la definición que si <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span> tienen correlación positiva, <span class="math inline">\(\Rightarrow \hat \beta_1&gt;0\)</span> y si <span class="math inline">\(\sum_{i=1}^{n} (x_i-\bar{x})(y_i-\bar{y})&lt;0 \Rightarrow \hat \beta_1&lt;0\)</span> dado que <span class="math inline">\(\sigma^2\)</span> tiene un min val=0, ie. <span class="math inline">\(\sigma^2 nunca es negativo\)</span></p>
 <p>Considere la siguiente representación del modelo lineal a partir del valor esperado y con los supuestos <span class="math inline">\(E(\epsilon)=0\)</span> e independencia entre la parte aleatoria del modelo y las variables explicativas: y <span class="math inline">\(cov(x,\epsilon)=E(x \epsilon)=0\)</span></p>
 <span class="math display" id="eq:ve">\[\begin{align}
 E(y-\beta_0-\beta_1 x)=0

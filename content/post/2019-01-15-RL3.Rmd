@@ -69,7 +69,7 @@ Sean $x$ y $\epsilon$ variables  aleatorias.
 
 Suponemos que el valor promedio de las características no observadas no depende del valor particular que tome $x$  $$E(\epsilon|x)=E(\epsilon)=0$$
 
-El valor esperado de las características no observadas, (que se captura por los errores) es independiente de $x$  y en términos promedio es cero. 
+El valor esperado de las características no observadas, es independiente de $x$  y en términos promedio es cero. 
 
 Definición: 
 
@@ -100,7 +100,8 @@ $$\hat \beta_0 =\bar y- \hat \beta_1 \bar{x}$$
 Donde $$\bar{y}\equiv\frac{1}{n} \sum_{i=1}^{n} y_i$$ y  $$\bar{x} \equiv \frac{1}{n} \sum_{i=1}^{n} x_i$$
 
 Note por la definición  que si $x$ e $y$ tienen correlación positiva, $\Rightarrow \hat \beta_1>0$ y si $\sum_{i=1}^{n} (x_i-\bar{x})(y_i-\bar{y})<0 \Rightarrow \hat \beta_1<0$
-  
+dado que $\sigma^2$ tiene un min val=0, ie. $\sigma^2 nunca es negativo$
+
 Considere la siguiente representación del modelo lineal a partir del valor esperado y con los supuestos $E(\epsilon)=0$ e independencia entre la parte aleatoria del modelo  y las variables explicativas:  y  $cov(x,\epsilon)=E(x \epsilon)=0$
 
 \begin{align}
