@@ -242,6 +242,7 @@ Lo que implica que un año adicional de educación se relaciona con un increment
 
 ```{r, echo=FALSE}
 data(wage1)
+
 log_wage_model <- lm(lwage ~ educ, data = wage1)
 summary(log_wage_model)
 ```
@@ -252,7 +253,7 @@ summary(log_wage_model)
 Consideremos ahora la base de datos: *Height and weight of school children* de Lewis, T., & Taylor, L.R. (1967) en el estudio introduction to Experimental Ecology, que contiene 236 observaciones para 5 variables en una muestra de niños en edades entre 11 A 17 años, para estudiar la relación  entre dos variables la altura y la edad. En términos teóricos se ha demostrado que entre la población munidal  se tiene una estrecha relación entre estas variables. 
 
 
-```{r,echo=FALSE }
+```{r,echo=TRUE }
 
 
 heightweight<-readRDS("heightweight.rds")

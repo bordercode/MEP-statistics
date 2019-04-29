@@ -161,6 +161,18 @@ labs(title=&quot;Log Salario v.s Educación&quot;, x=&quot;Años de educación&q
 <div id="ejemplo-2" class="section level4">
 <h4>Ejemplo 2</h4>
 <p>Consideremos ahora la base de datos: <em>Height and weight of school children</em> de Lewis, T., &amp; Taylor, L.R. (1967) en el estudio introduction to Experimental Ecology, que contiene 236 observaciones para 5 variables en una muestra de niños en edades entre 11 A 17 años, para estudiar la relación entre dos variables la altura y la edad. En términos teóricos se ha demostrado que entre la población munidal se tiene una estrecha relación entre estas variables.</p>
+<pre class="r"><code>heightweight&lt;-readRDS(&quot;heightweight.rds&quot;)
+
+theme_set(theme_light())
+
+heightweight%&gt;%
+  mutate(sex=ifelse(sex==&quot;f&quot;,&quot;Mujer&quot;,&quot;Hombre&quot;))%&gt;%
+  ggplot(aes(x=ageYear, y=heightIn, colour=sex)) +
+geom_point(alpha=.5) +
+scale_colour_brewer(palette=&quot;Set1&quot;)+
+geom_smooth(method=lm, se=FALSE, fullrange=TRUE)+
+  labs(x=&quot;Edad en años&quot;, y=&quot;Estatura (pulgadas)&quot;  )+
+  labs(colour=&quot;Sexo&quot;)</code></pre>
 <p><img src="/post/2019-01-15-RL3_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <pre><code>## 
 ## Call:
