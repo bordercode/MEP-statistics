@@ -58,7 +58,9 @@ Note que la diferencia entre la linea de regresión y cada observación (lineas 
 $$e_i=y_i - \hat y_i$$
 El modelo de regresión toma la suma al cuadrado de estos errores para determinar la  estimación de la linea de mejor ajuste.
 
-Suponemos un valor esperado para el término de error $E(\epsilon)=0$. Esto es, suponemos que la distribución de estos factores no observados, en promedio tienen media cero. 
+Suponemos una serie de axiomas que conforman el fundamento teórico de esta modelo a partir del **Teorema de Gasuss Markov**. 
+
+Suponemos un valor esperado para el término de error $E(\epsilon)=0$. Esto es, suponemos que la distribución de estos factores no observados, en promedio tienen media cero.
 
 
 #### Supuesto de Media condicional cero.
