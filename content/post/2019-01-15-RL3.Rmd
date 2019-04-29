@@ -60,7 +60,7 @@ El modelo de regresión toma la suma al cuadrado de estos errores para determina
 
 Suponemos una serie de axiomas que conforman el fundamento teórico de esta modelo a partir del **Teorema de Gasuss Markov**. 
 
-Suponemos un valor esperado para el término de error $E(\epsilon)=0$. Esto es, suponemos que la distribución de estos factores no observados, en promedio tienen media cero.
+Suponemos un valor esperado para el término aleatorio (*random noise*) $E(\epsilon)=0$. Esto es, suponemos que la distribución de estos factores no observados, en promedio tienen media cero.
 
 
 #### Supuesto de Media condicional cero.
