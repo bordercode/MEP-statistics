@@ -11,7 +11,7 @@
 	<meta property="og:title" content="RL-Hipótesis" />
 <meta property="og:description" content="Parámetros estimados y su precisión.¿Qué tan preciso es un parámetro estimado mediante el modelo de regresión lineal?
 Una manera de medir su precisión es mediante el cálculo del error estándar SE este nos indica el monto promedio en el que el parámetro \(\hat \beta\) estimado difiere del valor poblacional \(\beta\)
-Note que nos interesa determinar la precisión del parámetro muestral con relación al poblacional en este caso tomamos el ejemplo de la estimación de media muestral \(\hat \mu\) con relación a su correspondiente valor poblacional \(/mu\)" />
+Note que nos interesa determinar la precisión del parámetro muestral con relación al poblacional en este caso tomamos el ejemplo de la estimación de media muestral \(\hat \mu\) con relación a su correspondiente valor poblacional \(\mu\)." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/post/2019-01-25-rl4/" />
 <meta property="article:published_time" content="2019-01-25T21:11:11-05:00"/>
@@ -131,14 +131,14 @@ if (!doNotTrack) {
 <h3>Parámetros estimados y su precisión.</h3>
 <p>¿Qué tan preciso es un parámetro estimado mediante el modelo de regresión lineal?</p>
 <p>Una manera de medir su precisión es mediante el cálculo del <strong>error estándar</strong> <strong>SE</strong> este nos indica el monto promedio en el que el parámetro <span class="math inline">\(\hat \beta\)</span> estimado difiere del valor poblacional <span class="math inline">\(\beta\)</span></p>
-<p>Note que nos interesa determinar la precisión del parámetro muestral con relación al poblacional en este caso tomamos el ejemplo de la estimación de media muestral <span class="math inline">\(\hat \mu\)</span> con relación a su correspondiente valor poblacional <span class="math inline">\(/mu\)</span></p>
+<p>Note que nos interesa determinar la precisión del parámetro muestral con relación al poblacional en este caso tomamos el ejemplo de la estimación de media muestral <span class="math inline">\(\hat \mu\)</span> con relación a su correspondiente valor poblacional <span class="math inline">\(\mu\)</span>.</p>
 <p>El <em>SE</em> se basa en el concepto de la varianza <span class="math inline">\(var(\hat \mu)=SE(\hat \mu)=\frac{\sigma^2}{n}\)</span> Y esta dado por:</p>
 <span class="math display" id="eq:se">\[\begin{align}
 SE(\hat \beta_0)^2= \sigma^2 [\frac{\bar{1}}{n}+\frac{\bar{x}^2}{\sum_{i=1}^{n}(x_i-\bar{x})^2}]
 \tag{1}
 \end{align}\]</span>
 <p><span class="math display">\[SE(\hat \beta_1)^2=  \frac{\sigma^2}{\sum_{i=1}^{n}(x_i-\bar{x})^2}\]</span> Donde <span class="math inline">\(\sigma^2\)</span>=Var(<span class="math inline">\(\epsilon\)</span>).<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
-<p>El estimado de la varianza <span class="math inline">\(\sigma\)</span> se denomina <em>Residual Standard Error</em> <strong>RSE</strong>. <span class="math inline">\(RSE=\sqrt{\frac {RSS}{(n-2)}}\)</span></p>
+<p>El estimado de la desviación estandard <span class="math inline">\(\sigma\)</span> se denomina <em>Residual Standard Error</em> <strong>RSE</strong>. <span class="math inline">\(RSE=\sqrt{\frac {RSS}{(n-2)}}\)</span></p>
 <p>Los <strong>Errores Standard</strong> son útiles en la estimación de los intervalos de confianza.</p>
 <p>Un intervalo de confianza del <span class="math inline">\(95\%\)</span> se define como aquel rango tal que con el <span class="math inline">\(95\%\)</span> de probabilidad contiene el valor verdadero del parámetro.</p>
 <p>El intervalo se compone por <strong>limites superior</strong> e <strong>inferior</strong> de la muestra de datos.</p>
