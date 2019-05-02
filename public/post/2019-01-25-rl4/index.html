@@ -163,6 +163,9 @@ SE(\hat \beta_0)^2= \sigma^2 [\frac{\bar{1}}{n}+\frac{\bar{x}^2}{\sum_{i=1}^{n}(
 RSS(\beta)=\sum_{i=1}^N(y_i-f(x_i))^2
 \tag{2}
 \end{align}\]</span>
+<p><span class="math display">\[=\sum_{i=1}^N(y_i-\beta_0 -\sum_{j=i}^p x_{ij}\beta_j)^2\]</span></p>
+<p>Como minimizamos <a href="#eq:rss1">(2)</a>?</p>
+<p>Consideramos que <strong>X</strong> como una matriz <strong>N</strong> x (p+1) con cada renglón como un vector de regresores con el valor 1 en la primer posición y con la variable <strong>y</strong> como el vector <strong>N</strong> de lavariable dependiente. Entonces podemos escribir la suma residual de cuadrados <strong>RSS</strong> como</p>
 <p>Bajo la hipótesis nula <span class="math inline">\(\beta_j=0, z_j\)</span> se distribuye como <span class="math inline">\(t-N-p-1\)</span> una distribución <span class="math inline">\(t\)</span> con N-p-1 grados de libertad.</p>
 <p>Considerando el parámetro muestral de la varianza, <span class="math inline">\(z_j\)</span> tendrá una <strong>distribución normal estandard</strong>. La diferencia entre los cuantiles de una distribución <span class="math inline">\(t\)</span> y la estandard normal, de hecho resulta infima, a medida que el tamaño muestral aumenta, <span class="math inline">\(N \rightarrow \infty\)</span> si bien utilizar los cuantiles de la distribución normal es un práctica común con muestras <span class="math inline">\(n \geqslant30\)</span>.</p>
 <p>Si el estadístico <span class="math inline">\(t\)</span> estimado (en valor absoluto) &gt; <span class="math inline">\(t\)</span> crítico, el coeficiente <span class="math inline">\(\hat \beta\)</span> puede considerse como estadisticamente signficativo (y podemos rechazar la hipótesis <span class="math inline">\(H_0:\hat \beta=0\)</span>).</p>
