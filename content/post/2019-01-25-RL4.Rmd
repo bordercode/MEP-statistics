@@ -77,12 +77,30 @@ Quiz: Indentifique el intervalo de confianza de $95\%$ para $\hat \beta_0$, $\ha
 
 ##### Valores criticos para contraste. Relación entre *Z-score* y *t*-statistic.
 
-Para determinar si la relación entre la variable explicativa $x$ y la dependiente $y$ es estadisticamente significativa, la práctca estándard es probar **la hipótesis Nula** de que un coeficiente particular $\beta_j=0$. Comencemos por estudiar la relación que tiene la distribuciòn normal y la distribución t estas permiten comprender el criterio para hacer el contraste sobre la signifiancia estadística.  
-El contraste de la hipotesis nula es posible al utilizar el  coeficiente estandard denominado $Z-score:$    denfinido como:
+Para determinar si la relación entre la variable explicativa $x$ y la dependiente $y$ es estadisticamente significativa, la práctca estándard es probar **la hipótesis Nula** de que un coeficiente particular $\beta_j=0$.
 
-$z_j=\frac{\hat \beta_j}{\sigma\sqrt{v_j}}$
+
+Comencemos por estudiar la relación que tiene la **distribuciòn normal** y la distribución **t** estas permiten comprender el criterio para hacer el contraste sobre la significancia estadística.
+
+El contraste de la **hipótesis nula** es posible al utilizar el  coeficiente estandard denominado $Z-score:$    denfinido como:
+
+$z_j=\frac{\hat \beta_j}{\hat{\sigma}\sqrt{v_j}}$
 
 Donde $v_j$ es el $j-esimo$  elemento $(X^TX)^{-1}$
+
+[Ver secc. Linear Regression Models and Least Squares  pag. 44 ](https://drive.google.com/file/d/13eW-lbR7YDSy50iNIJxTl4qdQM56F2UO/view?usp=sharing)
+
+Recuerde que: 
+
+\begin{align}
+RSS(\beta)=\sum_{i=1}^N(y_i-f(x_i))^2
+(\#eq:rss1)
+\end{align}
+
+
+
+
+
 
 Bajo la hipótesis nula $\beta_j=0, z_j$ se distribuye como $t-N-p-1$ una distribución $t$ con  N-p-1 grados de libertad.
 

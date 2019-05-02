@@ -38,10 +38,17 @@ SE(\hat \beta_0)^2= \sigma^2 [\frac{\bar{1}}{n}+\frac{\bar{x}^2}{\sum_{i=1}^{n}(
 <h2>Prueba de Hipótesis y significancia estadística sobre parámetros</h2>
 <div id="valores-criticos-para-contraste.-relacion-entre-z-score-y-t-statistic." class="section level5">
 <h5>Valores criticos para contraste. Relación entre <em>Z-score</em> y <em>t</em>-statistic.</h5>
-<p>Para determinar si la relación entre la variable explicativa <span class="math inline">\(x\)</span> y la dependiente <span class="math inline">\(y\)</span> es estadisticamente significativa, la práctca estándard es probar <strong>la hipótesis Nula</strong> de que un coeficiente particular <span class="math inline">\(\beta_j=0\)</span>. Comencemos por estudiar la relación que tiene la distribuciòn normal y la distribución t estas permiten comprender el criterio para hacer el contraste sobre la signifiancia estadística.<br />
-El contraste de la hipotesis nula es posible al utilizar el coeficiente estandard denominado <span class="math inline">\(Z-score:\)</span> denfinido como:</p>
-<p><span class="math inline">\(z_j=\frac{\hat \beta_j}{\sigma\sqrt{v_j}}\)</span></p>
+<p>Para determinar si la relación entre la variable explicativa <span class="math inline">\(x\)</span> y la dependiente <span class="math inline">\(y\)</span> es estadisticamente significativa, la práctca estándard es probar <strong>la hipótesis Nula</strong> de que un coeficiente particular <span class="math inline">\(\beta_j=0\)</span>.</p>
+<p>Comencemos por estudiar la relación que tiene la <strong>distribuciòn normal</strong> y la distribución <strong>t</strong> estas permiten comprender el criterio para hacer el contraste sobre la significancia estadística.</p>
+<p>El contraste de la <strong>hipótesis nula</strong> es posible al utilizar el coeficiente estandard denominado <span class="math inline">\(Z-score:\)</span> denfinido como:</p>
+<p><span class="math inline">\(z_j=\frac{\hat \beta_j}{\hat{\sigma}\sqrt{v_j}}\)</span></p>
 <p>Donde <span class="math inline">\(v_j\)</span> es el <span class="math inline">\(j-esimo\)</span> elemento <span class="math inline">\((X^TX)^{-1}\)</span></p>
+<p><a href="https://drive.google.com/file/d/13eW-lbR7YDSy50iNIJxTl4qdQM56F2UO/view?usp=sharing">Ver secc. Linear Regression Models and Least Squares pag. 44</a></p>
+<p>Recuerde que:</p>
+<span class="math display" id="eq:rss1">\[\begin{align}
+RSS(\beta)=\sum_{i=1}^N(y_i-f(x_i))^2
+\tag{2}
+\end{align}\]</span>
 <p>Bajo la hipótesis nula <span class="math inline">\(\beta_j=0, z_j\)</span> se distribuye como <span class="math inline">\(t-N-p-1\)</span> una distribución <span class="math inline">\(t\)</span> con N-p-1 grados de libertad.</p>
 <p>Considerando el parámetro muestral de la varianza, <span class="math inline">\(z_j\)</span> tendrá una <strong>distribución normal estandard</strong>. La diferencia entre los cuantiles de una distribución <span class="math inline">\(t\)</span> y la estandard normal, de hecho resulta infima, a medida que el tamaño muestral aumenta, <span class="math inline">\(N \rightarrow \infty\)</span> si bien utilizar los cuantiles de la distribución normal es un práctica común con muestras <span class="math inline">\(n \geqslant30\)</span>.</p>
 <p>Si el estadístico <span class="math inline">\(t\)</span> estimado (en valor absoluto) &gt; <span class="math inline">\(t\)</span> crítico, el coeficiente <span class="math inline">\(\hat \beta\)</span> puede considerse como estadisticamente signficativo (y podemos rechazar la hipótesis <span class="math inline">\(H_0:\hat \beta=0\)</span>).</p>
@@ -165,7 +172,7 @@ El contraste de la hipotesis nula es posible al utilizar el coeficiente estandar
 <p>De manera similar, el <em>adjusted</em> <span class="math inline">\(R^2\)</span> únicamente difiere en que “ajusta” por los grados de libertad en el modelo, si bien este prácticamente aporta la misma información al <span class="math inline">\(R^2\)</span> sin ajuste.</p>
 <span class="math display" id="eq:r2">\[\begin{align}
 R^2=\frac{TSS-RSS}{TSS}=1-\frac{RSS}{TSS}
-\tag{2}
+\tag{3}
 \end{align}\]</span>
 <p>Donde <span class="math inline">\(TSS=\sum (y_i-\bar y)^2\)</span> Suma total de cuadrados (<em>Total Sum of Squares</em>)</p>
 <p>El estadistico <span class="math inline">\(R^2\)</span> mide la proporción de la variación en <span class="math inline">\(Y\)</span> que es explicada por la regresión.</p>
