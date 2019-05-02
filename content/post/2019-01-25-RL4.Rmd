@@ -40,7 +40,7 @@ library(ISLR)
 
 Una manera de medir su precisión es  mediante el cálculo del **error estándar**  **SE** este nos indica el monto promedio en el que el parámetro $\hat \beta$ estimado difiere del valor poblacional $\beta$ 
 
-Note que nos interesa determinar la precisión del parámetro muestral con relación al poblacional en este caso tomamos el ejemplo de la estimación de media muestral $\hat \mu$  con relación a su correspondiente  valor poblacional  $/mu$
+Note que nos interesa determinar la precisión del parámetro muestral con relación al poblacional en este caso tomamos el ejemplo de la estimación de media muestral $\hat \mu$  con relación a su correspondiente  valor poblacional  $\mu$
 
 El *SE* se basa en el concepto de la varianza $var(\hat \mu)=SE(\hat \mu)=\frac{\sigma^2}{n}$   Y esta dado por:
 
