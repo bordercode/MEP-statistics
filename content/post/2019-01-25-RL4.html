@@ -36,7 +36,7 @@ SE(\hat \beta_0)^2= \sigma^2 [\frac{\bar{1}}{n}+\frac{\bar{x}^2}{\sum_{i=1}^{n}(
 \tag{2}
 \end{align}\]</span>
 <p>La misma lógica para estimar el intervalo para <span class="math inline">\(\hat \beta_0\)</span></p>
-<p>Note que cuando el intervalo de confianza incluye <strong>0</strong> tenemos evidencia adicional de que el parámetro en cuestión no es estadisticamente significativo.</p>
+<p>Note que cuando el intervalo de confianza incluye <strong>0</strong> tenemos evidencia adicional de que el parámetro en cuestión no es estadísticamente significativo.</p>
 <p>Quiz: Indentifique el intervalo de confianza de <span class="math inline">\(95\%\)</span> para <span class="math inline">\(\hat \beta_0\)</span>, <span class="math inline">\(\hat \beta_1\)</span> para los ejemplos 1-3.</p>
 </div>
 <div id="prueba-de-hipotesis-y-significancia-estadistica-sobre-parametros" class="section level2">
@@ -48,7 +48,7 @@ SE(\hat \beta_0)^2= \sigma^2 [\frac{\bar{1}}{n}+\frac{\bar{x}^2}{\sum_{i=1}^{n}(
 <p>El contraste de la <strong>hipótesis nula</strong> es posible al utilizar el coeficiente estandard denominado <span class="math inline">\(Z-score:\)</span> denfinido como:</p>
 <p><span class="math inline">\(z_j=\frac{\hat \beta_j}{\hat{\sigma}\sqrt{v_j}}\)</span></p>
 <p>Donde <span class="math inline">\(v_j\)</span> es el <span class="math inline">\(j-esimo\)</span> elemento <span class="math inline">\((X^TX)^{-1}\)</span></p>
-<p><a href="https://drive.google.com/file/d/13eW-lbR7YDSy50iNIJxTl4qdQM56F2UO/view?usp=sharing">Ver secc. Linear Regression Models and Least Squares pag. 44</a></p>
+<p><a href="https://drive.google.com/file/d/13eW-lbR7YDSy50iNIJxTl4qdQM56F2UO/view?usp=sharing">Recomendación, ver secc. Linear Regression Models and Least Squares pag. 44</a></p>
 <p>Recuerde que:</p>
 <span class="math display" id="eq:rss1">\[\begin{align}
 RSS(\beta)=\sum_{i=1}^N(y_i-f(x_i))^2
@@ -86,7 +86,7 @@ X^T (y-X \beta)=0
 <h5>Prueba de Hipótesis.</h5>
 <p>Bajo la hipótesis nula <span class="math inline">\(\beta_j=0, z_j\)</span> se distribuye como <span class="math inline">\(t-N-p-1\)</span> una distribución <span class="math inline">\(t\)</span> con N-p-1 grados de libertad.</p>
 <p>Considerando el parámetro muestral de la varianza, <span class="math inline">\(z_j\)</span> tendrá una <strong>distribución normal estandard</strong>. La diferencia entre los cuantiles de una distribución <span class="math inline">\(t\)</span> y la estandard normal, de hecho resulta infima, a medida que el tamaño muestral aumenta, <span class="math inline">\(N \rightarrow \infty\)</span> si bien utilizar los cuantiles de la distribución normal es un práctica común con muestras <span class="math inline">\(n \geqslant30\)</span>. <strong>Recordar Teorema de Limite central</strong></p>
-<p>Si el estadístico <span class="math inline">\(t\)</span> estimado (en valor absoluto) &gt; <span class="math inline">\(t\)</span> crítico, el coeficiente <span class="math inline">\(\hat \beta\)</span> puede considerse como <strong>estadisticamente signficativo</strong> (y podemos rechazar la hipótesis <span class="math inline">\(H_0:\hat \beta=0\)</span>). La probabilidad de obtener por casualidad un valor como el estimado es ínfima (ej <span class="math inline">\(&gt; 5\%\)</span>).</p>
+<p>Si el estadístico <span class="math inline">\(t\)</span> estimado (en valor absoluto) &gt; <span class="math inline">\(t\)</span> crítico, el coeficiente <span class="math inline">\(\hat \beta\)</span> puede considerse como <strong>estadisticamente signficativo</strong> (y podemos rechazar la hipótesis <span class="math inline">\(H_0:\hat \beta=0\)</span>). La probabilidad de obtener por casualidad un valor como el estimado es ínfima (ej <span class="math inline">\(&lt; 5\%\)</span>).</p>
 <p>La siguiente figura muestra esta relación.</p>
 </div>
 <div id="probabilidades-de-la-cola-en-la-distribucion-t-prz-z" class="section level5">
@@ -246,7 +246,7 @@ R^2=\frac{TSS-RSS}{TSS}=1-\frac{RSS}{TSS}
 <p>Un supuesto importante sobre el comportamiento de la varianza del término de error <span class="math inline">\(\epsilon\)</span> dado el valor que toma la variable dependiente es que su <strong>varianza es constante</strong>. Var<span class="math inline">\((\epsilon|x)=\sigma^2\)</span> a este comportamiento se le denomina <strong>homocedasticidad</strong>. Y es un supuesto sobre la eficiencia que complementa las propiedades como estimadores no sesgados (<strong>BLUE</strong>) que se obtienen con la técnica de <strong>MCO</strong>.</p>
 <p>Para ejemplificar consideremos el caso sobre el efecto del nivel educativo sobre el salario. Suponemos que <span class="math inline">\(E(\epsilon|educ)=0\)</span> lo que implica que <span class="math inline">\(E(salario|educ)=\beta_0+\beta_1 educ\)</span> y con el supuesto de homocedasticidad entonces Var<span class="math inline">\((\epsilon|educ)=\sigma^2\)</span> no depende del nivel de educación, lo que es sinónimo de Var<span class="math inline">\((salario|educ)=\sigma^2\)</span>.</p>
 <p>Entonces, si bien en promedio el salario puede incrementarse a medida que el nivel de educación se incrementa, lo que nos interesa es que la tasa de crecimiento no varie, esto es que para cualquier nivel de educación la variación en el nivel salarial se mantenga constante. Escenario en este caso particular poco probable, por que es probable que entre los individuos con mayor nivel educativo se tenga una mayor variabilidad en los niveles salariales que entre grupos de individuos de bajos ingresos donde las opotunidades de empleo se ajustan generalmente en torno al salario mínimo, un escenario de mayor homogéneidad.</p>
-<p>El supuesto de homocedasticidad es un hecho empírico sujeto a verificación. Ocurre cuendo la Var<span class="math inline">\((y|x)\)</span> es una función de x.El no cumplimiento de este supuesto implica perdida de eficiencia en los estimados.</p>
+<p>El supuesto de homocedasticidad es un hecho empírico sujeto a verificación. Ocurre cuando la Var<span class="math inline">\((y|x)\)</span> es una función de x.El no cumplimiento de este supuesto implica perdida de eficiencia en los estimados.</p>
 <div class="figure">
 <img src="/img/h.jpg" />
 
@@ -264,7 +264,9 @@ R^2=\frac{TSS-RSS}{TSS}=1-\frac{RSS}{TSS}
 </div>
 <div id="tarea" class="section level3">
 <h3>Tarea</h3>
-<p>Leer sección <em>The Meaning of “Linear” Regression</em>. En Wooldridge (pag. 44). ¿A qué nos referimos cuando indicamos que se trata de un modelo lineal? Comente en Disqus</p>
+<p>Leer sección <em>The Meaning of “Linear” Regression</em>. En Wooldridge (pag. 44). ¿A qué nos referimos cuando indicamos que se trata de un modelo lineal?</p>
+<p>Leer linear Methods for regression. <a href="https://drive.google.com/file/d/13eW-lbR7YDSy50iNIJxTl4qdQM56F2UO/view?usp=sharing">linear Methods for regression</a> secciones. 3.1, 3.2.</p>
+<p>Comente en Disqus</p>
 </div>
 <div id="terminos-clave" class="section level3">
 <h3>Términos clave</h3>
