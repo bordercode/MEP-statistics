@@ -64,6 +64,14 @@ Para la regresión lineal el intervalo $95\%$ toma la especificación:
 
 $$\hat \beta_1\pm2\cdot SE(\hat \beta_1)$$
 
+Así por ejemplo el intervalo al $95/%$ de confienza indica que con un $95\%$ de confianza el verdadero valor de $\beta$  se encuentra en el rango definido por:
+
+
+\begin{align}
+[\hat \beta_1 -2*SE(\hat \beta_1), \beta_1 +2*SE(\hat \beta_1)]
+(\#eq:ci)
+\end{align}
+
 
 La misma lógica para estimar  el intervalo para $\hat \beta_0$
 

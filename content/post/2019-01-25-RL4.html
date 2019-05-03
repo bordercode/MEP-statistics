@@ -30,6 +30,11 @@ SE(\hat \beta_0)^2= \sigma^2 [\frac{\bar{1}}{n}+\frac{\bar{x}^2}{\sum_{i=1}^{n}(
 <p>El intervalo se compone por <strong>limites superior</strong> e <strong>inferior</strong> de la muestra de datos.</p>
 <p>Para la regresión lineal el intervalo <span class="math inline">\(95\%\)</span> toma la especificación:</p>
 <p><span class="math display">\[\hat \beta_1\pm2\cdot SE(\hat \beta_1)\]</span></p>
+<p>Así por ejemplo el intervalo al <span class="math inline">\(95/%\)</span> de confienza indica que con un <span class="math inline">\(95\%\)</span> de confianza el verdadero valor de <span class="math inline">\(\beta\)</span> se encuentra en el rango definido por:</p>
+<span class="math display" id="eq:ci">\[\begin{align}
+[\hat \beta_1 -2*SE(\hat \beta_1), \beta_1 +2*SE(\hat \beta_1)]
+\tag{2}
+\end{align}\]</span>
 <p>La misma lógica para estimar el intervalo para <span class="math inline">\(\hat \beta_0\)</span></p>
 <p>Note que cuando el intervalo de confianza incluye <strong>0</strong> tenemos evidencia adicional de que el parámetro en cuestión no es estadisticamente significativo.</p>
 <p>Quiz: Indentifique el intervalo de confianza de <span class="math inline">\(95\%\)</span> para <span class="math inline">\(\hat \beta_0\)</span>, <span class="math inline">\(\hat \beta_1\)</span> para los ejemplos 1-3.</p>
@@ -47,31 +52,31 @@ SE(\hat \beta_0)^2= \sigma^2 [\frac{\bar{1}}{n}+\frac{\bar{x}^2}{\sum_{i=1}^{n}(
 <p>Recuerde que:</p>
 <span class="math display" id="eq:rss1">\[\begin{align}
 RSS(\beta)=\sum_{i=1}^N(y_i-f(x_i))^2
-\tag{2}
+\tag{3}
 \end{align}\]</span>
 <p><span class="math display">\[=\sum_{i=1}^N(y_i-\beta_0 -\sum_{j=i}^p x_{ij}\beta_j)^2\]</span> Que es una función cuadrática en <em>p+1</em> parámetros</p>
-<p>¿Cómo minimizamos <a href="#eq:rss1">(2)</a>?</p>
+<p>¿Cómo minimizamos <a href="#eq:rss1">(3)</a>?</p>
 <p>Consideramos <strong>X</strong> como una matriz <strong>N</strong> x (p+1) con cada renglón como un vector de regresores con el valor 1 en la primer posición y con la variable <strong>y</strong> como el vector de dimensión <strong>N</strong> (variable dependiente).</p>
 <p>Entonces podemos escribir la suma residual de cuadrados <strong>RSS</strong> como</p>
 <span class="math display" id="eq:rss2">\[\begin{align}
 RSS(\beta)=(y-X \beta)^T (y-X \beta)
-\tag{3}
+\tag{4}
 \end{align}\]</span>
 <p>Al diferenciar con respecto a <span class="math inline">\(\beta\)</span> obtenemos:</p>
 <span class="math display" id="eq:rss3">\[\begin{align}
 \frac{\partial RSS}{\partial \beta}=2X^T (y-X \beta)
-\tag{4}
+\tag{5}
 \end{align}\]</span>
 <p><span class="math display">\[\frac{\partial ^2 RSS}{\partial  \beta \partial \beta^T}=2X^T X\]</span></p>
 <p>Fijamos la primera derivada =0.</p>
 <span class="math display" id="eq:rss3">\[\begin{align}
 X^T (y-X \beta)=0 
-\tag{4}
+\tag{5}
 \end{align}\]</span>
 <p>Para obtener la solución única:</p>
 <span class="math display" id="eq:rss4">\[\begin{align}
 \hat \beta = (X^TX)^ {-1} X^T y  
-\tag{5}
+\tag{6}
 \end{align}\]</span>
 <p>Donde <span class="math inline">\(\hat{\beta}\)</span> cumple con:</p>
 <p><span class="math display">\[\hat \beta \sim N(\beta,(X^TX)^{-1} \sigma^2)\]</span></p>
@@ -147,7 +152,7 @@ X^T (y-X \beta)=0
 <p>El primero es el <em>Residual Standard Error</em> <strong>RSE</strong>.</p>
 <span class="math display" id="eq:rse">\[\begin{align}
 RSE=\sqrt{\frac {RSS}{(n-2)}} 
-\tag{6}
+\tag{7}
 \end{align}\]</span>
 <p>El segundo es el estadístico <span class="math inline">\(R^2\)</span></p>
 </div>
@@ -208,7 +213,7 @@ RSE=\sqrt{\frac {RSS}{(n-2)}}
 <p>De manera similar, el <em>adjusted</em> <span class="math inline">\(R^2\)</span> únicamente difiere en que “ajusta” por los grados de libertad en el modelo, si bien este prácticamente aporta la misma información al <span class="math inline">\(R^2\)</span> sin ajuste.</p>
 <span class="math display" id="eq:r2">\[\begin{align}
 R^2=\frac{TSS-RSS}{TSS}=1-\frac{RSS}{TSS}
-\tag{7}
+\tag{8}
 \end{align}\]</span>
 <p>Donde <span class="math inline">\(TSS=\sum (y_i-\bar y)^2\)</span> Suma total de cuadrados (<em>Total Sum of Squares</em>)</p>
 <p>El estadistico <span class="math inline">\(R^2\)</span> mide la proporción de la variación en <span class="math inline">\(Y\)</span> que es explicada por la regresión.</p>
