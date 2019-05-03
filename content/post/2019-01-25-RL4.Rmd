@@ -112,11 +112,11 @@ RSS(\beta)=(y-X \beta)^T (y-X \beta)
 (\#eq:rss2)
 \end{align}
 
-Al diferenciar con respecto a \beta obtenemos:
+Al diferenciar con respecto a $\beta$ obtenemos:
 
  
 \begin{align}
-\frac{\delta RSS}{\delta \beta}=2X^T (y-X \beta)
+\frac{\partial RSS}{\delta \beta}=2X^T (y-X \beta)
 (\#eq:rss3)
 \end{align}
 
@@ -196,7 +196,7 @@ summary()
 ```
 
 
-Note en ambos casos que las probabilidades de observar los parámetros estimados si $H_0$ es verdad, son prácticamente cero!! Por lo tanto podemos concluir que $\beta_0\neq0, \beta_1\neq0 $^[Donde el p-value indica que podemos rechazar la hipótesis nula de que $\beta=0$]
+Note en ambos casos que las probabilidades de observar los parámetros estimados si $H_0$ es verdad, son prácticamente cero!! Por lo tanto podemos concluir que $\beta_0\neq0$, $\beta_1\neq0$^[Donde el p-value indica que podemos rechazar la hipótesis nula de que $\beta=0$]
 
 
 ### Precisión del modelo. 

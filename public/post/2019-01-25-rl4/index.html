@@ -171,9 +171,9 @@ RSS(\beta)=\sum_{i=1}^N(y_i-f(x_i))^2
 RSS(\beta)=(y-X \beta)^T (y-X \beta)
 \tag{3}
 \end{align}\]</span>
-<p>Al diferenciar con respecto a obtenemos:</p>
+<p>Al diferenciar con respecto a <span class="math inline">\(\beta\)</span> obtenemos:</p>
 <span class="math display" id="eq:rss3">\[\begin{align}
-\frac{\delta RSS}{\delta \beta}=2X^T (y-X \beta)
+\frac{\partial RSS}{\delta \beta}=2X^T (y-X \beta)
 \tag{4}
 \end{align}\]</span>
 <p><span class="math display">\[\frac{\partial ^2 RSS}{\partial  \beta \partial \beta^T}=2X^T X\]</span></p>
@@ -255,7 +255,7 @@ X^T (y-X \beta)=0
 ## Residual standard error: 2.721 on 123 degrees of freedom
 ## Multiple R-squared:  0.5964, Adjusted R-squared:  0.5931 
 ## F-statistic: 181.8 on 1 and 123 DF,  p-value: &lt; 2.2e-16</code></pre>
-<p>Note en ambos casos que las probabilidades de observar los parámetros estimados si <span class="math inline">\(H_0\)</span> es verdad, son prácticamente cero!! Por lo tanto podemos concluir que $_00, _10 $<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
+<p>Note en ambos casos que las probabilidades de observar los parámetros estimados si <span class="math inline">\(H_0\)</span> es verdad, son prácticamente cero!! Por lo tanto podemos concluir que <span class="math inline">\(\beta_0\neq0\)</span>, <span class="math inline">\(\beta_1\neq0\)</span><a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
 </div>
 <div id="precision-del-modelo." class="section level3">
 <h3>Precisión del modelo.</h3>
