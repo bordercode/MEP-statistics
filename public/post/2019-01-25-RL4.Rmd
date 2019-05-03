@@ -136,7 +136,7 @@ Para obtener la solución única:
 (\#eq:rss3)
 \end{align}
 
-Donde $\hat  \beta $ cumple con:
+Donde $\hat{\beta}$ cumple con:
 
 \begin{align}
 \hat \beta = (X^TX)^ {-1} X^T y  
