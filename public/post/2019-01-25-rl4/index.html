@@ -183,14 +183,14 @@ X^T (y-X \beta)=0
 \tag{4}
 \end{align}\]</span>
 <p>Para obtener la solución única:</p>
-<span class="math display" id="eq:rss3">\[\begin{align}
+<span class="math display" id="eq:rss4">\[\begin{align}
 \hat \beta = (X^TX)^ {-1} X^T y  
-\tag{4}
+\tag{5}
 \end{align}\]</span>
 <p>Donde <span class="math inline">\(\hat{\beta}\)</span> cumple con:</p>
-<span class="math display" id="eq:rss3">\[\begin{align}
+<span class="math display" id="eq:rss5">\[\begin{align}
 \hat \beta = (X^TX)^ {-1} X^T y  
-\tag{4}
+\tag{6}
 \end{align}\]</span>
 </div>
 <div id="prueba-de-hipotesis." class="section level5">
@@ -263,7 +263,7 @@ X^T (y-X \beta)=0
 <p>El primero es el <em>Residual Standard Error</em> <strong>RSE</strong>.</p>
 <span class="math display" id="eq:rse">\[\begin{align}
 RSE=\sqrt{\frac {RSS}{(n-2)}} 
-\tag{5}
+\tag{7}
 \end{align}\]</span>
 <p>El segundo es el estadístico <span class="math inline">\(R^2\)</span></p>
 </div>
@@ -324,7 +324,7 @@ RSE=\sqrt{\frac {RSS}{(n-2)}}
 <p>De manera similar, el <em>adjusted</em> <span class="math inline">\(R^2\)</span> únicamente difiere en que “ajusta” por los grados de libertad en el modelo, si bien este prácticamente aporta la misma información al <span class="math inline">\(R^2\)</span> sin ajuste.</p>
 <span class="math display" id="eq:r2">\[\begin{align}
 R^2=\frac{TSS-RSS}{TSS}=1-\frac{RSS}{TSS}
-\tag{6}
+\tag{8}
 \end{align}\]</span>
 <p>Donde <span class="math inline">\(TSS=\sum (y_i-\bar y)^2\)</span> Suma total de cuadrados (<em>Total Sum of Squares</em>)</p>
 <p>El estadistico <span class="math inline">\(R^2\)</span> mide la proporción de la variación en <span class="math inline">\(Y\)</span> que es explicada por la regresión.</p>

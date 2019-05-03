@@ -133,14 +133,14 @@ Para obtener la solución única:
 
 \begin{align}
 \hat \beta = (X^TX)^ {-1} X^T y  
-(\#eq:rss3)
+(\#eq:rss4)
 \end{align}
 
 Donde $\hat{\beta}$ cumple con:
 
 \begin{align}
 \hat \beta = (X^TX)^ {-1} X^T y  
-(\#eq:rss3)
+(\#eq:rss5)
 \end{align}
 
 
