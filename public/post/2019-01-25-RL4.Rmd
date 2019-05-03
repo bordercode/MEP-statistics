@@ -344,9 +344,9 @@ summary()
 
 #### Supuesto de varianza constante en el término de error.  Homocedasticidad.
 
-Un supuesto importante sobre el comportamiento de la varianza del término de error $\epsilon$ dado el valor que toma la variable dependiente es que su **varianza es constante**.  Var$(\epsilon|x)=\sigma^2$ a este comportamiento se le denomina **homocedasticidad**.  Y es un supuesto sobre la eficiencia que complementa las propiedades como estimadores no sesgados (**BLUE**) que se obtienen con la técnica de **MCO**.
+Un supuesto importante sobre el comportamiento de la varianza del término de error $e$ dado el valor que toma la variable dependiente es que su **varianza es constante**.  Var$(e|x)=\sigma^2$ a este comportamiento se le denomina **homocedasticidad**.  Y es un supuesto sobre la eficiencia que complementa las propiedades como estimadores no sesgados (**BLUE**) que se obtienen con la técnica de **MCO**.
 
-Para ejemplificar consideremos el caso sobre el efecto del nivel educativo sobre el salario. Suponemos que $E(\epsilon|educ)=0$ lo que implica que $E(salario|educ)=\beta_0+\beta_1 educ$  y con el supuesto de homocedasticidad entonces Var$(\epsilon|educ)=\sigma^2$ no depende del nivel de educación, lo que es sinónimo de  Var$(salario|educ)=\sigma^2$. 
+Para ejemplificar consideremos el caso sobre el efecto del nivel educativo sobre el salario. Suponemos que $E(e|educ)=0$ lo que implica que $E(salario|educ)=\beta_0+\beta_1 educ$  y con el supuesto de homocedasticidad entonces Var$(e|educ)=\sigma^2$ no depende del nivel de educación, lo que es sinónimo de  Var$(salario|educ)=\sigma^2$. 
 
 Entonces, si bien en promedio el salario puede incrementarse a medida que el nivel de educación se incrementa, lo que nos interesa es que la tasa de crecimiento no varie, esto es que para cualquier nivel de educación  la variación en el nivel salarial se mantenga constante. Escenario en este caso particular poco probable, por que es probable que entre los  individuos con mayor nivel educativo se tenga una mayor variabilidad en los niveles salariales que entre grupos de individuos de bajos ingresos donde las opotunidades de empleo se ajustan generalmente en torno al  salario mínimo, un escenario de mayor homogéneidad.
 
