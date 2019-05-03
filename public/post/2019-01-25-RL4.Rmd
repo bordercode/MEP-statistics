@@ -165,7 +165,8 @@ Note el valor de referencia del $z-score$ a medida que se incrementa el tamaño 
 Note que $z^{(1-\alpha)}$ con el percentil $(1-\alpha)$ de la distribcuiòn normal. ej. $z^{(1-\alpha)}$ con $\alpha=0.025$ ,$z^{(1-0.025)}=1.96$, o bien 
 $z^{(1-0.05)}=1.645$
 
-##### Prueba de hipótesis, valores criticos y  areas de rechazo de la hipótesis nula.
+
+##### Prueba de hipótesis, valores críticos y  áreas de rechazo de la hipótesis nula.
 
 ![](/img/t.jpg){width=70%}
 
@@ -237,7 +238,7 @@ summary()
 
 El $RSE=3.259$  lo que implica que la ventas en promedio difieren de la linea verdadera de regresión en 3,259 unidades. 
 
-Note que el indicador RSE nos aporta una medida de preción que depende del contexto, por ejemplo en este caso sabemos que el nivel de ventas medio es de 14,000 unidades por lo que la magnitud relativa de la desviación del es de $23\%=3259/14000$ 
+Note que el indicador RSE nos aporta una medida de precisión que depende del contexto, por ejemplo en este caso sabemos que el nivel de ventas medio es de 14,000 unidades por lo que la magnitud relativa de la desviación del es de $23\%=3259/14000$ 
 
 
 Veamos el modelo sobre estatura y edad (ejemplo 2).  
@@ -260,11 +261,11 @@ En este caso la magnitud que representa la desviación respecto a la estatura me
 
 En conclusión el **RSE** nos permite contar con una medida para contrastar la precisión (en el ajuste) entre varios modelos, esta **expresado en las mismas unidades de la variable dependiente**, es una medida absoluta, que puede ser útil para elegir el modelo más adecuado considerando los datos disponibles. 
 
-Una desventaja del RSE es que se expresa en las mismas unidades de $Y$ por lo que determinar cuando se tiene el mejor **RSE** puede ser confuso.
+Una desventaja del RSE es que se expresa en las mismas unidades de $Y$ por lo que determinar cuando se tiene el mejor **RSE** entre modelos distintos, puede ser confuso.
 
 ###Estadístico $R^2$
 
-El coeficiente de terminación $R^2$ mide la  fracción de la varianza explicada. Permite una medida de ajuste alternativa. El R^2, es una medida independiente de las unidades de medida de Y,  expresada como proporción de la **varianza explicada** (siempre en el rango $0 \leq R^2  \leq 1$).
+El coeficiente de terminación $R^2$ mide la  fracción de la varianza explicada. Permite una medida de ajuste alternativa. El $R^2$, es una medida independiente de las unidades de medida de Y,  expresada como proporción de la **varianza explicada** (siempre en el rango $0 \leq R^2  \leq 1$).
 
 De manera similar,  el *adjusted* $R^2$ únicamente difiere en que "ajusta" por los grados de libertad en el modelo, si bien este prácticamente aporta la misma información al $R^2$ sin ajuste. 
 
@@ -277,10 +278,12 @@ Donde $TSS=\sum (y_i-\bar y)^2$  Suma total de cuadrados (*Total Sum of Squares*
 
 El estadistico $R^2$ mide la proporción de la variación en $Y$ que es explicada por la regresión. 
 
-Note que el TSS mide la varianza total en la variable dependiente antes de estimar la regresión. mientras que $\frac{RSS}{TSS}$ indica la proporción de la variación que no es explicada. 
+Note que el TSS mide la varianza total en la variable dependiente antes de estimar la regresión. mientras que $\frac{RSS}{TSS}$ indica la proporción de la variación que **no es explicada**. 
 
 
-Así, un  valor cercano a cero indica que la regresión explica una prporción pequeña de la variación de $Y$.
+Así, un  valor cercano a cero en  $\frac{RSS}{TSS}$  indica que la regresión explica una prporción importante de la variación de $Y$.
+
+**En consecuencia el valor del $R^2 \longrightarrow1$ será cercano a 1. Un indicativo de que el modelo captura una fracción importante de la variación.** 
 
 En el modelo sobre estatura y edad (ejemplo 2) el $R^2=0.5964$ por lo que prácticamente dos tercios de la variabilidad de $Y$ se explica por la regresión sobre la edad.
 

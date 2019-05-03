@@ -94,7 +94,7 @@ X^T (y-X \beta)=0
 <p>Note que <span class="math inline">\(z^{(1-\alpha)}\)</span> con el percentil <span class="math inline">\((1-\alpha)\)</span> de la distribcuiòn normal. ej. <span class="math inline">\(z^{(1-\alpha)}\)</span> con <span class="math inline">\(\alpha=0.025\)</span> ,<span class="math inline">\(z^{(1-0.025)}=1.96\)</span>, o bien <span class="math inline">\(z^{(1-0.05)}=1.645\)</span></p>
 </div>
 <div id="prueba-de-hipotesis-valores-criticos-y-areas-de-rechazo-de-la-hipotesis-nula." class="section level5">
-<h5>Prueba de hipótesis, valores criticos y areas de rechazo de la hipótesis nula.</h5>
+<h5>Prueba de hipótesis, valores críticos y áreas de rechazo de la hipótesis nula.</h5>
 <div class="figure">
 <img src="/img/t.jpg" style="width:70.0%" />
 
@@ -177,7 +177,7 @@ RSE=\sqrt{\frac {RSS}{(n-2)}}
 ## Multiple R-squared:  0.6119, Adjusted R-squared:  0.6099 
 ## F-statistic: 312.1 on 1 and 198 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>El <span class="math inline">\(RSE=3.259\)</span> lo que implica que la ventas en promedio difieren de la linea verdadera de regresión en 3,259 unidades.</p>
-<p>Note que el indicador RSE nos aporta una medida de preción que depende del contexto, por ejemplo en este caso sabemos que el nivel de ventas medio es de 14,000 unidades por lo que la magnitud relativa de la desviación del es de <span class="math inline">\(23\%=3259/14000\)</span></p>
+<p>Note que el indicador RSE nos aporta una medida de precisión que depende del contexto, por ejemplo en este caso sabemos que el nivel de ventas medio es de 14,000 unidades por lo que la magnitud relativa de la desviación del es de <span class="math inline">\(23\%=3259/14000\)</span></p>
 <p>Veamos el modelo sobre estatura y edad (ejemplo 2).</p>
 <pre><code>## 
 ## Call:
@@ -200,11 +200,11 @@ RSE=\sqrt{\frac {RSS}{(n-2)}}
 <p>El <strong>RSE</strong> estimado es <span class="math inline">\(2.721\)</span>, lo que se traduce en una desviación promedio de 2.7 pulgadas de la linea estimada de regresión.</p>
 <p>En este caso la magnitud que representa la desviación respecto a la estatura media es de <span class="math inline">\(4.38\%= 2.72/62.06\)</span></p>
 <p>En conclusión el <strong>RSE</strong> nos permite contar con una medida para contrastar la precisión (en el ajuste) entre varios modelos, esta <strong>expresado en las mismas unidades de la variable dependiente</strong>, es una medida absoluta, que puede ser útil para elegir el modelo más adecuado considerando los datos disponibles.</p>
-<p>Una desventaja del RSE es que se expresa en las mismas unidades de <span class="math inline">\(Y\)</span> por lo que determinar cuando se tiene el mejor <strong>RSE</strong> puede ser confuso.</p>
+<p>Una desventaja del RSE es que se expresa en las mismas unidades de <span class="math inline">\(Y\)</span> por lo que determinar cuando se tiene el mejor <strong>RSE</strong> entre modelos distintos, puede ser confuso.</p>
 </div>
 <div id="estadistico-r2" class="section level3">
 <h3>Estadístico <span class="math inline">\(R^2\)</span></h3>
-<p>El coeficiente de terminación <span class="math inline">\(R^2\)</span> mide la fracción de la varianza explicada. Permite una medida de ajuste alternativa. El R^2, es una medida independiente de las unidades de medida de Y, expresada como proporción de la <strong>varianza explicada</strong> (siempre en el rango <span class="math inline">\(0 \leq R^2 \leq 1\)</span>).</p>
+<p>El coeficiente de terminación <span class="math inline">\(R^2\)</span> mide la fracción de la varianza explicada. Permite una medida de ajuste alternativa. El <span class="math inline">\(R^2\)</span>, es una medida independiente de las unidades de medida de Y, expresada como proporción de la <strong>varianza explicada</strong> (siempre en el rango <span class="math inline">\(0 \leq R^2 \leq 1\)</span>).</p>
 <p>De manera similar, el <em>adjusted</em> <span class="math inline">\(R^2\)</span> únicamente difiere en que “ajusta” por los grados de libertad en el modelo, si bien este prácticamente aporta la misma información al <span class="math inline">\(R^2\)</span> sin ajuste.</p>
 <span class="math display" id="eq:r2">\[\begin{align}
 R^2=\frac{TSS-RSS}{TSS}=1-\frac{RSS}{TSS}
@@ -212,8 +212,9 @@ R^2=\frac{TSS-RSS}{TSS}=1-\frac{RSS}{TSS}
 \end{align}\]</span>
 <p>Donde <span class="math inline">\(TSS=\sum (y_i-\bar y)^2\)</span> Suma total de cuadrados (<em>Total Sum of Squares</em>)</p>
 <p>El estadistico <span class="math inline">\(R^2\)</span> mide la proporción de la variación en <span class="math inline">\(Y\)</span> que es explicada por la regresión.</p>
-<p>Note que el TSS mide la varianza total en la variable dependiente antes de estimar la regresión. mientras que <span class="math inline">\(\frac{RSS}{TSS}\)</span> indica la proporción de la variación que no es explicada.</p>
-<p>Así, un valor cercano a cero indica que la regresión explica una prporción pequeña de la variación de <span class="math inline">\(Y\)</span>.</p>
+<p>Note que el TSS mide la varianza total en la variable dependiente antes de estimar la regresión. mientras que <span class="math inline">\(\frac{RSS}{TSS}\)</span> indica la proporción de la variación que <strong>no es explicada</strong>.</p>
+<p>Así, un valor cercano a cero en <span class="math inline">\(\frac{RSS}{TSS}\)</span> indica que la regresión explica una prporción importante de la variación de <span class="math inline">\(Y\)</span>.</p>
+<p><strong>En consecuencia el valor del <span class="math inline">\(R^2 \longrightarrow1\)</span> será cercano a 1. Un indicativo de que el modelo captura una fracción importante de la variación.</strong></p>
 <p>En el modelo sobre estatura y edad (ejemplo 2) el <span class="math inline">\(R^2=0.5964\)</span> por lo que prácticamente dos tercios de la variabilidad de <span class="math inline">\(Y\)</span> se explica por la regresión sobre la edad.</p>
 <p>La magnitud del <span class="math inline">\(R^2\)</span> depende del problema estudiado y de la estructra del modelo y en general un valor cercano a 1 es considerado indicativo de un modelo robusto.</p>
 <p>Por el otro lado un valor pequeño cercano a cero, indica la existencia de problemas con el modelo.</p>
