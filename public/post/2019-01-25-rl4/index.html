@@ -173,7 +173,7 @@ RSS(\beta)=(y-X \beta)^T (y-X \beta)
 \end{align}\]</span>
 <p>Al diferenciar con respecto a <span class="math inline">\(\beta\)</span> obtenemos:</p>
 <span class="math display" id="eq:rss3">\[\begin{align}
-\frac{\partial RSS}{\delta \beta}=2X^T (y-X \beta)
+\frac{\partial RSS}{\partial \beta}=2X^T (y-X \beta)
 \tag{4}
 \end{align}\]</span>
 <p><span class="math display">\[\frac{\partial ^2 RSS}{\partial  \beta \partial \beta^T}=2X^T X\]</span></p>
@@ -188,10 +188,8 @@ X^T (y-X \beta)=0
 \tag{5}
 \end{align}\]</span>
 <p>Donde <span class="math inline">\(\hat{\beta}\)</span> cumple con:</p>
-<span class="math display" id="eq:rss5">\[\begin{align}
-\hat \beta = (X^TX)^ {-1} X^T y  
-\tag{6}
-\end{align}\]</span>
+<p><span class="math display">\[\hat \beta \sim N(\beta,(X^TX)^{-1} \sigma^2)\]</span></p>
+<p>Con una matriz ve <strong>varianza-covarianza</strong><span class="math display">\[var(\hat \beta )=(X^TX)^{-1} \sigma^2\]</span> y el estimado de la varianza estimado como <span class="math display">\[\hat \sigma ^2=\frac{1}{N-p-1} \sum_{i=1}^N(y_i -\hat y_i)^2\]</span></p>
 </div>
 <div id="prueba-de-hipotesis." class="section level5">
 <h5>Prueba de Hipótesis.</h5>
@@ -263,7 +261,7 @@ X^T (y-X \beta)=0
 <p>El primero es el <em>Residual Standard Error</em> <strong>RSE</strong>.</p>
 <span class="math display" id="eq:rse">\[\begin{align}
 RSE=\sqrt{\frac {RSS}{(n-2)}} 
-\tag{7}
+\tag{6}
 \end{align}\]</span>
 <p>El segundo es el estadístico <span class="math inline">\(R^2\)</span></p>
 </div>
@@ -324,7 +322,7 @@ RSE=\sqrt{\frac {RSS}{(n-2)}}
 <p>De manera similar, el <em>adjusted</em> <span class="math inline">\(R^2\)</span> únicamente difiere en que “ajusta” por los grados de libertad en el modelo, si bien este prácticamente aporta la misma información al <span class="math inline">\(R^2\)</span> sin ajuste.</p>
 <span class="math display" id="eq:r2">\[\begin{align}
 R^2=\frac{TSS-RSS}{TSS}=1-\frac{RSS}{TSS}
-\tag{8}
+\tag{7}
 \end{align}\]</span>
 <p>Donde <span class="math inline">\(TSS=\sum (y_i-\bar y)^2\)</span> Suma total de cuadrados (<em>Total Sum of Squares</em>)</p>
 <p>El estadistico <span class="math inline">\(R^2\)</span> mide la proporción de la variación en <span class="math inline">\(Y\)</span> que es explicada por la regresión.</p>
