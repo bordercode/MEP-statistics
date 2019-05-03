@@ -120,7 +120,7 @@ Al diferenciar con respecto a \beta obtenemos:
 (\#eq:rss3)
 \end{align}
 
-$$\frac{\delta^2 RSS}{\delta^2  \beta \delta \beta^T}=2X^T X$$
+$$\frac{\partial ^2 RSS}{\partial  \beta \partial \beta^T}=2X^T X$$
 
 Fijamos la primera derivada =0.
  
