@@ -75,13 +75,13 @@ X^T (y-X \beta)=0
 \end{align}\]</span>
 <p>Donde <span class="math inline">\(\hat{\beta}\)</span> cumple con:</p>
 <p><span class="math display">\[\hat \beta \sim N(\beta,(X^TX)^{-1} \sigma^2)\]</span></p>
-<p>Con una matriz ve <strong>varianza-covarianza</strong><span class="math display">\[var(\hat \beta )=(X^TX)^{-1} \sigma^2\]</span> y el estimado de la varianza estimado como <span class="math display">\[\hat \sigma ^2=\frac{1}{N-p-1} \sum_{i=1}^N(y_i -\hat y_i)^2\]</span></p>
+<p>Con una matriz de <strong>varianza-covarianza</strong><span class="math display">\[var(\hat \beta )=(X^TX)^{-1} \sigma^2\]</span> y el valor de la varianza estimado como <span class="math display">\[\hat \sigma ^2=\frac{1}{N-p-1} \sum_{i=1}^N(y_i -\hat y_i)^2\]</span></p>
 </div>
 <div id="prueba-de-hipotesis." class="section level5">
 <h5>Prueba de Hipótesis.</h5>
 <p>Bajo la hipótesis nula <span class="math inline">\(\beta_j=0, z_j\)</span> se distribuye como <span class="math inline">\(t-N-p-1\)</span> una distribución <span class="math inline">\(t\)</span> con N-p-1 grados de libertad.</p>
-<p>Considerando el parámetro muestral de la varianza, <span class="math inline">\(z_j\)</span> tendrá una <strong>distribución normal estandard</strong>. La diferencia entre los cuantiles de una distribución <span class="math inline">\(t\)</span> y la estandard normal, de hecho resulta infima, a medida que el tamaño muestral aumenta, <span class="math inline">\(N \rightarrow \infty\)</span> si bien utilizar los cuantiles de la distribución normal es un práctica común con muestras <span class="math inline">\(n \geqslant30\)</span>.</p>
-<p>Si el estadístico <span class="math inline">\(t\)</span> estimado (en valor absoluto) &gt; <span class="math inline">\(t\)</span> crítico, el coeficiente <span class="math inline">\(\hat \beta\)</span> puede considerse como estadisticamente signficativo (y podemos rechazar la hipótesis <span class="math inline">\(H_0:\hat \beta=0\)</span>).</p>
+<p>Considerando el parámetro muestral de la varianza, <span class="math inline">\(z_j\)</span> tendrá una <strong>distribución normal estandard</strong>. La diferencia entre los cuantiles de una distribución <span class="math inline">\(t\)</span> y la estandard normal, de hecho resulta infima, a medida que el tamaño muestral aumenta, <span class="math inline">\(N \rightarrow \infty\)</span> si bien utilizar los cuantiles de la distribución normal es un práctica común con muestras <span class="math inline">\(n \geqslant30\)</span>. <strong>Recordar Teorema de Limite central</strong></p>
+<p>Si el estadístico <span class="math inline">\(t\)</span> estimado (en valor absoluto) &gt; <span class="math inline">\(t\)</span> crítico, el coeficiente <span class="math inline">\(\hat \beta\)</span> puede considerse como <strong>estadisticamente signficativo</strong> (y podemos rechazar la hipótesis <span class="math inline">\(H_0:\hat \beta=0\)</span>). La probabilidad de obtener por casualidad un valor como el estimado es ínfima (ej <span class="math inline">\(&gt; 5\%\)</span>).</p>
 <p>La siguiente figura muestra esta relación.</p>
 </div>
 <div id="probabilidades-de-la-cola-en-la-distribucion-t-prz-z" class="section level5">
@@ -91,7 +91,7 @@ X^T (y-X \beta)=0
 
 </div>
 <p>Note el valor de referencia del <span class="math inline">\(z-score\)</span> a medida que se incrementa el tamaño de muestra y la convergencia entre distribuciòn <span class="math inline">\(t\)</span></p>
-<p>Note que <span class="math inline">\(z^{(1-\alpha)}\)</span> con el percentil <span class="math inline">\((1-\alpha)\)</span> de la distribcuiòn normal.</p>
+<p>Note que <span class="math inline">\(z^{(1-\alpha)}\)</span> con el percentil <span class="math inline">\((1-\alpha)\)</span> de la distribcuiòn normal. ej. <span class="math inline">\(z^{(1-\alpha)}\)</span> con <span class="math inline">\(\alpha=0.025\)</span> ,<span class="math inline">\(z^{(1-0.025)}=1.96\)</span>, o bien <span class="math inline">\(z^{(1-0.05)}=1.645\)</span></p>
 </div>
 <div id="prueba-de-hipotesis-valores-criticos-y-areas-de-rechazo-de-la-hipotesis-nula." class="section level5">
 <h5>Prueba de hipótesis, valores criticos y areas de rechazo de la hipótesis nula.</h5>

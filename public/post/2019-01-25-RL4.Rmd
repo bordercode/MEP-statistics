@@ -142,17 +142,16 @@ Donde $\hat{\beta}$ cumple con:
 $$\hat \beta \sim N(\beta,(X^TX)^{-1} \sigma^2)$$ 
 
 
-Con una matriz ve **varianza-covarianza**$$var(\hat \beta )=(X^TX)^{-1} \sigma^2$$ y el estimado de la varianza estimado como $$\hat \sigma ^2=\frac{1}{N-p-1} \sum_{i=1}^N(y_i -\hat y_i)^2$$
-
+Con una matriz de **varianza-covarianza**$$var(\hat \beta )=(X^TX)^{-1} \sigma^2$$ y el valor de la varianza estimado como $$\hat \sigma ^2=\frac{1}{N-p-1} \sum_{i=1}^N(y_i -\hat y_i)^2$$
 
 #####  Prueba de Hipótesis.
 
 Bajo la hipótesis nula $\beta_j=0, z_j$ se distribuye como $t-N-p-1$ una distribución $t$ con  N-p-1 grados de libertad.
 
-Considerando el parámetro muestral de la varianza, $z_j$ tendrá una **distribución normal estandard**. La diferencia entre los cuantiles de una distribución $t$ y la estandard normal, de hecho resulta infima, a  medida que el tamaño muestral aumenta, $N \rightarrow  \infty$ si bien utilizar los cuantiles de la distribución normal es un práctica común con muestras $n \geqslant30$. 
+Considerando el parámetro muestral de la varianza, $z_j$ tendrá una **distribución normal estandard**. La diferencia entre los cuantiles de una distribución $t$ y la estandard normal, de hecho resulta infima, a  medida que el tamaño muestral aumenta, $N \rightarrow  \infty$ si bien utilizar los cuantiles de la distribución normal es un práctica común con muestras $n \geqslant30$. **Recordar Teorema de Limite central**
 
 
-Si el estadístico $t$ estimado (en valor absoluto) > $t$ crítico, el coeficiente $\hat \beta$ puede considerse como estadisticamente signficativo (y podemos rechazar la  hipótesis  $H_0:\hat \beta=0$). 
+Si el estadístico $t$ estimado (en valor absoluto) > $t$ crítico, el coeficiente $\hat \beta$ puede considerse como **estadisticamente signficativo** (y podemos rechazar la  hipótesis  $H_0:\hat \beta=0$).  La probabilidad de obtener por casualidad  un valor como el estimado es ínfima (ej $> 5\%$). 
 
 
 La siguiente figura muestra esta relación.
@@ -163,7 +162,8 @@ La siguiente figura muestra esta relación.
 Note el valor de referencia del $z-score$ a medida que se incrementa el tamaño de muestra y la convergencia entre distribuciòn $t$
 
 
-Note que $z^{(1-\alpha)}$ con el percentil $(1-\alpha)$ de la distribcuiòn normal. 
+Note que $z^{(1-\alpha)}$ con el percentil $(1-\alpha)$ de la distribcuiòn normal. ej. $z^{(1-\alpha)}$ con $\alpha=0.025$ ,$z^{(1-0.025)}=1.96$, o bien 
+$z^{(1-0.05)}=1.645$
 
 ##### Prueba de hipótesis, valores criticos y  areas de rechazo de la hipótesis nula.
 
