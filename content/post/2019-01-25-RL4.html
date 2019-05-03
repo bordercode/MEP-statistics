@@ -49,9 +49,38 @@ SE(\hat \beta_0)^2= \sigma^2 [\frac{\bar{1}}{n}+\frac{\bar{x}^2}{\sum_{i=1}^{n}(
 RSS(\beta)=\sum_{i=1}^N(y_i-f(x_i))^2
 \tag{2}
 \end{align}\]</span>
-<p><span class="math display">\[=\sum_{i=1}^N(y_i-\beta_0 -\sum_{j=i}^p x_{ij}\beta_j)^2\]</span></p>
-<p>Como minimizamos <a href="#eq:rss1">(2)</a>?</p>
-<p>Consideramos que <strong>X</strong> como una matriz <strong>N</strong> x (p+1) con cada renglón como un vector de regresores con el valor 1 en la primer posición y con la variable <strong>y</strong> como el vector <strong>N</strong> de lavariable dependiente. Entonces podemos escribir la suma residual de cuadrados <strong>RSS</strong> como</p>
+<p><span class="math display">\[=\sum_{i=1}^N(y_i-\beta_0 -\sum_{j=i}^p x_{ij}\beta_j)^2\]</span> Que es una función cuadrática en <em>p+1</em> parámetros</p>
+<p>¿Cómo minimizamos <a href="#eq:rss1">(2)</a>?</p>
+<p>Consideramos <strong>X</strong> como una matriz <strong>N</strong> x (p+1) con cada renglón como un vector de regresores con el valor 1 en la primer posición y con la variable <strong>y</strong> como el vector de dimensión <strong>N</strong> (variable dependiente).</p>
+<p>Entonces podemos escribir la suma residual de cuadrados <strong>RSS</strong> como</p>
+<span class="math display" id="eq:rss2">\[\begin{align}
+RSS(\beta)=(y-X \beta)^T (y-X \beta)
+\tag{3}
+\end{align}\]</span>
+<p>Al diferenciar con respecto a obtenemos:</p>
+<span class="math display" id="eq:rss3">\[\begin{align}
+\frac{\delta RSS}{\delta \beta}=2X^T (y-X \beta)
+\tag{4}
+\end{align}\]</span>
+<p><span class="math display">\[\frac{\delta^2 RSS}{\delta^2  \beta \delta \beta^T}=2X^T X\]</span></p>
+<p>Fijamos la primera derivada =0.</p>
+<span class="math display" id="eq:rss3">\[\begin{align}
+X^T (y-X \beta)=0 
+\tag{4}
+\end{align}\]</span>
+<p>Para obtener la solución única:</p>
+<span class="math display" id="eq:rss3">\[\begin{align}
+\hat \beta = (X^TX)^ {-1} X^T y  
+\tag{4}
+\end{align}\]</span>
+<p>Donde $$ cumple con:</p>
+<span class="math display" id="eq:rss3">\[\begin{align}
+\hat \beta = (X^TX)^ {-1} X^T y  
+\tag{4}
+\end{align}\]</span>
+</div>
+<div id="prueba-de-hipotesis." class="section level5">
+<h5>Prueba de Hipótesis.</h5>
 <p>Bajo la hipótesis nula <span class="math inline">\(\beta_j=0, z_j\)</span> se distribuye como <span class="math inline">\(t-N-p-1\)</span> una distribución <span class="math inline">\(t\)</span> con N-p-1 grados de libertad.</p>
 <p>Considerando el parámetro muestral de la varianza, <span class="math inline">\(z_j\)</span> tendrá una <strong>distribución normal estandard</strong>. La diferencia entre los cuantiles de una distribución <span class="math inline">\(t\)</span> y la estandard normal, de hecho resulta infima, a medida que el tamaño muestral aumenta, <span class="math inline">\(N \rightarrow \infty\)</span> si bien utilizar los cuantiles de la distribución normal es un práctica común con muestras <span class="math inline">\(n \geqslant30\)</span>.</p>
 <p>Si el estadístico <span class="math inline">\(t\)</span> estimado (en valor absoluto) &gt; <span class="math inline">\(t\)</span> crítico, el coeficiente <span class="math inline">\(\hat \beta\)</span> puede considerse como estadisticamente signficativo (y podemos rechazar la hipótesis <span class="math inline">\(H_0:\hat \beta=0\)</span>).</p>
@@ -116,12 +145,18 @@ RSS(\beta)=\sum_{i=1}^N(y_i-f(x_i))^2
 </div>
 <div id="precision-del-modelo." class="section level3">
 <h3>Precisión del modelo.</h3>
-<p>Una vez que hemos rechazado la hipótesis nula, es importante cuantificar hasta que grado el modelo se ajusta a los datos, para lograr esto, dos estimados son considerados imortantes: El primero es <em>Residual Standard Error</em> <strong>RSE</strong>. <span class="math inline">\(RSE=\sqrt{\frac {RSS}{(n-2)}}\)</span> y el estadístico <span class="math inline">\(R^2\)</span></p>
+<p>Una vez que hemos rechazado la hipótesis nula, es importante cuantificar hasta que grado el modelo se ajusta a los datos, para lograr esto, dos estimados son considerados importantes:</p>
+<p>El primero es el <em>Residual Standard Error</em> <strong>RSE</strong>.</p>
+<span class="math display" id="eq:rse">\[\begin{align}
+RSE=\sqrt{\frac {RSS}{(n-2)}} 
+\tag{5}
+\end{align}\]</span>
+<p>El segundo es el estadístico <span class="math inline">\(R^2\)</span></p>
 </div>
 <div id="residual-standard-error-rse." class="section level3">
 <h3>Residual Standard Error RSE.</h3>
-<p>Recordemos que, asociado con cada observación tenemos en término de error <span class="math inline">\(\epsilon\)</span>, por lo que no es posible predecir con total predicción <span class="math inline">\(Y\)</span> a partir de <span class="math inline">\(X\)</span>.</p>
-<p>El <strong>RSE</strong> es un estimado de la desviación de <span class="math inline">\(\epsilon\)</span>. Este indicador muestra el monto promedio en el que la variable dependiente se desvia de <strong>la verdadera linea de regresión</strong>.</p>
+<p>Recordemos que, asociado con cada observación tenemos en término de error <strong>e</strong>, por lo que no es posible predecir con total precisión <span class="math inline">\(Y\)</span> a partir de <span class="math inline">\(X\)</span>.</p>
+<p>El <strong>RSE</strong> es un estimado de la desviación de <strong>e</strong>. Este indicador muestra el monto promedio en el que la variable dependiente se desvia de <strong>la verdadera linea de regresión</strong>.</p>
 <p><span class="math display">\[RSE=\sqrt{\frac {RSS}{(n-2)}}\]</span> Recordemos que <span class="math display">\[RSS=\sum_{i=1}^{n}(y_i-\hat y_i)^2\]</span></p>
 <p>En el caso del modelo sobre votaciones y gastos de campaña, por ejemplo el <span class="math inline">\(RSE=6.385\)</span> lo que implica que las votaciones en cada distrito difieren (se desvian) de la verdadera linea de regresión en promedio en <span class="math inline">\(6.385\%\)</span>, <strong>RSE=6.385</strong></p>
 <p>Veamos el caso del modelo sobre ventas y gastos en publicidad (Ejemplo 3).</p>
@@ -175,7 +210,7 @@ RSS(\beta)=\sum_{i=1}^N(y_i-f(x_i))^2
 <p>De manera similar, el <em>adjusted</em> <span class="math inline">\(R^2\)</span> únicamente difiere en que “ajusta” por los grados de libertad en el modelo, si bien este prácticamente aporta la misma información al <span class="math inline">\(R^2\)</span> sin ajuste.</p>
 <span class="math display" id="eq:r2">\[\begin{align}
 R^2=\frac{TSS-RSS}{TSS}=1-\frac{RSS}{TSS}
-\tag{3}
+\tag{6}
 \end{align}\]</span>
 <p>Donde <span class="math inline">\(TSS=\sum (y_i-\bar y)^2\)</span> Suma total de cuadrados (<em>Total Sum of Squares</em>)</p>
 <p>El estadistico <span class="math inline">\(R^2\)</span> mide la proporción de la variación en <span class="math inline">\(Y\)</span> que es explicada por la regresión.</p>

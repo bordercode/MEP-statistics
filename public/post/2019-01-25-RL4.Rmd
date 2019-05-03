@@ -98,12 +98,53 @@ RSS(\beta)=\sum_{i=1}^N(y_i-f(x_i))^2
 \end{align}
 
 $$=\sum_{i=1}^N(y_i-\beta_0 -\sum_{j=i}^p x_{ij}\beta_j)^2$$
+Que es una función cuadrática en *p+1* parámetros
 
-Como minimizamos \@ref(eq:rss1)?
 
-Consideramos que **X** como una matriz  **N** x (p+1) con cada renglón como un vector de regresores con el valor 1 en la primer posición y con la variable **y** como el vector **N** de lavariable dependiente. Entonces podemos escribir la suma residual de cuadrados **RSS** como  
+¿Cómo minimizamos \@ref(eq:rss1)?
+
+Consideramos  **X** como una matriz  **N** x (p+1) con cada renglón como un vector de regresores con el valor 1 en la primer posición y con la variable **y** como el vector de dimensión **N** (variable dependiente). 
+
+Entonces podemos escribir la suma residual de cuadrados **RSS** como  
  
+\begin{align}
+RSS(\beta)=(y-X \beta)^T (y-X \beta)
+(\#eq:rss2)
+\end{align}
 
+Al diferenciar con respecto a \beta obtenemos:
+
+ 
+\begin{align}
+\frac{\delta RSS}{\delta \beta}=2X^T (y-X \beta)
+(\#eq:rss3)
+\end{align}
+
+$$\frac{\delta^2 RSS}{\delta^2  \beta \delta \beta^T}=2X^T X$$
+
+Fijamos la primera derivada =0.
+ 
+\begin{align}
+X^T (y-X \beta)=0 
+(\#eq:rss3)
+\end{align}
+
+Para obtener la solución única:
+
+\begin{align}
+\hat \beta = (X^TX)^ {-1} X^T y  
+(\#eq:rss3)
+\end{align}
+
+Donde $\hat  \beta $ cumple con:
+
+\begin{align}
+\hat \beta = (X^TX)^ {-1} X^T y  
+(\#eq:rss3)
+\end{align}
+
+
+#####  Prueba de Hipótesis.
 
 Bajo la hipótesis nula $\beta_j=0, z_j$ se distribuye como $t-N-p-1$ una distribución $t$ con  N-p-1 grados de libertad.
 
@@ -160,14 +201,23 @@ Note en ambos casos que las probabilidades de observar los parámetros estimados
 
 ### Precisión del modelo. 
 
-Una vez que hemos rechazado la hipótesis nula, es importante cuantificar hasta que grado el modelo se ajusta a los datos, para lograr esto, dos estimados son considerados imortantes: El primero es *Residual Standard Error*  **RSE**.  $RSE=\sqrt{\frac {RSS}{(n-2)}}$ y el estadístico $R^2$  
+Una vez que hemos rechazado la hipótesis nula, es importante cuantificar hasta que grado el modelo se ajusta a los datos, para lograr esto, dos estimados son considerados importantes: 
+
+El primero es el *Residual Standard Error*  **RSE**. 
+
+\begin{align}
+RSE=\sqrt{\frac {RSS}{(n-2)}} 
+(\#eq:rse)
+\end{align}
+
+El segundo es el estadístico $R^2$ 
 
 ### Residual Standard Error  RSE.
 
 
-Recordemos que, asociado con cada observación tenemos en término de error $\epsilon$, por lo que no es posible predecir con total predicción $Y$ a partir de $X$.
+Recordemos que, asociado con cada observación tenemos en término de error **e**, por lo que no es posible predecir con total precisión $Y$ a partir de $X$.
 
-El **RSE** es un estimado de la desviación de $\epsilon$. Este indicador muestra el monto promedio en el que la variable dependiente se desvia de **la verdadera linea de regresión**.   
+El **RSE** es un estimado de la desviación de **e**. Este indicador muestra el monto promedio en el que la variable dependiente se desvia de **la verdadera linea de regresión**.   
 
 $$RSE=\sqrt{\frac {RSS}{(n-2)}}$$ 
 Recordemos  que $$RSS=\sum_{i=1}^{n}(y_i-\hat y_i)^2$$
@@ -264,6 +314,8 @@ d) A partir de los valores estimados del error estándard **SE**  de los paráme
 
 e) Indique el valor del estadístico  estimado sobre la precisión del modelo ($R^2$) . 
 
+
+
 ```{r,  echo=FALSE, include=FALSE}
 pc<-read.table("http://gattonweb.uky.edu/sheather/book/docs/datasets/prostateAlldata.txt", header =TRUE )
 
@@ -274,6 +326,9 @@ pairs(lpsa~lcavol+lweight+age, data=pc)
 lm(lpsa~lcavol,data=pc)%>%
 summary()
 ```
+
+
+
 
 #### Supuesto de varianza constante en el término de error.  Homocedasticidad.
 
