@@ -406,9 +406,9 @@ lm(Balance~Asian+Caucasian,data =Credit)%>%
 
 ```
 
-El resultado indica que la para los individuos Afroamericanos el balance promedio es de $\$521.00$, para los asiaticos $\$512.31$ ó 531-18.69 y para los caucásicos $\$518.5$ ó 531-12.50.
+El resultado indica que la para los individuos Afroamericanos el balance promedio es de $\$531.00$, para los asiaticos $\$512.31$ ó 531-18.69 y para los caucásicos $\$518.5$ ó 531-12.50.
 
-Note que si tenemos **k** factores, entonces  tenemos **k-1** variables dummy dejando la variable sin recodificar como la variable base, en este caso la población afroamericana. 
+Note que si tenemos **k** factores, entonces  tenemos **k-1** variables **dummy** dejando la variable sin recodificar como la **variable base**, en este caso la población afroamericana. 
 
 
 Finalmente note que las variables que representan el grupo étnico no son estadísticamente significativas.
