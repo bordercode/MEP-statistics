@@ -398,6 +398,7 @@ En seguida la inclusion de la variable categórica  grupo étnico (*Ethnicity*) 
 ```{r, echo =FALSE}
 data(Credit)
 names(Credit)
+
 Credit<-mutate(Credit,Asian=ifelse(Ethnicity=="Asian",1,0),
                Caucasian=ifelse(Ethnicity=="Caucasian",1,0))
 
@@ -416,7 +417,9 @@ Finalmente note que las variables que representan el grupo étnico no son estad�
 ####Ejemplo 2
 
 
-Considere ahora la relación entre  salarios  y los atributos del individuo, incluimos ahora la variable cualitativa **sexo** para determinar si existe impacto alguno en el nivel salarial entre hombres o mujeres, un contraste de interés desde la perspectiva de política pública. La base de datos contiene 526 observaciones (individuos). La variable dependiente es *wage* (dólares por hora ajustados s precios de 2018). Fuente de datos. *Current Population Survey*.
+Considere ahora la relación entre  salarios  y los atributos del individuo, incluimos ahora la variable cualitativa **sexo** para determinar si existe impacto alguno en el nivel salarial entre hombres o mujeres, un contraste de interés desde la perspectiva de política pública. 
+
+La base de datos contiene 526 observaciones (individuos). La variable dependiente es *wage* (dólares por hora ajustados a precios de 2018). Fuente de datos. *Current Population Survey*.
 
 
 ```{r, echo=FALSE}
@@ -491,6 +494,10 @@ lm(lwage~female+educ+exper+expersq
 
 Los resultados indican que considerando los mismos niveles de educación, experiencia y antigüedad (incluido el efecto no lineal de estas últimas variables), las mujeres promedian un salario 29.6% inferior al de los hombres.  Nuevamente enfatizar que la interpretación $\beta_0$ carece de interés. 
 
+Respecto a los terminos cuadráticos ´(**efectos no lineales**) estos indican laS tasas de cambio en la pendiente de  cada variable (ej. tenure  y exper), por lo que en este caso ambas variables implican una reDucción en la del efecto atribuido a la variable original. 
+
+Así, un año adicional en el empleo genera una reducción en la pendiente de 0.05%.(efecto de $tenure^2$).   Note que en este caso el efecto constante de la variable *tenure* es un incremento de $3.1\%$, este es el cambio con un año adicional con ese empleo, pero esta ganancia decrece con cada año extra.  
+
 #### Ejemplo 4
 
 Consideremos ahora la inclusión de dos variables cualitativas, por ejemplo el **estado civil** y si el individuo es hombre o mujer.
@@ -525,7 +532,7 @@ Interesante el hecho de que controrio al caso de los hombres, las mujeres casada
 
 ¿Es la diferencia estadisticamente significativa?, bueno intuitivamtene es una brecha considerable pero es necesario  hacer formalmente la estimación para lo cual  construimos  el modelo con la variable   mujer-casada como la  base.
 
-```{r,echo=FALSE}
+```{r, echo=FALSE}
 
 
 data(wage1)
@@ -547,7 +554,7 @@ Note que la diferencia salarial entre Mujeres casadas y Solteras es de hecho est
 
 #### Ejemplo 5
 
-Consideremos ahora el escenario en que buscamos predecir los precios de las viviendas en función de atributos como  el tamaño del terreno (lotsize), tamaño de cosntrucción (sqrft), número de dormitorios (bdrms) y una variable factorial (dicotómica: 1,0) para indicar si la casa es de estilo colonial  o no (colonial). 
+Consideremos ahora el escenario en que buscamos predecir los precios de las viviendas en función de atributos como  el tamaño del terreno (lotsize), tamaño de construcción (sqrft), número de dormitorios (bdrms) y una variable factorial (dicotómica: 1,0) para indicar si la casa es de estilo colonial  o no (colonial). 
 
 El modelo se plantea utilizando la transformación logarítmica de la variable dependiente para observar cambios porcentuales en el precio. 
 
@@ -566,14 +573,18 @@ lm(lprice~bdrms+llotsize+lsqrft+colonial,data=hprice1)%>%
 
 Los resultados indican que las casas estilo colonial ($X_{colonial}=1$) tienen un diferencial de 5.3% en el precio promedio respecto a las casas de otros estilos. (El signo es positivo lo que corresponde a un incremento en el precio para las casas de estilo colonial).  
 
-Adicionalmente las variables $llotsize$ y $lsqrft$ muestran los comabios porcentuales de la variable dependiente *log(precio)* ante el cambio de $1\%$.  POr lo que estos coeficientes $\hat \beta$ de hecho permiten conocer la tradicional elasticidad. En abos casos el precios es enalastico sin emabrgo es relativamente más sensible respecto a el tamaño de la construcción (variable *sqrft*).
+Adicionalmente las variables $llotsize$ y $lsqrft$ muestran los cAmbios porcentuales de la variable dependiente *log(precio)* ante el cambio de $1\%$.  POr lo que estos coeficientes $\hat \beta$ de hecho permiten conocer la  **elasticidad** un concpeto ampliamente usaso en estudios osicales para indicar la flexibilidad de una variable ante variaciones en posibles determinantes.
 
-Note la interpretación del coeficiente $\hat \beta_{colonial}$ como la expresión porcentual en la diferencia entre los grupos de la variable dummy  controlando por el resto de atributos. Note finalmente que la variable colonial no es estadísticamente significativa, **NO se rechaza** $H_0: \beta_{colonial}=0$
+En ambos casos el precios es inelástico, sin embargo, es relativamente más sensible respecto al tamaño de la construcción (variable *sqrft*).
+
+Note la interpretación del coeficiente $\hat \beta_{colonial}$ como la expresión porcentual en la diferencia entre los grupos de la variable dummy  controlando por el resto de atributos. Note finalmente que la variable colonial no es estadísticamente significativa, **NO rechazamos** $H_0: \beta_{colonial}=0$
 
 
 #### Tarea
 
-Considere el siguiente escenario en el que se busca explicar la relación entre la esperanza de vida de la población en una muestra de 194 paises  (la variable dependiente) y una serie de caracteristicas sintetizadas por las sigueintes variables explicativas: Producto Interno Bruto per capita 2005-2009 (miles de USD constantes a 2005) (*gdp*), años promedio de escolaridad escolaridad (*school*), tasa de fertilidad en pobalción adolescente  nacimientos por cada 1000 (*adfert*: Adolescent fertility: births/1000 births 2005/2009). Mortalidad infantil (*chldmort*:  tasa de mortalidad infantil (antes de 5 años por cada 1000 nacimientos). 
+Considere el siguiente escenario en el que se busca explicar la relación entre la esperanza de vida de la población en una muestra de 194 paises  (la variable dependiente) y una serie de caracteristicas sintetizadas por las siguientes variables explicativas: 
+
+Producto Interno Bruto per capita 2005-2009 (miles de USD constantes a 2005) (*gdp*), años promedio de escolaridad escolaridad (*school*), tasa de fertilidad en pobalción adolescente  (nacimientos por cada 1000, *adfert*: Adolescent fertility: births/1000 births 2005/2009). Mortalidad infantil (*chldmort*:  tasa de mortalidad infantil (antes de 5 años por cada 1000 nacimientos). 
 [Fuente](http://hdr.undp.org/en/data)
 
 a) Represente graficamente la variación en la esperanza de vida en los paises de la muestra por región. Tip: Utilice un Boxplot.
@@ -590,7 +601,7 @@ e) Según los parámetros del modelo, ¿cuantos años puede mejorar la esperanza
 
 f) Considerando los parámetros estimados del modelo, ¿Qué efecto tendría la reducción de 10 individuos en al tasa de mortablidad infantil por cada 1000 nacimientos, sobre la esperanza de vida promedio para esta muestra de países? 
 
-g) Estime el modelo de regresión incluyendo como regresor la variable *dummy* para región en la que se ubica el país, con la binaria  Africa=1, O=otras.
+g) Estime el modelo de regresión incluyendo como regresor la variable *dummy* para región en la que se ubica el país, con la binaria  Africa=1, 0=otras.
 
 ¿Es esta variable estadísticamente significativa? 
 ¿Cúal es el estimado para esperanza de vida en un país de la región Africa? Y el estimado para aquellos paises fuera de esa región?  
@@ -710,7 +721,9 @@ lm(avg_glucose_level~bmi+age+hypertension+gender, data=bmi)%>%
 summary()
 ```
 
-Note que las varioables explicativas seleccionadas son estadisticamente significativas y los niveles de glucosa promedio estimados son mayores ante incrementos en el bmi, incrementan con la edad, con el dignóstico de hipertensión y para los hombres (en esta muestra). Ahora podemos medir la interacción entre edad y el diagnostico de hipertensión, un hipotesis emn este sentido es que podrían presentarse diferencias en los niveles de glucosa promedio a medida que avanza la edad del individuo dependientdo si este tiene diagnóstico de hipertesión o no. 
+Note que las variables explicativas seleccionadas son estadísticamente significativas y los niveles de glucosa promedio estimados son mayores ante incrementos en el bmi, incrementan con la edad, con el dignóstico de hipertensión y para los hombres (en esta muestra). 
+
+Ahora podemos medir la interacción entre edad y el diagnóstico de hipertensión, un hipótesis en este sentido es que podrían presentarse diferencias en los niveles de glucosa promedio a medida que avanza la edad del individuo dependiendo si este tiene diagnóstico de hipertensión o no. 
 
 Para implementar la estimación en R   únicamente usamos el operador de interacciones *. A continuación el resultado  para la interacción entre edad y el diagnóstico de hipertensión. 
 
