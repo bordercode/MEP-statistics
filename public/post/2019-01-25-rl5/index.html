@@ -292,27 +292,26 @@ summary()</code></pre>
 <div id="ejemplo-6" class="section level4">
 <h4>Ejemplo 6</h4>
 <p>Consideremos ahora el modelo sobre el impacto de los gastos de publicidad en diversos medios (T.V. Radio, Newspaper) sobre el nivel de ventas.(Recuerde ventas en miles de unidades y gastos en miles de USD). Estime el modelo y determine el valor de los parámetros de la pendiente para cada variable independiente. ¿Son estadísticamente significativos? Qué proporción de la varianza es explicada por el modelo?</p>
-<pre><code>## [1] &quot;X&quot;         &quot;TV&quot;        &quot;radio&quot;     &quot;newspaper&quot; &quot;sales&quot;</code></pre>
+<pre><code>## [1] &quot;TV&quot;        &quot;radio&quot;     &quot;newspaper&quot; &quot;sales&quot;</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = sales ~ TV + radio + newspaper, data = a)
+## lm(formula = sales ~ TV + radio, data = a)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -8.8277 -0.8908  0.2418  1.1893  2.8292 
+## -8.7977 -0.8752  0.2422  1.1708  2.8328 
 ## 
 ## Coefficients:
-##              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)  2.938889   0.311908   9.422   &lt;2e-16 ***
-## TV           0.045765   0.001395  32.809   &lt;2e-16 ***
-## radio        0.188530   0.008611  21.893   &lt;2e-16 ***
-## newspaper   -0.001037   0.005871  -0.177     0.86    
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  2.92110    0.29449   9.919   &lt;2e-16 ***
+## TV           0.04575    0.00139  32.909   &lt;2e-16 ***
+## radio        0.18799    0.00804  23.382   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 1.686 on 196 degrees of freedom
-## Multiple R-squared:  0.8972, Adjusted R-squared:  0.8956 
-## F-statistic: 570.3 on 3 and 196 DF,  p-value: &lt; 2.2e-16</code></pre>
+## Residual standard error: 1.681 on 197 degrees of freedom
+## Multiple R-squared:  0.8972, Adjusted R-squared:  0.8962 
+## F-statistic: 859.6 on 2 and 197 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Note en este caso la interpretación de los coeficientes: Por ejemplo para la variable <strong>TV</strong> un incremento de una unidad ($1000 USD) tiene un impacto en la positivo en las ventas de 48 unidades, <strong>conrolando por las otras dos variables</strong> (los gastos en radio y prensa escrita).</p>
 <p>Note un punto interesante: ¿Tendrá sentido indicar que <strong>NO HAY</strong> relación entre la variable ventas y los gastos en prensa escrita. <strong>(p-value=.86)?</strong>. Aún a pesar de que el modelo de regresión simple indica lo contrario.</p>
 <pre><code>## [1] &quot;TV&quot;        &quot;radio&quot;     &quot;newspaper&quot; &quot;sales&quot;</code></pre>
@@ -414,6 +413,14 @@ round(res, 4)</code></pre>
 <div id="ejmeplo-1" class="section level4">
 <h4>Ejmeplo 1</h4>
 <p>Consideremos ahora el escenario de un estudio sobre el saldo (variable Balance) de la tarjeta de crédito en relación a diversas características del usuario: Edad, calificación de crediticia, Educación, ingreso, limite de crédito de la tarjeta, grupo étnico, sexo y estutus marital.</p>
+<pre class="r"><code>data(Credit)
+View(Credit)
+
+Credit&lt;-select(Credit,-c(ID, Married,Ethnicity,Student,Gender,Cards))
+
+
+
+pairs(~Balance+Age+ Rating+Education+ Income+ Limit, data=Credit,col = &quot;red&quot;, pch=1)</code></pre>
 <p><img src="/post/2019-01-25-RL5_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>El objetivo es modelar la variable dependiente <strong>saldo</strong> en función de las diversas características del inidviduo.</p>
 <p>Note que las variables Sexo (Gender) y grupo étnico son categóricas (factores). Podemos incluirlas en el modeo creando variables <em>dummy</em>:</p>
