@@ -280,14 +280,18 @@ summary()
 
 ####  Ejercicio 1:
 
-Considere la relación del peso al nacimiento (gramos) y las variables explicativas sobre el número de cigarros  consumidos por día por la madre durante su embarazo y el  nivel de ingreso familiar   Fuente de los datos: J. Mullahy (1997), “Instrumental-Variable Estimation of Count Data Models: Applications to Models of Cigarette Smoking Behavior,” Review of Economics and Statistics 79, 596-593. 
+Considere la relación sobre el peso al nacimiento, variable bwghtlbs (peso en libras -pounds-) y las variables explicativas:   número de cigarros  consumidos por día por la madre durante su embarazo y el  nivel de ingreso familiar, variable faminc, (medida en 1000's de USD).
 
-a) Estime el modelo de regresión lineal y determine los parametros $\hat \beta$ correspondientes a cada regresor. (Exprese la variable independiente bwght  en gramos). Cúal es el efecto esperado en el peso del bebé si la madre fuma 7 cigarros por dia?
+Fuente de los datos: J. Mullahy (1997), “Instrumental-Variable Estimation of Count Data Models: Applications to Models of Cigarette Smoking Behavior,” Review of Economics and Statistics 79, 596-593. 
 
-b)  Indique si las  variables explicativas  son estadisticamente significativas al 5%.
+a) Estime el modelo de regresión lineal y determine los parámetros $\hat \beta$ correspondientes a cada regresor. (Exprese la variable independiente bwghtlbs  en gramos. La unidad de medida actual es libras). Adicionalmente ajuste la variable de ingreso familiar para reflejar precios de 2019 (tip: La tasa de inflación en el periodo  1997-2019 fue $58.36\%$).
+
+¿Cúal es el efecto esperado en el peso del bebé si la madre fuma 7 cigarros por dia?
+
+b)  Indique si las  variables explicativas  son estadísticamente significativas al 5%.
 
 c) ¿Qué porporción de la varianza es explicada por el modelo?  $R^2$
-Explique posibels razones de la magnitud del $R^2$.
+Explique posibles razones de la magnitud del $R^2$.
 
 d) Explica el modelo en su conjunto la variable  dependiente?   Tip: F-statistic p-value.
 
@@ -295,11 +299,15 @@ d) Explica el modelo en su conjunto la variable  dependiente?   Tip: F-statistic
 ```{r, echo =FALSE, include = FALSE}
 data(bwght)
 names(bwght)
-bwght<-mutate(bwght,bwght=bwght*0.028349523125000334*1000)
+bwght<-mutate(bwght,gramos=bwghtlbs*0.453592*1000, finc2019=faminc*1.5838)
 
 summary(bwght$faminc)
-lm(bwght~cigs+faminc,data=bwght)%>%
+lm(gramos~cigs+finc2019,data=bwght)%>%
   summary()
+
+
+summary(bwght$finc2019)
+
 ```
 
 #### Ejericio 2

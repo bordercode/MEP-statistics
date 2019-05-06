@@ -337,6 +337,8 @@ pairs(lpsa~lcavol+lweight+age, data=pc)
 
 lm(lpsa~lcavol,data=pc)%>%
 summary()
+
+summary(pc$lpsa)
 ```
 
 
