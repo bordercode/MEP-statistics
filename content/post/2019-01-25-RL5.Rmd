@@ -99,7 +99,6 @@ data(wage1)
 
 lm(wage~educ+exper,data=wage1)%>%
 summary()
-
 ```
 
 #### Ejemplo 1.2
@@ -147,6 +146,9 @@ Ecuación de salario.
 $\hat {log( wage)}=\beta_0+\beta_1educ+\beta_2 exper +\beta_3tenure$
 
 ```{r, echo=FALSE, fig.width=10, fig.height=4,warning=FALSE, message = FALSE}
+
+
+
 library(gridExtra)
 theme_set(theme_light())
 
@@ -204,6 +206,7 @@ Note adicionalmente el estimado de la bondad de ajuste del modelo, un $R^2$ rela
 Considermos ahora un modelo para la relación entre la participación en el plan de pensiones *401k* de 1534 empresas como variable dependiente expresada en porcentaje y dos variables explicativas: edad del plan de pensiones: variable **age** (expresada en años) y la fracción correspondiente a la aportación patronal por cada peso que el trabajador aporta a la cuenta: (**mrate**). ejemplo un mrate= .57 implica que por cada peso del trabajador, el empleador aporta 57 centavos. 
 
 ```{r}
+
 data(k401k)
 
 lm(prate ~ mrate + age, data = k401k)%>%
@@ -222,9 +225,16 @@ Consideremos ahora el modelo sobre el impacto de los gastos de publicidad en div
 
 
 ```{r, echo=FALSE}
-a<-read.csv("Advertising.csv")
+
+a<-read.csv("Advertising.csv")%>%
+  select(-X)
+
+
+
+
 names(a)
-lm(sales~TV+radio+newspaper,data=a)%>%
+
+lm(sales~TV+radio,a)%>%
 summary()
 
 ```
@@ -300,13 +310,13 @@ d) Explica el modelo en su conjunto la variable  dependiente?   Tip: F-statistic
 
 ```{r, echo =FALSE, include = FALSE}
 data(bwght)
-names(bwght)
 
-bwght<-mutate(bwght,gramos=bwghtlbs*0.453592*1000, finc2019=faminc*1.5838)
 
-summary(bwght$faminc)
+bwght<-mutate(bwght,gramos=bwghtlbs*0.453592*1000, finc2019=faminc*1.5836)
 
-lm(gramos~cigs+finc2019,data=bwght)%>%
+summary(bwght$finc2019)
+
+lm(gramos~cigs+finc2019,bwght)%>%
   summary()
 
 
@@ -346,14 +356,25 @@ summary()
 
 ## Estimación en z-scores
 
-lm(scale(price) ~ 0 + scale(nox) + scale(crime) + scale(rooms) + scale(dist) + scale(stratio), data = hprice2)%>% 
+lm(scale(price) ~  scale(nox) + scale(crime) + scale(rooms) + scale(dist) + scale(stratio), data = hprice2)%>% 
 summary()
 
 ## Estimación elasticidades
 
 hprice2log<-mutate(hprice2,lprice=log(price), lnox=log(nox),ldist=log(dist))
+
+
+
 lm(lprice ~ lnox + crime + rooms + ldist + stratio, data = hprice2log)%>%
 summary()
+
+
+
+
+
+
+
+
 ```
 
 
@@ -366,9 +387,15 @@ Ej.  Variables cualitativas (factores)  como sexo, género, raza, etc.,
 Consideremos ahora el escenario de un estudio sobre el saldo (variable Balance) de la tarjeta de crédito en relación a diversas características del usuario: Edad, calificación de crediticia, Educación, ingreso, limite de crédito de la tarjeta, grupo étnico, sexo y estutus marital.
 
 
-```{r,echo=FALSE}
+```{r,echo=TRUE}
+
 data(Credit)
+View(Credit)
+
 Credit<-select(Credit,-c(ID, Married,Ethnicity,Student,Gender,Cards))
+
+
+
 pairs(~Balance+Age+ Rating+Education+ Income+ Limit, data=Credit,col = "red", pch=1)
 ```
 
