@@ -78,7 +78,9 @@ Por el contrario si **Ha** es verdad, tendremos  $E[(TSS-RSS)/p>\sigma^2]$ y por
 
 
 
-La interpretación cuando el estadistico F>1 y es estadisticamente significativo (recordemos la prueba de hipótesis mediante el  **p-value**)  indica que al menos uno de los regresores es distinto de cero. Evidencia en favor del modelo propuesto. 
+La interpretación cuando el estadístico **F>1** y es estadísticamente significativo (recordemos la prueba de hipótesis mediante el  **p-value**)  indica que al menos uno de los regresores es distinto de cero.
+
+Evidencia en favor del modelo propuesto. 
 
 Note que el estadístico F ajusta por el número de variables independientes **p** y el número de observaciones  **n**, este ajuste ofrece una ventaja respecto a las pruebas de significancia individaual con el estadístico t. 
 
@@ -249,7 +251,7 @@ De hecho si tiene sentido, observe la siguiente matriz de correlación entre las
 res <- cor(a)
 round(res, 4)
 ```
-Note que la correlación entre las variables newspaper y TV es positiva  (.35). Lo que revela una tendencia a gastar más en publicidad direigida en newspaers en mercados donde se gasta más en publicidad por radio. 
+Note que la correlación entre las variables newspaper y TV es positiva  (.35). Lo que revela una tendencia a gastar más en publicidad dirigida en newspaers en mercados donde se gasta más en publicidad por radio. 
 
 Ahora suponga que de hecho el resultado del modelo de regresión multiple es correcto y los gastos en radio tienen efecto en las ventas, mientras los gastos en publicidad dirigida a newspapers no tienen impacto en las ventas. 
 
@@ -299,20 +301,20 @@ d) Explica el modelo en su conjunto la variable  dependiente?   Tip: F-statistic
 ```{r, echo =FALSE, include = FALSE}
 data(bwght)
 names(bwght)
+
 bwght<-mutate(bwght,gramos=bwghtlbs*0.453592*1000, finc2019=faminc*1.5838)
 
 summary(bwght$faminc)
+
 lm(gramos~cigs+finc2019,data=bwght)%>%
   summary()
 
-
-summary(bwght$finc2019)
 
 ```
 
 #### Ejericio 2
 
-Considere  el escenario en que se relaciona el valor medio de las viviendas por CENSUS TRACT con   las siguientes características: número promedio de habitaciones (rooms), Distancia promedio en millas hacia los 5 principales centros de empleo (dist), la proporción de alumnos a maestros (stratio) en la sescuelas detro del census tract, incluidos determinates como la calidad del aire en la comunidad, apoximada por las mediciones de óxidos de nigrógeno  $NO_x$ ($NO_x$ medido en partes por millón), incluidos determinates sobre las condiciones de seguridad de la localidad como la cantidad de delitos per capita (crime).
+Considere  el escenario en que se relaciona el valor medio de las viviendas por CENSUS TRACT con   las siguientes características: número promedio de habitaciones (rooms), Distancia promedio en millas hacia los 5 principales centros de empleo (dist), la proporción de alumnos a maestros (stratio) en la sescuelas dentro del census tract, incluidos determinantes como la calidad del aire en la comunidad, apoximada por las mediciones de óxidos de nigrógeno  $NO_x$ ($NO_x$ medido en partes por millón), incluidos determinates sobre las condiciones de seguridad de la localidad como la cantidad de delitos per capita (crime).
 Base de datos con 506 observaciones (cada observación representa un census tract (AGEB)   Standard  Metropolitan Statistical Area (SMSA) en el area de Boston, MA, EUA.). 
 
 [Fuente del datos:](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.926.5532&rep=rep1&type=pdf)  “Hedonic Housing Prices and the Demand for Clean Air,” by Harrison, D. and D.L.Rubinfeld, Journal of Environmental Economics and Management 5, 81-102.
@@ -334,7 +336,7 @@ Interprete los resutlados (Tip: Elasticidades.)
 
 d) Existe alguna diferencia entre los estadísticos  estimados $R^2$  y  **F** entre los tres modelos?
 
-```{r}
+```{r, include=FALSE}
 data(hprice2)
 
 ## Estimación en niveles 
@@ -386,10 +388,16 @@ lm(Balance~Gender, data =Credit)%>%
   summary()
 ```
 
-El saldo promedio de la tarjeta de crédito para los hombre es de $509.80. Mientras para las  mujeres=529.53 ó  509.80+ 19.73. Note que la variable Gender no es estadisticamente significativa  p-value=.66 , por lo no hay evidencia estadística sobre el impacto del género sobre la vvariable dependiente saldo. 
+El saldo promedio de la tarjeta de crédito para los hombre es de $509.80. Mientras para las  mujeres=529.53 ó  509.80+ 19.73. Note que la variable Gender no es estadisticamente significativa  p-value=.66 , por lo no hay evidencia estadística sobre el impacto del género sobre la variable dependiente saldo. 
+
+
+En seguida la inclusion de la variable categórica  grupo étnico (*Ethnicity*)  a corde con la siguiente notación:
+
+![](/img/afro.jpg)
 
 ```{r, echo =FALSE}
 data(Credit)
+names(Credit)
 Credit<-mutate(Credit,Asian=ifelse(Ethnicity=="Asian",1,0),
                Caucasian=ifelse(Ethnicity=="Caucasian",1,0))
 

@@ -155,7 +155,8 @@ Y=\beta_0+\beta_1 X_1+\beta_2 X_2+...+\beta_p X_p+\epsilon
 <p>Si los supuestos del modelo se cumplen <span class="math inline">\(E[RSS/(n-1-p)=\sigma^2]\)</span> y Si H0. es verdad <span class="math inline">\(E[(TSS-RSS)/p]=\sigma^2\)</span></p>
 <p>Por lo que en ausencia de relación entre la variable dependiente y los regresores, el estadístico <span class="math inline">\(F\approx1\)</span>.</p>
 <p>Por el contrario si <strong>Ha</strong> es verdad, tendremos <span class="math inline">\(E[(TSS-RSS)/p&gt;\sigma^2]\)</span> y por lo tanto esperamos F&gt;1.</p>
-<p>La interpretación cuando el estadistico F&gt;1 y es estadisticamente significativo (recordemos la prueba de hipótesis mediante el <strong>p-value</strong>) indica que al menos uno de los regresores es distinto de cero. Evidencia en favor del modelo propuesto.</p>
+<p>La interpretación cuando el estadístico <strong>F&gt;1</strong> y es estadísticamente significativo (recordemos la prueba de hipótesis mediante el <strong>p-value</strong>) indica que al menos uno de los regresores es distinto de cero.</p>
+<p>Evidencia en favor del modelo propuesto.</p>
 <p>Note que el estadístico F ajusta por el número de variables independientes <strong>p</strong> y el número de observaciones <strong>n</strong>, este ajuste ofrece una ventaja respecto a las pruebas de significancia individaual con el estadístico t.</p>
 <p>Note que cuando p&gt;n, entonces no es válido utilizar el modelo de regresión lineal con MCO, en consecuencia el F-statistic en este caso no es de utilidad.</p>
 <div id="ejemplo-1" class="section level4">
@@ -341,7 +342,7 @@ round(res, 4)</code></pre>
 ## radio     0.0548 1.0000    0.3541 0.5762
 ## newspaper 0.0566 0.3541    1.0000 0.2283
 ## sales     0.7822 0.5762    0.2283 1.0000</code></pre>
-<p>Note que la correlación entre las variables newspaper y TV es positiva (.35). Lo que revela una tendencia a gastar más en publicidad direigida en newspaers en mercados donde se gasta más en publicidad por radio.</p>
+<p>Note que la correlación entre las variables newspaper y TV es positiva (.35). Lo que revela una tendencia a gastar más en publicidad dirigida en newspaers en mercados donde se gasta más en publicidad por radio.</p>
 <p>Ahora suponga que de hecho el resultado del modelo de regresión multiple es correcto y los gastos en radio tienen efecto en las ventas, mientras los gastos en publicidad dirigida a newspapers no tienen impacto en las ventas.</p>
 <p>Entonces en los mercados en los que incrementamos el gasto en radio nuestras ventas se incrementan, pero de hecho, acorde a la matriz de correlación también tendemos a gastar mas en publicidad en newspapers en esos mercados.</p>
 <p>Por este motivo en una regresión simple en donde solo consideramos la relación entre ventas y gasto en publicidad en newspapers vemos que se tiene una relación positiva cuando en realidad los gastos en newspapers de hecho no impactan el nivel de ventas!</p>
@@ -391,7 +392,7 @@ round(res, 4)</code></pre>
 </div>
 <div id="ejericio-2" class="section level4">
 <h4>Ejericio 2</h4>
-<p>Considere el escenario en que se relaciona el valor medio de las viviendas por CENSUS TRACT con las siguientes características: número promedio de habitaciones (rooms), Distancia promedio en millas hacia los 5 principales centros de empleo (dist), la proporción de alumnos a maestros (stratio) en la sescuelas detro del census tract, incluidos determinates como la calidad del aire en la comunidad, apoximada por las mediciones de óxidos de nigrógeno <span class="math inline">\(NO_x\)</span> (<span class="math inline">\(NO_x\)</span> medido en partes por millón), incluidos determinates sobre las condiciones de seguridad de la localidad como la cantidad de delitos per capita (crime). Base de datos con 506 observaciones (cada observación representa un census tract (AGEB) Standard Metropolitan Statistical Area (SMSA) en el area de Boston, MA, EUA.).</p>
+<p>Considere el escenario en que se relaciona el valor medio de las viviendas por CENSUS TRACT con las siguientes características: número promedio de habitaciones (rooms), Distancia promedio en millas hacia los 5 principales centros de empleo (dist), la proporción de alumnos a maestros (stratio) en la sescuelas dentro del census tract, incluidos determinantes como la calidad del aire en la comunidad, apoximada por las mediciones de óxidos de nigrógeno <span class="math inline">\(NO_x\)</span> (<span class="math inline">\(NO_x\)</span> medido en partes por millón), incluidos determinates sobre las condiciones de seguridad de la localidad como la cantidad de delitos per capita (crime). Base de datos con 506 observaciones (cada observación representa un census tract (AGEB) Standard Metropolitan Statistical Area (SMSA) en el area de Boston, MA, EUA.).</p>
 <p><a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.926.5532&amp;rep=rep1&amp;type=pdf">Fuente del datos:</a> “Hedonic Housing Prices and the Demand for Clean Air,” by Harrison, D. and D.L.Rubinfeld, Journal of Environmental Economics and Management 5, 81-102.</p>
 <p>En ocasiones es conveniente reportar los resultados de la regresión lineal utilizando coeficientes estandarizados, calculando los <em>z-scores</em> de cada variable -independientes y dependiente- (lo que se logra restando la media (<span class="math inline">\(\bar x\)</span>) de cada observación y dividiendo sobre la desviación standard <span class="math inline">\(\sigma\)</span>).</p>
 <p>Este efoque en la estimación de los coeficientes permite interpretar las variaciones en función del número de desviaciones estándard. Por ejemplo, podemos responder la pregunta: ¿Cuál es el cambio en el valor de viviendas (variable dependiente en este ejemplo) ante un incremento de una desviacion estándard de <span class="math inline">\(x_j\)</span> (por ejemplo NO_x).</p>
@@ -405,88 +406,6 @@ round(res, 4)</code></pre>
 <ol start="4" style="list-style-type: lower-alpha">
 <li>Existe alguna diferencia entre los estadísticos estimados <span class="math inline">\(R^2\)</span> y <strong>F</strong> entre los tres modelos?</li>
 </ol>
-<pre class="r"><code>data(hprice2)
-
-## Estimación en niveles 
-
-lm(price ~ nox + crime + rooms + dist + stratio, data = hprice2)%&gt;%
-summary()</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = price ~ nox + crime + rooms + dist + stratio, data = hprice2)
-## 
-## Residuals:
-##    Min     1Q Median     3Q    Max 
-## -13914  -3201   -662   2110  38064 
-## 
-## Coefficients:
-##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 20871.13    5054.60   4.129 4.27e-05 ***
-## nox         -2706.43     354.09  -7.643 1.09e-13 ***
-## crime        -153.60      32.93  -4.665 3.97e-06 ***
-## rooms        6735.50     393.60  17.112  &lt; 2e-16 ***
-## dist        -1026.81     188.11  -5.459 7.57e-08 ***
-## stratio     -1149.20     127.43  -9.018  &lt; 2e-16 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 5586 on 500 degrees of freedom
-## Multiple R-squared:  0.6357, Adjusted R-squared:  0.632 
-## F-statistic: 174.5 on 5 and 500 DF,  p-value: &lt; 2.2e-16</code></pre>
-<pre class="r"><code>## Estimación en z-scores
-
-lm(scale(price) ~ 0 + scale(nox) + scale(crime) + scale(rooms) + scale(dist) + scale(stratio), data = hprice2)%&gt;% 
-summary()</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = scale(price) ~ 0 + scale(nox) + scale(crime) + scale(rooms) + 
-##     scale(dist) + scale(stratio), data = hprice2)
-## 
-## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -1.5110 -0.3476 -0.0719  0.2291  4.1334 
-## 
-## Coefficients:
-##                Estimate Std. Error t value Pr(&gt;|t|)    
-## scale(nox)     -0.34045    0.04450  -7.651 1.03e-13 ***
-## scale(crime)   -0.14328    0.03069  -4.669 3.89e-06 ***
-## scale(rooms)    0.51389    0.03000  17.129  &lt; 2e-16 ***
-## scale(dist)    -0.23484    0.04298  -5.464 7.35e-08 ***
-## scale(stratio) -0.27028    0.02994  -9.027  &lt; 2e-16 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 0.606 on 501 degrees of freedom
-## Multiple R-squared:  0.6357, Adjusted R-squared:  0.632 
-## F-statistic: 174.8 on 5 and 501 DF,  p-value: &lt; 2.2e-16</code></pre>
-<pre class="r"><code>## Estimación elasticidades
-
-hprice2log&lt;-mutate(hprice2,lprice=log(price), lnox=log(nox),ldist=log(dist))
-lm(lprice ~ lnox + crime + rooms + ldist + stratio, data = hprice2log)%&gt;%
-summary()</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = lprice ~ lnox + crime + rooms + ldist + stratio, 
-##     data = hprice2log)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -0.88628 -0.12856 -0.00188  0.11111  1.23548 
-## 
-## Coefficients:
-##              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 11.005202   0.289504  38.014  &lt; 2e-16 ***
-## lnox        -0.900736   0.106331  -8.471 2.73e-16 ***
-## crime       -0.014839   0.001446 -10.263  &lt; 2e-16 ***
-## rooms        0.246468   0.016876  14.604  &lt; 2e-16 ***
-## ldist       -0.214767   0.039989  -5.371 1.20e-07 ***
-## stratio     -0.042209   0.005457  -7.735 5.75e-14 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 0.2411 on 500 degrees of freedom
-## Multiple R-squared:  0.6564, Adjusted R-squared:  0.653 
-## F-statistic:   191 on 5 and 500 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <div id="modelar-variables-cualitativas." class="section level2">
@@ -520,7 +439,15 @@ summary()</code></pre>
 ## Residual standard error: 460.2 on 398 degrees of freedom
 ## Multiple R-squared:  0.0004611,  Adjusted R-squared:  -0.00205 
 ## F-statistic: 0.1836 on 1 and 398 DF,  p-value: 0.6685</code></pre>
-<p>El saldo promedio de la tarjeta de crédito para los hombre es de $509.80. Mientras para las mujeres=529.53 ó 509.80+ 19.73. Note que la variable Gender no es estadisticamente significativa p-value=.66 , por lo no hay evidencia estadística sobre el impacto del género sobre la vvariable dependiente saldo.</p>
+<p>El saldo promedio de la tarjeta de crédito para los hombre es de $509.80. Mientras para las mujeres=529.53 ó 509.80+ 19.73. Note que la variable Gender no es estadisticamente significativa p-value=.66 , por lo no hay evidencia estadística sobre el impacto del género sobre la variable dependiente saldo.</p>
+<p>En seguida la inclusion de la variable categórica grupo étnico (<em>Ethnicity</em>) a corde con la siguiente notación:</p>
+<div class="figure">
+<img src="/img/afro.jpg" />
+
+</div>
+<pre><code>##  [1] &quot;ID&quot;        &quot;Income&quot;    &quot;Limit&quot;     &quot;Rating&quot;    &quot;Cards&quot;    
+##  [6] &quot;Age&quot;       &quot;Education&quot; &quot;Gender&quot;    &quot;Student&quot;   &quot;Married&quot;  
+## [11] &quot;Ethnicity&quot; &quot;Balance&quot;</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = Balance ~ Asian + Caucasian, data = Credit)
@@ -933,13 +860,4 @@ summary()</code></pre>
 	<div class="container footer__container flex">
 		
 		<div class="footer__copyright">
-			&copy; 2019 Estadística II.
-			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
-		</div>
-	</div>
-</footer>
-	</div>
-<script async defer src="/js/menu.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
-</body>
-</html>
+			&copy; 
