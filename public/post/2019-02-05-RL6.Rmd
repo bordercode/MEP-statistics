@@ -186,6 +186,12 @@ Importante el procedimiento de transformación  no garantiza totalmente obtener 
 
 La gráfica  *Residuals-leverage* permite detectar puntos con  valores inusualmente altos de ${x_i}$ para los que el valor de la predicción es grande relativo al resto de observaciones (*high leverage*), o datos que pudieran tener una influencia especialmente importante en el modelo. La gráfica es  útil para controlar por obsevaciones que pudieran incluso indicar algún problema en la forma en que se capturó la información. 
 
+Note: Contraste entre obs con gran  **Leverage**  (influencia) vs. **Outliers** (obs para las que el valor de $\hat y$ es relativamente grande  dado el valor de **x**)
+
+La solución es remover estas observaciones y reestimar el modelo.
+
+![](/img/lev.jpg)
+
 El procedimiento para la detección en R  implica el cálculo del estadístico conocido como distancia *Cook*, (propuesto por R. Dennis Cook in 1977) básicamente este indicador permite   detectar aquellas observaciones con *high leverage*.  La especificación para el estadístico que indica el leverage $h_i=\frac{1}{n}+\frac{(x_i-\bar x)^2}{\sum_{i=1}^n(x_i-\bar x)^2}$ se ubica en el rango [1/n ,1]. 
 
 El *leverage* promedio es siempre igual a $(p+1)/n$ de tal modo que si una observación tiene un estadístico que excede  $(p+1)/n$ entonces tenemos evidencia para suponer un elevado *high leverage*  para la observación en cuestion.
