@@ -46,10 +46,6 @@ str(gapminder)</code></pre>
 ##  $ gdpPercap: num  779 821 853 836 740 ...</code></pre>
 <pre class="r"><code>gapminder&lt;-mutate(gapminder,year1950=year-1950)
 
-continents&lt;-gapminder%&gt;%
-select(country,continent)
-
-
 ## Note que tenenos 1704 observaciones, para 5 variables. Estas variables como el GDP percapita, la esperanza de vida, la población, corresponden a 142 países en 5 continentes.</code></pre>
 <p>Una opción que se usa por el <a href="http://hdr.undp.org/en/data">Programa de Naciones Unidas para el Desarrollo</a>, es presentar la relación entre variables mediante gráficas de lineas: <img src="/img/onu.jpg" /></p>
 <p>No obstante, el enfoque visual utilizado de <strong>ONU</strong> no permite una observarción precisa. Cada linea representa uno de los 142 paises!!</p>

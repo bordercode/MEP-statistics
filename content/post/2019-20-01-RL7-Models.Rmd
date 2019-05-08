@@ -45,10 +45,6 @@ str(gapminder)
 
 gapminder<-mutate(gapminder,year1950=year-1950)
 
-continents<-gapminder%>%
-select(country,continent)
-
-
 ## Note que tenenos 1704 observaciones, para 5 variables. Estas variables como el GDP percapita, la esperanza de vida, la población, corresponden a 142 países en 5 continentes.
 ```
 
