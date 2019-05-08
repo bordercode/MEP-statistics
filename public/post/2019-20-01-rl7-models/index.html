@@ -218,7 +218,7 @@ model = data %&gt;% map(country_model)
 )
 
 
-#4. Usamos broom para extraer comeponentes  individuales del modelo. En especial glance  para extraer el coeficeinte de determinación **rsq**
+#4. Usamos broom para extraer componentes  individuales del modelo. En especial glance  para extraer el coeficeinte de determinación **rsq**
 
 #tidy() component-level (Estimates, Std Errors,  p-value, t test )
 #augment() observation level (like  residuals)
@@ -259,11 +259,27 @@ unnest(models,tidy)</code></pre>
 ##  9 Argentina 0.996 Americas  (Interc~   62.2     0.167      372.   4.80e-22
 ## 10 Argentina 0.996 Americas  year1950    0.232   0.00489     47.4  4.22e-13
 ## # ... with 274 more rows</code></pre>
-<pre class="r"><code>models%&gt;%
+<pre class="r"><code>final&lt;-models%&gt;%
   unnest(tidy)%&gt;%
   select(continent,country, term, estimate,rsq)%&gt;%
-  spread(term, estimate)%&gt;%
-  ggplot(aes(`(Intercept)`, year1950))+
+  spread(term, estimate)
+
+final</code></pre>
+<pre><code>## # A tibble: 142 x 5
+##    continent country                     rsq `(Intercept)` year1950
+##    &lt;fct&gt;     &lt;fct&gt;                     &lt;dbl&gt;         &lt;dbl&gt;    &lt;dbl&gt;
+##  1 Africa    Algeria                  0.985           42.2   0.569 
+##  2 Africa    Angola                   0.888           31.7   0.209 
+##  3 Africa    Benin                    0.967           38.9   0.334 
+##  4 Africa    Botswana                 0.0340          52.8   0.0607
+##  5 Africa    Burkina Faso             0.919           34.0   0.364 
+##  6 Africa    Burundi                  0.766           40.3   0.154 
+##  7 Africa    Cameroon                 0.680           40.7   0.250 
+##  8 Africa    Central African Republic 0.493           38.4   0.184 
+##  9 Africa    Chad                     0.872           39.3   0.253 
+## 10 Africa    Comoros                  0.997           39.1   0.450 
+## # ... with 132 more rows</code></pre>
+<pre class="r"><code>  ggplot(final,aes(`(Intercept)`, year1950))+
   geom_point(aes(colour=continent,size=rsq))+
   geom_smooth(se=FALSE)+
   xlab(&quot;Esperanza de vida EV al inicio del periodo (1950)&quot;)+
