@@ -563,7 +563,7 @@ Interesante el hecho de que controrio al caso de los hombres, las mujeres casada
 
 ¿Es la diferencia estadisticamente significativa?, bueno intuitivamtene es una brecha considerable pero es necesario  hacer formalmente la estimación para lo cual  construimos  el modelo con la variable   mujer-casada como la  base.
 
-```{r, echo=FALSE}
+```{r, echo=TRUE}
 
 
 data(wage1)

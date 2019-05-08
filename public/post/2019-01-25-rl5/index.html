@@ -648,10 +648,17 @@ summary()</code></pre>
 <p>Así, vemos que respecto a la categoria base (y considerando individuos con los mismos atributos) los hombres casados perciben en promedio sueldos superiores en 21.26%; las mujeres casadas perciben 19.8% menos que los hombres solteros, y las mujeres solteras un 11.03% menos que la categoria base.</p>
 <p>Interesante el hecho de que controrio al caso de los hombres, las mujeres casadas perciben menores salarios respecto a su contraparte solteras!. De hecho la diferencia es de 8.8% (19.8-11.03) y favorece a las solteras respecto a las casadas ¿? ¿Alguna hipótesis?</p>
 <p>¿Es la diferencia estadisticamente significativa?, bueno intuitivamtene es una brecha considerable pero es necesario hacer formalmente la estimación para lo cual construimos el modelo con la variable mujer-casada como la base.</p>
+<pre class="r"><code>data(wage1)
+names(wage1)</code></pre>
 <pre><code>##  [1] &quot;wage&quot;     &quot;educ&quot;     &quot;exper&quot;    &quot;tenure&quot;   &quot;nonwhite&quot; &quot;female&quot;  
 ##  [7] &quot;married&quot;  &quot;numdep&quot;   &quot;smsa&quot;     &quot;northcen&quot; &quot;south&quot;    &quot;west&quot;    
 ## [13] &quot;construc&quot; &quot;ndurman&quot;  &quot;trcommpu&quot; &quot;trade&quot;    &quot;services&quot; &quot;profserv&quot;
 ## [19] &quot;profocc&quot;  &quot;clerocc&quot;  &quot;servocc&quot;  &quot;lwage&quot;    &quot;expersq&quot;  &quot;tenursq&quot;</code></pre>
+<pre class="r"><code>wage1&lt;-wage1%&gt;%mutate(hca=ifelse(married==1&amp;female==0,1,0),
+hsol=ifelse(married==0&amp;female==0,1,0),                      msol=ifelse(married==0&amp;female==1,1,0))
+
+lm(lwage~hca+hsol+msol+educ+exper+expersq+tenure+tenursq,data=wage1)%&gt;%
+summary()</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = lwage ~ hca + hsol + msol + educ + exper + expersq + 
