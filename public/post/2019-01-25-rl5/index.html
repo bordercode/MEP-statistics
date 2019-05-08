@@ -492,10 +492,29 @@ lm(Balance~Asian+Caucasian,data =Credit)%&gt;%
 <h4>Ejemplo 2</h4>
 <p>Considere ahora la relación entre salarios y los atributos del individuo, incluimos ahora la variable cualitativa <strong>sexo</strong> para determinar si existe impacto alguno en el nivel salarial entre hombres o mujeres, un contraste de interés desde la perspectiva de política pública.</p>
 <p>La base de datos contiene 526 observaciones (individuos). La variable dependiente es <em>wage</em> (dólares por hora ajustados a precios de 2018). Fuente de datos. <em>Current Population Survey</em>.</p>
+<pre class="r"><code>data(wage1)
+names(wage1)</code></pre>
 <pre><code>##  [1] &quot;wage&quot;     &quot;educ&quot;     &quot;exper&quot;    &quot;tenure&quot;   &quot;nonwhite&quot; &quot;female&quot;  
 ##  [7] &quot;married&quot;  &quot;numdep&quot;   &quot;smsa&quot;     &quot;northcen&quot; &quot;south&quot;    &quot;west&quot;    
 ## [13] &quot;construc&quot; &quot;ndurman&quot;  &quot;trcommpu&quot; &quot;trade&quot;    &quot;services&quot; &quot;profserv&quot;
 ## [19] &quot;profocc&quot;  &quot;clerocc&quot;  &quot;servocc&quot;  &quot;lwage&quot;    &quot;expersq&quot;  &quot;tenursq&quot;</code></pre>
+<pre class="r"><code>## To adjust for today prices  factor=cpi 2018 /1976
+
+cpi&lt;-read.csv(&quot;file.csv&quot;)
+
+cpiy&lt;-cpi%&gt;%
+group_by(Year)%&gt;%
+  summarize(cpi=mean(Value))%&gt;%
+  filter(Year==1976|Year==2018)%&gt;%
+  spread(Year,cpi)%&gt;%
+  rename(A=&quot;2018&quot;,B=&quot;1976&quot;)%&gt;%
+  summarize(factor=A/B)
+
+
+wage1&lt;-mutate(wage1,wage=wage*cpiy$factor)
+
+lm(wage~female,data=wage1)%&gt;%
+summary()  </code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = wage ~ female, data = wage1)

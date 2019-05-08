@@ -453,7 +453,7 @@ Considere ahora la relación entre  salarios  y los atributos del individuo, inc
 La base de datos contiene 526 observaciones (individuos). La variable dependiente es *wage* (dólares por hora ajustados a precios de 2018). Fuente de datos. *Current Population Survey*.
 
 
-```{r, echo=FALSE}
+```{r, echo=TRUE}
 data(wage1)
 names(wage1)
 
