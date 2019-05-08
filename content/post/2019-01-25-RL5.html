@@ -579,6 +579,11 @@ summary()</code></pre>
 <p>Consideremos ahora el escenario en que buscamos predecir los precios de las viviendas en función de atributos como el tamaño del terreno (lotsize), tamaño de construcción (sqrft), número de dormitorios (bdrms) y una variable factorial (dicotómica: 1,0) para indicar si la casa es de estilo colonial o no (colonial).</p>
 <p>El modelo se plantea utilizando la transformación logarítmica de la variable dependiente para observar cambios porcentuales en el precio.</p>
 <p><span class="math inline">\(log(price)=\beta_0+\beta_1 bdrms+log(lotsize)+ \beta_2 log(sqrft)+\beta_3 colonial\)</span></p>
+<pre class="r"><code>data(hprice1)
+
+
+lm(lprice~bdrms+llotsize+lsqrft+colonial,data=hprice1)%&gt;%
+  summary()</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = lprice ~ bdrms + llotsize + lsqrft + colonial, data = hprice1)
@@ -600,6 +605,7 @@ summary()</code></pre>
 ## Residual standard error: 0.1841 on 83 degrees of freedom
 ## Multiple R-squared:  0.6491, Adjusted R-squared:  0.6322 
 ## F-statistic: 38.38 on 4 and 83 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>#Note que el R adjuested controla por el número de regresores incluidos en el modelo y mientras el R^2 siempre se incrementa cuando incluimos regresores adicionales, no sucede este incremento con el R^2 ajustado.#</code></pre>
 <p>Los resultados indican que las casas estilo colonial (<span class="math inline">\(X_{colonial}=1\)</span>) tienen un diferencial de 5.3% en el precio promedio respecto a las casas de otros estilos. (El signo es positivo lo que corresponde a un incremento en el precio para las casas de estilo colonial).</p>
 <p>Adicionalmente las variables <span class="math inline">\(llotsize\)</span> y <span class="math inline">\(lsqrft\)</span> muestran los cambios porcentuales de la variable dependiente <em>log(precio)</em> ante el cambio de <span class="math inline">\(1\%\)</span>. POr lo que estos coeficientes <span class="math inline">\(\hat \beta\)</span> de hecho permiten conocer la <strong>elasticidad</strong> un concpeto ampliamente usado en estudios sociales para indicar la flexibilidad de una variable ante variaciones en posibles determinantes.</p>
 <p>En ambos casos el precios es inelástico, sin embargo, es relativamente más sensible respecto al tamaño de la construcción (variable <em>sqrft</em>).</p>

@@ -592,7 +592,7 @@ El modelo se plantea utilizando la transformación logarítmica de la variable d
 
 $log(price)=\beta_0+\beta_1 bdrms+log(lotsize)+ \beta_2 log(sqrft)+\beta_3 colonial$
 
-```{r, echo=FALSE}
+```{r, echo=TRUE}
 data(hprice1)
 
 
