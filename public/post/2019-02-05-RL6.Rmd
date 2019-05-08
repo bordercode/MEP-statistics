@@ -308,7 +308,7 @@ Situaciones que involucran experimentos con personas que tienen la misma dieta, 
 
 Una prueba estándar para detectar autocorrelación es el cálculo del estadístico **Durbin-Watson**  este plantea como **H0:** no autocorrelación y un estadístico de prueba $DW\approx2$. 
 
-Donde $DW\approx2$ indica que **no hay auto correlación**.
+**Note** $DW\approx2$ indica que **no hay auto correlación**.
 
 En el siguiente ejemplo consideramos el estudio sobre cambio climático con datos sobre las temperaturas registradas para la región Ártica (variable dependiente  **tempN**: Mide la anomalia o desviación del patrón de temperatura media en un periodo de tiempo dado. La unidad de medida es grados. La variable independiente es el año.
 
@@ -342,7 +342,7 @@ Notablemente el panel c) que describe  residuales con alto grado de correlación
 En la estructura de regresión lineal múltiple, la inclusión de nuevas variables explicativas en ocaciones puede resultar en modelos con información redundante como hemos visto al tocar el tema de Multicolinealidad, o bien pueden dejarse fuera importantes variabels explicativas. 
 
 
-En términos generales el principio de parsimonia implica *ceteris paribus* (*other thing being equal*) que un modelo simple debe ser usado sobre uno de mayor complicación, (si con un modelo sencillo explica el fenómeno de interés, no necesito crear un modelo con demasiadas variables que al final del día no me aporta más allá de lo necesario para enteder el fenómeno de estudio).
+En términos generales el principio de parsimonia implica *ceteris paribus* (*other thing being equal*) que un modelo simple debe ser usado sobre uno de mayor complicación, (si con un modelo sencillo se explica el fenómeno de interés, no necesito crear un modelo con demasiadas variables que al final del día no me aporta más allá de lo necesario para enteder el fenómeno de estudio).
 
 Una vez que hemos validado el cumplimiento de los suspuestos del modelo una manera de seleccionar el modelo adecuado es aplicar un criterio para validar el equilibrio del modelo en términos del principio de parsimonia. 
 
