@@ -150,7 +150,7 @@ Un procedimiento común es la transformación **Box-Cox**. Básicamente buscamos
 La siguiente especificación indica el proceso para determinar el $\lambda$ óptimo a corde con el procedimiento de máxima verosimilitud propuesto por **Box-Cox** $$y^ \lambda=x \beta +\epsilon$$ $$\Bigg\{\frac{y^{\lambda} -1}{\lambda}, \lambda \neq0 \\
 log (y) , \lambda =0 $$
 
-```{r,echo=FALSE, message=FALSE, warning=FALSE}
+```{r,echo=TRUE, message=FALSE, warning=FALSE}
 
 ## La implementación en *R* a continuación:
  
@@ -176,10 +176,6 @@ lambda
 ## Una vez que estimamos el parámetro lambda, realizamos la 
 ## transformación con : var_Trans_box = (y ^ lambda - 1)/lambda
 
-
-## Conclusión, en este caso particular tenemos  influencia severa de outliers. No importa que transformación usemos el tema de ouliers (obs 3, 25, 43 y 45) resulta un "obstáculo".
-
-# En este caso es conveniente atender el tema de outliers. A continuación abordamos este tema. 
 ```
 
 Note la aplicación de la prueba estadística de **Shapiro-Wilk** que tiene como **H0: Normalidad**. 
@@ -196,9 +192,18 @@ Para el resultado de la transformación note que tenemos un $\lambda=1.54$ usual
 
 Importante el procedimiento de transformación  no garantiza totalmente obtener datos con distribución normal, especialmente si los datos presentan al grado de sesgo.   
 
+Conclusión, en este caso particular tenemos tambipen influencia severa de **outliers**. No importa que transformación usemos el tema de ouliers (obs 3, 25, 43 y 45) resulta un "obstáculo".
+
+En este caso es conveniente atender el tema de outliers y observaciones con infleuncia notable (*high leverage obs*). A continuación abordamos este tema. 
+
+
 #### Gráfica 4 Residuals-leverage.
 
-La gráfica  *Residuals-leverage* permite detectar puntos con  valores inusualmente altos de ${x_i}$ para los que el valor de la predicción es grande relativo al resto de observaciones (*high leverage*), o datos que pudieran tener una influencia especialmente importante en el modelo. La gráfica es  útil para controlar por obsevaciones que pudieran incluso indicar algún problema en la forma en que se capturó la información. 
+La gráfica  *Residuals-leverage* permite detectar **oultilers**, puntos con  valores  elevados en la precdicción dado el valor de ${x_i}$.  
+
+Así como valores inusualmente altos de  **x** (*High leverage obs*), relativo al resto de observaciones  datos que pudieran tener una influencia especialmente importante en el modelo. 
+
+La gráfica es  útil para controlar por obsevaciones que pudieran incluso indicar algún problema en la forma en que se capturó la información. 
 
 Note: Contraste entre obs con gran  **Leverage**  (influencia) vs. **Outliers** (obs para las que el valor de $\hat y$ es relativamente grande  dado el valor de **x**)
 

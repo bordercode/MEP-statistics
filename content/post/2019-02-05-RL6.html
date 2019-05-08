@@ -114,23 +114,46 @@ plot(model)</code></pre>
 <p>Un procedimiento común es la transformación <strong>Box-Cox</strong>. Básicamente buscamos transformar la variable dependiente utilizando un exponente <span class="math inline">\(\lambda\)</span> consistente con el supuesto de normalidad.</p>
 <p>La siguiente especificación indica el proceso para determinar el <span class="math inline">\(\lambda\)</span> óptimo a corde con el procedimiento de máxima verosimilitud propuesto por <strong>Box-Cox</strong> <span class="math display">\[y^ \lambda=x \beta +\epsilon\]</span> <span class="math display">\[\Bigg\{\frac{y^{\lambda} -1}{\lambda}, \lambda \neq0 \\
 log (y) , \lambda =0 \]</span></p>
+<pre class="r"><code>## La implementación en *R* a continuación:
+ 
+library(MASS)
+
+nt&lt;-readRDS(&quot;Nations2a.rds&quot;)%&gt;%
+mutate(region=fct_reorder(region,life))
+
+model&lt;-lm(life~gdp+chldmort, data=nt)
+
+
+r&lt;-residuals(model)
+
+shapiro.test(r)</code></pre>
 <pre><code>## 
 ##  Shapiro-Wilk normality test
 ## 
 ## data:  r
 ## W = 0.89176, p-value = 4.359e-10</code></pre>
+<pre class="r"><code>bc=boxcox(model,lambda=seq(-3,3))</code></pre>
 <p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<pre class="r"><code>lambda=bc$x[which(bc$y==max(bc$y))]
+
+lambda</code></pre>
 <pre><code>## [1] 1.545455</code></pre>
+<pre class="r"><code>## Una vez que estimamos el parámetro lambda, realizamos la 
+## transformación con : var_Trans_box = (y ^ lambda - 1)/lambda</code></pre>
 <p>Note la aplicación de la prueba estadística de <strong>Shapiro-Wilk</strong> que tiene como <strong>H0: Normalidad</strong>.</p>
 <p>Generalmente las pruebas de hipótesis que conocemos se construyen de tal forma que buscamos rechazar la hipótesis nula, sin embargo en este caso la prueba tiene como <strong>H0: normalidad</strong>, por lo que un <strong>p-value&lt;0.5</strong> implican rechazar <strong>normalidad</strong>.</p>
 <p>Entonces con la prueba <strong>Shapiro-Wilk</strong>, no rechazar H0, (ej. p-values grandes) de hecho se traduce en un buen escenario ya que es razonable asumir que los terminos de error se distribuyen a corde a la normal.</p>
 <p>En este caso tenemos un <em>p-value</em>=4.359e-10. Rechazamos <strong>H0</strong>, la distribución de los datos no es acorde con la normal.</p>
 <p>Para el resultado de la transformación note que tenemos un <span class="math inline">\(\lambda=1.54\)</span> usualmente se considera el valor entero inmediato en este caso 2.</p>
 <p>Importante el procedimiento de transformación no garantiza totalmente obtener datos con distribución normal, especialmente si los datos presentan al grado de sesgo.</p>
+<p>Conclusión, en este caso particular tenemos tambipen influencia severa de <strong>outliers</strong>. No importa que transformación usemos el tema de ouliers (obs 3, 25, 43 y 45) resulta un “obstáculo”.</p>
+<p>En este caso es conveniente atender el tema de outliers y observaciones con infleuncia notable (<em>high leverage obs</em>). A continuación abordamos este tema.</p>
 </div>
 <div id="grafica-4-residuals-leverage." class="section level4">
 <h4>Gráfica 4 Residuals-leverage.</h4>
-<p>La gráfica <em>Residuals-leverage</em> permite detectar puntos con valores inusualmente altos de <span class="math inline">\({x_i}\)</span> para los que el valor de la predicción es grande relativo al resto de observaciones (<em>high leverage</em>), o datos que pudieran tener una influencia especialmente importante en el modelo. La gráfica es útil para controlar por obsevaciones que pudieran incluso indicar algún problema en la forma en que se capturó la información.</p>
+<p>La gráfica <em>Residuals-leverage</em> permite detectar <strong>oultilers</strong>, puntos con valores elevados en la precdicción dado el valor de <span class="math inline">\({x_i}\)</span>.</p>
+<p>Así como valores inusualmente altos de <strong>x</strong> (<em>High leverage obs</em>), relativo al resto de observaciones datos que pudieran tener una influencia especialmente importante en el modelo.</p>
+<p>La gráfica es útil para controlar por obsevaciones que pudieran incluso indicar algún problema en la forma en que se capturó la información.</p>
 <p>Note: Contraste entre obs con gran <strong>Leverage</strong> (influencia) vs. <strong>Outliers</strong> (obs para las que el valor de <span class="math inline">\(\hat y\)</span> es relativamente grande dado el valor de <strong>x</strong>)</p>
 <p>La solución es remover estas observaciones y reestimar el modelo.</p>
 <div class="figure">
