@@ -89,7 +89,7 @@ Note el patrón creciente en los residuales (las lineas azules muestran la tenen
 
 Si el supuesto se cumple tendremos una gráfica con observaciones dispersas sin ningún patrón específico. Indicando residuales no correlacionados con los regresores. 
 
-A continuación observe 2 violaciones de los supuestos del modelo de regresión lineal que deben atenderse para obtenr parámetros válidos, útiles para hacer inferencia. Panel a) relación no lineal, Panel b) Heterocedasticidad.
+A continuación observe 2 violaciones de los supuestos del modelo de regresión lineal que deben atenderse para obtener parámetros válidos, útiles para hacer inferencia. Panel a) relación no lineal, Panel b) Heterocedasticidad.
 
 ![](/img/resid.jpg)
 
@@ -145,7 +145,7 @@ Importante considerar la transformación de los datos para atender el problema c
 
 Un procedimiento común es la transformación **Box-Cox**. Básicamente buscamos transformar la variable dependiente utilizando un exponente $\lambda$ consistente con el  supuesto de normalidad. 
 
-La siguiente especificación indica el proceso para determinar el $/lambda$ óptimo a corde con el procedimiento de máxima verosimilitud propuesto por **Box-Cox** $$y^ \lambda=x \beta +\epsilon$$ $$\Bigg\{\frac{y^{\lambda} -1}{\lambda}, \lambda \neq0 \\
+La siguiente especificación indica el proceso para determinar el $\lambda$ óptimo a corde con el procedimiento de máxima verosimilitud propuesto por **Box-Cox** $$y^ \lambda=x \beta +\epsilon$$ $$\Bigg\{\frac{y^{\lambda} -1}{\lambda}, \lambda \neq0 \\
 log (y) , \lambda =0 $$
 
 ```{r,echo=FALSE, message=FALSE, warning=FALSE}
@@ -180,7 +180,7 @@ Note aplicación de prueba estadística de **Shaphiro-Wilk** que tiene como **H0
 Note que tenemos un $\lambda=1.54$ usualmente se considera el valor entero inmediato en este caso 2.
 
 
-Importante el procedimiento de trasnformación  no garantiza totalmente obtener datos con distribución normal, especialmente si los datos presentan al grado de sesgo.   
+Importante el procedimiento de transformación  no garantiza totalmente obtener datos con distribución normal, especialmente si los datos presentan al grado de sesgo.   
 
 #### Gráfica 4 Residuals-leverage.
 
@@ -262,15 +262,17 @@ A continuación un **ejemplo** con el modelo que relaciona el precio de las vivi
 library(car)
 data("Boston", package = "MASS")
 names(Boston)
+
 modelo1<- lm(medv ~., data = Boston)
-vif(modelo1)
 summary(modelo1)
+
+vif(modelo1)
 ```
 Note el valor  elevado de VIF para la variable *Tax* (monto del impuesto en tasa por cada 10,000 del valor total).  
 
 **Solución**
 
-En el caso de colinealidad entre dos variables la información que una de las variables involucradas en el problema de colinealidad es redundante, por lo que una solución es eliminar una de las variables con alta correlación.  
+En el caso de colinealidad entre dos variables la información que aporta  una de las variables involucradas en el problema de colinealidad es redundante, por lo que una solución es eliminar una de las variables con alta correlación.  
 
 Una segunda aproximación para resolver el problema es incluir una variable que combine las variables correlacionadas (por ejemplo con un índice compuesto).
 
@@ -282,8 +284,10 @@ data("Boston", package = "MASS")
 names(Boston)
 
 model2<- lm(medv ~.-tax, data = Boston)
-vif(model2)
+
 summary(model2)
+
+vif(model2)
 ```
 Note que el desempeño del modelo en cuanto al estadístico de bondad de ajuste no se ve afectado. modelo2 $R^2=735$ vs. modelo1 $R^2=74$
 
@@ -304,7 +308,10 @@ Situaciones que involucran experimentos con personas que tienen la misma dieta, 
 
 Una prueba estándar para detectar autocorrelación es el cálculo del estadístico **Durbin-Watson**  este plantea como **H0:** no autocorrelación y un estadístico de prueba $DW\approx2$. 
 
+Donde $DW\approx2$ indica que **no hay auto correlación**.
+
 En el siguiente ejemplo consideramos el estudio sobre cambio climático con datos sobre las temperaturas registradas para la región Ártica (variable dependiente  **tempN**: Mide la anomalia o desviación del patrón de temperatura media en un periodo de tiempo dado. La unidad de medida es grados. La variable independiente es el año.
+
 [Fuente](https://www.ncdc.noaa.gov/monitoring-references/faq/anomalies.php)). La base contiene 33 observaciones para el periodo entre  1979-2011. 
 
 ##### Ejemplo 1
@@ -313,8 +320,9 @@ En el siguiente ejemplo consideramos el estudio sobre cambio climático con dato
 
 artico<-read.dta("Arctic9.dta")
 
-modelo<-lm(tempN~year,data=artico)%>%
-  summary()
+modelo<-lm(tempN~year,data=artico)
+  
+  summary(modelo)
 
 dwtest(modelo)
 ```

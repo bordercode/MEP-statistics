@@ -49,7 +49,7 @@ menu:
 <div id="scatter-plot-de-residuales-contra-cada-regresor." class="section level5">
 <h5>1.-Scatter Plot de residuales contra cada regresor.</h5>
 <p>Si el supuesto se cumple tendremos una gráfica con observaciones dispersas sin ningún patrón específico. Indicando residuales no correlacionados con los regresores.</p>
-<p>A continuación observe 2 violaciones de los supuestos del modelo de regresión lineal que deben atenderse para obtenr parámetros válidos, útiles para hacer inferencia. Panel a) relación no lineal, Panel b) Heterocedasticidad.</p>
+<p>A continuación observe 2 violaciones de los supuestos del modelo de regresión lineal que deben atenderse para obtener parámetros válidos, útiles para hacer inferencia. Panel a) relación no lineal, Panel b) Heterocedasticidad.</p>
 <div class="figure">
 <img src="/img/resid.jpg" />
 
@@ -112,7 +112,7 @@ plot(model)</code></pre>
 <p>En este caso observa una deviación que indica una distribución cercana a la normal si bien con datos concentrados hacia las colas (<em>fat tails</em>).</p>
 <p>Importante considerar la transformación de los datos para atender el problema cuando no se tiene normalidad en los residuales.</p>
 <p>Un procedimiento común es la transformación <strong>Box-Cox</strong>. Básicamente buscamos transformar la variable dependiente utilizando un exponente <span class="math inline">\(\lambda\)</span> consistente con el supuesto de normalidad.</p>
-<p>La siguiente especificación indica el proceso para determinar el <span class="math inline">\(/lambda\)</span> óptimo a corde con el procedimiento de máxima verosimilitud propuesto por <strong>Box-Cox</strong> <span class="math display">\[y^ \lambda=x \beta +\epsilon\]</span> <span class="math display">\[\Bigg\{\frac{y^{\lambda} -1}{\lambda}, \lambda \neq0 \\
+<p>La siguiente especificación indica el proceso para determinar el <span class="math inline">\(\lambda\)</span> óptimo a corde con el procedimiento de máxima verosimilitud propuesto por <strong>Box-Cox</strong> <span class="math display">\[y^ \lambda=x \beta +\epsilon\]</span> <span class="math display">\[\Bigg\{\frac{y^{\lambda} -1}{\lambda}, \lambda \neq0 \\
 log (y) , \lambda =0 \]</span></p>
 <pre><code>## 
 ##  Shapiro-Wilk normality test
@@ -123,7 +123,7 @@ log (y) , \lambda =0 \]</span></p>
 <pre><code>## [1] 1.545455</code></pre>
 <p>Note aplicación de prueba estadística de <strong>Shaphiro-Wilk</strong> que tiene como <strong>H0: Normalidad</strong>. En este caso tenemos un <em>p-value</em>=4.359e-10. Rechazamos <strong>H0</strong>, la distribución de los datos no es acorde con la normal.</p>
 <p>Note que tenemos un <span class="math inline">\(\lambda=1.54\)</span> usualmente se considera el valor entero inmediato en este caso 2.</p>
-<p>Importante el procedimiento de trasnformación no garantiza totalmente obtener datos con distribución normal, especialmente si los datos presentan al grado de sesgo.</p>
+<p>Importante el procedimiento de transformación no garantiza totalmente obtener datos con distribución normal, especialmente si los datos presentan al grado de sesgo.</p>
 </div>
 <div id="grafica-4-residuals-leverage." class="section level4">
 <h4>Gráfica 4 Residuals-leverage.</h4>
@@ -185,10 +185,6 @@ log (y) , \lambda =0 \]</span></p>
 <p>A continuación un <strong>ejemplo</strong> con el modelo que relaciona el precio de las viviendas con una serie de 14 características, incluidos atributos sobre calidad ambiental para 506 observaciones (census tract). Fuente de base de datos Harrison, D. and Rubinfeld, D.L. Hedonic prices and the demand for clean air. J. Environ. Economics and Management 5, 81–102.</p>
 <pre><code>##  [1] &quot;crim&quot;    &quot;zn&quot;      &quot;indus&quot;   &quot;chas&quot;    &quot;nox&quot;     &quot;rm&quot;      &quot;age&quot;    
 ##  [8] &quot;dis&quot;     &quot;rad&quot;     &quot;tax&quot;     &quot;ptratio&quot; &quot;black&quot;   &quot;lstat&quot;   &quot;medv&quot;</code></pre>
-<pre><code>##     crim       zn    indus     chas      nox       rm      age      dis 
-## 1.792192 2.298758 3.991596 1.073995 4.393720 1.933744 3.100826 3.955945 
-##      rad      tax  ptratio    black    lstat 
-## 7.484496 9.008554 1.799084 1.348521 2.941491</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = medv ~ ., data = Boston)
@@ -219,17 +215,17 @@ log (y) , \lambda =0 \]</span></p>
 ## Residual standard error: 4.745 on 492 degrees of freedom
 ## Multiple R-squared:  0.7406, Adjusted R-squared:  0.7338 
 ## F-statistic: 108.1 on 13 and 492 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre><code>##     crim       zn    indus     chas      nox       rm      age      dis 
+## 1.792192 2.298758 3.991596 1.073995 4.393720 1.933744 3.100826 3.955945 
+##      rad      tax  ptratio    black    lstat 
+## 7.484496 9.008554 1.799084 1.348521 2.941491</code></pre>
 <p>Note el valor elevado de VIF para la variable <em>Tax</em> (monto del impuesto en tasa por cada 10,000 del valor total).</p>
 <p><strong>Solución</strong></p>
-<p>En el caso de colinealidad entre dos variables la información que una de las variables involucradas en el problema de colinealidad es redundante, por lo que una solución es eliminar una de las variables con alta correlación.</p>
+<p>En el caso de colinealidad entre dos variables la información que aporta una de las variables involucradas en el problema de colinealidad es redundante, por lo que una solución es eliminar una de las variables con alta correlación.</p>
 <p>Una segunda aproximación para resolver el problema es incluir una variable que combine las variables correlacionadas (por ejemplo con un índice compuesto).</p>
 <p>Para antender el problema de multicolinealidad encontrado en el modelo sobre el valor de vivienda debido a la variable <em>tax</em>, estimamos el modelo sin esta variable y evaluamos nuevamente el indicador VIF.</p>
 <pre><code>##  [1] &quot;crim&quot;    &quot;zn&quot;      &quot;indus&quot;   &quot;chas&quot;    &quot;nox&quot;     &quot;rm&quot;      &quot;age&quot;    
 ##  [8] &quot;dis&quot;     &quot;rad&quot;     &quot;tax&quot;     &quot;ptratio&quot; &quot;black&quot;   &quot;lstat&quot;   &quot;medv&quot;</code></pre>
-<pre><code>##     crim       zn    indus     chas      nox       rm      age      dis 
-## 1.791940 2.184240 3.226015 1.058220 4.369271 1.923075 3.098044 3.954446 
-##      rad  ptratio    black    lstat 
-## 2.837494 1.788839 1.347564 2.940800</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = medv ~ . - tax, data = Boston)
@@ -259,6 +255,10 @@ log (y) , \lambda =0 \]</span></p>
 ## Residual standard error: 4.792 on 493 degrees of freedom
 ## Multiple R-squared:  0.735,  Adjusted R-squared:  0.7285 
 ## F-statistic: 113.9 on 12 and 493 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre><code>##     crim       zn    indus     chas      nox       rm      age      dis 
+## 1.791940 2.184240 3.226015 1.058220 4.369271 1.923075 3.098044 3.954446 
+##      rad  ptratio    black    lstat 
+## 2.837494 1.788839 1.347564 2.940800</code></pre>
 <p>Note que el desempeño del modelo en cuanto al estadístico de bondad de ajuste no se ve afectado. modelo2 <span class="math inline">\(R^2=735\)</span> vs. modelo1 <span class="math inline">\(R^2=74\)</span></p>
 </div>
 <div id="autocorrelacion" class="section level3">
@@ -270,9 +270,29 @@ log (y) , \lambda =0 \]</span></p>
 <p>El problema de autocorrelación es común en estructuras de datos como <strong>series de tiempo</strong>, si bien en datos de corte transversal también puede presentarse.</p>
 <p>Situaciones que involucran experimentos con personas que tienen la misma dieta, personas que pertenecen a la misma familia o bien que tienen exposición a los mismos factores de riesgo son suceptibles de presentar el problema de autocorrelación en lso residuales.</p>
 <p>Una prueba estándar para detectar autocorrelación es el cálculo del estadístico <strong>Durbin-Watson</strong> este plantea como <strong>H0:</strong> no autocorrelación y un estadístico de prueba <span class="math inline">\(DW\approx2\)</span>.</p>
-<p>En el siguiente ejemplo consideramos el estudio sobre cambio climático con datos sobre las temperaturas registradas para la región Ártica (variable dependiente <strong>tempN</strong>: Mide la anomalia o desviación del patrón de temperatura media en un periodo de tiempo dado. La unidad de medida es grados. La variable independiente es el año. <a href="https://www.ncdc.noaa.gov/monitoring-references/faq/anomalies.php">Fuente</a>). La base contiene 33 observaciones para el periodo entre 1979-2011.</p>
+<p>Donde <span class="math inline">\(DW\approx2\)</span> indica que <strong>no hay auto correlación</strong>.</p>
+<p>En el siguiente ejemplo consideramos el estudio sobre cambio climático con datos sobre las temperaturas registradas para la región Ártica (variable dependiente <strong>tempN</strong>: Mide la anomalia o desviación del patrón de temperatura media en un periodo de tiempo dado. La unidad de medida es grados. La variable independiente es el año.</p>
+<p><a href="https://www.ncdc.noaa.gov/monitoring-references/faq/anomalies.php">Fuente</a>). La base contiene 33 observaciones para el periodo entre 1979-2011.</p>
 <div id="ejemplo-1-1" class="section level5">
 <h5>Ejemplo 1</h5>
+<pre><code>## 
+## Call:
+## lm(formula = tempN ~ year, data = artico)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.86475 -0.31366  0.00008  0.20602  1.23892 
+## 
+## Coefficients:
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -1.159e+02  1.625e+01  -7.137 5.07e-08 ***
+## year         5.852e-02  8.143e-03   7.186 4.44e-08 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.4454 on 31 degrees of freedom
+## Multiple R-squared:  0.6249, Adjusted R-squared:  0.6128 
+## F-statistic: 51.64 on 1 and 31 DF,  p-value: 4.438e-08</code></pre>
 <pre><code>## 
 ##  Durbin-Watson test
 ## 
