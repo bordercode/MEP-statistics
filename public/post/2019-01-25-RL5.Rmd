@@ -338,7 +338,9 @@ Este enfoque nos permite una interpretación independiente de las unidades de me
 a) Estime el modelo $price=\beta_0+\beta_1 nox+\beta_2 crime+\beta_3 rooms+\beta_4 dist+\beta_5 stratio$ en niveles. 
 Interprete los resultados.
 
-b) Estime el modelo usando las variables estandarizadas  (z-scores). Interprete los coeficientes (cambio de una desviación estándard) respecto a los cambios en la variable dependiente. ¿Qué variable tiene el mayor impacto sobre el valor  promedio de las viviendas en las localidades del estudio?
+b) Estime el modelo usando las variables estandarizadas  (z-scores). Interprete los coeficientes (cambio de una desviación estándard) respecto a los cambios en la variable dependiente. 
+
+¿Qué variable tiene el mayor impacto sobre el valor  promedio de las viviendas en las localidades del estudio?
 
 c) Estime el modelo considerando la expresión logarítmica para  la variable dependiente y las variables independientes NO_x y dist. 
 
@@ -356,7 +358,7 @@ summary()
 
 ## Estimación en z-scores
 
-lm(scale(price) ~  scale(nox) + scale(crime) + scale(rooms) + scale(dist) + scale(stratio), data = hprice2)%>% 
+lm(scale(price) ~ 0 + scale(nox) + scale(crime) + scale(rooms) + scale(dist) + scale(stratio), data = hprice2)%>% 
 summary()
 
 ## Estimación elasticidades
@@ -396,7 +398,7 @@ Credit<-select(Credit,-c(ID, Married,Ethnicity,Student,Gender,Cards))
 
 
 
-pairs(~Balance+Age+ Rating+Education+ Income+ Limit, data=Credit,col = "red", pch=1)
+pairs(~Balance+Age+ Rating+Education+ Income+ Limit, data=Credit,col = "pink", pch=1)
 ```
 
 
@@ -521,9 +523,9 @@ lm(lwage~female+educ+exper+expersq
 
 Los resultados indican que considerando los mismos niveles de educación, experiencia y antigüedad (incluido el efecto no lineal de estas últimas variables), las mujeres promedian un salario 29.6% inferior al de los hombres.  Nuevamente enfatizar que la interpretación $\beta_0$ carece de interés. 
 
-Respecto a los terminos cuadráticos ´(**efectos no lineales**) estos indican laS tasas de cambio en la pendiente de  cada variable (ej. tenure  y exper), por lo que en este caso ambas variables implican una reDucción en la del efecto atribuido a la variable original. 
+Respecto a los terminos cuadráticos ´(**efectos no lineales**) estos indican laS tasas de cambio en la pendiente de  cada variable (ej. tenure  y exper), por lo que en este caso ambas variables implican una reducción del efecto atribuido a la variable en niveles. 
 
-Así, un año adicional en el empleo genera una reducción en la pendiente de 0.05%.(efecto de $tenure^2$).   Note que en este caso el efecto constante de la variable *tenure* es un incremento de $3.1\%$, este es el cambio con un año adicional con ese empleo, pero esta ganancia decrece con cada año extra.  
+Así, un año adicional de experiencia genera una reducción en la pendiente de 0.05%.(efecto de $exper^2$).   Note que en este caso el efecto constante de la variable *exper* es un incremento de $2.9\%$, este es el cambio con un año adicional de experiencia, pero esta ganancia decrece con cada año extra.  
 
 #### Ejemplo 4
 
@@ -600,7 +602,7 @@ lm(lprice~bdrms+llotsize+lsqrft+colonial,data=hprice1)%>%
 
 Los resultados indican que las casas estilo colonial ($X_{colonial}=1$) tienen un diferencial de 5.3% en el precio promedio respecto a las casas de otros estilos. (El signo es positivo lo que corresponde a un incremento en el precio para las casas de estilo colonial).  
 
-Adicionalmente las variables $llotsize$ y $lsqrft$ muestran los cAmbios porcentuales de la variable dependiente *log(precio)* ante el cambio de $1\%$.  POr lo que estos coeficientes $\hat \beta$ de hecho permiten conocer la  **elasticidad** un concpeto ampliamente usaso en estudios osicales para indicar la flexibilidad de una variable ante variaciones en posibles determinantes.
+Adicionalmente las variables $llotsize$ y $lsqrft$ muestran los cambios porcentuales de la variable dependiente *log(precio)* ante el cambio de $1\%$.  POr lo que estos coeficientes $\hat \beta$ de hecho permiten conocer la  **elasticidad** un concpeto ampliamente usado en estudios sociales para indicar la flexibilidad de una variable ante variaciones en posibles determinantes.
 
 En ambos casos el precios es inelástico, sin embargo, es relativamente más sensible respecto al tamaño de la construcción (variable *sqrft*).
 
@@ -622,7 +624,9 @@ c) Construya una matriz de correlación para las siguientes variables esperanza 
 
 d) Estime el modelo $life=\beta_0 +\beta_1gdp+\beta_2school+\beta_3 adfert +\beta_4 chldmort+\epsilon$
 
-Comente los resultados para los parámetros $\hat\beta_p$ incluidos los parámetros sobre el ajuste del modelo $R^2$ (¿Qué proporción de la varianza en la esperanza de vida  se explica por el modelo? ). El estadístico  **F** para la prueba de hipótesis $H0:\beta_1,=\beta_2=...\beta_j=0$ Que podemos decir de la validez del modelo en su conjunto.
+Comente los resultados para los parámetros $\hat\beta_p$ incluidos los parámetros sobre el ajuste del modelo $R^2$ (¿Qué proporción de la varianza en la esperanza de vida  se explica por el modelo? ). El estadístico  **F** para la prueba de hipótesis $H0:\beta_1,=\beta_2=...\beta_j=0$  
+
+¿Que podemos decir de la validez del modelo en su conjunto?
 
 e) Según los parámetros del modelo, ¿cuantos años puede mejorar la esperanza de vida en un pais de la muestra si el GDP tiene un incremento de 10,000 USD per capita. 
 

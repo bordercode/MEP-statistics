@@ -398,8 +398,11 @@ round(res, 4)</code></pre>
 <p>Este enfoque nos permite una interpretación independiente de las unidades de medida de cada regresor lo cual ofrece una ventaja sobre la estiamación en niveles para detectar la importancia relativa de las variables independientes, incluso en los casos en los que cada regresor se expresa por unidades de medida heterogéneas. Importante en esta especificación el intercepto <span class="math inline">\(\beta_0\)</span> toma el valor de cero.</p>
 <ol style="list-style-type: lower-alpha">
 <li><p>Estime el modelo <span class="math inline">\(price=\beta_0+\beta_1 nox+\beta_2 crime+\beta_3 rooms+\beta_4 dist+\beta_5 stratio\)</span> en niveles. Interprete los resultados.</p></li>
-<li><p>Estime el modelo usando las variables estandarizadas (z-scores). Interprete los coeficientes (cambio de una desviación estándard) respecto a los cambios en la variable dependiente. ¿Qué variable tiene el mayor impacto sobre el valor promedio de las viviendas en las localidades del estudio?</p></li>
-<li><p>Estime el modelo considerando la expresión logarítmica para la variable dependiente y las variables independientes NO_x y dist.</p></li>
+<li><p>Estime el modelo usando las variables estandarizadas (z-scores). Interprete los coeficientes (cambio de una desviación estándard) respecto a los cambios en la variable dependiente.</p></li>
+</ol>
+<p>¿Qué variable tiene el mayor impacto sobre el valor promedio de las viviendas en las localidades del estudio?</p>
+<ol start="3" style="list-style-type: lower-alpha">
+<li>Estime el modelo considerando la expresión logarítmica para la variable dependiente y las variables independientes NO_x y dist.</li>
 </ol>
 <p>Interprete los resutlados (Tip: Elasticidades.)</p>
 <ol start="4" style="list-style-type: lower-alpha">
@@ -420,7 +423,7 @@ Credit&lt;-select(Credit,-c(ID, Married,Ethnicity,Student,Gender,Cards))
 
 
 
-pairs(~Balance+Age+ Rating+Education+ Income+ Limit, data=Credit,col = &quot;red&quot;, pch=1)</code></pre>
+pairs(~Balance+Age+ Rating+Education+ Income+ Limit, data=Credit,col = &quot;pink&quot;, pch=1)</code></pre>
 <p><img src="/post/2019-01-25-RL5_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>El objetivo es modelar la variable dependiente <strong>saldo</strong> en función de las diversas características del inidviduo.</p>
 <p>Note que las variables Sexo (Gender) y grupo étnico son categóricas (factores). Podemos incluirlas en el modeo creando variables <em>dummy</em>:</p>
@@ -568,8 +571,8 @@ pairs(~Balance+Age+ Rating+Education+ Income+ Limit, data=Credit,col = &quot;red
 ## Multiple R-squared:  0.4408, Adjusted R-squared:  0.4343 
 ## F-statistic: 68.18 on 6 and 519 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Los resultados indican que considerando los mismos niveles de educación, experiencia y antigüedad (incluido el efecto no lineal de estas últimas variables), las mujeres promedian un salario 29.6% inferior al de los hombres. Nuevamente enfatizar que la interpretación <span class="math inline">\(\beta_0\)</span> carece de interés.</p>
-<p>Respecto a los terminos cuadráticos ´(<strong>efectos no lineales</strong>) estos indican laS tasas de cambio en la pendiente de cada variable (ej. tenure y exper), por lo que en este caso ambas variables implican una reDucción en la del efecto atribuido a la variable original.</p>
-<p>Así, un año adicional en el empleo genera una reducción en la pendiente de 0.05%.(efecto de <span class="math inline">\(tenure^2\)</span>). Note que en este caso el efecto constante de la variable <em>tenure</em> es un incremento de <span class="math inline">\(3.1\%\)</span>, este es el cambio con un año adicional con ese empleo, pero esta ganancia decrece con cada año extra.</p>
+<p>Respecto a los terminos cuadráticos ´(<strong>efectos no lineales</strong>) estos indican laS tasas de cambio en la pendiente de cada variable (ej. tenure y exper), por lo que en este caso ambas variables implican una reducción del efecto atribuido a la variable en niveles.</p>
+<p>Así, un año adicional de experiencia genera una reducción en la pendiente de 0.05%.(efecto de <span class="math inline">\(exper^2\)</span>). Note que en este caso el efecto constante de la variable <em>exper</em> es un incremento de <span class="math inline">\(2.9\%\)</span>, este es el cambio con un año adicional de experiencia, pero esta ganancia decrece con cada año extra.</p>
 </div>
 <div id="ejemplo-4" class="section level4">
 <h4>Ejemplo 4</h4>
@@ -672,7 +675,7 @@ pairs(~Balance+Age+ Rating+Education+ Income+ Limit, data=Credit,col = &quot;red
 ## Multiple R-squared:  0.6491, Adjusted R-squared:  0.6322 
 ## F-statistic: 38.38 on 4 and 83 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Los resultados indican que las casas estilo colonial (<span class="math inline">\(X_{colonial}=1\)</span>) tienen un diferencial de 5.3% en el precio promedio respecto a las casas de otros estilos. (El signo es positivo lo que corresponde a un incremento en el precio para las casas de estilo colonial).</p>
-<p>Adicionalmente las variables <span class="math inline">\(llotsize\)</span> y <span class="math inline">\(lsqrft\)</span> muestran los cAmbios porcentuales de la variable dependiente <em>log(precio)</em> ante el cambio de <span class="math inline">\(1\%\)</span>. POr lo que estos coeficientes <span class="math inline">\(\hat \beta\)</span> de hecho permiten conocer la <strong>elasticidad</strong> un concpeto ampliamente usaso en estudios osicales para indicar la flexibilidad de una variable ante variaciones en posibles determinantes.</p>
+<p>Adicionalmente las variables <span class="math inline">\(llotsize\)</span> y <span class="math inline">\(lsqrft\)</span> muestran los cambios porcentuales de la variable dependiente <em>log(precio)</em> ante el cambio de <span class="math inline">\(1\%\)</span>. POr lo que estos coeficientes <span class="math inline">\(\hat \beta\)</span> de hecho permiten conocer la <strong>elasticidad</strong> un concpeto ampliamente usado en estudios sociales para indicar la flexibilidad de una variable ante variaciones en posibles determinantes.</p>
 <p>En ambos casos el precios es inelástico, sin embargo, es relativamente más sensible respecto al tamaño de la construcción (variable <em>sqrft</em>).</p>
 <p>Note la interpretación del coeficiente <span class="math inline">\(\hat \beta_{colonial}\)</span> como la expresión porcentual en la diferencia entre los grupos de la variable dummy controlando por el resto de atributos. Note finalmente que la variable colonial no es estadísticamente significativa, <strong>NO rechazamos</strong> <span class="math inline">\(H_0: \beta_{colonial}=0\)</span></p>
 </div>
@@ -686,7 +689,8 @@ pairs(~Balance+Age+ Rating+Education+ Income+ Limit, data=Credit,col = &quot;red
 <li><p>Construya una matriz de correlación para las siguientes variables esperanza de vida (<em>life</em>), Producto Interno Bruto per capita 2005-2009 (miles de USD constantes a 2005) (<em>gdp</em>), años promedio de escolaridad (<em>school</em>), tasa de fertilidad en pobalción adolescente nacimientos por cada 1000 (<em>adfert</em>: Adolescent fertility: births/1000 births 2005/2009). Mortalidad infantil (<em>chldmort</em>: tasa de mortalidad infantil (antes de 5 años por cada 1000 nacimientos). Grafique la matriz de correlación.</p></li>
 <li><p>Estime el modelo <span class="math inline">\(life=\beta_0 +\beta_1gdp+\beta_2school+\beta_3 adfert +\beta_4 chldmort+\epsilon\)</span></p></li>
 </ol>
-<p>Comente los resultados para los parámetros <span class="math inline">\(\hat\beta_p\)</span> incluidos los parámetros sobre el ajuste del modelo <span class="math inline">\(R^2\)</span> (¿Qué proporción de la varianza en la esperanza de vida se explica por el modelo? ). El estadístico <strong>F</strong> para la prueba de hipótesis <span class="math inline">\(H0:\beta_1,=\beta_2=...\beta_j=0\)</span> Que podemos decir de la validez del modelo en su conjunto.</p>
+<p>Comente los resultados para los parámetros <span class="math inline">\(\hat\beta_p\)</span> incluidos los parámetros sobre el ajuste del modelo <span class="math inline">\(R^2\)</span> (¿Qué proporción de la varianza en la esperanza de vida se explica por el modelo? ). El estadístico <strong>F</strong> para la prueba de hipótesis <span class="math inline">\(H0:\beta_1,=\beta_2=...\beta_j=0\)</span></p>
+<p>¿Que podemos decir de la validez del modelo en su conjunto?</p>
 <ol start="5" style="list-style-type: lower-alpha">
 <li><p>Según los parámetros del modelo, ¿cuantos años puede mejorar la esperanza de vida en un pais de la muestra si el GDP tiene un incremento de 10,000 USD per capita.</p></li>
 <li><p>Considerando los parámetros estimados del modelo, ¿Qué efecto tendría la reducción de 10 individuos en al tasa de mortablidad infantil por cada 1000 nacimientos, sobre la esperanza de vida promedio para esta muestra de países?</p></li>
