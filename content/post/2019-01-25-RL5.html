@@ -342,9 +342,16 @@ pairs(~Balance+Age+ Rating+Education+ Income+ Limit, data=Credit,col = &quot;pin
 <img src="/img/afro.jpg" />
 
 </div>
+<pre class="r"><code>data(Credit)
+names(Credit)</code></pre>
 <pre><code>##  [1] &quot;ID&quot;        &quot;Income&quot;    &quot;Limit&quot;     &quot;Rating&quot;    &quot;Cards&quot;    
 ##  [6] &quot;Age&quot;       &quot;Education&quot; &quot;Gender&quot;    &quot;Student&quot;   &quot;Married&quot;  
 ## [11] &quot;Ethnicity&quot; &quot;Balance&quot;</code></pre>
+<pre class="r"><code>Credit&lt;-mutate(Credit,Asian=ifelse(Ethnicity==&quot;Asian&quot;,1,0),
+               Caucasian=ifelse(Ethnicity==&quot;Caucasian&quot;,1,0))
+
+lm(Balance~Asian+Caucasian,data =Credit)%&gt;%
+  summary()</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = Balance ~ Asian + Caucasian, data = Credit)

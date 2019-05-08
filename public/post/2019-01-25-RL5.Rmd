@@ -412,7 +412,9 @@ Note que las variables Sexo (Gender) y grupo étnico son categóricas (factores)
 
 ```{r,echo=FALSE}
 data(Credit)
+
 Credit<-mutate(Credit,Gender=ifelse(Gender=="Female",1,0))
+
 lm(Balance~Gender, data =Credit)%>%
   summary()
 ```
@@ -424,7 +426,7 @@ En seguida la inclusion de la variable categórica  grupo étnico (*Ethnicity*) 
 
 ![](/img/afro.jpg)
 
-```{r, echo =FALSE}
+```{r, echo =TRUE}
 data(Credit)
 names(Credit)
 
