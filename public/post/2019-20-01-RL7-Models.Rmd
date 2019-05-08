@@ -30,6 +30,30 @@ Considere un escenario en el que nos interesa modelar la relación entre la **es
 
 El problema en este caso es que la unidad de análisis (142 países) implica la realización de  un gran número de modelos, 142 modelos!!! ¿Cómo podemos atender esta tarea de estimar 142 modelos de regresión lineal de una forma eficiente?
 
+
+
+```{r,echo=FALSE}
+continents<-gapminder%>%
+select(country,continent)
+```
+
+```{r}
+#1. Cargamos los datos
+gapminder
+View(gapminder)
+str(gapminder)
+
+gapminder<-mutate(gapminder,year1950=year-1950)
+
+continents<-gapminder%>%
+select(country,continent)
+
+
+## Note que tenenos 1704 observaciones, para 5 variables. Estas variables como el GDP percapita, la esperanza de vida, la población, corresponden a 142 países en 5 continentes.
+```
+
+
+
 Una opción que se usa por el [Programa de Naciones Unidas para el Desarrollo](http://hdr.undp.org/en/data), es presentar la relación entre variables mediante gráficas de lineas:
 ![](/img/onu.jpg)
 
@@ -68,25 +92,7 @@ Para lograr el análisis necesitamos  tres fases:
 + Extraer parámetros de  los modelos con library(broom) y la función glance(). 
 
 
-```{r,echo=FALSE}
-continents<-gapminder%>%
-select(country,continent)
-```
-
 ```{r}
-#1. Cargamos los datos
-gapminder
-View(gapminder)
-str(gapminder)
-
-gapminder<-mutate(gapminder,year1950=year-1950)
-
-continents<-gapminder%>%
-select(country,continent)
-
-
-## Note que tenenos 1704 observaciones, para 5 variables. Estas variables como el GDP percapita, la esperanza de vida, la población, corresponden a 142 países en 5 continentes.
-
 
 #2. Agrupamos y aplicamos la función nest para "anidar los datos de cada país  en, una nueva variable llamada data en forma de lista" 
 
