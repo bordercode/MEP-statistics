@@ -163,15 +163,20 @@ model<-lm(life~gdp+chldmort, data=nt)
 
 
 r<-residuals(model)
+
 shapiro.test(r)
 
 bc=boxcox(model,lambda=seq(-3,3))
 
+
 lambda=bc$x[which(bc$y==max(bc$y))]
+
 lambda
 
+## Una vez que estimamos el parámetro lambda, realizamos la 
+## transformación con : var_Trans_box = (y ^ lambda - 1)/lambda
 
-library(reticulate)
+
 ## Conclusión, en este caso particular tenemos  influencia severa de outliers. No importa que transformación usemos el tema de ouliers (obs 3, 25, 43 y 45) resulta un "obstáculo".
 
 # En este caso es conveniente atender el tema de outliers. A continuación abordamos este tema. 
@@ -247,6 +252,7 @@ Concluimos en este caso que se viola el supuesto de varianza contante en los err
 Corregir este problema es un asunto empírico que depende en última instancia del problema que estamos analizando.
 
 No obstante el punto fundamental para resolver este problema es identificar con la causa, (i.e la fuente de la variación no constante). Lograr lo anterior implica observar por ejemplo el rango de variación de los regresores. Variables con RI grandes pueden estar vinculadas con la causa.
+
 
 En este mismo sentido es posible por ejemplo usar una unidad de medida alternativa para la variable de interés por ejemplo en lugar de usar datos en niveles con unidades originales se puede considerar el uso de la variable en términos per cápita, en tasa por cada 100 mil  o porcentaje, dependiendo del escenario de análisis.  
 
