@@ -543,7 +543,7 @@ El modelo a estimar es:
 
 
 $$log(wage)=\beta_0+\beta_1 hca +\beta_2 mca+\beta_3 msol+\beta_4 educ+\beta_5 exper +\beta_6 exper^2+\beta_7 tenure + \beta_8 tenure^2 +\epsilon $$
-```{r, echo=FALSE}
+```{r, echo=TRUE}
 
 data(wage1)
 names(wage1)

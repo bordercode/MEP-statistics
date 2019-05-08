@@ -608,10 +608,16 @@ summary()  </code></pre>
 <p>De modo que necesitamos generar 3 variables dummy una para hombre-casado (hca), mujer-casada (mca) y mujer-soltera (msol). Note que la categoria hombre-soltero es nuestra selección para categoria base.</p>
 <p>El modelo a estimar es:</p>
 <p><span class="math display">\[log(wage)=\beta_0+\beta_1 hca +\beta_2 mca+\beta_3 msol+\beta_4 educ+\beta_5 exper +\beta_6 exper^2+\beta_7 tenure + \beta_8 tenure^2 +\epsilon \]</span></p>
+<pre class="r"><code>data(wage1)
+names(wage1)</code></pre>
 <pre><code>##  [1] &quot;wage&quot;     &quot;educ&quot;     &quot;exper&quot;    &quot;tenure&quot;   &quot;nonwhite&quot; &quot;female&quot;  
 ##  [7] &quot;married&quot;  &quot;numdep&quot;   &quot;smsa&quot;     &quot;northcen&quot; &quot;south&quot;    &quot;west&quot;    
 ## [13] &quot;construc&quot; &quot;ndurman&quot;  &quot;trcommpu&quot; &quot;trade&quot;    &quot;services&quot; &quot;profserv&quot;
 ## [19] &quot;profocc&quot;  &quot;clerocc&quot;  &quot;servocc&quot;  &quot;lwage&quot;    &quot;expersq&quot;  &quot;tenursq&quot;</code></pre>
+<pre class="r"><code>wage1&lt;-wage1%&gt;%mutate(hca=ifelse(married==1&amp;female==0,1,0), mca=ifelse(married==1&amp;female==1,1,0),msol=ifelse(married==0&amp;female==1,1,0))
+
+lm(lwage~hca+mca+msol+educ+exper+expersq+tenure+tenursq,data=wage1)%&gt;%
+summary()</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = lwage ~ hca + mca + msol + educ + exper + expersq + 
