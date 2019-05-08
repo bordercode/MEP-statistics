@@ -583,7 +583,7 @@ summary(house_lm)
 
 Note que de forma contra intuitiva la variable que captura la suerficie del terreno tiene un efecto negativo de igual forma la variable # baños, lo cual no es consistente en términos empíricos .
 
-Estos efectos principales contraintuitivos  se asociación probablemente con la omisión de variables explicativas relevantes (*confunding variables*). Ya que el modelo esta mezclando información de áreas muy heterogéneas.  
+Estos efectos principales contraintuitivos  se asociacian probablemente con la omisión de variables explicativas relevantes (*confunding variables*). Ya que el modelo esta mezclando información de áreas muy heterogéneas.  
 
 Ahora vamos a incluir la variable que captura la localización  **ZipGroup** (una posible variable confusora) y estimamos el modelo para determinar los efectos principales de variables para validar la relación teórica de causalidad.
 
