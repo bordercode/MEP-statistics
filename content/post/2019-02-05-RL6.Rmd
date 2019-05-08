@@ -42,8 +42,6 @@ library(foreign)
 
 ### Heterocedsticidad.
 
-Un supuesto de partida de los residuales es que se distribuyen a corde a la **normal** (Normalidad en los residuales) con media cero varianza constante $\sigma^2$.
-
 Uno de los supuestos principales del Modelo de Regresión Lineal **MRL** es que los  errores tiene la misma varianza, lo que se conoce como **homocedasticidad**, $$E(\epsilon|x)=E(\epsilon)=0$$  $$var(\epsilon|x)=\sigma^2$$ 
 
 Cuando el supuesto no se cumple tenemos el problema denominado **Heterocedasticidad**. 
@@ -129,9 +127,13 @@ En el caso particular el patrón observado presenta una dispersón ligeramente c
 
 #### Gráfica 3 Q-Q plot
 
+
+Un supuesto de partida de los residuales es que se distribuyen a corde a la **normal** (Normalidad en los residuales) con media cero varianza constante $\sigma^2$.
+
+
 Utilizamos esta gráfica  para validar el cumplimiento del supesto de normalidad de $\epsilon$.
 
-Si los residuales se distribuyen acorde a la normal, se observa una distribución a lo largo de la diagonal.
+Si los residuales se distribuyen a corde a la normal, se observa una distribución a lo largo de la diagonal.
 
 ![](/img/qqplotN.jpg)
 
@@ -175,9 +177,16 @@ library(reticulate)
 # En este caso es conveniente atender el tema de outliers. A continuación abordamos este tema. 
 ```
 
-Note aplicación de prueba estadística de **Shaphiro-Wilk** que tiene como **H0: Normalidad**. En este caso tenemos un *p-value*=4.359e-10. Rechazamos **H0**, la distribución de los datos no es acorde con la normal.
+Note la aplicación de la prueba estadística de **Shapiro-Wilk** que tiene como **H0: Normalidad**. 
+
+Generalmente las pruebas de hipótesis que conocemos se construyen de tal forma que buscamos rechazar la hipótesis nula, sin embargo en este caso la prueba tiene como **H0: normalidad**, por lo que un **p-value<0.5** implican rechazar **normalidad**. 
+
+Entonces con la prueba **Shapiro-Wilk**, no rechazar H0, (ej. p-values  grandes) de hecho se traduce en un buen escenario ya que es razonable asumir que los terminos de  error se distribuyen a corde a la normal.
+
+
+En este caso tenemos un *p-value*=4.359e-10. Rechazamos **H0**, la distribución de los datos no es acorde con la normal.
  
-Note que tenemos un $\lambda=1.54$ usualmente se considera el valor entero inmediato en este caso 2.
+Para el resultado de la transformación note que tenemos un $\lambda=1.54$ usualmente se considera el valor entero inmediato en este caso 2.
 
 
 Importante el procedimiento de transformación  no garantiza totalmente obtener datos con distribución normal, especialmente si los datos presentan al grado de sesgo.   
@@ -234,6 +243,12 @@ Concluimos en este caso que se viola el supuesto de varianza contante en los err
 
 
 #### ¿Cómo atender el problema de Heterocedasticidad?
+
+Corregir este problema es un asunto empírico que depende en última instancia del problema que estamos analizando.
+
+No obstante el punto fundamental para resolver este problema es identificar con la causa, (i.e la fuente de la variación no constante). Lograr lo anterior implica observar por ejemplo el rango de variación de los regresores. Variables con RI grandes pueden estar vinculadas con la causa.
+
+En este mismo sentido es posible por ejemplo usar una unidad de medida alternativa para la variable de interés por ejemplo en lugar de usar datos en niveles con unidades originales se puede considerar el uso de la variable en términos per cápita, en tasa por cada 100 mil  o porcentaje, dependiendo del escenario de análisis.  
 
 Una posible solución es aplicar una transformación logarítmica a la variable dependiente.
 

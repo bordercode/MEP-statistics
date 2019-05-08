@@ -17,7 +17,6 @@ menu:
 <h2>Análisis de los supuestos y pruebas de diagnóstico del modelo.</h2>
 <div id="heterocedsticidad." class="section level3">
 <h3>Heterocedsticidad.</h3>
-<p>Un supuesto de partida de los residuales es que se distribuyen a corde a la <strong>normal</strong> (Normalidad en los residuales) con media cero varianza constante <span class="math inline">\(\sigma^2\)</span>.</p>
 <p>Uno de los supuestos principales del Modelo de Regresión Lineal <strong>MRL</strong> es que los errores tiene la misma varianza, lo que se conoce como <strong>homocedasticidad</strong>, <span class="math display">\[E(\epsilon|x)=E(\epsilon)=0\]</span> <span class="math display">\[var(\epsilon|x)=\sigma^2\]</span></p>
 <p>Cuando el supuesto no se cumple tenemos el problema denominado <strong>Heterocedasticidad</strong>.</p>
 <p>¿Cuáles son las consecuencias del problema de Heterocedasticidad?</p>
@@ -101,8 +100,9 @@ plot(model)</code></pre>
 </div>
 <div id="grafica-3-q-q-plot" class="section level4">
 <h4>Gráfica 3 Q-Q plot</h4>
+<p>Un supuesto de partida de los residuales es que se distribuyen a corde a la <strong>normal</strong> (Normalidad en los residuales) con media cero varianza constante <span class="math inline">\(\sigma^2\)</span>.</p>
 <p>Utilizamos esta gráfica para validar el cumplimiento del supesto de normalidad de <span class="math inline">\(\epsilon\)</span>.</p>
-<p>Si los residuales se distribuyen acorde a la normal, se observa una distribución a lo largo de la diagonal.</p>
+<p>Si los residuales se distribuyen a corde a la normal, se observa una distribución a lo largo de la diagonal.</p>
 <div class="figure">
 <img src="/img/qqplotN.jpg" />
 
@@ -121,8 +121,11 @@ log (y) , \lambda =0 \]</span></p>
 ## W = 0.89176, p-value = 4.359e-10</code></pre>
 <p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <pre><code>## [1] 1.545455</code></pre>
-<p>Note aplicación de prueba estadística de <strong>Shaphiro-Wilk</strong> que tiene como <strong>H0: Normalidad</strong>. En este caso tenemos un <em>p-value</em>=4.359e-10. Rechazamos <strong>H0</strong>, la distribución de los datos no es acorde con la normal.</p>
-<p>Note que tenemos un <span class="math inline">\(\lambda=1.54\)</span> usualmente se considera el valor entero inmediato en este caso 2.</p>
+<p>Note la aplicación de la prueba estadística de <strong>Shapiro-Wilk</strong> que tiene como <strong>H0: Normalidad</strong>.</p>
+<p>Generalmente las pruebas de hipótesis que conocemos se construyen de tal forma que buscamos rechazar la hipótesis nula, sin embargo en este caso la prueba tiene como <strong>H0: normalidad</strong>, por lo que un <strong>p-value&lt;0.5</strong> implican rechazar <strong>normalidad</strong>.</p>
+<p>Entonces con la prueba <strong>Shapiro-Wilk</strong>, no rechazar H0, (ej. p-values grandes) de hecho se traduce en un buen escenario ya que es razonable asumir que los terminos de error se distribuyen a corde a la normal.</p>
+<p>En este caso tenemos un <em>p-value</em>=4.359e-10. Rechazamos <strong>H0</strong>, la distribución de los datos no es acorde con la normal.</p>
+<p>Para el resultado de la transformación note que tenemos un <span class="math inline">\(\lambda=1.54\)</span> usualmente se considera el valor entero inmediato en este caso 2.</p>
 <p>Importante el procedimiento de transformación no garantiza totalmente obtener datos con distribución normal, especialmente si los datos presentan al grado de sesgo.</p>
 </div>
 <div id="grafica-4-residuals-leverage." class="section level4">
@@ -167,6 +170,9 @@ log (y) , \lambda =0 \]</span></p>
 </div>
 <div id="como-atender-el-problema-de-heterocedasticidad" class="section level4">
 <h4>¿Cómo atender el problema de Heterocedasticidad?</h4>
+<p>Corregir este problema es un asunto empírico que depende en última instancia del problema que estamos analizando.</p>
+<p>No obstante el punto fundamental para resolver este problema es identificar con la causa, (i.e la fuente de la variación no constante). Lograr lo anterior implica observar por ejemplo el rango de variación de los regresores. Variables con RI grandes pueden estar vinculadas con la causa.</p>
+<p>En este mismo sentido es posible por ejemplo usar una unidad de medida alternativa para la variable de interés por ejemplo en lugar de usar datos en niveles con unidades originales se puede considerar el uso de la variable en términos per cápita, en tasa por cada 100 mil o porcentaje, dependiendo del escenario de análisis.</p>
 <p>Una posible solución es aplicar una transformación logarítmica a la variable dependiente.</p>
 <p>Un segundo enfoque es estimar el modelo de regresión ponderada. (<em>weighted least squares</em>).</p>
 </div>

@@ -17,9 +17,10 @@
       <pubDate>Tue, 05 Feb 2019 21:11:11 -0500</pubDate>
       
       <guid>/post/2019-02-05-rl6/</guid>
-      <description>Análisis de los supuestos y pruebas de diagnóstico del modelo.Heterocedsticidad.Un supuesto de partida de los residuales es que se distribuyen a corde a la normal (Normalidad en los residuales) con media cero varianza constante \(\sigma^2\).
-Uno de los supuestos principales del Modelo de Regresión Lineal MRL es que los errores tiene la misma varianza, lo que se conoce como homocedasticidad, \[E(\epsilon|x)=E(\epsilon)=0\] \[var(\epsilon|x)=\sigma^2\]
-Cuando el supuesto no se cumple tenemos el problema denominado Heterocedasticidad.</description>
+      <description>Análisis de los supuestos y pruebas de diagnóstico del modelo.Heterocedsticidad.Uno de los supuestos principales del Modelo de Regresión Lineal MRL es que los errores tiene la misma varianza, lo que se conoce como homocedasticidad, \[E(\epsilon|x)=E(\epsilon)=0\] \[var(\epsilon|x)=\sigma^2\]
+Cuando el supuesto no se cumple tenemos el problema denominado Heterocedasticidad.
+¿Cuáles son las consecuencias del problema de Heterocedasticidad?
+Los parámetros estimados ya no se consideran BLUE (Best Linear Unbiased Estimators supuestos del teorema Gauss-Markov).</description>
     </item>
     
     <item>
