@@ -176,7 +176,9 @@ summary(model)
 plot(model, which=c(1,3))
 ```
 
-A continuación la estimación de la prueba formal Breusch - Pagan para detectar heterocedasticidad.  recuerde que la prueba tiene $H0: varianza constante$  $Ha: Heterocedasticidad$ 
+#### Aplicación de la prueba de Breusch-Pagan.
+
+A continuación la estimación de la prueba formal Breusch - Pagan para detectar **heterocedasticidad**.  recuerde que la prueba tiene $H0: varianza constante$  $Ha: Heterocedasticidad$ 
 
 ```{r, echo=FALSE}
 # Una forma usando olsrr library.

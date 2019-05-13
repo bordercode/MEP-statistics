@@ -281,7 +281,11 @@ summary(model)</code></pre>
 ## F-statistic: 677.3 on 2 and 175 DF,  p-value: &lt; 2.2e-16</code></pre>
 <pre class="r"><code>plot(model, which=c(1,3))</code></pre>
 <p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-4-1.png" width="672" /><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
-<p>A continuación la estimación de la prueba formal Breusch - Pagan para detectar heterocedasticidad. recuerde que la prueba tiene <span class="math inline">\(H0: varianza constante\)</span> <span class="math inline">\(Ha: Heterocedasticidad\)</span></p>
+</div>
+</div>
+<div id="aplicacion-de-la-prueba-de-breusch-pagan." class="section level4">
+<h4>Aplicación de la prueba de Breusch-Pagan.</h4>
+<p>A continuación la estimación de la prueba formal Breusch - Pagan para detectar <strong>heterocedasticidad</strong>. recuerde que la prueba tiene <span class="math inline">\(H0: varianza constante\)</span> <span class="math inline">\(Ha: Heterocedasticidad\)</span></p>
 <pre><code>## 
 ## Call:
 ## lm(formula = life ~ gdp + chldmort, data = nt)
@@ -324,7 +328,6 @@ summary(model)</code></pre>
 ## data:  model
 ## BP = 5.8842, df = 1, p-value = 0.01528</code></pre>
 <p>Concluimos en este caso que se viola el supuesto de varianza contante en los errores (p-value&lt;0.05), es decir rechazamos <span class="math inline">\(H0:\sigma^2\)</span> constante. (en ambos métodos <em>p-value</em> &lt;.05, ej <span class="math inline">\(p-value_{bptest} = 0.0152\)</span>), <span class="math inline">\(p-value_{lmtest}0.0003\)</span></p>
-</div>
 </div>
 <div id="como-atender-el-problema-de-heterocedasticidad" class="section level4">
 <h4>¿Cómo atender el problema de Heterocedasticidad?</h4>
