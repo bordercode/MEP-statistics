@@ -128,6 +128,18 @@ geom_point(aes(color = abs(residuals), size = abs(residuals)))+
 **Método alternativo**. Directamente es posible obtener el diagnóstico gráfico de residuales posterior a la estimación del modelo. Dos gráficas son de interés 
 
 
+
+##### Gráfica  Residuals vs. Fitted (detección de heterocedasticidad)
+
+Residuales vs. $\hat y$.
+
+Una distribución aleatoria de los residuales alrededor de la linea de tendencia (linea roja) indica homocedasticidad (linea roja recta). 
+
+Adicionalmente esta gráfica nos permite detectar si la relación no es lineal entre variable dependiente e independiente.(ej. una linea roja con forma de parábola).
+
+
+
+
 ```{r, ehco=FALSE, message=FALSE}
 
 library(estimatr)
@@ -141,18 +153,6 @@ summary(model)
 
 plot(model, which=c(1,1))
 ```
-
-
-#### Gráfica  Residuals vs. Fitted (detección de heterocedasticidad)
-
-Residuales vs. $\hat y$.
-
-Una distribución aleatoria de los residuales alrededor de la linea de tendencia (linea roja) indica homocedasticidad (linea roja recta). 
-
-Adicionalmente esta gráfica nos permite detectar si la relación no es lineal entre variable dependiente e independiente.(ej. una linea roja con forma de parábola).
-
-
-
 
 ##### Gráfica   Scale-Location (detección de heterocedasticidad).
 

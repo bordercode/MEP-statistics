@@ -211,6 +211,12 @@ geom_point(aes(color = abs(residuals), size = abs(residuals)))+
   theme_bw()</code></pre>
 <p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p><strong>Método alternativo</strong>. Directamente es posible obtener el diagnóstico gráfico de residuales posterior a la estimación del modelo. Dos gráficas son de interés</p>
+</div>
+<div id="grafica-residuals-vs.fitted-deteccion-de-heterocedasticidad" class="section level5">
+<h5>Gráfica Residuals vs. Fitted (detección de heterocedasticidad)</h5>
+<p>Residuales vs. <span class="math inline">\(\hat y\)</span>.</p>
+<p>Una distribución aleatoria de los residuales alrededor de la linea de tendencia (linea roja) indica homocedasticidad (linea roja recta).</p>
+<p>Adicionalmente esta gráfica nos permite detectar si la relación no es lineal entre variable dependiente e independiente.(ej. una linea roja con forma de parábola).</p>
 <pre class="r"><code>library(estimatr)
 
 nt&lt;-readRDS(&quot;Nations2a.rds&quot;)%&gt;%
@@ -241,12 +247,6 @@ summary(model)</code></pre>
 <pre class="r"><code>plot(model, which=c(1,1))</code></pre>
 <p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 </div>
-</div>
-<div id="grafica-residuals-vs.fitted-deteccion-de-heterocedasticidad" class="section level4">
-<h4>Gráfica Residuals vs. Fitted (detección de heterocedasticidad)</h4>
-<p>Residuales vs. <span class="math inline">\(\hat y\)</span>.</p>
-<p>Una distribución aleatoria de los residuales alrededor de la linea de tendencia (linea roja) indica homocedasticidad (linea roja recta).</p>
-<p>Adicionalmente esta gráfica nos permite detectar si la relación no es lineal entre variable dependiente e independiente.(ej. una linea roja con forma de parábola).</p>
 <div id="grafica-scale-location-deteccion-de-heterocedasticidad." class="section level5">
 <h5>Gráfica Scale-Location (detección de heterocedasticidad).</h5>
 <p><em>Scale-location</em> o <em>spread location plot</em> que mide la dispersión de los residuales y permite detectar así el problema de <strong>heterocedasticidad</strong>.</p>
