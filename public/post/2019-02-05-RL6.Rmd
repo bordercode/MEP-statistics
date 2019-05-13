@@ -327,11 +327,21 @@ Note: Contraste entre obs con gran  **Leverage**  (influencia) vs. **Outliers** 
 
 ![](/img/lev.jpg)
 
-El procedimiento para la detección en R  implica el cálculo del estadístico conocido como distancia *Cook*, (propuesto por R. Dennis Cook in 1977) básicamente este indicador permite   detectar aquellas observaciones con *high leverage*.  La especificación para el estadístico que indica el leverage $h_i=\frac{1}{n}+\frac{(x_i-\bar x)^2}{\sum_{i=1}^n(x_i-\bar x)^2}$ se ubica en el rango [1/n ,1]. 
+El procedimiento para la detección en R  implica el cálculo del estadístico conocido como distancia *Cook*, (propuesto por R. Dennis Cook in 1977) básicamente este indicador permite   detectar aquellas observaciones con *high leverage*.  La especificación es> 
 
-El *leverage* promedio es siempre igual a $(p+1)/n$ de tal modo que si una observación tiene un estadístico que excede  $(p+1)/n$ entonces tenemos evidencia para suponer  *high leverage*  una observación con elevada influencia.
 
-Una segunda herramienta que es de utilidad para detectar observaciones atípicas  *outliers* en la variable dependiente es la proyección de los residuales *Studentized* (SR).
+$$D_i= \frac{\sum_{j=1}^n  (\hat y_{j} -y_{j(i))}) } { p MSE}$$
+Donde: $\hat y$ Variable estimada 
+
+$\hat y_{j(i)}$ Variable estimada sin la observación i
+
+**MSE**: Error estandar medio .
+
+p: NÚmero de coeficientes en la regressión
+
+El indicador Distancia de Cook, muestra el cambio normalizado de la variable de respuesta dada la eliminación de una observación *i*.
+
+En segundo lugar una  herramienta que es de utilidad para detectar observaciones atípicas  *outliers* en la variable dependiente es la proyección de los residuales *Studentized* (SR).
 
 Los **SR** (Studentized Residuals), son los residiuales divididos por la su  desviación estandar $SR=e/\sqrt{e}$
 
@@ -345,8 +355,6 @@ Así mismo  en la versión estandarizada *Standarized Residuals* los residuales 
 Note la única diferencia entre el indicador *studentize Residuals* y *Standarized Residuals* es que el primero calcula el modelo una vez que se eliminan las observaciones consideradas outliers. Ambos informan el mismo diagnostico indentificando los **outiliers**.  
 
 Y recuerde que controlar por estas  observaciones pude ser importante para los resultados del modelo a estimar. En última instacia la decisión sobre quitarlos o no es una cuestión empírica qu dependerá del problema analizado.
-
-
 
 A continuación el estimado de  a) *Cook´s distance*, b) Studentized y c) standarized residuals  y  la gráfica conjunta *Leverage diagnóstics* para mostrar observaciones con high *leverage* y *outliers* 
 

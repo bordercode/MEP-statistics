@@ -414,9 +414,13 @@ lambda</code></pre>
 <img src="/img/lev.jpg" />
 
 </div>
-<p>El procedimiento para la detección en R implica el cálculo del estadístico conocido como distancia <em>Cook</em>, (propuesto por R. Dennis Cook in 1977) básicamente este indicador permite detectar aquellas observaciones con <em>high leverage</em>. La especificación para el estadístico que indica el leverage <span class="math inline">\(h_i=\frac{1}{n}+\frac{(x_i-\bar x)^2}{\sum_{i=1}^n(x_i-\bar x)^2}\)</span> se ubica en el rango [1/n ,1].</p>
-<p>El <em>leverage</em> promedio es siempre igual a <span class="math inline">\((p+1)/n\)</span> de tal modo que si una observación tiene un estadístico que excede <span class="math inline">\((p+1)/n\)</span> entonces tenemos evidencia para suponer <em>high leverage</em> una observación con elevada influencia.</p>
-<p>Una segunda herramienta que es de utilidad para detectar observaciones atípicas <em>outliers</em> en la variable dependiente es la proyección de los residuales <em>Studentized</em> (SR).</p>
+<p>El procedimiento para la detección en R implica el cálculo del estadístico conocido como distancia <em>Cook</em>, (propuesto por R. Dennis Cook in 1977) básicamente este indicador permite detectar aquellas observaciones con <em>high leverage</em>. La especificación es&gt;</p>
+<p><span class="math display">\[D_i= \frac{\sum_{j=1}^n  (\hat y_{j} -y_{j(i))}) } { p MSE}\]</span> Donde: <span class="math inline">\(\hat y\)</span> Variable estimada</p>
+<p><span class="math inline">\(\hat y_{j(i)}\)</span> Variable estimada sin la observación i</p>
+<p><strong>MSE</strong>: Error estandar medio .</p>
+<p>p: NÚmero de coeficientes en la regressión</p>
+<p>El indicador Distancia de Cook, muestra el cambio normalizado de la variable de respuesta dada la eliminación de una observación <em>i</em>.</p>
+<p>En segundo lugar una herramienta que es de utilidad para detectar observaciones atípicas <em>outliers</em> en la variable dependiente es la proyección de los residuales <em>Studentized</em> (SR).</p>
 <p>Los <strong>SR</strong> (Studentized Residuals), son los residiuales divididos por la su desviación estandar <span class="math inline">\(SR=e/\sqrt{e}\)</span></p>
 <p>Note que en este caso (<strong>outliers</strong>), estamos tratando con el valor que toma la variable dependiente (las <span class="math inline">\(\hat y\)</span>). Mientras en el caso de los <em>high leverage</em> points nos referimos únicamente a las observaciones de la variable independiente <strong>x_i</strong>.</p>
 <p>Cuando el valor del <strong>SR</strong> supera 3, existe evidencia de la presencia de <em>outliers</em>. La selección del valor de referencia 3 derivado de la distribución de los datos en relación al número de desviaciones estándard (recordar la aplicación de la prueba t-student).</p>
