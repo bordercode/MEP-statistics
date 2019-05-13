@@ -727,7 +727,7 @@ lm(lprice~bdrms+llotsize+lsqrft+colonial,data=hprice1)%&gt;%
 <div id="tarea" class="section level4">
 <h4>Tarea</h4>
 <p>Considere el siguiente escenario en el que se busca explicar la relación entre la esperanza de vida de la población en una muestra de 194 paises (la variable dependiente) y una serie de caracteristicas sintetizadas por las siguientes variables explicativas:</p>
-<p>Producto Interno Bruto per capita 2005-2009 (miles de USD constantes a 2005) (<em>gdp</em>), años promedio de escolaridad escolaridad (<em>school</em>), tasa de fertilidad en pobalción adolescente (nacimientos por cada 1000, <em>adfert</em>: Adolescent fertility: births/1000 births 2005/2009). Mortalidad infantil (<em>chldmort</em>: tasa de mortalidad infantil (antes de 5 años por cada 1000 nacimientos). <a href="http://hdr.undp.org/en/data">Fuente</a></p>
+<p>Producto Interno Bruto per capita 2005-2009 (miles de USD constantes a 2005) (<em>gdp</em>), años promedio de escolaridad escolaridad (<em>school</em>), tasa de fertilidad en población adolescente (nacimientos por cada 1000, <em>adfert</em>: Adolescent fertility: births/1000 births 2005/2009). Mortalidad infantil (<em>chldmort</em>: tasa de mortalidad infantil (antes de 5 años por cada 1000 nacimientos). <a href="http://hdr.undp.org/en/data">Fuente</a></p>
 <ol style="list-style-type: lower-alpha">
 <li><p>Represente graficamente la variación en la esperanza de vida en los paises de la muestra por región. Tip: Utilice un Boxplot.</p></li>
 <li><p>Represente graficamente la relación entre la variable esperanza de vida y años de escolaridad. (variable que mide los años promedio de escolaridad de los adultos en cada país en el periodo 2005/2010). Tip (Utilice un scatterplot con la linea de tendencia)</p></li>
@@ -745,8 +745,11 @@ lm(lprice~bdrms+llotsize+lsqrft+colonial,data=hprice1)%&gt;%
 </div>
 <div id="efectos-por-interacciones-entre-regresores." class="section level3">
 <h3>Efectos por Interacciones entre regresores.</h3>
-<p>Considere ahora el siguiente escenario en donde se busca predecir el nivel de glucosa en sangre para un grupo de pacientes en función de una serie de marcadores biológicos, caracteristicas personales como: índice de masa corporal <strong>bmi</strong>, edad, género (factor), y diagnóstico de hipertensión (factor). <a href="https://www.kaggle.com/asaumya/healthcare-dataset-stroke-data">Datos</a>.</p>
+<p>Considere ahora el siguiente escenario en donde se busca predecir el nivel de glucosa en sangre (medido en mg/dL) para un grupo de pacientes en función de una serie de marcadores biológicos, caracteristicas personales como: índice de masa corporal <strong>bmi</strong>, edad, género (factor), y diagnóstico de hipertensión (factor). <a href="https://www.kaggle.com/asaumya/healthcare-dataset-stroke-data">Datos</a>.</p>
+<p><strong>Nota</strong>: El nive medio de glucosa en la sangre para personas no diabéticas esta en el rango: (70 to 130 miligramos por decilitro mg/dL). Tip: Determine el nivel medio, y los percentiles 25 y 75 así como el máximo y mínimo de la muestra.</p>
 <p>Primero estimamos el modelo considerando cada variable explicativa de manera independiente con la especificación: <span class="math display">\[avg_glucose_level=\beta_0 +\beta_1 bmi+\beta_2 age+\beta_3 hypert + \beta_4 gender +\epsilon\]</span></p>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   55.00   77.54   91.58  104.49  112.07  291.05</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = avg_glucose_level ~ bmi + age + hypertension + gender, 
@@ -771,8 +774,8 @@ lm(lprice~bdrms+llotsize+lsqrft+colonial,data=hprice1)%&gt;%
 ## Multiple R-squared:  0.0773, Adjusted R-squared:  0.07721 
 ## F-statistic: 878.1 on 4 and 41926 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Note que las variables explicativas seleccionadas son estadísticamente significativas y los niveles de glucosa promedio estimados son mayores ante incrementos en el bmi, incrementan con la edad, con el dignóstico de hipertensión y para los hombres (en esta muestra).</p>
-<p>Ahora podemos medir la interacción entre edad y el diagnóstico de hipertensión, un hipótesis en este sentido es que podrían presentarse diferencias en los niveles de glucosa promedio a medida que avanza la edad del individuo dependiendo si este tiene diagnóstico de hipertensión o no.</p>
-<p>Para implementar la estimación en R únicamente usamos el operador de interacciones *. A continuación el resultado para la interacción entre edad y el diagnóstico de hipertensión.</p>
+<p>Ahora podemos medir la interacción entre edad y el diagnóstico de hipertensión, una hipótesis en este sentido es que podrían presentarse diferencias en los niveles de glucosa promedio a medida que avanza la edad del individuo dependiendo si este tiene diagnóstico de hipertensión o no.</p>
+<p>Para implementar la estimación en R usamos el operador de interacciones *. A continuación el resultado para la interacción entre edad y el diagnóstico de hipertensión.</p>
 <pre><code>## 
 ## Call:
 ## lm(formula = avg_glucose_level ~ bmi + age * hypertension + gender, 

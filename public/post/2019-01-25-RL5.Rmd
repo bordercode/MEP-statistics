@@ -615,7 +615,7 @@ Note la interpretación del coeficiente $\hat \beta_{colonial}$ como la expresi�
 
 Considere el siguiente escenario en el que se busca explicar la relación entre la esperanza de vida de la población en una muestra de 194 paises  (la variable dependiente) y una serie de caracteristicas sintetizadas por las siguientes variables explicativas: 
 
-Producto Interno Bruto per capita 2005-2009 (miles de USD constantes a 2005) (*gdp*), años promedio de escolaridad escolaridad (*school*), tasa de fertilidad en pobalción adolescente  (nacimientos por cada 1000, *adfert*: Adolescent fertility: births/1000 births 2005/2009). Mortalidad infantil (*chldmort*:  tasa de mortalidad infantil (antes de 5 años por cada 1000 nacimientos). 
+Producto Interno Bruto per capita 2005-2009 (miles de USD constantes a 2005) (*gdp*), años promedio de escolaridad escolaridad (*school*), tasa de fertilidad en población adolescente  (nacimientos por cada 1000, *adfert*: Adolescent fertility: births/1000 births 2005/2009). Mortalidad infantil (*chldmort*:  tasa de mortalidad infantil (antes de 5 años por cada 1000 nacimientos). 
 [Fuente](http://hdr.undp.org/en/data)
 
 a) Represente graficamente la variación en la esperanza de vida en los paises de la muestra por región. Tip: Utilice un Boxplot.
@@ -729,14 +729,15 @@ lm(life~gdp+school+adfert+chldmort, data=nt)%>%
 nt2<-mutate(nt,Africa=ifelse(region=="Africa",1,0))
   lm(life~Africa,data=nt2)%>%
     summary()
-  
-##Ans Africa 56.48= 73.2-16.72 años de esperanza de vida menos, que otras regiones (73.2 años en otras regiones.
+##Ans Africa 56.48= 73.2-16.72 años de esperanza de vida menos, que otras regiones (73.2 años en otras regiones).
 ```
 
 ### Efectos por   Interacciones  entre regresores.
 
-Considere ahora el siguiente escenario en donde se busca predecir el nivel de glucosa en sangre  para un grupo de pacientes en función de una serie de marcadores biológicos, caracteristicas personales  como: índice de masa corporal  **bmi**, edad, género (factor), y diagnóstico de hipertensión (factor).
+Considere ahora el siguiente escenario en donde se busca predecir el nivel de glucosa en sangre  (medido en mg/dL) para un grupo de pacientes en función de una serie de marcadores biológicos, caracteristicas personales  como: índice de masa corporal  **bmi**, edad, género (factor), y diagnóstico de hipertensión (factor).
 [Datos](https://www.kaggle.com/asaumya/healthcare-dataset-stroke-data).
+
+**Nota**: El nive medio de glucosa en la sangre para personas no diabéticas esta en el rango: (70 to 130 miligramos por decilitro mg/dL). Tip: Determine el nivel medio, y los percentiles 25 y 75 así como el máximo y mínimo de la muestra. 
 
 Primero estimamos el modelo considerando cada variable explicativa de manera independiente con la especificación: 
 $$avg_glucose_level=\beta_0 +\beta_1 bmi+\beta_2 age+\beta_3 hypert + \beta_4 gender +\epsilon$$
@@ -746,19 +747,23 @@ $$avg_glucose_level=\beta_0 +\beta_1 bmi+\beta_2 age+\beta_3 hypert + \beta_4 ge
 ```{r,echo=FALSE}
 bmi<-readRDS("bmi.rds")
 
+summary(bmi$avg_glucose_level)
+
 bmi<-bmi%>%
 filter(gender!="Other")%>%
   mutate(hypertension=as.factor(hypertension))
 
 lm(avg_glucose_level~bmi+age+hypertension+gender, data=bmi)%>%
 summary()
+
+
 ```
 
 Note que las variables explicativas seleccionadas son estadísticamente significativas y los niveles de glucosa promedio estimados son mayores ante incrementos en el bmi, incrementan con la edad, con el dignóstico de hipertensión y para los hombres (en esta muestra). 
 
-Ahora podemos medir la interacción entre edad y el diagnóstico de hipertensión, un hipótesis en este sentido es que podrían presentarse diferencias en los niveles de glucosa promedio a medida que avanza la edad del individuo dependiendo si este tiene diagnóstico de hipertensión o no. 
+Ahora podemos medir la interacción entre edad y el diagnóstico de hipertensión, una hipótesis en este sentido es que podrían presentarse diferencias en los niveles de glucosa promedio a medida que avanza la edad del individuo dependiendo si este tiene diagnóstico de hipertensión o no. 
 
-Para implementar la estimación en R   únicamente usamos el operador de interacciones *. A continuación el resultado  para la interacción entre edad y el diagnóstico de hipertensión. 
+Para implementar la estimación en R usamos el operador de interacciones *. A continuación el resultado  para la interacción entre edad y el diagnóstico de hipertensión. 
 
 ```{r,echo=FALSE}
 bmi<-readRDS("bmi.rds")

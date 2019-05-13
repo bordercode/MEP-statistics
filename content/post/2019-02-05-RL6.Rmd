@@ -40,7 +40,7 @@ library(foreign)
 ## Análisis de los supuestos y pruebas de diagnóstico del modelo.
 
 
-### Heterocedsticidad.
+### I  Heterocedsticidad.
 
 Uno de los supuestos principales del Modelo de Regresión Lineal **MRL** es que los  errores tiene la misma varianza, lo que se conoce como **homocedasticidad**, $$E(\epsilon|x)=E(\epsilon)=0$$  $$var(\epsilon|x)=\sigma^2$$ 
 
@@ -50,9 +50,9 @@ Cuando el supuesto no se cumple tenemos el problema denominado **Heterocedastici
 
 Los parámetros estimados ya no se consideran **BLUE**  (Best **L**inear **U**nbiased **E**stimators  supuestos del teorema Gauss-Markov). Los errores estándard estimados son incorrectos, lo que afecta la construcción de los intervalos de confianza.
 
-Ya no son válidas las pruebas de hipótesis sobre los parámetros, los estadísticos **t** y **F** ya no son  válidos.
+**Ya no son válidas las pruebas de hipótesis** sobre los parámetros, los estadísticos **t** y **F** ya no son  válidos.
 
-Note que este problema no causa que los estimados sean seasgados (*unbiased*), sin embargo, este problema se traduce en que los parámetros ya no son los de  menor varianza entre los estimados insesgados (la B de *Best*  en BLUE ya no se cumple, es decir hay otro estimador posible con menor varianza).
+Note que **este problema no causa que los estimados sean seasgados (*unbiased*), sin embargo, **este problema se traduce en que los parámetros ya no son los de  menor varianza** entre los estimados insesgados (la B de *Best*  en BLUE ya no se cumple, es decir hay otro estimador posible con menor varianza).
   
 El primer paso, es detectar el problema, para esta tarea usaremos la prueba Breusch-Pagan   en dos especificaciones cuyos resultados son equivalentes:
 
@@ -83,7 +83,7 @@ Graficar Rediduales vs $\hat y$  en un modelo múltiple o bien residuales vs.   
 
 Note el patrón creciente en los residuales (las lineas azules muestran la tenencia en las dispersión de los residuales) síntoma característico del problema de heterocedasticidad. 
 
-##### 1.-Scatter Plot de residuales contra cada regresor.
+##### a) Scatter Plot de residuales contra cada regresor.
 
 Si el supuesto se cumple tendremos una gráfica con observaciones dispersas sin ningún patrón específico. Indicando residuales no correlacionados con los regresores. 
 
@@ -92,6 +92,76 @@ A continuación observe 2 violaciones de los supuestos del modelo de regresión 
 ![](/img/resid.jpg)
 
 Note en la gráfica b)  se observa evidencia de heterocedasticidad, mientras en la gráfica  a) se observa evidencia de una relación no lineal.  Esta puede resolverse con la trasformación de los regresores (inclusión de término cuadrático,  transformación Box-Cox,etc,.)
+
+
+
+**Ejemplo**  Obtención de residuales para diagnóstico gráfico. Considere el ejemplo del modelo sobre relación de años de esperanza de vida y características poblacionales para una muestra de 194 paises.   
+
+
+```{r, ehco=TRUE, message=FALSE}
+
+library(estimatr)
+
+nt<-readRDS("Nations2a.rds")%>%
+  mutate(region=fct_reorder(region,life))%>%
+  select(life,gdp, chldmort)
+  
+nt<-na.omit(nt)
+
+model<-lm(life~gdp+chldmort, data=nt)
+summary(model)
+```
+
+```{r, echo=TRUE}
+nt$predicted <- predict(model)   
+nt$residuals <- residuals(model) 
+
+ggplot(nt, aes(chldmort, life)) +
+  geom_smooth(method = "lm", se = FALSE, color = "lightgrey") +
+  geom_segment(aes(xend = chldmort, yend = predicted), alpha = .2) +
+geom_point(aes(color = abs(residuals), size = abs(residuals)))+
+  scale_color_continuous(low = "black", high = "red") +
+  guides(color = FALSE, size = FALSE) +
+  theme_bw()
+```
+
+**Método alternativo**. Directamente es posible obtener el diagnóstico gráfico de residuales posterior a la estimación del modelo. Dos gráficas son de interés 
+
+
+```{r, ehco=FALSE, message=FALSE}
+
+library(estimatr)
+
+nt<-readRDS("Nations2a.rds")%>%
+  mutate(region=fct_reorder(region,life))
+
+model<-lm(life~gdp+chldmort, data=nt)
+summary(model)
+
+ # init 4 charts in 1 panel
+
+plot(model)
+```
+
+
+#### Gráfica  Residuals vs. Fitted (detección de heterocedasticidad)
+
+Residuales vs. $\hat y$.
+
+Una distribución aleatoria de los residuales alrededor de la linea de tendencia (linea roja) indica homocedasticidad (linea roja recta). 
+
+Adicionalmente esta gráfica nos permite detectar si la relación no es lineal entre variable dependiente e independiente.(ej. una linea roja con forma de parábola).
+
+
+
+
+##### Gráfica   Scale-Location (detecci[on de heterocedasticidad).
+
+*Scale-location* o *spread location plot* que mide la dispersión de los residuales y permite detectar así el problema de **heterocedasticidad**.
+
+Nuevamente una linea recta con residuales dispersos de manera aleatoria es una indicación de que se cumple la condicion de varianza constante y no hay problema de  heterocedasticidad.  
+
+En el caso particular el patrón observado presenta una dispersón ligeramente creciente consistente con el problema de heterocedasticidad.
 
 
 A continuación la estimación de la prueba formal Breusch - Pagan para detectar heterocedasticidad.  recuerde que la prueba tiene $H0: varianza constante$  $Ha: Heterocedasticidad$ 
@@ -135,48 +205,10 @@ Un segundo enfoque es estimar el modelo de regresión ponderada. (*weighted leas
 
 ### Diagnóstico sobre los residuales: Normalidad (Shapiro-Wilk), outliers (Cook´s D).
 
-
-
-
-```{r, ehco=FALSE, message=FALSE}
-
-library(estimatr)
-
-nt<-readRDS("Nations2a.rds")%>%
-  mutate(region=fct_reorder(region,life))
-
-model<-lm(life~gdp+chldmort, data=nt)
-summary(model)
-
-par(mfrow=c(2,2)) # init 4 charts in 1 panel
-plot(model)
-```
-
-
-#### Gráfica 1 Residuals vs. Fitted
-
-Residuales vs. $\hat y$.
-
-Una distribución aleatoria de los residuales alrededor de la linea de tendencia (linea roja) indica homocedasticidad (linea roja recta). 
-
-Adicionalmente esta gráfica nos permite detectar si la relación no es lineal entre variable dependiente e independiente.(ej. una linea roja con forma de parábola).
-
-#### Gráfica 2  Scale-Location
-
-*Scale-location* o *spread location plot* que mide la dispersión de los residuales y permite detectar así el problema de **heterocedasticidad**.
-
-Nuevamente una linea recta con residuales dispersos de manera aleatoria es una indicación de que se cumple la condicion de varianza constante y no hay problema de  heterocedasticidad.  
-
-En el caso particular el patrón observado presenta una dispersón ligeramente creciente consistente con el problema de heterocedasticidad.
-
-
-#### Gráfica 3 Q-Q plot
-
-
 Un supuesto de partida de los residuales es que se distribuyen a corde a la **normal** (Normalidad en los residuales) con media cero varianza constante $\sigma^2$.
 
 
-Utilizamos esta gráfica  para validar el cumplimiento del supesto de normalidad de $\epsilon$.
+Utilizamos la  el qq plot para validar el cumplimiento del supesto de normalidad de $\epsilon$.
 
 Si los residuales se distribuyen a corde a la normal, se observa una distribución a lo largo de la diagonal.
 
@@ -185,6 +217,27 @@ Si los residuales se distribuyen a corde a la normal, se observa una distribuci�
 Este método nos permite detectar desviaciones del supuesto de distribución normal en los errores especialmente contrastar la simetria de la distribución. 
 
 Presenta los cuantiles de la **distribución normal** contra la distribución de los datos estimados. Note que una distribución normal sigue un patrón a lo largo de la diagonal.   
+
+
+
+#### Gráfica  QQ norm.
+
+
+```{r, ehco=FALSE, message=FALSE}
+
+library("car")
+
+nt<-readRDS("Nations2a.rds")%>%
+  mutate(region=fct_reorder(region,life))%>%
+  select(life,gdp, chldmort)
+  nt<-na.omit(nt)
+
+model<-lm(life~gdp+chldmort, data=nt)
+nt$residuals <- residuals(model) 
+qqPlot(nt$residuals)
+```
+
+
 
 En este caso observa una deviación que indica una distribución cercana a la normal si bien con datos concentrados hacia las colas (*fat tails*).
 
@@ -242,17 +295,18 @@ Conclusión, en este caso particular tenemos tambipen influencia severa de **out
 En este caso es conveniente atender el tema de outliers y observaciones con infleuncia notable (*high leverage obs*). A continuación abordamos este tema. 
 
 
-#### Gráfica 4 Residuals-leverage.
+#### Residuals leverage y  outliers.
 
-La gráfica  *Residuals-leverage* permite detectar **oultilers**, puntos con  valores  elevados en la precdicción dado el valor de ${x_i}$.  
+Es importante detectar observaciones que tienen influencia importante en la estimación, estas se denominan observaciones con *Hight leverage* 
 
-Así como valores inusualmente altos de  **x** (*High leverage obs*), relativo al resto de observaciones  datos que pudieran tener una influencia especialmente importante en el modelo. 
+Así mismo es importante controlar por la presencia de  **oultilers**, puntos convalores  elevados en la predicción dado el valor de ${x_i}$.  
 
-La gráfica es  útil para controlar por obsevaciones que pudieran incluso indicar algún problema en la forma en que se capturó la información. 
+Los  valores inusualmente altos de  **x** (*High leverage obs*), relativo al resto de observaciones  son datos que pudieran tener una influencia especialmente importante en el modelo. 
+
+El enfoque gráfico  es  útil para controlar por obsevaciones que pudieran incluso indicar algún problema en la forma en que se capturó la información. 
 
 Note: Contraste entre obs con gran  **Leverage**  (influencia) vs. **Outliers** (obs para las que el valor de $\hat y$ es relativamente grande  dado el valor de **x**)
 
-La solución es remover estas observaciones y reestimar el modelo.
 
 ![](/img/lev.jpg)
 
@@ -291,6 +345,9 @@ ols_plot_resid_stud(model)
 ols_plot_resid_stand(model)
 ols_plot_resid_lev(model)
 ```
+
+La **solución** es remover estas observaciones y reestimar el modelo.
+
 
 [Lectura Recomendada. ISL Pag.  97-99](https://drive.google.com/file/d/1zaKc1XWvELsUgZrS32QdpHoM4-w0y7Qx/view?usp=sharing)
 
