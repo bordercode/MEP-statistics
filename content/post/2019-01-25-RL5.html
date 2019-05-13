@@ -663,6 +663,12 @@ lm(lprice~bdrms+llotsize+lsqrft+colonial,data=hprice1)%&gt;%
 <p>Note que las variables explicativas seleccionadas son estadísticamente significativas y los niveles de glucosa promedio estimados son mayores ante incrementos en el bmi, incrementan con la edad, con el dignóstico de hipertensión y para los hombres (en esta muestra).</p>
 <p>Ahora podemos medir la interacción entre edad y el diagnóstico de hipertensión, una hipótesis en este sentido es que podrían presentarse diferencias en los niveles de glucosa promedio a medida que avanza la edad del individuo dependiendo si este tiene diagnóstico de hipertensión o no.</p>
 <p>Para implementar la estimación en R usamos el operador de interacciones *. A continuación el resultado para la interacción entre edad y el diagnóstico de hipertensión.</p>
+<pre class="r"><code>bmi&lt;-readRDS(&quot;bmi.rds&quot;)
+
+
+
+lm(avg_glucose_level~bmi+age*hypertension+gender, data=bmi)%&gt;%
+summary()</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = avg_glucose_level ~ bmi + age * hypertension + gender, 

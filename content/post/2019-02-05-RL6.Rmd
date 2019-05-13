@@ -360,14 +360,16 @@ A continuación el estimado de  a) *Cook´s distance*, b) Studentized y c) stand
 
 ```{r,echo=FALSE}
 nt<-readRDS("Nations2a.rds")%>%
-  mutate(region=fct_reorder(region,life))
+ 
 
 model<-lm(life~gdp+chldmort, data=nt)
 
 par(mfrow=c(2,2))
 ols_plot_cooksd_bar(model)
+
 ols_plot_resid_stud(model)
 ols_plot_resid_stand(model)
+
 ols_plot_resid_lev(model)
 ```
 

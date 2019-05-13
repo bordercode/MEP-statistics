@@ -765,8 +765,11 @@ Ahora podemos medir la interacción entre edad y el diagnóstico de hipertensió
 
 Para implementar la estimación en R usamos el operador de interacciones *. A continuación el resultado  para la interacción entre edad y el diagnóstico de hipertensión. 
 
-```{r,echo=FALSE}
+```{r,echo=TRUE}
 bmi<-readRDS("bmi.rds")
+
+
+
 lm(avg_glucose_level~bmi+age*hypertension+gender, data=bmi)%>%
 summary()
 

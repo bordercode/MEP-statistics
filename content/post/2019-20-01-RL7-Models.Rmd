@@ -33,13 +33,16 @@ El problema en este caso es que la unidad de análisis (142 países) implica la 
 
 
 ```{r,echo=FALSE}
+
 continents<-gapminder%>%
 select(country,continent)
+
 ```
 
 ```{r}
 #1. Cargamos los datos
 gapminder
+
 View(gapminder)
 str(gapminder)
 
@@ -144,7 +147,7 @@ Bueno,  al parecer todos estos paises son de África, ¿Por qué el modelo de re
 
 
 
-```{r, include=FALSE}
+```{r, include=TRUE}
 ggplot(models,aes(rsq,reorder(country,rsq)))+
   geom_point(aes(colour=continent))+
   theme_tufte()
