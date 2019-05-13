@@ -128,23 +128,8 @@ geom_point(aes(color = abs(residuals), size = abs(residuals)))+
 **Método alternativo**. Directamente es posible obtener el diagnóstico gráfico de residuales posterior a la estimación del modelo. Dos gráficas son de interés 
 
 
-```{r, ehco=FALSE, message=FALSE}
 
-library(estimatr)
-
-nt<-readRDS("Nations2a.rds")%>%
-  mutate(region=fct_reorder(region,life))
-
-model<-lm(life~gdp+chldmort, data=nt)
-summary(model)
-
- # init 4 charts in 1 panel
-
-plot(model)
-```
-
-
-#### Gráfica  Residuals vs. Fitted (detección de heterocedasticidad)
+##### Gráfica  Residuals vs. Fitted (detección de heterocedasticidad)
 
 Residuales vs. $\hat y$.
 
@@ -155,7 +140,21 @@ Adicionalmente esta gráfica nos permite detectar si la relación no es lineal e
 
 
 
-##### Gráfica   Scale-Location (detecci[on de heterocedasticidad).
+```{r, ehco=FALSE, message=FALSE}
+
+library(estimatr)
+
+nt<-readRDS("Nations2a.rds")%>%
+  mutate(region=fct_reorder(region,life))
+
+model<-lm(life~gdp+chldmort, data=nt)
+summary(model)
+
+
+plot(model, which=c(1,1))
+```
+
+##### Gráfica   Scale-Location (detección de heterocedasticidad).
 
 *Scale-location* o *spread location plot* que mide la dispersión de los residuales y permite detectar así el problema de **heterocedasticidad**.
 
@@ -163,6 +162,19 @@ Nuevamente una linea recta con residuales dispersos de manera aleatoria es una i
 
 En el caso particular el patrón observado presenta una dispersón ligeramente creciente consistente con el problema de heterocedasticidad.
 
+
+```{r, ehco=FALSE, message=FALSE}
+
+library(estimatr)
+
+nt<-readRDS("Nations2a.rds")%>%
+  mutate(region=fct_reorder(region,life))
+
+model<-lm(life~gdp+chldmort, data=nt)
+summary(model)
+
+plot(model, which=c(1,3))
+```
 
 A continuación la estimación de la prueba formal Breusch - Pagan para detectar heterocedasticidad.  recuerde que la prueba tiene $H0: varianza constante$  $Ha: Heterocedasticidad$ 
 
@@ -235,6 +247,9 @@ nt<-readRDS("Nations2a.rds")%>%
 model<-lm(life~gdp+chldmort, data=nt)
 nt$residuals <- residuals(model) 
 qqPlot(nt$residuals)
+
+
+
 ```
 
 

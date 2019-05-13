@@ -123,10 +123,8 @@ summary(model)</code></pre>
 ##   (16 observations deleted due to missingness)
 ## Multiple R-squared:  0.8856, Adjusted R-squared:  0.8843 
 ## F-statistic: 677.3 on 2 and 175 DF,  p-value: &lt; 2.2e-16</code></pre>
-<pre class="r"><code> # init 4 charts in 1 panel
-
-plot(model)</code></pre>
-<p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-3-1.png" width="672" /><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-3-2.png" width="672" /><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-3-3.png" width="672" /><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-3-4.png" width="672" /></p>
+<pre class="r"><code>plot(model, which=c(1,1))</code></pre>
+<p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 </div>
 </div>
 <div id="grafica-residuals-vs.fitted-deteccion-de-heterocedasticidad" class="section level4">
@@ -135,10 +133,39 @@ plot(model)</code></pre>
 <p>Una distribución aleatoria de los residuales alrededor de la linea de tendencia (linea roja) indica homocedasticidad (linea roja recta).</p>
 <p>Adicionalmente esta gráfica nos permite detectar si la relación no es lineal entre variable dependiente e independiente.(ej. una linea roja con forma de parábola).</p>
 <div id="grafica-scale-location-deteccion-de-heterocedasticidad." class="section level5">
-<h5>Gráfica Scale-Location (detecci[on de heterocedasticidad).</h5>
+<h5>Gráfica Scale-Location (detección de heterocedasticidad).</h5>
 <p><em>Scale-location</em> o <em>spread location plot</em> que mide la dispersión de los residuales y permite detectar así el problema de <strong>heterocedasticidad</strong>.</p>
 <p>Nuevamente una linea recta con residuales dispersos de manera aleatoria es una indicación de que se cumple la condicion de varianza constante y no hay problema de heterocedasticidad.</p>
 <p>En el caso particular el patrón observado presenta una dispersón ligeramente creciente consistente con el problema de heterocedasticidad.</p>
+<pre class="r"><code>library(estimatr)
+
+nt&lt;-readRDS(&quot;Nations2a.rds&quot;)%&gt;%
+  mutate(region=fct_reorder(region,life))
+
+model&lt;-lm(life~gdp+chldmort, data=nt)
+summary(model)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = life ~ gdp + chldmort, data = nt)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -14.5376  -1.7116   0.5221   2.1838   6.7201 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 74.601145   0.525934 141.845  &lt; 2e-16 ***
+## gdp          0.124550   0.021533   5.784 3.29e-08 ***
+## chldmort    -0.157475   0.005594 -28.151  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.396 on 175 degrees of freedom
+##   (16 observations deleted due to missingness)
+## Multiple R-squared:  0.8856, Adjusted R-squared:  0.8843 
+## F-statistic: 677.3 on 2 and 175 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>plot(model, which=c(1,3))</code></pre>
+<p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-4-1.png" width="672" /><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
 <p>A continuación la estimación de la prueba formal Breusch - Pagan para detectar heterocedasticidad. recuerde que la prueba tiene <span class="math inline">\(H0: varianza constante\)</span> <span class="math inline">\(Ha: Heterocedasticidad\)</span></p>
 <pre><code>## 
 ## Call:
@@ -216,7 +243,7 @@ nt&lt;-readRDS(&quot;Nations2a.rds&quot;)%&gt;%
 model&lt;-lm(life~gdp+chldmort, data=nt)
 nt$residuals &lt;- residuals(model) 
 qqPlot(nt$residuals)</code></pre>
-<p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <pre><code>## [1] 45  3</code></pre>
 <p>En este caso observa una deviación que indica una distribución cercana a la normal si bien con datos concentrados hacia las colas (<em>fat tails</em>).</p>
 <p>Importante considerar la transformación de los datos para atender el problema cuando no se tiene normalidad en los residuales.</p>
@@ -242,7 +269,7 @@ shapiro.test(r)</code></pre>
 ## data:  r
 ## W = 0.89176, p-value = 4.359e-10</code></pre>
 <pre class="r"><code>bc=boxcox(model,lambda=seq(-3,3))</code></pre>
-<p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <pre class="r"><code>lambda=bc$x[which(bc$y==max(bc$y))]
 
 lambda</code></pre>
@@ -279,7 +306,7 @@ lambda</code></pre>
 <p>Note la única diferencia entre el indicador <em>studentize Residuals</em> y <em>Standarized Residuals</em> es que el primero calcula el modelo una vez que se eliminan las observaciones consideradas outliers. Ambos informan el mismo diagnostico indentificando los <strong>outiliers</strong>.</p>
 <p>Y recuerde que controlar por estas observaciones pude ser importante para los resultados del modelo a estimar. En última instacia la decisión sobre quitarlos o no es una cuestión empírica qu dependerá del problema analizado.</p>
 <p>A continuación el estimado de a) <em>Cook´s distance</em>, b) Studentized y c) standarized residuals y la gráfica conjunta <em>Leverage diagnóstics</em> para mostrar observaciones con high <em>leverage</em> y <em>outliers</em></p>
-<p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-7-1.png" width="672" /><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-7-2.png" width="672" /><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-7-3.png" width="672" /><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-7-4.png" width="672" /></p>
+<p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-8-1.png" width="672" /><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-8-2.png" width="672" /><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-8-3.png" width="672" /><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-8-4.png" width="672" /></p>
 <p>La <strong>solución</strong> es remover estas observaciones y reestimar el modelo.</p>
 <p><a href="https://drive.google.com/file/d/1zaKc1XWvELsUgZrS32QdpHoM4-w0y7Qx/view?usp=sharing">Lectura Recomendada. ISL Pag. 97-99</a></p>
 <p><a href="https://cran.r-project.org/web/packages/olsrr/vignettes/influence_measures.html">Revisar</a></p>
@@ -537,7 +564,7 @@ lambda</code></pre>
 <div id="actividad." class="section level3">
 <h3>Actividad.</h3>
 <p>1.-Observe la siguiente gráfica que relaciona los residuales de un modelo de regresión lineal con los valores de predicción de la variable dependiente <span class="math inline">\(\hat y\)</span>.</p>
-<p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>¿Qué podemos concluir sobre el supuesto de homocedasticidad para este modelo?</p>
 <p>2.- Considere el siguiente escenario en el que se busca predecir el valor de las viviendas (variable <em>AdjSalePrice</em>) con base en diversos atributos tanto de las casas así como del vecindario en donde se ubican.</p>
 <p>La base de datos contiene 22,689 observaciones (viviendas vendidas entre 2014 y 2015) para un total de 22 variables con información para el Condado King (que incluye al ciudad de Seattle, Washington, EUA). Para descripción completa de la base de datos Ver <a href="https://www.kaggle.com/harlfoxem/housesalesprediction">Data dictionary</a></p>
@@ -606,7 +633,7 @@ lambda</code></pre>
 </ol>
 <p>En la práctica existe una relación positiva entre el valor y la superficie de la vivienda. En este caso tenemos un problema de regresores altamente correlacionados (Bedrooms, bathrooms y SqFtTotLiving), este efecto representa un problema y puede atenderse usando el enfoque para resolver <strong>multicolinealidad</strong> (remover variables que aportan información redundante).</p>
 <p>Para ver con claridad el grado de correlación entre estas variables construimos una matriz de correlación para las variables del modelo.</p>
-<p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-16-1.png" width="672" /><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-16-2.png" width="672" /></p>
+<p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-17-1.png" width="672" /><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-17-2.png" width="672" /></p>
 <ol start="6" style="list-style-type: lower-alpha">
 <li>Estime nuevamente el modelo y excluya las variables redundantes (Bathrooms,SqFtTotLiving, SqFtFinBasement). ¿Cuál es el efecto ahora de la variable que registra el número de dormitorios?</li>
 </ol>
