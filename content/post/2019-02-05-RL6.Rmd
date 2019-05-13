@@ -327,7 +327,7 @@ Note: Contraste entre obs con gran  **Leverage**  (influencia) vs. **Outliers** 
 
 ![](/img/lev.jpg)
 
-El procedimiento para la detección en R  implica el cálculo del estadístico conocido como distancia *Cook*, (propuesto por R. Dennis Cook in 1977) básicamente este indicador permite   detectar aquellas observaciones con *high leverage*.  La especificación es> 
+El procedimiento para la detección en R  implica el cálculo del estadístico conocido como distancia *Cook*, (propuesto por R. Dennis Cook in 1977) básicamente este indicador permite   detectar aquellas observaciones con *high leverage*.  La especificación es:
 
 
 $$D_i= \frac{\sum_{j=1}^n  (\hat y_{j} -y_{j(i))}) } { p MSE}$$
