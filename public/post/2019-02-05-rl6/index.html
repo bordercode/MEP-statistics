@@ -169,6 +169,62 @@ if (!doNotTrack) {
 
 </div>
 <p>Note en la gráfica b) se observa evidencia de heterocedasticidad, mientras en la gráfica a) se observa evidencia de una relación no lineal. Esta puede resolverse con la trasformación de los regresores (inclusión de término cuadrático, transformación Box-Cox,etc,.)</p>
+<p>A continuación la estimación de la prueba formal Breusch - Pagan para detectar heterocedasticidad. recuerde que la prueba tiene <span class="math inline">\(H0: varianza constante\)</span> <span class="math inline">\(Ha: Heterocedasticidad\)</span></p>
+<pre><code>## 
+## Call:
+## lm(formula = life ~ gdp + chldmort, data = nt)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -14.5376  -1.7116   0.5221   2.1838   6.7201 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 74.601145   0.525934 141.845  &lt; 2e-16 ***
+## gdp          0.124550   0.021533   5.784 3.29e-08 ***
+## chldmort    -0.157475   0.005594 -28.151  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 3.396 on 175 degrees of freedom
+##   (16 observations deleted due to missingness)
+## Multiple R-squared:  0.8856, Adjusted R-squared:  0.8843 
+## F-statistic: 677.3 on 2 and 175 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre><code>## 
+##  Breusch Pagan Test for Heteroskedasticity
+##  -----------------------------------------
+##  Ho: the variance is constant            
+##  Ha: the variance is not constant        
+## 
+##               Data               
+##  --------------------------------
+##  Response : life 
+##  Variables: fitted values of life 
+## 
+##          Test Summary           
+##  -------------------------------
+##  DF            =    1 
+##  Chi2          =    12.93232 
+##  Prob &gt; Chi2   =    0.0003229571</code></pre>
+<pre><code>## 
+##  studentized Breusch-Pagan test
+## 
+## data:  model
+## BP = 5.8842, df = 1, p-value = 0.01528</code></pre>
+<p>Concluimos en este caso que se viola el supuesto de varianza contante en los errores (p-value&lt;0.05), es decir rechazamos <span class="math inline">\(H0:\sigma^2\)</span> constante. (en ambos métodos <em>p-value</em> &lt;.05, ej <span class="math inline">\(p-value_{bptest} = 0.0152\)</span>), <span class="math inline">\(p-value_{lmtest}0.0003\)</span></p>
+</div>
+</div>
+<div id="como-atender-el-problema-de-heterocedasticidad" class="section level4">
+<h4>¿Cómo atender el problema de Heterocedasticidad?</h4>
+<p>Corregir este problema es un asunto empírico que depende en última instancia del problema que estamos analizando.</p>
+<p>No obstante el punto fundamental para resolver este problema es identificar con la causa, (i.e la fuente de la variación no constante). Lograr lo anterior implica observar por ejemplo el rango de variación de los regresores. Variables con RI grandes pueden estar vinculadas con la causa.</p>
+<p>En este mismo sentido es posible por ejemplo usar una unidad de medida alternativa para la variable de interés por ejemplo en lugar de usar datos en niveles con unidades originales se puede considerar el uso de la variable en términos per cápita, en tasa por cada 100 mil o porcentaje, dependiendo del escenario de análisis.</p>
+<p>Una posible solución es aplicar una transformación logarítmica a la variable dependiente.</p>
+<p>Un segundo enfoque es estimar el modelo de regresión ponderada. (<em>weighted least squares</em>).</p>
+</div>
+</div>
+<div id="diagnostico-sobre-los-residuales-normalidad-shapiro-wilk-outliers-cooks-d." class="section level3">
+<h3>Diagnóstico sobre los residuales: Normalidad (Shapiro-Wilk), outliers (Cook´s D).</h3>
 <pre class="r"><code>library(estimatr)
 
 nt&lt;-readRDS(&quot;Nations2a.rds&quot;)%&gt;%
@@ -198,9 +254,7 @@ summary(model)</code></pre>
 ## F-statistic: 677.3 on 2 and 175 DF,  p-value: &lt; 2.2e-16</code></pre>
 <pre class="r"><code>par(mfrow=c(2,2)) # init 4 charts in 1 panel
 plot(model)</code></pre>
-<p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
-</div>
-</div>
+<p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <div id="grafica-1-residuals-vs.fitted" class="section level4">
 <h4>Gráfica 1 Residuals vs. Fitted</h4>
 <p>Residuales vs. <span class="math inline">\(\hat y\)</span>.</p>
@@ -248,7 +302,7 @@ shapiro.test(r)</code></pre>
 ## data:  r
 ## W = 0.89176, p-value = 4.359e-10</code></pre>
 <pre class="r"><code>bc=boxcox(model,lambda=seq(-3,3))</code></pre>
-<p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <pre class="r"><code>lambda=bc$x[which(bc$y==max(bc$y))]
 
 lambda</code></pre>
@@ -276,47 +330,22 @@ lambda</code></pre>
 
 </div>
 <p>El procedimiento para la detección en R implica el cálculo del estadístico conocido como distancia <em>Cook</em>, (propuesto por R. Dennis Cook in 1977) básicamente este indicador permite detectar aquellas observaciones con <em>high leverage</em>. La especificación para el estadístico que indica el leverage <span class="math inline">\(h_i=\frac{1}{n}+\frac{(x_i-\bar x)^2}{\sum_{i=1}^n(x_i-\bar x)^2}\)</span> se ubica en el rango [1/n ,1].</p>
-<p>El <em>leverage</em> promedio es siempre igual a <span class="math inline">\((p+1)/n\)</span> de tal modo que si una observación tiene un estadístico que excede <span class="math inline">\((p+1)/n\)</span> entonces tenemos evidencia para suponer un elevado <em>high leverage</em> para la observación en cuestion.</p>
-<p>Una segunda herramienta que es de utilidad para detectar <em>outliers</em> en la variable dependiente es la proyección de los residuales <em>Studentized</em> (SR). Cuando el valor del SR supera 3, existe evidencia de la presencia de <em>outliers</em> O bien la versión estandarzada <em>Standarized Residuals</em> los residuales divididos por la desviación estándar estimada. (El <strong>treshold</strong> recomendado es 2 para este indicador).</p>
+<p>El <em>leverage</em> promedio es siempre igual a <span class="math inline">\((p+1)/n\)</span> de tal modo que si una observación tiene un estadístico que excede <span class="math inline">\((p+1)/n\)</span> entonces tenemos evidencia para suponer <em>high leverage</em> una observación con elevada influencia.</p>
+<p>Una segunda herramienta que es de utilidad para detectar observaciones atípicas <em>outliers</em> en la variable dependiente es la proyección de los residuales <em>Studentized</em> (SR).</p>
+<p>Los <strong>SR</strong> (Studentized Residuals), son los residiuales divididos por la su desviación estandar <span class="math inline">\(SR=e/\sqrt{e}\)</span></p>
+<p>Note que en este caso (<strong>outliers</strong>), estamos tratando con el valor que toma la variable dependiente (las <span class="math inline">\(\hat y\)</span>). Mientras en el caso de los <em>high leverage</em> points nos referimos únicamente a las observaciones de la variable independiente <strong>x_i</strong>.</p>
+<p>Cuando el valor del <strong>SR</strong> supera 3, existe evidencia de la presencia de <em>outliers</em>. La selección del valor de referencia 3 derivado de la distribución de los datos en relación al número de desviaciones estándard (recordar la aplicación de la prueba t-student).</p>
+<p>Así mismo en la versión estandarizada <em>Standarized Residuals</em> los residuales divididos por la desviación estándar estimada (El <strong>treshold</strong> recomendado es 2 para este indicador). (ej. <span class="math inline">\(95\%\)</span> de los datos contenidos a 2 desviaciones estándard.).</p>
+<p>Note la única diferencia entre el indicador <em>studentize Residuals</em> y <em>Standarized Residuals</em> es que el primero calcula el modelo una vez que se eliminan las observaciones consideradas outliers. Ambos informan el mismo diagnostico indentificando los <strong>outiliers</strong>.</p>
+<p>Y recuerde que controlar por estas observaciones pude ser importante para los resultados del modelo a estimar. En última instacia la decisión sobre quitarlos o no es una cuestión empírica qu dependerá del problema analizado.</p>
 <p>A continuación el estimado de a) <em>Cook´s distance</em>, b) Studentized y c) standarized residuals y la gráfica conjunta <em>Leverage diagnóstics</em> para mostrar observaciones con high <em>leverage</em> y <em>outliers</em></p>
-<p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-3-1.png" width="672" /><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-3-2.png" width="672" /><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-3-3.png" width="672" /><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-3-4.png" width="672" /></p>
+<p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-4-1.png" width="672" /><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-4-2.png" width="672" /><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-4-3.png" width="672" /><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-4-4.png" width="672" /></p>
 <p><a href="https://drive.google.com/file/d/1zaKc1XWvELsUgZrS32QdpHoM4-w0y7Qx/view?usp=sharing">Lectura Recomendada. ISL Pag. 97-99</a></p>
 <p><a href="https://cran.r-project.org/web/packages/olsrr/vignettes/influence_measures.html">Revisar</a></p>
-<p>A continuación la estimación de la prueba formal Breusch - Pagan para detectar heterocedasticidad. recuerde que la prueba tiene <span class="math inline">\(H0: varianza constante\)</span> <span class="math inline">\(Ha: Heterocedasticidad\)</span></p>
-<pre><code>## 
-##  Breusch Pagan Test for Heteroskedasticity
-##  -----------------------------------------
-##  Ho: the variance is constant            
-##  Ha: the variance is not constant        
-## 
-##               Data               
-##  --------------------------------
-##  Response : life 
-##  Variables: fitted values of life 
-## 
-##          Test Summary           
-##  -------------------------------
-##  DF            =    1 
-##  Chi2          =    12.93232 
-##  Prob &gt; Chi2   =    0.0003229571</code></pre>
-<pre><code>## 
-##  studentized Breusch-Pagan test
-## 
-## data:  model
-## BP = 5.8842, df = 1, p-value = 0.01528</code></pre>
-<p>Concluimos en este caso que se viola el supuesto de varianza contante en los errores (p-value&lt;0.05), es decir rechazamos <span class="math inline">\(H0:\sigma^2\)</span> constante. (en ambos métodos <em>p-value</em> &lt;.05, ej <span class="math inline">\(p-value_{bptest} = 0.0152\)</span>), <span class="math inline">\(p-value_{lmtest}0.0003\)</span></p>
-</div>
-<div id="como-atender-el-problema-de-heterocedasticidad" class="section level4">
-<h4>¿Cómo atender el problema de Heterocedasticidad?</h4>
-<p>Corregir este problema es un asunto empírico que depende en última instancia del problema que estamos analizando.</p>
-<p>No obstante el punto fundamental para resolver este problema es identificar con la causa, (i.e la fuente de la variación no constante). Lograr lo anterior implica observar por ejemplo el rango de variación de los regresores. Variables con RI grandes pueden estar vinculadas con la causa.</p>
-<p>En este mismo sentido es posible por ejemplo usar una unidad de medida alternativa para la variable de interés por ejemplo en lugar de usar datos en niveles con unidades originales se puede considerar el uso de la variable en términos per cápita, en tasa por cada 100 mil o porcentaje, dependiendo del escenario de análisis.</p>
-<p>Una posible solución es aplicar una transformación logarítmica a la variable dependiente.</p>
-<p>Un segundo enfoque es estimar el modelo de regresión ponderada. (<em>weighted least squares</em>).</p>
 </div>
 </div>
-<div id="multicolinealidad." class="section level3">
-<h3>Multicolinealidad.</h3>
+<div id="multicolinealidad-y-su-deteccion.-el-indicador-variance-inflation-factor-vif." class="section level3">
+<h3>Multicolinealidad y su detección. El indicador: Variance Inflation Factor VIF.</h3>
 <p>Este problema se presenta cuando dos o más variables estan relacionadas entre sí.</p>
 <p>Cuando el supuesto de independencia de las variables independientes <span class="math inline">\(x_1, x_2,...,x_p\)</span> no se cumple tenemos el problema de <strong>colinearidad</strong></p>
 <p>Escenarios que generan Multicolinealidad son:</p>

@@ -93,6 +93,51 @@ A continuación observe 2 violaciones de los supuestos del modelo de regresión 
 
 Note en la gráfica b)  se observa evidencia de heterocedasticidad, mientras en la gráfica  a) se observa evidencia de una relación no lineal.  Esta puede resolverse con la trasformación de los regresores (inclusión de término cuadrático,  transformación Box-Cox,etc,.)
 
+
+A continuación la estimación de la prueba formal Breusch - Pagan para detectar heterocedasticidad.  recuerde que la prueba tiene $H0: varianza constante$  $Ha: Heterocedasticidad$ 
+
+```{r, echo=FALSE}
+# Una forma usando olsrr library.
+library(olsrr)
+
+nt<-readRDS("Nations2a.rds")%>%
+  mutate(region=fct_reorder(region,life))
+
+model<-lm(life~gdp+chldmort, data=nt)
+summary(model)
+
+
+model<-lm(life~gdp+chldmort, data=nt)
+
+ols_test_breusch_pagan(model)
+
+## Alternativa usando lmtest library Si los regresores no siguen una distribución normal, con el Koenker's studentized test statistc.
+bptest(model,varformula =  ~fitted.values(model))
+```
+  
+Concluimos en este caso que se viola el supuesto de varianza contante en los errores (p-value<0.05), es decir rechazamos $H0:\sigma^2$ constante. (en ambos métodos *p-value* <.05, ej $p-value_{bptest} = 0.0152$), $p-value_{lmtest}0.0003$
+
+
+#### ¿Cómo atender el problema de Heterocedasticidad?
+
+Corregir este problema es un asunto empírico que depende en última instancia del problema que estamos analizando.
+
+No obstante el punto fundamental para resolver este problema es identificar con la causa, (i.e la fuente de la variación no constante). Lograr lo anterior implica observar por ejemplo el rango de variación de los regresores. Variables con RI grandes pueden estar vinculadas con la causa.
+
+
+En este mismo sentido es posible por ejemplo usar una unidad de medida alternativa para la variable de interés por ejemplo en lugar de usar datos en niveles con unidades originales se puede considerar el uso de la variable en términos per cápita, en tasa por cada 100 mil  o porcentaje, dependiendo del escenario de análisis.  
+
+Una posible solución es aplicar una transformación logarítmica a la variable dependiente.
+
+Un segundo enfoque es estimar el modelo de regresión ponderada. (*weighted least squares*).
+
+
+
+### Diagnóstico sobre los residuales: Normalidad (Shapiro-Wilk), outliers (Cook´s D).
+
+
+
+
 ```{r, ehco=FALSE, message=FALSE}
 
 library(estimatr)
@@ -213,9 +258,24 @@ La solución es remover estas observaciones y reestimar el modelo.
 
 El procedimiento para la detección en R  implica el cálculo del estadístico conocido como distancia *Cook*, (propuesto por R. Dennis Cook in 1977) básicamente este indicador permite   detectar aquellas observaciones con *high leverage*.  La especificación para el estadístico que indica el leverage $h_i=\frac{1}{n}+\frac{(x_i-\bar x)^2}{\sum_{i=1}^n(x_i-\bar x)^2}$ se ubica en el rango [1/n ,1]. 
 
-El *leverage* promedio es siempre igual a $(p+1)/n$ de tal modo que si una observación tiene un estadístico que excede  $(p+1)/n$ entonces tenemos evidencia para suponer un elevado *high leverage*  para la observación en cuestion.
+El *leverage* promedio es siempre igual a $(p+1)/n$ de tal modo que si una observación tiene un estadístico que excede  $(p+1)/n$ entonces tenemos evidencia para suponer  *high leverage*  una observación con elevada influencia.
 
-Una segunda herramienta que es de utilidad para detectar *outliers* en la variable dependiente es la proyección de los residuales *Studentized* (SR). Cuando el valor del SR supera 3, existe evidencia de la presencia de *outliers*   O bien la versión estandarzada *Standarized Residuals* los residuales divididos por la desviación estándar estimada. (El **treshold** recomendado es 2 para este indicador). 
+Una segunda herramienta que es de utilidad para detectar observaciones atípicas  *outliers* en la variable dependiente es la proyección de los residuales *Studentized* (SR).
+
+Los **SR** (Studentized Residuals), son los residiuales divididos por la su  desviación estandar $SR=e/\sqrt{e}$
+
+
+Note que en este caso  (**outliers**), estamos tratando con el valor que toma la variable dependiente (las $\hat y$). Mientras en el caso de los *high leverage* points nos referimos únicamente a las observaciones de la variable independiente **x_i**.
+
+Cuando el valor del **SR** supera 3, existe evidencia de la presencia de *outliers*.  La selección del valor de referencia 3 derivado de la distribución de los datos en relación al número de desviaciones estándard (recordar la aplicación de la prueba t-student).
+
+Así mismo  en la versión estandarizada *Standarized Residuals* los residuales divididos por la desviación estándar estimada (El **treshold** recomendado es 2 para este indicador). (ej. $95\%$ de los datos contenidos a 2 desviaciones estándard.).
+
+Note la única diferencia entre el indicador *studentize Residuals* y *Standarized Residuals* es que el primero calcula el modelo una vez que se eliminan las observaciones consideradas outliers. Ambos informan el mismo diagnostico indentificando los **outiliers**.  
+
+Y recuerde que controlar por estas  observaciones pude ser importante para los resultados del modelo a estimar. En última instacia la decisión sobre quitarlos o no es una cuestión empírica qu dependerá del problema analizado.
+
+
 
 A continuación el estimado de  a) *Cook´s distance*, b) Studentized y c) standarized residuals  y  la gráfica conjunta *Leverage diagnóstics* para mostrar observaciones con high *leverage* y *outliers* 
 
@@ -238,34 +298,7 @@ ols_plot_resid_lev(model)
 [Revisar](https://cran.r-project.org/web/packages/olsrr/vignettes/influence_measures.html)
 
 
-A continuación la estimación de la prueba formal Breusch - Pagan para detectar heterocedasticidad.  recuerde que la prueba tiene $H0: varianza constante$  $Ha: Heterocedasticidad$ 
-
-```{r, echo=FALSE}
-# Una forma usando olsrr library.
-model<-lm(life~gdp+chldmort, data=nt)
-ols_test_breusch_pagan(model)
-
-## Alternativa usando lmtest library Si los regresores no siguen una distribución normal, con el Koenker's studentized test statistc.
-bptest(model,varformula =  ~fitted.values(model))
-```
-  
-Concluimos en este caso que se viola el supuesto de varianza contante en los errores (p-value<0.05), es decir rechazamos $H0:\sigma^2$ constante. (en ambos métodos *p-value* <.05, ej $p-value_{bptest} = 0.0152$), $p-value_{lmtest}0.0003$
-
-
-#### ¿Cómo atender el problema de Heterocedasticidad?
-
-Corregir este problema es un asunto empírico que depende en última instancia del problema que estamos analizando.
-
-No obstante el punto fundamental para resolver este problema es identificar con la causa, (i.e la fuente de la variación no constante). Lograr lo anterior implica observar por ejemplo el rango de variación de los regresores. Variables con RI grandes pueden estar vinculadas con la causa.
-
-
-En este mismo sentido es posible por ejemplo usar una unidad de medida alternativa para la variable de interés por ejemplo en lugar de usar datos en niveles con unidades originales se puede considerar el uso de la variable en términos per cápita, en tasa por cada 100 mil  o porcentaje, dependiendo del escenario de análisis.  
-
-Una posible solución es aplicar una transformación logarítmica a la variable dependiente.
-
-Un segundo enfoque es estimar el modelo de regresión ponderada. (*weighted least squares*).
-
-### Multicolinealidad.
+### Multicolinealidad y su  detección.  El indicador: Variance Inflation Factor  VIF. 
 
 Este problema se presenta cuando dos o más variables estan relacionadas entre sí.
 
@@ -291,7 +324,9 @@ Como una regla general un valor de **VIF** entre 5 y 10 indica problemas de mult
 A continuación un **ejemplo** con el modelo que relaciona el precio de las viviendas con una serie de 14 características, incluidos atributos sobre calidad ambiental para 506 observaciones  (census tract). Fuente de base de datos  Harrison, D. and Rubinfeld, D.L. Hedonic prices and the demand for clean air. J. Environ. Economics and Management 5, 81–102.
 
 ```{r,echo=FALSE, warning=FALSE, message = FALSE}
+
 library(car)
+
 data("Boston", package = "MASS")
 names(Boston)
 
@@ -350,6 +385,7 @@ En el siguiente ejemplo consideramos el estudio sobre cambio climático con dato
 
 ```{r,echo=FALSE}
 
+library(lmtest)
 artico<-read.dta("Arctic9.dta")
 
 modelo<-lm(tempN~year,data=artico)
@@ -399,6 +435,7 @@ library(MASS)
 
 data("Boston", package = "MASS")
 names(Boston)
+
 modelo1<- lm(medv ~. - tax, data = Boston)
 
 step_lm <- stepAIC(modelo1, direction="both")
