@@ -359,8 +359,8 @@ Y recuerde que controlar por estas  observaciones pude ser importante para los r
 A continuación el estimado de  a) *Cook´s distance*, b) Studentized y c) standarized residuals  y  la gráfica conjunta *Leverage diagnóstics* para mostrar observaciones con high *leverage* y *outliers* 
 
 ```{r,echo=FALSE}
-nt<-readRDS("Nations2a.rds")%>%
-  mutate(region=fct_reorder(region,life))
+nt<-readRDS("Nations2a.rds")
+ 
 
 model<-lm(life~gdp+chldmort, data=nt)
 
@@ -665,89 +665,6 @@ YrBuilt, data = h, na.action = na.omit)%>%
 
 
 
-#### Omisión de Variables relevantes y efectos confusores.
-
-Mientras con el tema de **multicolinealidad** el problema es la inclusión de variables redundantes, el escenario que causa el problema con las variables confusoras es la **omisión** de posibles variables relevantes. 
-
-Consideremos el modelo sobre la relación entre el precio de las viviendas y sus características con datos a escala geográfica de Condado (King). 
-
-En la siguiente especificación incluimos una variable denominada **ZipGroup**, es una variable categórica que clasifica  las viviendas acorde con el valor promedio de las viviendas del código postal en el que se ubican. 
-
-Primero observemos los efectos principales sin la variable que captura la localización. 
-
-Note que no se ha incluido una variable que explicitamente capture el efecto de la localización. 
-
-La   especificación inicial a estimar es: 
-
-$$AdjSalePrice=\beta_0+\beta_1 SqFtTotLiving+\beta_2 SqFtLot+\beta_3 Bathrooms +\beta_4 Bedrooms +\beta_5 BldgGrade+\epsilon$$
-
-##### Ejemplo 3  
-
-```{r, echo=FALSE}
-
-### Para explicar variables  confusoras.
-
-library(MASS)
-
-h<-read.csv("house_sales.csv")
-
-## Modelo regular sin confounder variable.
-
-house_lm <- lm(AdjSalePrice ~ SqFtTotLiving + SqFtLot + Bathrooms + Bedrooms + BldgGrade, data = h, na.action = na.omit)
-
-summary(house_lm)
-
-```
-
-
-Note que de forma contra intuitiva la variable que captura la suerficie del terreno tiene un efecto negativo de igual forma la variable # baños, lo cual no es consistente en términos empíricos .
-
-Estos efectos principales contraintuitivos  se asociacian probablemente con la omisión de variables explicativas relevantes (*confunding variables*). Ya que el modelo esta mezclando información de áreas muy heterogéneas.  
-
-Ahora vamos a incluir la variable que captura la localización  **ZipGroup** (una posible variable confusora) y estimamos el modelo para determinar los efectos principales de variables para validar la relación teórica de causalidad.
-
-
-```{r,eval=FALSE}
-
-## DATA WRANGLING TO NCLUDE ZIPCODE VARIABLE
-## Generar variable para grupo de zip code de barato a caro 1-5
-zip_groups <- h %>%
-  mutate(resid = residuals(house_lm)) %>%
-  group_by(ZipCode) %>%
-  summarize(med_resid = median(resid),
-            cnt = n()) %>%
-  # sort the zip codes by the median residual
-  arrange(med_resid) %>%
-  mutate(cum_cnt = cumsum(cnt),
-         ZipGroup = factor(ntile(cum_cnt, 5)))
-h <- h %>%
-  left_join(select(zip_groups, ZipCode, ZipGroup), by='ZipCode')
-```
-
-
-```{r, echo=FALSE}
-h_zipcode<-read.csv("houseszipcode.csv")%>%
-  mutate(ZipGroup=as.factor(ZipGroup))
-
-lm(AdjSalePrice ~ SqFtTotLiving + SqFtLot +
-Bathrooms + Bedrooms +
-BldgGrade + PropertyType + ZipGroup,
-data=h_zipcode, na.action=na.omit)%>%
-  summary()
-```
-Note ahora, que tanto la variable superficie como el número de *Bathrooms* resultan con un efecto principal positivo tal como  se espera. 
-
-Note en segundo lugar que la inclusión de la variable que captura el efecto de localización es significativa estadísticamente y presenta mayor importancia para las viviendas ubicadas en códigos postales de mayor valor y por ejemplo aquellas propiedades ubicadas en el grupo 5 tiene en promedio un valor mayor en $\$340,000$  respecto a las viviendas en el  grupo 1.  
-
-El efecto de la variable # domitorios es negativo ya que considerando una casa de la misma superficie contar con más dormitorios implica habitaciones de menor tamaño lo cual impacta el precio negativamente. 
-
-
 ### Términos de referencia.
 
 **Homocedasticidad.** Los $\epsilon$ son iid (independientes e identicamente distribuidos) cada uno con media cero y varianza $\sigma^2$ (supuesto de homocedasticidad).  Note cuando este supuesto no se cumple tenemos un problema denominado: *heterocedasticidad**.
-
-**Autocorrelación**
-
-**Multicolinealidad**
-
-

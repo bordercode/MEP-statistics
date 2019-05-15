@@ -759,97 +759,10 @@ lambda</code></pre>
 <ol start="6" style="list-style-type: lower-alpha">
 <li>Estime nuevamente el modelo y excluya las variables redundantes (Bathrooms,SqFtTotLiving, SqFtFinBasement). ¿Cuál es el efecto ahora de la variable que registra el número de dormitorios?</li>
 </ol>
-<div id="omision-de-variables-relevantes-y-efectos-confusores." class="section level4">
-<h4>Omisión de Variables relevantes y efectos confusores.</h4>
-<p>Mientras con el tema de <strong>multicolinealidad</strong> el problema es la inclusión de variables redundantes, el escenario que causa el problema con las variables confusoras es la <strong>omisión</strong> de posibles variables relevantes.</p>
-<p>Consideremos el modelo sobre la relación entre el precio de las viviendas y sus características con datos a escala geográfica de Condado (King).</p>
-<p>En la siguiente especificación incluimos una variable denominada <strong>ZipGroup</strong>, es una variable categórica que clasifica las viviendas acorde con el valor promedio de las viviendas del código postal en el que se ubican.</p>
-<p>Primero observemos los efectos principales sin la variable que captura la localización.</p>
-<p>Note que no se ha incluido una variable que explicitamente capture el efecto de la localización.</p>
-<p>La especificación inicial a estimar es:</p>
-<p><span class="math display">\[AdjSalePrice=\beta_0+\beta_1 SqFtTotLiving+\beta_2 SqFtLot+\beta_3 Bathrooms +\beta_4 Bedrooms +\beta_5 BldgGrade+\epsilon\]</span></p>
-<div id="ejemplo-3" class="section level5">
-<h5>Ejemplo 3</h5>
-<pre><code>## 
-## Call:
-## lm(formula = AdjSalePrice ~ SqFtTotLiving + SqFtLot + Bathrooms + 
-##     Bedrooms + BldgGrade, data = h, na.action = na.omit)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -1199508  -118879   -20982    87414  9472982 
-## 
-## Coefficients:
-##                 Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)   -5.219e+05  1.565e+04 -33.349  &lt; 2e-16 ***
-## SqFtTotLiving  2.288e+02  3.898e+00  58.699  &lt; 2e-16 ***
-## SqFtLot       -6.051e-02  6.118e-02  -0.989    0.323    
-## Bathrooms     -1.944e+04  3.625e+03  -5.362 8.32e-08 ***
-## Bedrooms      -4.778e+04  2.489e+03 -19.194  &lt; 2e-16 ***
-## BldgGrade      1.061e+05  2.396e+03  44.287  &lt; 2e-16 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 261200 on 22683 degrees of freedom
-## Multiple R-squared:  0.5407, Adjusted R-squared:  0.5406 
-## F-statistic:  5340 on 5 and 22683 DF,  p-value: &lt; 2.2e-16</code></pre>
-<p>Note que de forma contra intuitiva la variable que captura la suerficie del terreno tiene un efecto negativo de igual forma la variable # baños, lo cual no es consistente en términos empíricos .</p>
-<p>Estos efectos principales contraintuitivos se asociacian probablemente con la omisión de variables explicativas relevantes (<em>confunding variables</em>). Ya que el modelo esta mezclando información de áreas muy heterogéneas.</p>
-<p>Ahora vamos a incluir la variable que captura la localización <strong>ZipGroup</strong> (una posible variable confusora) y estimamos el modelo para determinar los efectos principales de variables para validar la relación teórica de causalidad.</p>
-<pre class="r"><code>## DATA WRANGLING TO NCLUDE ZIPCODE VARIABLE
-## Generar variable para grupo de zip code de barato a caro 1-5
-zip_groups &lt;- h %&gt;%
-  mutate(resid = residuals(house_lm)) %&gt;%
-  group_by(ZipCode) %&gt;%
-  summarize(med_resid = median(resid),
-            cnt = n()) %&gt;%
-  # sort the zip codes by the median residual
-  arrange(med_resid) %&gt;%
-  mutate(cum_cnt = cumsum(cnt),
-         ZipGroup = factor(ntile(cum_cnt, 5)))
-h &lt;- h %&gt;%
-  left_join(select(zip_groups, ZipCode, ZipGroup), by=&#39;ZipCode&#39;)</code></pre>
-<pre><code>## 
-## Call:
-## lm(formula = AdjSalePrice ~ SqFtTotLiving + SqFtLot + Bathrooms + 
-##     Bedrooms + BldgGrade + PropertyType + ZipGroup, data = h_zipcode, 
-##     na.action = na.omit)
-## 
-## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -1303632   -94048    -6746    72859  9264307 
-## 
-## Coefficients:
-##                             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept)               -6.709e+05  2.034e+04 -32.976  &lt; 2e-16 ***
-## SqFtTotLiving              2.112e+02  3.677e+00  57.441  &lt; 2e-16 ***
-## SqFtLot                    4.692e-01  5.490e-02   8.547  &lt; 2e-16 ***
-## Bathrooms                  5.537e+03  3.405e+03   1.626    0.104    
-## Bedrooms                  -4.139e+04  2.260e+03 -18.314  &lt; 2e-16 ***
-## BldgGrade                  9.893e+04  2.197e+03  45.040  &lt; 2e-16 ***
-## PropertyTypeSingle Family  2.113e+04  1.486e+04   1.422    0.155    
-## PropertyTypeTownhouse     -7.741e+04  1.615e+04  -4.792 1.66e-06 ***
-## ZipGroup2                  5.169e+04  5.188e+03   9.963  &lt; 2e-16 ***
-## ZipGroup3                  1.142e+05  4.775e+03  23.922  &lt; 2e-16 ***
-## ZipGroup4                  1.783e+05  4.869e+03  36.617  &lt; 2e-16 ***
-## ZipGroup5                  3.391e+05  4.693e+03  72.248  &lt; 2e-16 ***
-## ---
-## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
-## 
-## Residual standard error: 232000 on 22677 degrees of freedom
-## Multiple R-squared:  0.6378, Adjusted R-squared:  0.6377 
-## F-statistic:  3631 on 11 and 22677 DF,  p-value: &lt; 2.2e-16</code></pre>
-<p>Note ahora, que tanto la variable superficie como el número de <em>Bathrooms</em> resultan con un efecto principal positivo tal como se espera.</p>
-<p>Note en segundo lugar que la inclusión de la variable que captura el efecto de localización es significativa estadísticamente y presenta mayor importancia para las viviendas ubicadas en códigos postales de mayor valor y por ejemplo aquellas propiedades ubicadas en el grupo 5 tiene en promedio un valor mayor en <span class="math inline">\(\$340,000\)</span> respecto a las viviendas en el grupo 1.</p>
-<p>El efecto de la variable # domitorios es negativo ya que considerando una casa de la misma superficie contar con más dormitorios implica habitaciones de menor tamaño lo cual impacta el precio negativamente.</p>
-</div>
-</div>
 </div>
 <div id="terminos-de-referencia." class="section level3">
 <h3>Términos de referencia.</h3>
 <p><strong>Homocedasticidad.</strong> Los <span class="math inline">\(\epsilon\)</span> son iid (independientes e identicamente distribuidos) cada uno con media cero y varianza <span class="math inline">\(\sigma^2\)</span> (supuesto de homocedasticidad). Note cuando este supuesto no se cumple tenemos un problema denominado: *heterocedasticidad**.</p>
-<p><strong>Autocorrelación</strong></p>
-<p><strong>Multicolinealidad</strong></p>
 </div>
 </div>
 
