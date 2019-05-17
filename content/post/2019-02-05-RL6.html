@@ -55,16 +55,6 @@ menu:
 </div>
 <p>Note en la gráfica b) se observa evidencia de heterocedasticidad, mientras en la gráfica a) se observa evidencia de una relación no lineal. Esta puede resolverse con la trasformación de los regresores (inclusión de término cuadrático, transformación Box-Cox,etc,.)</p>
 <p><strong>Ejemplo</strong> Obtención de residuales para diagnóstico gráfico. Considere el ejemplo del modelo sobre relación de años de esperanza de vida y características poblacionales para una muestra de 194 paises.</p>
-<pre class="r"><code>library(estimatr)
-
-nt&lt;-readRDS(&quot;Nations2a.rds&quot;)%&gt;%
-  mutate(region=fct_reorder(region,life))%&gt;%
-  select(life,gdp, chldmort)
-  
-nt&lt;-na.omit(nt)
-
-model&lt;-lm(life~gdp+chldmort, data=nt)
-summary(model)</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = life ~ gdp + chldmort, data = nt)
@@ -84,16 +74,6 @@ summary(model)</code></pre>
 ## Residual standard error: 3.396 on 175 degrees of freedom
 ## Multiple R-squared:  0.8856, Adjusted R-squared:  0.8843 
 ## F-statistic: 677.3 on 2 and 175 DF,  p-value: &lt; 2.2e-16</code></pre>
-<pre class="r"><code>nt$predicted &lt;- predict(model)   
-nt$residuals &lt;- residuals(model) 
-
-ggplot(nt, aes(chldmort, life)) +
-  geom_smooth(method = &quot;lm&quot;, se = FALSE, color = &quot;lightgrey&quot;) +
-  geom_segment(aes(xend = chldmort, yend = predicted), alpha = .2) +
-geom_point(aes(color = abs(residuals), size = abs(residuals)))+
-  scale_color_continuous(low = &quot;black&quot;, high = &quot;red&quot;) +
-  guides(color = FALSE, size = FALSE) +
-  theme_bw()</code></pre>
 <p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p><strong>Método alternativo</strong>. Directamente es posible obtener el diagnóstico gráfico de residuales posterior a la estimación del modelo. Dos gráficas son de interés</p>
 </div>
@@ -137,13 +117,6 @@ summary(model)</code></pre>
 <p><em>Scale-location</em> o <em>spread location plot</em> que mide la dispersión de los residuales y permite detectar así el problema de <strong>heterocedasticidad</strong>.</p>
 <p>Nuevamente una linea recta con residuales dispersos de manera aleatoria es una indicación de que se cumple la condicion de varianza constante y no hay problema de heterocedasticidad.</p>
 <p>En el caso particular el patrón observado presenta una dispersón ligeramente creciente consistente con el problema de heterocedasticidad.</p>
-<pre class="r"><code>library(estimatr)
-
-nt&lt;-readRDS(&quot;Nations2a.rds&quot;)%&gt;%
-  mutate(region=fct_reorder(region,life))
-
-model&lt;-lm(life~gdp+chldmort, data=nt)
-summary(model)</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = life ~ gdp + chldmort, data = nt)
@@ -164,7 +137,6 @@ summary(model)</code></pre>
 ##   (16 observations deleted due to missingness)
 ## Multiple R-squared:  0.8856, Adjusted R-squared:  0.8843 
 ## F-statistic: 677.3 on 2 and 175 DF,  p-value: &lt; 2.2e-16</code></pre>
-<pre class="r"><code>plot(model, which=c(1,3))</code></pre>
 <p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-4-1.png" width="672" /><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
 </div>
 </div>
@@ -236,16 +208,6 @@ summary(model)</code></pre>
 <p>Presenta los cuantiles de la <strong>distribución normal</strong> contra la distribución de los datos estimados. Note que una distribución normal sigue un patrón a lo largo de la diagonal.</p>
 <div id="grafica-qq-norm." class="section level4">
 <h4>Gráfica QQ norm.</h4>
-<pre class="r"><code>library(&quot;car&quot;)
-
-nt&lt;-readRDS(&quot;Nations2a.rds&quot;)%&gt;%
-  mutate(region=fct_reorder(region,life))%&gt;%
-  select(life,gdp, chldmort)
-  nt&lt;-na.omit(nt)
-
-model&lt;-lm(life~gdp+chldmort, data=nt)
-nt$residuals &lt;- residuals(model) 
-qqPlot(nt$residuals)</code></pre>
 <p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <pre><code>## [1] 45  3</code></pre>
 <p>En este caso observa una deviación que indica una distribución cercana a la normal si bien con datos concentrados hacia las colas (<em>fat tails</em>).</p>
@@ -253,32 +215,13 @@ qqPlot(nt$residuals)</code></pre>
 <p>Un procedimiento común es la transformación <strong>Box-Cox</strong>. Básicamente buscamos transformar la variable dependiente utilizando un exponente <span class="math inline">\(\lambda\)</span> consistente con el supuesto de normalidad.</p>
 <p>La siguiente especificación indica el proceso para determinar el <span class="math inline">\(\lambda\)</span> óptimo a corde con el procedimiento de máxima verosimilitud propuesto por <strong>Box-Cox</strong> <span class="math display">\[y^ \lambda=x \beta +\epsilon\]</span> <span class="math display">\[\Bigg\{\frac{y^{\lambda} -1}{\lambda}, \lambda \neq0 \\
 log (y) , \lambda =0 \]</span></p>
-<pre class="r"><code>## La implementación en *R* a continuación:
- 
-library(MASS)
-
-nt&lt;-readRDS(&quot;Nations2a.rds&quot;)%&gt;%
-mutate(region=fct_reorder(region,life))
-
-model&lt;-lm(life~gdp+chldmort, data=nt)
-
-
-r&lt;-residuals(model)
-
-shapiro.test(r)</code></pre>
 <pre><code>## 
 ##  Shapiro-Wilk normality test
 ## 
 ## data:  r
 ## W = 0.89176, p-value = 4.359e-10</code></pre>
-<pre class="r"><code>bc=boxcox(model,lambda=seq(-3,3))</code></pre>
 <p><img src="/post/2019-02-05-RL6_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<pre class="r"><code>lambda=bc$x[which(bc$y==max(bc$y))]
-
-lambda</code></pre>
 <pre><code>## [1] 1.545455</code></pre>
-<pre class="r"><code>## Una vez que estimamos el parámetro lambda, realizamos la 
-## transformación con : var_Trans_box = (y ^ lambda - 1)/lambda</code></pre>
 <p>Note la aplicación de la prueba estadística de <strong>Shapiro-Wilk</strong> que tiene como <strong>H0: Normalidad</strong>.</p>
 <p>Generalmente las pruebas de hipótesis que conocemos se construyen de tal forma que buscamos rechazar la hipótesis nula, sin embargo en este caso la prueba tiene como <strong>H0: normalidad</strong>, por lo que un <strong>p-value&lt;0.5</strong> implican rechazar <strong>normalidad</strong>.</p>
 <p>Entonces con la prueba <strong>Shapiro-Wilk</strong>, no rechazar H0, (ej. p-values grandes) de hecho se traduce en un buen escenario ya que es razonable asumir que los terminos de error se distribuyen a corde a la normal.</p>

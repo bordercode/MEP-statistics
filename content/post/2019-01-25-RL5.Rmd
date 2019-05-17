@@ -205,7 +205,7 @@ Note adicionalmente el estimado de la bondad de ajuste del modelo, un $R^2$ rela
 
 Considermos ahora un modelo para la relación entre la participación en el plan de pensiones *401k* de 1534 empresas como variable dependiente expresada en porcentaje y dos variables explicativas: edad del plan de pensiones: variable **age** (expresada en años) y la fracción correspondiente a la aportación patronal por cada peso que el trabajador aporta a la cuenta: (**mrate**). ejemplo un mrate= .57 implica que por cada peso del trabajador, el empleador aporta 57 centavos. 
 
-```{r}
+```{r, echo=FALSE}
 
 data(k401k)
 
@@ -256,7 +256,7 @@ summary()
 
 De hecho si tiene sentido, observe la siguiente matriz de correlación entre las variables. 
 
-```{r}
+```{r, echo=FALSE}
 
 res <- cor(a)
 round(res, 4)
@@ -389,7 +389,7 @@ Ej.  Variables cualitativas (factores)  como sexo, género, raza, etc.,
 Consideremos ahora el escenario de un estudio sobre el saldo (variable Balance) de la tarjeta de crédito en relación a diversas características del usuario: Edad, calificación de crediticia, Educación, ingreso, limite de crédito de la tarjeta, grupo étnico, sexo y estutus marital.
 
 
-```{r,echo=TRUE}
+```{r, echo=FALSE}
 
 data(Credit)
 View(Credit)
@@ -453,7 +453,7 @@ Considere ahora la relación entre  salarios  y los atributos del individuo, inc
 La base de datos contiene 526 observaciones (individuos). La variable dependiente es *wage* (dólares por hora ajustados a precios de 2018). Fuente de datos. *Current Population Survey*.
 
 
-```{r, echo=TRUE}
+```{r, echo=FALSE}
 data(wage1)
 names(wage1)
 
@@ -592,7 +592,7 @@ El modelo se plantea utilizando la transformación logarítmica de la variable d
 
 $log(price)=\beta_0+\beta_1 bdrms+log(lotsize)+ \beta_2 log(sqrft)+\beta_3 colonial$
 
-```{r, echo=TRUE}
+```{r,  echo=FALSE}
 data(hprice1)
 
 
@@ -765,7 +765,7 @@ Ahora podemos medir la interacción entre edad y el diagnóstico de hipertensió
 
 Para implementar la estimación en R usamos el operador de interacciones *. A continuación el resultado  para la interacción entre edad y el diagnóstico de hipertensión. 
 
-```{r,echo=TRUE}
+```{r, echo=FALSE}
 bmi<-readRDS("bmi.rds")
 
 

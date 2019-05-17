@@ -262,10 +262,6 @@ Y=\beta_0+\beta_1 X_1+\beta_2 X_2+...+\beta_p X_p+\epsilon
 <div id="ejemplo-5" class="section level4">
 <h4>Ejemplo 5</h4>
 <p>Considermos ahora un modelo para la relación entre la participación en el plan de pensiones <em>401k</em> de 1534 empresas como variable dependiente expresada en porcentaje y dos variables explicativas: edad del plan de pensiones: variable <strong>age</strong> (expresada en años) y la fracción correspondiente a la aportación patronal por cada peso que el trabajador aporta a la cuenta: (<strong>mrate</strong>). ejemplo un mrate= .57 implica que por cada peso del trabajador, el empleador aporta 57 centavos.</p>
-<pre class="r"><code>data(k401k)
-
-lm(prate ~ mrate + age, data = k401k)%&gt;%
-summary()</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = prate ~ mrate + age, data = k401k)
@@ -334,8 +330,6 @@ summary()</code></pre>
 ## Multiple R-squared:  0.05212,    Adjusted R-squared:  0.04733 
 ## F-statistic: 10.89 on 1 and 198 DF,  p-value: 0.001148</code></pre>
 <p>De hecho si tiene sentido, observe la siguiente matriz de correlación entre las variables.</p>
-<pre class="r"><code>res &lt;- cor(a)
-round(res, 4)</code></pre>
 <pre><code>##               TV  radio newspaper  sales
 ## TV        1.0000 0.0548    0.0566 0.7822
 ## radio     0.0548 1.0000    0.3541 0.5762
@@ -416,14 +410,6 @@ round(res, 4)</code></pre>
 <div id="ejmeplo-1" class="section level4">
 <h4>Ejmeplo 1</h4>
 <p>Consideremos ahora el escenario de un estudio sobre el saldo (variable Balance) de la tarjeta de crédito en relación a diversas características del usuario: Edad, calificación de crediticia, Educación, ingreso, limite de crédito de la tarjeta, grupo étnico, sexo y estutus marital.</p>
-<pre class="r"><code>data(Credit)
-View(Credit)
-
-Credit&lt;-select(Credit,-c(ID, Married,Ethnicity,Student,Gender,Cards))
-
-
-
-pairs(~Balance+Age+ Rating+Education+ Income+ Limit, data=Credit,col = &quot;pink&quot;, pch=1)</code></pre>
 <p><img src="/post/2019-01-25-RL5_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>El objetivo es modelar la variable dependiente <strong>saldo</strong> en función de las diversas características del inidviduo.</p>
 <p>Note que las variables Sexo (Gender) y grupo étnico son categóricas (factores). Podemos incluirlas en el modeo creando variables <em>dummy</em>:</p>
@@ -492,29 +478,10 @@ lm(Balance~Asian+Caucasian,data =Credit)%&gt;%
 <h4>Ejemplo 2</h4>
 <p>Considere ahora la relación entre salarios y los atributos del individuo, incluimos ahora la variable cualitativa <strong>sexo</strong> para determinar si existe impacto alguno en el nivel salarial entre hombres o mujeres, un contraste de interés desde la perspectiva de política pública.</p>
 <p>La base de datos contiene 526 observaciones (individuos). La variable dependiente es <em>wage</em> (dólares por hora ajustados a precios de 2018). Fuente de datos. <em>Current Population Survey</em>.</p>
-<pre class="r"><code>data(wage1)
-names(wage1)</code></pre>
 <pre><code>##  [1] &quot;wage&quot;     &quot;educ&quot;     &quot;exper&quot;    &quot;tenure&quot;   &quot;nonwhite&quot; &quot;female&quot;  
 ##  [7] &quot;married&quot;  &quot;numdep&quot;   &quot;smsa&quot;     &quot;northcen&quot; &quot;south&quot;    &quot;west&quot;    
 ## [13] &quot;construc&quot; &quot;ndurman&quot;  &quot;trcommpu&quot; &quot;trade&quot;    &quot;services&quot; &quot;profserv&quot;
 ## [19] &quot;profocc&quot;  &quot;clerocc&quot;  &quot;servocc&quot;  &quot;lwage&quot;    &quot;expersq&quot;  &quot;tenursq&quot;</code></pre>
-<pre class="r"><code>## To adjust for today prices  factor=cpi 2018 /1976
-
-cpi&lt;-read.csv(&quot;file.csv&quot;)
-
-cpiy&lt;-cpi%&gt;%
-group_by(Year)%&gt;%
-  summarize(cpi=mean(Value))%&gt;%
-  filter(Year==1976|Year==2018)%&gt;%
-  spread(Year,cpi)%&gt;%
-  rename(A=&quot;2018&quot;,B=&quot;1976&quot;)%&gt;%
-  summarize(factor=A/B)
-
-
-wage1&lt;-mutate(wage1,wage=wage*cpiy$factor)
-
-lm(wage~female,data=wage1)%&gt;%
-summary()  </code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = wage ~ female, data = wage1)
@@ -692,11 +659,6 @@ summary()</code></pre>
 <p>Consideremos ahora el escenario en que buscamos predecir los precios de las viviendas en función de atributos como el tamaño del terreno (lotsize), tamaño de construcción (sqrft), número de dormitorios (bdrms) y una variable factorial (dicotómica: 1,0) para indicar si la casa es de estilo colonial o no (colonial).</p>
 <p>El modelo se plantea utilizando la transformación logarítmica de la variable dependiente para observar cambios porcentuales en el precio.</p>
 <p><span class="math inline">\(log(price)=\beta_0+\beta_1 bdrms+log(lotsize)+ \beta_2 log(sqrft)+\beta_3 colonial\)</span></p>
-<pre class="r"><code>data(hprice1)
-
-
-lm(lprice~bdrms+llotsize+lsqrft+colonial,data=hprice1)%&gt;%
-  summary()</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = lprice ~ bdrms + llotsize + lsqrft + colonial, data = hprice1)
@@ -718,7 +680,6 @@ lm(lprice~bdrms+llotsize+lsqrft+colonial,data=hprice1)%&gt;%
 ## Residual standard error: 0.1841 on 83 degrees of freedom
 ## Multiple R-squared:  0.6491, Adjusted R-squared:  0.6322 
 ## F-statistic: 38.38 on 4 and 83 DF,  p-value: &lt; 2.2e-16</code></pre>
-<pre class="r"><code>#Note que el R adjuested controla por el número de regresores incluidos en el modelo y mientras el R^2 siempre se incrementa cuando incluimos regresores adicionales, no sucede este incremento con el R^2 ajustado.#</code></pre>
 <p>Los resultados indican que las casas estilo colonial (<span class="math inline">\(X_{colonial}=1\)</span>) tienen un diferencial de 5.3% en el precio promedio respecto a las casas de otros estilos. (El signo es positivo lo que corresponde a un incremento en el precio para las casas de estilo colonial).</p>
 <p>Adicionalmente las variables <span class="math inline">\(llotsize\)</span> y <span class="math inline">\(lsqrft\)</span> muestran los cambios porcentuales de la variable dependiente <em>log(precio)</em> ante el cambio de <span class="math inline">\(1\%\)</span>. POr lo que estos coeficientes <span class="math inline">\(\hat \beta\)</span> de hecho permiten conocer la <strong>elasticidad</strong> un concpeto ampliamente usado en estudios sociales para indicar la flexibilidad de una variable ante variaciones en posibles determinantes.</p>
 <p>En ambos casos el precios es inelástico, sin embargo, es relativamente más sensible respecto al tamaño de la construcción (variable <em>sqrft</em>).</p>
@@ -776,12 +737,6 @@ lm(lprice~bdrms+llotsize+lsqrft+colonial,data=hprice1)%&gt;%
 <p>Note que las variables explicativas seleccionadas son estadísticamente significativas y los niveles de glucosa promedio estimados son mayores ante incrementos en el bmi, incrementan con la edad, con el dignóstico de hipertensión y para los hombres (en esta muestra).</p>
 <p>Ahora podemos medir la interacción entre edad y el diagnóstico de hipertensión, una hipótesis en este sentido es que podrían presentarse diferencias en los niveles de glucosa promedio a medida que avanza la edad del individuo dependiendo si este tiene diagnóstico de hipertensión o no.</p>
 <p>Para implementar la estimación en R usamos el operador de interacciones *. A continuación el resultado para la interacción entre edad y el diagnóstico de hipertensión.</p>
-<pre class="r"><code>bmi&lt;-readRDS(&quot;bmi.rds&quot;)
-
-
-
-lm(avg_glucose_level~bmi+age*hypertension+gender, data=bmi)%&gt;%
-summary()</code></pre>
 <pre><code>## 
 ## Call:
 ## lm(formula = avg_glucose_level ~ bmi + age * hypertension + gender, 

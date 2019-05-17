@@ -36,7 +36,7 @@ continents<-gapminder%>%select(country,continent)
 
 
 
-```{r}
+```{r, echo=FALSE}
 #1. Cargamos los datos
 gapminder
 
@@ -89,7 +89,7 @@ Para lograr el análisis necesitamos  tres fases:
 + Extraer parámetros de  los modelos con library(broom) y la función glance(). 
 
 
-```{r}
+```{r, echo=FALSE}
 
 #2. Agrupamos y aplicamos la función nest para "anidar los datos de cada país  en, una nueva variable llamada data en forma de lista" 
 
@@ -145,14 +145,14 @@ Bueno,  al parecer todos estos paises son de África, ¿Por qué el modelo de re
 
 
 
-```{r, include=TRUE}
+```{r,  echo=FALSE}
 ggplot(models,aes(rsq,reorder(country,rsq)))+
   geom_point(aes(colour=continent))+
   theme_tufte()
 ```
 
 
-```{r,fig.width=12, fig.height=8}
+```{r, echo=FALSE,fig.width=12, fig.height=8}
 #Unnest y plot  componentes de interés.
 
 unnest(models,tidy)
@@ -198,7 +198,7 @@ Para explorar el comportamiento de los residuales, como parte del proceso de dia
 
 Este componente nos aporta información sobre el cumplimiento de los supuestos del modelo.
 
-```{r,fig.width=12, fig.height=8}
+```{r,, echo=FALSE,fig.width=12, fig.height=8}
 models%>%
   unnest(augment)%>%
   ggplot(aes(year1950,.resid))+
@@ -212,7 +212,7 @@ models%>%
 ```
 
 
-```{r, include=FALSE}
+```{r, echo=FALSE, include=FALSE}
 
 ## Alternativa eficiente
 

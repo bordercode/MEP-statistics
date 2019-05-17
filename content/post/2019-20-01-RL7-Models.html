@@ -20,8 +20,6 @@ menu:
 <p>Considere un escenario en el que nos interesa modelar la relación entre la <strong>esperanza de vida</strong> y el PIB (una variable que representa el nivel económico de un país) o bien un indicador clásico como el indice de desarollo Humano y su evolución a lo largo del tiempo.</p>
 <p>El problema en este caso es que la unidad de análisis (142 países) implica la realización de un gran número de modelos, 142 modelos!!! ¿Cómo podemos atender esta tarea de estimar 142 modelos de regresión lineal de una forma eficiente?</p>
 <pre class="r"><code>continents&lt;-gapminder%&gt;%select(country,continent)</code></pre>
-<pre class="r"><code>#1. Cargamos los datos
-gapminder</code></pre>
 <pre><code>## # A tibble: 1,704 x 6
 ##    country     continent  year lifeExp      pop gdpPercap
 ##    &lt;fct&gt;       &lt;fct&gt;     &lt;int&gt;   &lt;dbl&gt;    &lt;int&gt;     &lt;dbl&gt;
@@ -36,8 +34,6 @@ gapminder</code></pre>
 ##  9 Afghanistan Asia       1992    41.7 16317921      649.
 ## 10 Afghanistan Asia       1997    41.8 22227415      635.
 ## # ... with 1,694 more rows</code></pre>
-<pre class="r"><code>View(gapminder)
-str(gapminder)</code></pre>
 <pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    1704 obs. of  6 variables:
 ##  $ country  : Factor w/ 142 levels &quot;Afghanistan&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ continent: Factor w/ 5 levels &quot;Africa&quot;,&quot;Americas&quot;,..: 3 3 3 3 3 3 3 3 3 3 ...
@@ -45,10 +41,6 @@ str(gapminder)</code></pre>
 ##  $ lifeExp  : num  28.8 30.3 32 34 36.1 ...
 ##  $ pop      : int  8425333 9240934 10267083 11537966 13079460 14880372 12881816 13867957 16317921 22227415 ...
 ##  $ gdpPercap: num  779 821 853 836 740 ...</code></pre>
-<pre class="r"><code>gapminder&lt;-mutate(gapminder,year1950=year-1950)
-
-
-## Note que tenenos 1704 observaciones, para 5 variables. Estas variables como el GDP percapita, la esperanza de vida, la población, corresponden a 142 países en 5 continentes.</code></pre>
 <p>Una opción que se usa por el <a href="http://hdr.undp.org/en/data">Programa de Naciones Unidas para el Desarrollo</a>, es presentar la relación entre variables mediante gráficas de lineas: <img src="/img/onu.jpg" /></p>
 <p>No obstante, el enfoque visual utilizado de <strong>ONU</strong> no permite una observarción precisa. Cada linea representa uno de los 142 paises!!</p>
 <p>Alternativamtene podemos representar la información usando las herramientas de visualización en <strong>R</strong> que ya conocemos.</p>
@@ -80,43 +72,7 @@ str(gapminder)</code></pre>
 <li><p>Crear la función e iterar. <strong>functional programming</strong> con library(purrr), Usando <strong>map</strong> para aplicar la función del modelo a toda la lista de data frames.</p></li>
 <li><p>Extraer parámetros de los modelos con library(broom) y la función glance().</p></li>
 </ul>
-<pre class="r"><code>#2. Agrupamos y aplicamos la función nest para &quot;anidar los datos de cada país  en, una nueva variable llamada data en forma de lista&quot; 
-
-by_country&lt;-gapminder%&gt;%
-group_by(country)%&gt;%
-nest()
-
-#2.1 Podemos extraer la información para un país específico haciendo referencia a su índice. En este caso extraemos el caso de México  (index 83 en la lista).
-
-
-#3. Creamos la función para aplicar a todos los paises:
-
-country_model &lt;- function(df){
-lm(lifeExp ~ year1950, data = df)
-  }
-
-models &lt;- by_country %&gt;%
-mutate(
-model = data %&gt;% map(country_model)
-)
-
-
-#4. Usamos broom para extraer componentes  individuales del modelo. En especial glance  para extraer el coeficeinte de determinación **rsq**
-
-#tidy() component-level (Estimates, Std Errors,  p-value, t test )
-#augment() observation level (like  residuals)
-#glance().model-level (like rsq, F statistic) 
-
-models&lt;-models%&gt;%
-  mutate(
-    tidy=map(model,broom::tidy),
-    glance=map(model,broom::glance),
-    rsq=glance%&gt;%map_dbl(&quot;r.squared&quot;),
-    augment=map(model,broom::augment)
-    )%&gt;%
- left_join(continents)</code></pre>
 <pre><code>## Joining, by = &quot;country&quot;</code></pre>
-<pre class="r"><code>models&lt;-models[!duplicated(models$country), ]</code></pre>
 <p>La siguiente gráfica muestra el resultado de una aplicación de este concepto mediante la extracción de los componentes (con la función glance()) para el coeficiente de determinación <strong>rsq</strong> y el coeficeinte estimado de la variable dependiente.</p>
 <div class="figure">
 <img src="/img/purrr-gapminder.jpg" />
@@ -125,13 +81,7 @@ models&lt;-models%&gt;%
 <p>Observen que para la mayoría de estos países el modelo se ajusta bastante bien (<span class="math inline">\(R^2\approx.97\)</span>), sin embargo, para un grupo de paises particular el modelo parece no tener un ajuste adecuado?</p>
 <p>¿Qué tienen estos países en común?</p>
 <p>Bueno, al parecer todos estos paises son de África, ¿Por qué el modelo de regresión lineal en este caso no se ajusta tan bien como en la mayoría de los países?</p>
-<pre class="r"><code>ggplot(models,aes(rsq,reorder(country,rsq)))+
-  geom_point(aes(colour=continent))+
-  theme_tufte()</code></pre>
 <p><img src="/post/2019-20-01-RL7-Models_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<pre class="r"><code>#Unnest y plot  componentes de interés.
-
-unnest(models,tidy)</code></pre>
 <pre><code>## # A tibble: 284 x 8
 ##    country     rsq continent term     estimate std.error statistic  p.value
 ##    &lt;fct&gt;     &lt;dbl&gt; &lt;fct&gt;     &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
@@ -146,12 +96,6 @@ unnest(models,tidy)</code></pre>
 ##  9 Argentina 0.996 Americas  (Interc~   62.2     0.167      372.   4.80e-22
 ## 10 Argentina 0.996 Americas  year1950    0.232   0.00489     47.4  4.22e-13
 ## # ... with 274 more rows</code></pre>
-<pre class="r"><code>final&lt;-models%&gt;%
-  unnest(tidy)%&gt;%
-  select(continent,country, term, estimate,rsq)%&gt;%
-  spread(term, estimate)
-
-final</code></pre>
 <pre><code>## # A tibble: 142 x 5
 ##    continent country                     rsq `(Intercept)` year1950
 ##    &lt;fct&gt;     &lt;fct&gt;                     &lt;dbl&gt;         &lt;dbl&gt;    &lt;dbl&gt;
@@ -166,14 +110,6 @@ final</code></pre>
 ##  9 Africa    Chad                     0.872           39.3   0.253 
 ## 10 Africa    Comoros                  0.997           39.1   0.450 
 ## # ... with 132 more rows</code></pre>
-<pre class="r"><code>  ggplot(final,aes(`(Intercept)`, year1950))+
-  geom_point(aes(colour=continent,size=rsq))+
-  geom_smooth(se=FALSE)+
-  xlab(&quot;Esperanza de vida EV al inicio del periodo (1950)&quot;)+
-  ylab(&quot;Mejora anual en EV&quot;)+
-  scale_size_area()+
-  theme_light()+
-  scale_colour_viridis_d()</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
 <p><img src="/post/2019-20-01-RL7-Models_files/figure-html/unnamed-chunk-6-1.png" width="1152" /></p>
 </div>
@@ -188,15 +124,6 @@ final</code></pre>
 <p>Al parecer la mejoría en la esperanza de vida ha sido mayor en aquellos paises cuya población inicialmente moría mas jóven.</p>
 <p>Para explorar el comportamiento de los residuales, como parte del proceso de diagnóstico del modelo usamos los componentes a nivel de observación del modelo obtenidos con la función augment() y el posterior unnest().</p>
 <p>Este componente nos aporta información sobre el cumplimiento de los supuestos del modelo.</p>
-<pre class="r"><code>models%&gt;%
-  unnest(augment)%&gt;%
-  ggplot(aes(year1950,.resid))+
-  geom_line(aes(group=country), alpha=1/3)+
-  geom_smooth(se=FALSE)+
-  geom_hline(yintercept = 0,colour=&quot;white&quot;)+
-  facet_wrap(~continent)+
-  xlab(&quot;Años desde 1950&quot;)+
-  theme_light()</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
 <p><img src="/post/2019-20-01-RL7-Models_files/figure-html/unnamed-chunk-7-1.png" width="1152" /></p>
 <p>Observamos que posiblemente es necesario mejorar la estimación de los (modelos!) para grupos específicos de paises en continentes como África (claramente, un comportamiento no lineal) dado que los residuales muestran un patrón no consistente con un modelo lineal.</p>

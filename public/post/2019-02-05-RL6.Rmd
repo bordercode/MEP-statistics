@@ -98,7 +98,7 @@ Note en la gráfica b)  se observa evidencia de heterocedasticidad, mientras en 
 **Ejemplo**  Obtención de residuales para diagnóstico gráfico. Considere el ejemplo del modelo sobre relación de años de esperanza de vida y características poblacionales para una muestra de 194 paises.   
 
 
-```{r, ehco=TRUE, message=FALSE}
+```{r, echo=FALSE, message=FALSE}
 
 library(estimatr)
 
@@ -112,7 +112,7 @@ model<-lm(life~gdp+chldmort, data=nt)
 summary(model)
 ```
 
-```{r, echo=TRUE}
+```{r, echo=FALSE}
 nt$predicted <- predict(model)   
 nt$residuals <- residuals(model) 
 
@@ -163,7 +163,7 @@ Nuevamente una linea recta con residuales dispersos de manera aleatoria es una i
 En el caso particular el patrón observado presenta una dispersón ligeramente creciente consistente con el problema de heterocedasticidad.
 
 
-```{r, ehco=FALSE, message=FALSE}
+```{r,  echo=FALSE, message=FALSE}
 
 library(estimatr)
 
@@ -237,7 +237,7 @@ Presenta los cuantiles de la **distribución normal** contra la distribución de
 #### Gráfica  QQ norm.
 
 
-```{r, ehco=FALSE, message=FALSE}
+```{r, echo=FALSE, message=FALSE}
 
 library("car")
 
@@ -265,7 +265,7 @@ Un procedimiento común es la transformación **Box-Cox**. Básicamente buscamos
 La siguiente especificación indica el proceso para determinar el $\lambda$ óptimo a corde con el procedimiento de máxima verosimilitud propuesto por **Box-Cox** $$y^ \lambda=x \beta +\epsilon$$ $$\Bigg\{\frac{y^{\lambda} -1}{\lambda}, \lambda \neq0 \\
 log (y) , \lambda =0 $$
 
-```{r,echo=TRUE, message=FALSE, warning=FALSE}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 
 ## La implementación en *R* a continuación:
  

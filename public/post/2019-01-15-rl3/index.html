@@ -234,15 +234,6 @@ E(y|x)= \beta_0+ \beta_1 X
 <p>Con el logaritmo de salario (<strong>wage</strong> en dólares por hora) para medir el cambio porcentual ante el incremento de un año adicional de educación con la variable <strong>educ</strong> que se registra en años.</p>
 <p>Recordamos que <span class="math inline">\(\epsilon\)</span> integra un conjunto de variables que se asumen constantes como experiencia, habilidades, etc., Y estas tienen una distribución representada por el valor esperado normalizado en cero <span class="math inline">\(E(\epsilon)=0\)</span>. (algunas personas tienen más habilidad natural que otras, más o menos experiencia, considerar el supuesto de la distribución con media cero es consistente con este hecho empírico).</p>
 <p>La gráfica siguiente muestra la linea de regresión (rojo) para las variables salarios y educación con las observaciones (azul) como un scatter plot.</p>
-<pre class="r"><code>data(wage1)
-theme_set(theme_light())
-
-ggplot(wage1,aes(educ,lwage))+
-geom_point(shape=1,color=&quot;blue&quot;)+
-stat_smooth(method=lm, se=FALSE, colour=&quot;red&quot;, size=.2)+
-labs(title=&quot;Log Salario v.s Educación&quot;, x=&quot;Años de educación&quot;, y=&quot;Salario por hora (USD)&quot;)+
-  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+ 
-  scale_x_continuous(breaks = c(0, 6, 12,18))</code></pre>
 <p><img src="/post/2019-01-15-RL3_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>Notamos una relación positiva y a medida que la persona tiene más años de educación en promedio percibe un mayor salario.</p>
 <p>Tenemos una linea de regresión obtenida bajo el criterio de MCO y observamos una distancia entre la linea de regresión y las observaciones, sin embargo sabemos que la linea de regresión minimiza esa distancia.</p>
@@ -275,18 +266,6 @@ labs(title=&quot;Log Salario v.s Educación&quot;, x=&quot;Años de educación&q
 <div id="ejemplo-2" class="section level4">
 <h4>Ejemplo 2</h4>
 <p>Consideremos ahora la base de datos: <em>Height and weight of school children</em> de Lewis, T., &amp; Taylor, L.R. (1967) en el estudio introduction to Experimental Ecology, que contiene 236 observaciones para 5 variables en una muestra de niños en edades entre 11 A 17 años, para estudiar la relación entre dos variables la altura y la edad. En términos teóricos se ha demostrado que entre la población munidal se tiene una estrecha relación entre estas variables.</p>
-<pre class="r"><code>heightweight&lt;-readRDS(&quot;heightweight.rds&quot;)
-
-theme_set(theme_light())
-
-heightweight%&gt;%
-  mutate(sex=ifelse(sex==&quot;f&quot;,&quot;Mujer&quot;,&quot;Hombre&quot;))%&gt;%
-  ggplot(aes(x=ageYear, y=heightIn, colour=sex)) +
-geom_point(alpha=.5) +
-scale_colour_brewer(palette=&quot;Set1&quot;)+
-geom_smooth(method=lm, se=FALSE, fullrange=TRUE)+
-  labs(x=&quot;Edad en años&quot;, y=&quot;Estatura (pulgadas)&quot;  )+
-  labs(colour=&quot;Sexo&quot;)</code></pre>
 <p><img src="/post/2019-01-15-RL3_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <pre><code>## 
 ## Call:

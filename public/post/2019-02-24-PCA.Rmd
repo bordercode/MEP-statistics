@@ -244,7 +244,7 @@ De manera similar los elementos $S_{22}, S_{33}$ representan la varianza de la s
 
 En seguida tenemos la covarianza entre la primera y segunda variables:
 
-$$\displaystyle S_{12}=\frac{1}{n-1}((a_1-\mu_1)(a_2-\mu_2)+(b_1-\mu_1)(b_2-\mu_2)+(c_1-\mu_1)(c_2-\mu_2))=S_{21}$$
+$$\displaystyle S_{12}=\frac{1}{n-1}((a_1-\mu_1)(a_2-\mu_2)+(b_1-\mu_1)(b_2-\mu_2)+(c_1-\mu_1)(c_2-\mu_2))$$
 Y generalizando tenemos   que:
 
 + $S_{ii}$ es la *varianza* de la $i_{esima}$ variable. 
@@ -277,6 +277,7 @@ El procedimiento de PCA  ha generado una nueva estructura de los datos (reducci√
 
 ## Pr√°ctica.
 
+[Anaconda](https://www.anaconda.com/distribution/)
 
 ### Ejemplo 1   Iris. PCA1iris.ipynb
 Ver Jupyter notebook
