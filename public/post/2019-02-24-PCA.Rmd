@@ -475,7 +475,7 @@ head(datos)
 
 #### 1.1 Visualización  y estadísticas descriptivas.
 
-```{r, warning=FALSE, message=FALSE}
+```{r, echo= FALSE, warning=FALSE, message=FALSE}
 
 
 p<-ggplot(datos, aes(historia,geografía))+
@@ -489,7 +489,7 @@ summary(datos)
 
 ```
 
-```{r}
+```{r, echo= FALSE}
 
 d <- mutate(datos,mh=mean(historia), mg=mean(geografía),historia=historia-mh,geografía=geografía-mg)%>%
   select(-c(mh,mg))
@@ -518,7 +518,7 @@ eigenv
 pr <- prcomp(d,  center = TRUE)
 summary(pr)
 pr
-# Hemos obtenido los eigenvalores (Standard deviations^2) y la matrz de eigenvectores  (rotation). 
+# Hemos obtenido los eigenvalores (Standard deviations^2) y la matrIz de eigenvectores  (rotation). 
 
 # Eigenvalores
 pr.var <- pr$sdev ^ 2
@@ -541,13 +541,16 @@ Note: El algoritmo PCA aporta la toda la información requerida (eigenvalores  s
 
 #### Comprobando que los eigenvalores capturan varianza total en los datos. 
 ```{r}
+
 sum(eigenv$values)
 var(d[,1]) + var(d[,2])
 ```
+
 ##### Graficamos los eigenvectores.
 
 ```{r}
-# Representamos cada los eigebvectores
+
+# Representamos cada uno de los eigebvectores
 
 pc1 <- pr$rotation[1,1]/pr$rotation[2,1]
 pc2 <- pr$rotation[1,2]/pr$rotation[2,2]
@@ -561,7 +564,7 @@ plt<-ggplot(d,aes(historia,geografía))+
   xlim(c(-30,30))+
   geom_abline(intercept = 0, slope = pc1, color="deepskyblue4")+
   geom_abline(intercept = 0, slope = pc2, color="orange")+
-  annotate(geom="text", x=24, y=11, label="(-0.710,-0.695)",
+  annotate(geom="text", x=24, y=11, label="(0.719,0.695)",
               color="deepskyblue4")+
   annotate(geom="text", x=-24, y=11, label="(0.695,-0.719)",
               color="orange")
@@ -591,7 +594,8 @@ plot(cumsum(pve), xlab = "Principal Component",
 ```
 
 #### Proyección de los datos al nuevo espacio vectorial conformado por los compornetes principales.
-```{r}
+
+```{r,echo=FALSE}
 # Multiplicamos  los datos (estandarizados) por la matriz de componentes principales.
 
 loadings <- pr$rotation
@@ -599,7 +603,7 @@ scores <- pr$x
 scores <- as.data.frame(scores)
 ```
 
-```{r}
+```{r, echo=FALSE}
 plt2<-ggplot(scores,aes(PC1,PC2))+
          geom_point(color="darkblue", alpha=.5)+
          labs(title="Scores.Datos reproyectados con EigenVectores / PCs")+
@@ -632,7 +636,7 @@ b2
 
 Interpretación: Las variables se encuentran representadas como vectores. En este caso la dirección en la que apuntan indica la correlación positiva entre las variables de la matriz.
 
-Cada punto corresponde al número de la observación en nuestra base de datos ortiginal. Ej. tenemos 100 obs, tenemos 100 datos en el biplot y las coordenadas corresponden con la ubicación en el espacio vectorial generado por los componentes princilaes.
+Cada punto corresponde al número de la observación en nuestra base de datos ortiginal. Ej. tenemos 100 obs, tenemos 100 datos en el biplot y las coordenadas corresponden con la ubicación en el espacio vectorial generado por los componentes principales.
 
 En este caso podriamos usar unicamente una sola dimensión para explicar el desempeño de los alumnos en este grupo, (ej. el primer componente captura el $97.5\%$ de la variación total en los datos).
 
@@ -649,9 +653,10 @@ TALLAH 	Talla de recién nacido	Rango aceptable 7 a 60 centímetros
 
 PESOH	 largo	4	Peso del recién nacido	Rango aceptable 20 a 6000 gramos, 
 
-APGARH	Calificación obtenida  del recién nacido a los cinco minutos del nacimiento	Entre 0 a 10, 
+APGARH	Calificación obtenida  del recién nacido a los cinco minutos del nacimiento	Entre 0 a 10, La calificación mas alta tiene el mejor pronóstico.
 
-SILVERMAN		Calificación obtenida  del recién nacido al momento del nacimiento	Entre 10 a 0
+**SILVERMAN**		Preuba que valora la dificultad respiratoria del recien nacido. Calificación obtenida  del bebé  al momento del nacimiento.
+Entre 10 a 0. Contrario a la prueba de APGARH La calificación más baja tiene mejor pronóstico.
 
 Y la variable categórica target con valores 0,1, Donde 0 denota nacimiento normal y 1 para indicar alguna anomalía o padecimiento.
 
@@ -665,7 +670,7 @@ Adicionalmene determinar que variables estan correlacionadas.
 
 ##### Leemos los datos.
 
-```{r warning=FALSE, message=FALSE}
+```{r, echo=FALSE,  warning=FALSE, message=FALSE}
 df<-readRDS("nac16set.rds")
 
 str(df)
@@ -701,7 +706,7 @@ scale_fill_discrete(labels=c("No", "Sí"))
 
 ```
 
-```{r warning=FALSE, message=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 # Matriz de correlación
 
 df_matrix<-select(df, -c(target))
@@ -714,14 +719,14 @@ corrplot(M, diag = FALSE, method="color", order="FPC", tl.srt = 90)
 
 #### 3. Estimación de PCA.
 
-```{r, warning=FALSE, message=FALSE}
+```{r, echo=FALSE,warning=FALSE, message=FALSE}
 
 df.cp <- prcomp(df_matrix, scale = TRUE, center = TRUE)
 df.cp
 
 ```
 
-```{r warning=FALSE, message=FALSE}
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
 
 #  Parámetros para graficar.
 par(mfrow = c(1, 2))
@@ -745,7 +750,7 @@ El 77% de la varianza es explicada por los primeros 3 componentes. Los tres prim
 
 #### Scree  plot para mostrar la varianza explicada por cada componente.
 
-```{r, warning=FALSE, message=FALSE}
+```{r, echo=FALSE,warning=FALSE, message=FALSE}
 
 # Plot variance explained para cada  componente principal 
 
@@ -754,7 +759,7 @@ plot(pve, xlab = "Principal Component",
      ylim = c(0, 1), type = "b")
 ```
 
-```{r warning=FALSE, message=FALSE}
+```{r, echo=FALSE,warning=FALSE, message=FALSE}
 
 # Plot  proportion acumulada  de varianza explcada 
 
