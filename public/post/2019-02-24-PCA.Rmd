@@ -46,6 +46,8 @@ La aplicación del método reduce a un subconjunto de  dimensiones (componentes 
 
 La estructura de datos resultante maximiza la variación inherente al conjunto de datos.
 
+Ej. Captura la mayor variación posible con el menor número posible de dimensiones.
+
 
 
 Los componentes son combinaciones lineales de las variables originales, que controlan por el "ruido" (información redundante) en los datos. Nos interesa la **señal** no el **ruido**!
@@ -57,16 +59,16 @@ El **componente principal**  (Eigenvector) es una combinación lineal de las var
 En la gráfica anterior el punto azul representa las coordenadas del valor promedio de las variables población y gasto en educación.
 
 
-Note en este caso que la linea central en el primer panel  captura la dirección por la que las dos variables se relacionan, en cierto sentido este vector sintetiza la relación entre las variables pobalción y  gasto en educación para una muestra de 100 ciudades.
+Note en este caso que la linea central en el primer panel  captura la dirección por la que las dos variables se relacionan, en cierto sentido este vector sintetiza la relación entre las variables población y  gasto en educación para una muestra de 100 ciudades.
 
 Si tomamos este vector y lo rotamos de tal manera que sea paralelo al eje horizontal ahora vemos una segunda fuente de variación (un segundo vector que captura otra dimensión de la  variación en los datos) correspondiente a la variación vertical (representada por la distancia entre cada observación y nuestro  primer vector). 
 
-En este ejemplo el  plano formado por el  vector en verde lo denominamos componente principal del conjunto de datos. Note que un segundo compoente principal se forma por el vector en azul.
+En este ejemplo el  plano formado por el  vector en verde lo denominamos componente principal del conjunto de datos. Note que un segundo componente principal se forma por el vector en azul.
 
 ![](\img\pca2.jpg)
 
 
-El método permite estimar la proporción de la variación que cada dimensión (componentes principales) captura, de tal forma que podemos identificar las variables de ma yor relevancia para el análisis y conocer las variables correlacionadas.
+El método permite estimar la proporción de la variación que cada dimensión (componentes principales) captura, de tal forma que podemos identificar las variables de mayor relevancia para el análisis y conocer las variables correlacionadas.
 
 Esa variación generalmente se representa mediante un **Scree plot** ( **x** axis componentes principales, **y** axis proporción de la varianza explicada).
 
@@ -78,16 +80,16 @@ El proceso de PCA aplicado a un problema de clasificación es el siguiente:
 
 1.-Partimos de  un conjunto de datos que  contienen k dimensiones. La técnica de  PCA permite reducir estas dimensiones al determinar los **eigenvectores** y los correspondientes  **eigenvalores (loadings)**, estos permiten determinar la proporción de la varianza explicada de cada componente con lo que se tiene un criterio para seleccionar aquellos que capturan la mayor varianza posible en el conjunto de los datos.
 
-El número de eigenvectores a retener es una cuestión empírica que depende del escenario de análisis, si bien, un *Threshold* común es considerar aquellos pc que aportan $\geq 85\%$ de la varianza en los datos. de manera alternativa  conservar aquellos Eigenvectores con Eigenvalores  $\lambda\geq1$.^[Estre criterio , denominado regla de Kaiser, parte de la idea de que un $\lambda=1$ qeuivale a la varaición promedio aportada por un **eigenvalor** cualesquiera en el conjunto, entonces renterner aquellos que aportan mas de la variación promedio intuitivamente tiene sentido.]
+El número de eigenvectores a retener es una cuestión empírica que depende del escenario de análisis, si bien, un *Threshold* común es considerar aquellos pc que aportan $\geq 85\%$ de la varianza en los datos. de manera alternativa  conservar aquellos Eigenvectores con Eigenvalores  $\lambda\geq1$.^[Estre criterio , denominado regla de Kaiser, parte de la idea de que un $\lambda=1$ equivale a la variación promedio aportada por un componente cualesquiera en el conjunto, entonces renterner aquellos que aportan mas de la variación promedio intuitivamente tiene sentido.]
 
 
-2.- En el caso  supervisado la nueva estrucura de datos de menor  dimensión generada por el PCA puede ser utilizada para estimar modelos categóricos (de aprendizaje supervisado. ej tenemos una variable target para predecir) como  regresión logística,  *k nearest neighbors*, *linear discriminant Análysis* (**LDA**), etc,. 
+2.- En el caso  supervisado la nueva estrucura de datos de menor  dimensión generada por el PCA puede ser utilizada para estimar modelos categóricos (de aprendizaje supervisado. ej tenemos una variable target para predecir) como  regresión logística, etc,. 
 
-Estos permiten determinar la probabilidad de pertenencia a una categoría determinada dado un conjunto de  característcas que describen las unides de análisis. 
+Estos permiten determinar la probabilidad de pertenencia a una categoría determinada dado un conjunto de  característcas que describen las unidades de análisis. 
 
 El domino de aplicación es amplio. Una aproximación inicial a su uso es en la **visualización**, un proceso fundamental para comprender como se comportan nuestros datos antes de aplicar modelos de mayor complejidad. (VSM Vector Support Machine, NN Neural Networks , RF Random Forest,etc.,).
 
-El dominio de aplicación de PCA  incluye  estudios poblacionales en areas como, migración,salud pública, indicadores socioeconómicos etc. 
+El dominio de aplicación de PCA  incluye  estudios poblacionales en areas como, migración,salud pública, indicadores socioeconómicos, etc. 
 
 
 ### Elementos teóricos.
@@ -187,7 +189,7 @@ $$\vec{u_.}\cdot \vec{v_.}=0$$
 Sea **A** una matriz simétrica. Entonces, existen **valores** propios reales $\lambda_1, \lambda_2,\lambda_3,...,\lambda_n,$  y **vectores** propios ortogonales   $\vec{v_1},\vec{v_2},\vec{v_3},...\vec{v_n}\neq 0$  
 tal que $A\vec{v_i}=\lambda \vec{v_i}$ para $i=1,2,...,n$
 
-Adicionalmente consideremos la siguientes observaciones:
+Adicionalmente consideremos las siguientes observaciones:
 
 
 1. Sea $A \in \mathbb{R}$ una matriz mXn. Entoces tanto  $A^T \cdot A$ como $A \cdot  A^T$ son simétricas.
@@ -238,7 +240,7 @@ Ahora veamos  los elementos de la matriz de covarianza **S**
 $$\displaystyle S_{11}=\frac{1}{n-1}((a_1-\mu_1)^2+(b_1-\mu_1)^2+(c_1-\mu_1)^2)=\mbox{ Varianza de la primera variable }$$
 De manera similar los elementos $S_{22}, S_{33}$ representan la varianza de la segunda y tercera variables respectivamente.
 
-En seguida tenemos la covarinza entre la primera y segunda variables:
+En seguida tenemos la covarianza entre la primera y segunda variables:
 
 $$\displaystyle S_{12}=\frac{1}{n-1}((a_1-\mu_1)(a_2-\mu_2)+(b_1-\mu_1)(b_2-\mu_2)+(c_1-\mu_1)(c_2-\mu_2))=S_{21}$$
 Y generalizando tenemos   que:
@@ -269,7 +271,7 @@ Es una fracción $\displaystyle\frac{\lambda_1}{T}$ de la varianza total. De igu
 
 ¿Que conjunto de datos tenemos como resultado del PCA? 
 
-El procedimiento de PCA  ha generado una nueva estructura de los datos (reducción en las dimensiones) por lo que ahora  podemos representar digamos un espacio vectorial que era digamos $\mathbb{R}^{30}$ mediante una estructura de compoentes principales de menor dimensión con las observaciones del conjunto de datos conformando clusters definidos en función de los Eigenvectores.
+El procedimiento de PCA  ha generado una nueva estructura de los datos (reducción en las dimensiones) por lo que ahora  podemos representar digamos un espacio vectorial que era digamos $\mathbb{R}^{30}$ mediante una estructura de componentes principales de menor dimensión con las observaciones del conjunto de datos conformando clusters definidos en función de los Eigenvectores.
 
 ## Práctica.
 
@@ -288,7 +290,7 @@ El propósito es determinar un subconjunto de variables que capturen la mayor ca
 
 Esta técnica permite además visualizar los vectores a lo largo de los cuales la mayor variación posible es capturada (2D).
 
-Este subconjunto de variables consituyen una síntensis que representa los eigenvectores de la matriz original. 
+Este subconjunto de variables constituyen una síntensis que representa los eigenvectores de la matriz original. 
 
 [Background](http://archive.ics.uci.edu/ml/datasets/breast+cancer+wisconsin+%28diagnostic%29)
 
@@ -331,7 +333,7 @@ bc_mean<-group_by(bc,diagnosis)%>%
 
 # Valor promedio de todas las variables  para cada grupo y tdo el df?
 bc_std<-group_by(bc,diagnosis)%>%
-  summarise_all(funs(sd))
+    summarise_all(funs(sd))
 
 bc_std.all<-(bc)%>%
   summarise_all((funs(sd)))
