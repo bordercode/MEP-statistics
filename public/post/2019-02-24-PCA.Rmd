@@ -80,7 +80,7 @@ Uno de los uso de esta técnica es la construcción de modelos que permiten hace
 
 El proceso de PCA aplicado a un problema de clasificación es el siguiente:
 
-1.-Partimos de  un conjunto de datos que  contienen k dimensiones. La técnica de  PCA permite reducir estas dimensiones al determinar los **eigenvectores** y los correspondientes  **eigenvalores (loadings)**, estos permiten determinar la proporción de la varianza explicada de cada componente con lo que se tiene un criterio para seleccionar aquellos que capturan la mayor varianza posible en el conjunto de los datos.
+1.-Partimos de  un conjunto de datos que  contienen k dimensiones. La técnica de  PCA permite reducir estas dimensiones al determinar los **eigenvectores** y los correspondientes  **eigenvalores**, estos permiten determinar la proporción de la varianza explicada de cada componente con lo que se tiene un criterio para seleccionar aquellos que capturan la mayor varianza posible en el conjunto de los datos.
 
 El número de eigenvectores a retener es una cuestión empírica que depende del escenario de análisis, si bien, un *Threshold* común es considerar aquellos pc que aportan $\geq 85\%$ de la varianza en los datos. de manera alternativa  conservar aquellos Eigenvectores con Eigenvalores  $\lambda\geq1$.^[Estre criterio , denominado regla de Kaiser, parte de la idea de que un $\lambda=1$ equivale a la variación promedio aportada por un componente cualesquiera en el conjunto, entonces renterner aquellos que aportan mas de la variación promedio intuitivamente tiene sentido.]
 
@@ -401,7 +401,7 @@ pr.var <- bc.pr$sdev ^ 2
 # Varianza explicada por cada principal component: pve
 pve <- pr.var/sum(pr.var)
 
-# Eigen valores  (loadings)
+# Eigen valores  
 round(pr.var, 2)
 
 pr.var
@@ -731,7 +731,7 @@ df.cp
 #  Parámetros para graficar.
 par(mfrow = c(1, 2))
 
-# # Eigenvalores  (loadings). Varianza en cada componente.
+# # Eigenvalores   Varianza en cada componente.
 cp.var <- df.cp$sdev ^ 2
 round(cp.var, 2)
 cp.var
