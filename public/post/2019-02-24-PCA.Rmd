@@ -50,9 +50,11 @@ Ej. Captura la mayor variación posible con el menor número posible de dimensio
 
 
 
-Los componentes son combinaciones lineales de las variables originales, que controlan por el "ruido" (información redundante) en los datos. Nos interesa la **señal** no el **ruido**!
+Los componentes son **combinaciones lineales de las variables originales**, que controlan por el "ruido" (información redundante) en los datos. Nos interesa la **señal** no el **ruido**!
 
-El **componente principal**  (Eigenvector) es una combinación lineal de las variables consideradas para predicción. Este captura la mayor pate de la variación en las dimensiones consideradas.
+El **componente principal**  (Eigenvector) es una combinación lineal de las variables consideradas para predicción. Este captura la mayor pate de la variación en las dimensiones consideradas. 
+
+Estos componentes resultantes de la combinación lineal **no estan correlacionados entre sí**.
 
 ![](\img\pca1.jpg)
 
@@ -296,11 +298,12 @@ Este subconjunto de variables constituyen una síntensis que representa los eige
 
 ```{r,echo=FALSE}
 
-# Reading  in the data
+# Leemos los datos en R desde el sito que contiene el archivo .csv
 
 bc<-read.csv("https://raw.githubusercontent.com/patrickmlong/Breast-Cancer-Wisconsin-Diagnostic-DataSet/master/data.csv")
 
-# Basic overview of data
+# EXPLORAMOS la base de datos y su estuctra.
+
 str(bc)
 names(bc)
 View(bc)
@@ -314,7 +317,7 @@ Entre las variables tenemos una denominada diagnosis, esta indica el tipo de tum
 
 #### 1. Fase EDA.
 
-```{r}
+```{r, echo=FALSE}
 
 # descriptive stats para todas las variables:
 
@@ -331,7 +334,7 @@ bc_mean<-group_by(bc,diagnosis)%>%
   summarise_all(funs(mean))
 
 
-# Valor promedio de todas las variables  para cada grupo y tdo el df?
+# STANDARD DEV  de todas las variables  para cada grupo y tdo el df?
 bc_std<-group_by(bc,diagnosis)%>%
     summarise_all(funs(sd))
 
@@ -356,6 +359,7 @@ cNames <- c("rad_m","txt_m","per_m",
 colnames(bc_matrix) <- cNames
 
 M <- round(cor(bc_matrix), 2)
+
 corrplot(M, diag = FALSE, method="color", order="FPC", tl.srt = 90)
 
 ```
@@ -380,38 +384,36 @@ De lo contrario los **eigenvectores** resultantes en el proceso de estimación  
 #### 3. Estimacion de PCA usando la  matriz de correlación.
 
 ```{r, echo =FALSE}
+
 bc.pr <- prcomp(bc_matrix, scale = TRUE, center = TRUE)
 summary(bc.pr)
 
 ```
 
-```{r}
+```{r, echo=FALSE}
 
-# Set up 1 x 2 plotting grid
+# Definir el grid  1 x 2 para graficar. 
 par(mfrow = c(1, 2))
 
-# Calculate variability of each component
+# Calcular la  variabilidad de cada componente.
 pr.var <- bc.pr$sdev ^ 2
 
-# Variance explained by each principal component: pve
+# Varianza explicada por cada principal component: pve
 pve <- pr.var/sum(pr.var)
 
-# Eigen values  (loadings)
+# Eigen valores  (loadings)
 round(pr.var, 2)
 
 pr.var
 
-# Percent variance explained
+# Porcentaje varianza explicada
 round(pve, 2)
 
-# Cummulative percent explained
+# Porcentaje acumulado explicado
 round(cumsum(pve), 2)
 ```
 
 El 89% de la varianza es explicada por los primeros 6 componentes. Adicionalmente vemos que  eigenvalores>1 para los 6 pc que explican el 89% de la varianza.  Este será el criterio de selección para retenter en este caso los pc (ej . si los eigenvalores>1).
-
-
-
 
 
 Scree  plot para mostrar la varianza explicada por cada componente.
@@ -425,8 +427,8 @@ plot(pve, xlab = "Principal Component",
      ylim = c(0, 1), type = "b")
 ```
 
-```{r}
-# Plot cumulative proportion of variance explained
+```{r, echo=FALSE}
+# Grafica  de la proporción acumulda  de la varianza explicada.
 plot(cumsum(pve), xlab = "Principal Component", 
      ylab = "Cumulative Proportion of Variance Explained", 
      ylim = c(0, 1), type = "b")
@@ -434,7 +436,7 @@ plot(cumsum(pve), xlab = "Principal Component",
 
 #### Visualización de los datos. Plot de Observaciones para componentes 1 y 2.
 
-```{r}
+```{r, echo=FALSE}
 
 plot(bc.pr$x[, c(1, 2)], col = (diagnosis + 1), 
      xlab = "PC1", ylab = "PC2")
@@ -455,14 +457,14 @@ https://www.kaggle.com/shravank/predicting-breast-cancer-using-pca-lda-in-r
 En el siguiente ejemplo considere un conjunto de calificaciones para  alumnos de posgrado en dos asignaturas. El objetivo es: a) obtener los componentes principales y eigenvalores b) determinar la proporción de la varianza que explican c) representar los eigenvectores graficamente.
 
 
-La base de datos contiene  100 observaciones correspondientes a calificaciones en las asignaturas de historia y geografia. La matriz conformada por los datos tiene dimensiones 100x2.
+La base de datos contiene  100 observaciones correspondientes a calificaciones en las asignaturas de historia y geografía. La matriz conformada por los datos tiene dimensiones 100x2.
 
-En este ejemplo la intención es enfatizar la estructura conceptual del algoritmo PCA. Note que ya de hecho se tiene 2 dimensiones que facilmente permiten tener una aproximación visual al comportamiento y correlación de los datos, no obstante, la aplicación de PCA permite reforzar los coceptos involucrados en la estimación del  algoritmo. 
+En este ejemplo la intención es enfatizar la estructura conceptual del algoritmo PCA. Note que ya de hecho se tiene 2 dimensiones que facilmente permiten tener una aproximación visual al comportamiento y correlación de los datos, no obstante, la aplicación de PCA permite reforzar los conceptos involucrados en la estimación del  algoritmo. 
 
 
 ### 1. Leemos la base de datos.
 
-```{r, warning=FALSE, message=FALSE}
+```{r, echo= FALSE, warning=FALSE, message=FALSE}
 
 datos<-readRDS("datos.rds")
 getwd()
