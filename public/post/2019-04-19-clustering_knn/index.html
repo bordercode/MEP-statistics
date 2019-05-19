@@ -147,15 +147,20 @@ if (!doNotTrack) {
 <div id="implementacion" class="section level2">
 <h2>Implementación:</h2>
 <p>Dos puntos importantes para la implementación, la clasificación es para variables categóricas por definición pero las variables explicativas (features) idealmente son numéricas, este modelo no tiene un buen desempeño cuando usamos variables categóricas como insumo o cuando el número de dimensiones <em>p</em>, (var explicativas) es muy grande (p&gt;3).</p>
-<p>Un parámetro importante en la estimación de este modelo es el nÚmero de observaciones que debemos considerar para determinar a qué categoría pertenece la observación sobre la que se hace la predicción. <strong>K</strong> Una práctica común en términos empíricos es considerar <span class="math inline">\(k =\sqrt(n)\)</span>. Donde <strong>n</strong> es el número de observacones del conjunto de datos de contraste.</p>
-<p>Como parte de la aplicación de este modelo validaremos la precisión mediante la estrategia de contrsate entre un conjunto de datos de entrenamiento (<strong>train data set</strong>), que esta integrado por la proporción de datos que usaremos para estimar el modelo (generalmente <span class="math inline">\(80%\)</span>) del total de los datos disponibles. Y un cnjunto de datos de validación (<strong>test data set</strong>, usualmente la proporción restante de datos ej. 2<span class="math inline">\(0%\)</span>).</p>
-<p>Para aplicar la estrategia de validación y determinar el nivel de precisión alcanzado por el modelo, necesitamos constrir una <strong>matriz de contraste</strong> que nos indica cuantos casos son calsificados correctamente y cuantos son clasificados de forma incorrecta.</p>
-<p><img src="/img/cfm.jpg" /> Note los elementos de la diagonal (2, 4 )(son predicciones correctas.</p>
+<p>Un parámetro importante en la estimación de este modelo es el número <strong>K</strong> de observaciones que debemos considerar para determinar a qué categoría pertenece la observación sobre la que se hace la predicción.</p>
+<p>Una práctica común en términos empíricos es considerar <span class="math inline">\(k =\sqrt(n)\)</span>. Donde <strong>n</strong> es el número de observaciones del conjunto de datos de contraste.</p>
+<p>Como parte de la aplicación de este modelo validaremos <strong>la precisión</strong> mediante la estrategia de contraste entre un conjunto de datos de entrenamiento (<strong>train data set</strong>), que esta integrado por la proporción de datos que usaremos para estimar el modelo del total de los datos disponibles (generalmente <span class="math inline">\(80\%\)</span>). Y un conjunto de datos de validación (<strong>test data set</strong>, la proporción restante de datos ej. <span class="math inline">\(20\%\)</span>).</p>
+<p>Para aplicar la estrategia de validación y determinar el nivel de precisión alcanzado por el modelo, necesitamos constrir una <strong>matriz de contraste</strong> que nos indica cuantos casos son clasificados correctamente y cuantos son clasificados de forma incorrecta.</p>
+<div class="figure">
+<img src="/img/cfm.jpg" />
+
+</div>
+<p>Note los elementos de la diagonal (2, 4 )(son predicciones correctas.</p>
 <p>Tres indicadores son de interés para la validación:</p>
 <ol style="list-style-type: decimal">
 <li>El <strong>precisión score</strong> que mide la fracción de la predicción que fue correcta <strong>respecto a todas</strong> las categorías. (max. val 100).</li>
 </ol>
-<p><strong>Precision score</strong> =<span class="math display">\[\frac{tp}{tp+fp}\]</span> Donde <strong>tp</strong>. fracción de observaciones clasificadas correctamente (predicción positiva para observación positiva. Y <strong>fp</strong> falso positivo). la fracción de la predicción que fue correcta <strong>respecto a todas</strong> las categorías. (max. val 100).</p>
+<p><span class="math display">\[Precision score=\frac{tp}{tp+fp}\]</span> Donde <strong>tp</strong>. fracción de observaciones clasificadas correctamente (predicción positiva para observación positiva. Y <strong>fp</strong> falso positivo). la fracción de la predicción que fue correcta <strong>respecto a todas</strong> las categorías. (max. val 100).</p>
 <div class="figure">
 <img src="\img\precision.jpg" />
 
