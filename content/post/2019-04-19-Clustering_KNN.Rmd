@@ -78,9 +78,9 @@ Tres   indicadores  son de interés para la validación:
 
 1. El **precisión score** que  mide la fracción de la predicción que fue correcta **respecto a todas** las categorías. (max. val 100). 
 
-**Precision score** =$$\frac{tp}{tp+fp}$$ Donde **tp**. fracción de observaciones clasificadas correctamente (predicción positiva para  observación  positiva. Y **fp** falso positivo).  
+**Precision score** =$$\frac{tp}{tp+fp}$$ Donde **tp**. fracción de observaciones clasificadas correctamente (predicción positiva para  observación  positiva. Y **fp** falso positivo).
  la fracción de la predicción que fue correcta **respecto a todas** las categorías. (max. val 100). 
-
+ 
 
 ![](\img\precision.jpg)
 
