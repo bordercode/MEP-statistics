@@ -115,7 +115,7 @@ En la práctica el uso de la medida de validación dependerá del problema estud
 
 ##### Descripción 
 
-##### Clasifiación de personas: 
+##### Clasificación de personas: 
 
 Conisdere un escenario sobre  transacciones realizadas en una tienda departamental en el que se busca determinar el comportamiento de las personas a partir de algunas características de las transacciones  como el valor de compras y la ocupación de la persona.
 
@@ -123,6 +123,8 @@ Este es un problema de clasificación en el que buscamos determinar si la person
 
 
 **Implementación:**
+
+#### Ver jupyter notebook. K-NN.ipynb.  
 
 a) Estime el modelo con un parámetro **K=3** y genere la predicción para el sexo de la persona utilizando las variables: *Purchase* y *Occupation*. 
 
@@ -135,14 +137,16 @@ c) Determine el valor de cluster óptimo. (ie. el valor de k , para el que el sc
 d) Grafique sus resultados.
 
 
-### Ver jupyter notebook. K-NN.ipynb.  
+
 
 ### Ejemplo 2.
+
+
 
 Diabetes entre la tribu Pima (Población en la región Sonora-Arizona).
 Considere un escenario en el que nos  interesa clasificar un conjunto de 768 pacientes con la etiqueta 1: diganóstico diabetes) 0: No diabetes en función de un conjunot de carácteríssticas.
 
-Ver:
+Ver jupyter notebook:
 ##K-NN2-Pimas.ipynb
 
 a) Estime el modelo con un parámetro **K=3** y genere la predicción para el sexo de la persona utilizando las variables: *Purchase* y *Occupation*. 
@@ -157,6 +161,8 @@ c) Determine el valor de cluster óptimo. (ie. el valor de k , para el que el sc
 
 d) Grafique sus resultados.
 
+
+#### Tarea.
 
 
 ## Linear Discriminant Analysis LDA.

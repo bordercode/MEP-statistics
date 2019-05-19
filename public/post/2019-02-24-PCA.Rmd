@@ -770,3 +770,7 @@ plot(cumsum(pve), xlab = "Principal Component",
 ```
 
 
+## Actividad 8.
+
+
+Considere el sigueinte escenario. Se tiene una  muestra de individuos 
