@@ -143,10 +143,7 @@ if (!doNotTrack) {
 </div>
 <div id="teoria." class="section level2">
 <h2>Teoría.</h2>
-</div>
-<div id="implementacion" class="section level2">
-<h2>Implementación:</h2>
-<p>Dos puntos importantes para la implementación, la clasificación es para variables categóricas por definición pero las variables explicativas (features) idealmente son numéricas, este modelo no tiene un buen desempeño cuando usamos variables categóricas como insumo o cuando el número de dimensiones <em>p</em>, (var explicativas) es muy grande (p&gt;3).</p>
+<p>La clasificación es para variables categóricas por definición pero las variables explicativas (features) idealmente son numéricas, este modelo no tiene un buen desempeño cuando usamos variables categóricas como insumo o cuando el número de dimensiones <em>p</em>, (var explicativas) es muy grande (p&gt;3).</p>
 <p>Un parámetro importante en la estimación de este modelo es el número <strong>K</strong> de observaciones que debemos considerar para determinar a qué categoría pertenece la observación sobre la que se hace la predicción.</p>
 <p>Una práctica común en términos empíricos es considerar <span class="math inline">\(k =\sqrt(n)\)</span>. Donde <strong>n</strong> es el número de observaciones del conjunto de datos de contraste.</p>
 <p>Como parte de la aplicación de este modelo validaremos <strong>la precisión</strong> mediante la estrategia de contraste entre un conjunto de datos de entrenamiento (<strong>train data set</strong>), que esta integrado por la proporción de datos que usaremos para estimar el modelo del total de los datos disponibles (generalmente <span class="math inline">\(80\%\)</span>). Y un conjunto de datos de validación (<strong>test data set</strong>, la proporción restante de datos ej. <span class="math inline">\(20\%\)</span>).</p>
@@ -156,7 +153,7 @@ if (!doNotTrack) {
 
 </div>
 <p>Note los elementos de la diagonal (2, 4 )(son predicciones correctas.</p>
-<p>Tres indicadores son de interés para la validación:</p>
+<p>Cuatro indicadores son de interés para la validación:</p>
 <ol style="list-style-type: decimal">
 <li>El <strong>precisión score</strong> que mide la fracción de la predicción que fue correcta <strong>respecto a todas</strong> las categorías. (max. val 100).</li>
 </ol>
@@ -166,15 +163,22 @@ if (!doNotTrack) {
 
 </div>
 <ol start="2" style="list-style-type: decimal">
-<li>El indicador de <strong>sensitividad</strong> (<em>recall</em>) que mide la fracción clasificada correctamente de entre los registros positivos unicamente. <span class="math display">\[\frac{tp}{tp+fn}\]</span></li>
+<li>El indicador de <strong>sensitividad</strong> (<em>recall</em>) que mide la fracción clasificada correctamente de entre los registros positivos unicamente. <span class="math display">\[recall=\frac{tp}{tp+fn}\]</span></li>
 </ol>
 <div class="figure">
 <img src="\img\sensitivity_recall.jpg" />
 
 </div>
-<p>El <em>F score</em>, este indicador considera el los dos anteriores al estimar una media armómica no aritmética. Ya que es posible tener modelos con valores elevados del sensitividad (recall) y valores pequeños de <strong>precisión</strong>. Esta medida pondera ambos. <span class="math display">\[F1=\frac{2*recall*precision}{recall+ precision}\]</span></p>
-<p>En la práctica el uso de la medida de validación dependerá del probkema estuduado (ej. de los costos de claficar incorrectamente los datos.)</p>
-<p>(accuracy score), así como el factor de precisión f1.</p>
+<ol start="3" style="list-style-type: decimal">
+<li><p>El <em>F score</em>, este indicador considera los dos anteriores al estimar una media armómica no aritmética. Ya que es posible tener modelos con valores elevados del sensitividad (recall) y valores pequeños de <strong>precisión</strong>. Esta medida pondera ambos. <span class="math display">\[F1=\frac{2*recall*precision}{recall+ precision}\]</span></p></li>
+<li><p><strong>Accuracy score ACS</strong>, la fracción de observaciones clasificadas correctamente. Con valor máximo 1.</p></li>
+</ol>
+<p>Esta medida se calcula como la fracción de aciertos entre el valor de predicción y el observado respecto al total de datos en la muestra.</p>
+<p>Entre el f1 el ACS, por definición tenemos que el <span class="math inline">\(ACS&gt;F1\)</span> Así que en un escenario estricto de medición nos interesa el valor del F1 más que el ACS como medida de desempeño de modelo.</p>
+<p>En la práctica el uso de la medida de validación dependerá del problema estuduado (ej. de los costos de clasificar incorrectamente los datos.)</p>
+</div>
+<div id="implementacion" class="section level2">
+<h2>Implementación:</h2>
 <div id="ejemplo-1." class="section level3">
 <h3>Ejemplo 1.</h3>
 <div id="descripcion" class="section level5">
@@ -195,6 +199,24 @@ if (!doNotTrack) {
 <li><p>Grafique sus resultados.</p></li>
 </ol>
 </div>
+</div>
+<div id="ver-jupyter-notebook.-k-nn.ipynb." class="section level3">
+<h3>Ver jupyter notebook. K-NN.ipynb.</h3>
+</div>
+<div id="ejemplo-2." class="section level3">
+<h3>Ejemplo 2.</h3>
+<p>Diabetes entre la tribu Pima (Población en la región Sonora-Arizona). Considere un escenario en el que nos interesa clasificar un conjunto de 768 pacientes con la etiqueta 1: diganóstico diabetes) 0: No diabetes en función de un conjunot de carácteríssticas.</p>
+<p>Ver: ##K-NN2-Pimas.ipynb</p>
+<ol style="list-style-type: lower-alpha">
+<li>Estime el modelo con un parámetro <strong>K=3</strong> y genere la predicción para el sexo de la persona utilizando las variables: <em>Purchase</em> y <em>Occupation</em>.</li>
+</ol>
+<p>Para la estimación del modelo considere una proporción del <span class="math inline">\(20 \%\)</span> para separar la base de datos de entrenamiento (train) de la base de validación (test).</p>
+<p>Y un parámetro <span class="math inline">\(k=\sqrt(n)\)</span> Donde n es el número de observaciones del conjunto de datos de contraste (y_test).</p>
+<ol start="2" style="list-style-type: lower-alpha">
+<li><p>Estime el nivel de precisión del modelo.(i.e.¿Cuál es el porcentaje de casos clasificados correctamente? Genere la matriz de contrsate y estime el F-score, acurracy score, precision score y recall score.</p></li>
+<li><p>Determine el valor de cluster óptimo. (ie. el valor de k , para el que el score de precisión es el mas alto.)</p></li>
+<li><p>Grafique sus resultados.</p></li>
+</ol>
 </div>
 </div>
 <div id="linear-discriminant-analysis-lda." class="section level2">

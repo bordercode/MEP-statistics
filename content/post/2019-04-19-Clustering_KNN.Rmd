@@ -59,9 +59,9 @@ Un supuesto central de este algoritmo es que observaciones que son similares ten
 
 ##Teoría.
 
-## Implementación:
 
-Dos puntos importantes para la implementación, la clasificación es para variables categóricas por definición pero las variables explicativas (features) idealmente son  numéricas, este modelo no tiene un buen desempeño cuando usamos variables categóricas como insumo  o cuando el número  de dimensiones *p*, (var explicativas) es muy grande (p>3).
+
+La clasificación es para variables categóricas por definición pero las variables explicativas (features) idealmente son  numéricas, este modelo no tiene un buen desempeño cuando usamos variables categóricas como insumo  o cuando el número  de dimensiones *p*, (var explicativas) es muy grande (p>3).
 
 
 Un parámetro importante en la estimación de este modelo es el número  **K**  de observaciones que debemos considerar para determinar a qué categoría pertenece la observación sobre la que se hace la predicción. 
@@ -78,7 +78,7 @@ Para aplicar la estrategia de validación y determinar el nivel de precisión al
 
 Note los elementos de la diagonal (2, 4 )(son predicciones correctas.
 
-Tres   indicadores  son de interés para la validación:
+Cuatro   indicadores  son de interés para la validación:
 
 
 1. El **precisión score** que  mide la fracción de la predicción que fue correcta **respecto a todas** las categorías. (max. val 100). 
@@ -97,12 +97,18 @@ $$Precision score=\frac{tp}{tp+fp}$$ Donde **tp**. fracción de observaciones cl
 $$F1=\frac{2*recall*precision}{recall+ precision}$$
 
 
-En la práctica el uso de la medida de validación dependerá del probkema estuduado (ej. de los costos de claficar incorrectamente los datos.)
+4. **Accuracy score ACS**, la fracción de observaciones clasificadas correctamente. Con valor máximo 1. 
+
+Esta medida se calcula como la fracción de aciertos entre el valor de predicción y el observado  respecto al total de datos en la muestra. 
+
+Entre el f1 el ACS, por definición tenemos que el $ACS>F1$ Así que en un escenario estricto de medición nos interesa el valor del F1  más que el ACS como medida de desempeño de modelo.  
+
+
+En la práctica el uso de la medida de validación dependerá del problema estuduado (ej. de los costos de clasificar incorrectamente los datos.)
 
 
 
-(accuracy score), así como el factor de precisión f1.
-
+## Implementación:
 
 
 ### Ejemplo 1.
@@ -122,9 +128,6 @@ a) Estime el modelo con un parámetro **K=3** y genere la predicción para el se
 
 Para la estimación del modelo considere una proporción del $30 \%$ para separar la base de datos de entrenamiento (train) de la base de validación (test). Y un parametro $k=\sqrt(n)$ Donde n es el numero de observaciones del conjunto de datos de contraste (y_test).
 
-
-
-
 b) Estime el nivel de precisión del modelo.(i.e.¿Cuál es el porcentaje de casos clasificados correctamente?  Genere la matriz de contrsate  y estime el score de precisión. 
 
 c) Determine el valor de cluster óptimo. (ie. el valor de k , para el que el score de precisión es el mas alto.)
@@ -132,6 +135,27 @@ c) Determine el valor de cluster óptimo. (ie. el valor de k , para el que el sc
 d) Grafique sus resultados.
 
 
+### Ver jupyter notebook. K-NN.ipynb.  
+
+### Ejemplo 2.
+
+Diabetes entre la tribu Pima (Población en la región Sonora-Arizona).
+Considere un escenario en el que nos  interesa clasificar un conjunto de 768 pacientes con la etiqueta 1: diganóstico diabetes) 0: No diabetes en función de un conjunot de carácteríssticas.
+
+Ver:
+##K-NN2-Pimas.ipynb
+
+a) Estime el modelo con un parámetro **K=3** y genere la predicción para el sexo de la persona utilizando las variables: *Purchase* y *Occupation*. 
+
+Para la estimación del modelo considere una proporción del $20 \%$ para separar la base de datos de entrenamiento (train) de la base de validación (test). 
+
+Y un parámetro $k=\sqrt(n)$ Donde n es el número de observaciones del conjunto de datos de contraste (y_test).
+
+b) Estime el nivel de precisión del modelo.(i.e.¿Cuál es el porcentaje de casos clasificados correctamente?  Genere la matriz de contrsate  y estime el F-score, acurracy score, precision score  y recall score.
+
+c) Determine el valor de cluster óptimo. (ie. el valor de k , para el que el score de precisión es el mas alto.)
+
+d) Grafique sus resultados.
 
 
 
