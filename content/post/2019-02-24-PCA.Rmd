@@ -303,6 +303,8 @@ Este subconjunto de variables constituyen una síntensis que representa los eige
 
 bc<-read.csv("https://raw.githubusercontent.com/patrickmlong/Breast-Cancer-Wisconsin-Diagnostic-DataSet/master/data.csv")
 
+bc<-select(bc,-X)
+
 # EXPLORAMOS la base de datos y su estuctra.
 
 str(bc)
@@ -318,7 +320,7 @@ Entre las variables tenemos una denominada diagnosis, esta indica el tipo de tum
 
 #### 1. Fase EDA.
 
-```{r, echo=FALSE}
+```{r, echo=TRUE}
 
 # descriptive stats para todas las variables:
 
