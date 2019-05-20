@@ -328,6 +328,7 @@ Entre las variables tenemos una denominada diagnosis, esta indica el tipo de tum
 # descriptive stats para todas las variables:
 
 summary(bc)
+
 diagnosis <- as.numeric(bc$diagnosis == "M")
 
 # Cuantos casos por tipo?
@@ -389,7 +390,7 @@ De lo contrario los **eigenvectores** resultantes en el proceso de estimación  
 
 #### 3. Estimacion de PCA usando la  matriz de correlación.
 
-```{r, echo =FALSE}
+```{r, echo =TRUE}
 
 bc.pr <- prcomp(bc_matrix, scale = TRUE, center = TRUE)
 summary(bc.pr)
