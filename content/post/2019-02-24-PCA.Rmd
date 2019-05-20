@@ -305,6 +305,9 @@ bc<-read.csv("https://raw.githubusercontent.com/patrickmlong/Breast-Cancer-Wisco
 
 bc<-select(bc,-X)
 
+
+
+str(bc)
 # EXPLORAMOS la base de datos y su estuctra.
 
 str(bc)
@@ -345,7 +348,7 @@ bc_std.all<-(bc)%>%
   summarise_all((funs(sd)))
 
 # Matriz de correlación
-bc_matrix<-select(bc, -c(diagnosis,id, X))
+bc_matrix<-select(bc, -c(diagnosis,id))
 
 # Rename cols para mejor interpretación.
 
