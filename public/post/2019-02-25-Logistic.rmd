@@ -324,8 +324,6 @@ Estimamos el $R^2$ como :
 ```{r, echo=TRUE}
 ## Calculamos el  "Pseudo R-squared" y su  p-value
 
-(2920.6-1596.5)/1596.5
-
 ll.null <- logistic$null.deviance
 ll.fit <- logistic$deviance
 
@@ -334,7 +332,7 @@ ll.fit <- logistic$deviance
 ## McFadden's Pseudo R^2 = [ LL(Null) - LL(fit) ] / LL(Null)
 (ll.null - ll.fit) / ll.null
 
-## Si el modelo es útil el r^2 es cercano a 1, no es común.
+## Si el modelo es útil el r^2 esta mas cercano a 1, (no es común).
 #Valores aprox .40 son comunes en sc.
 
 
