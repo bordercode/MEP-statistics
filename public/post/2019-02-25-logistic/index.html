@@ -164,7 +164,28 @@ str(d)</code></pre>
 p</code></pre>
 <p><img src="/post/2019-02-25-Logistic_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>Distribución de los datos con un <strong>Boxplot</strong>.</p>
+<pre class="r"><code>library(gridExtra)
+
+bxp1&lt;-ggplot(d,aes(default, balance))+
+  geom_boxplot(aes(fill=default))+
+  theme_light()+
+  scale_y_continuous(labels = dollar_format())+
+  scale_fill_manual(values = c(&quot;orange&quot;, &quot;darkgreen&quot;))+
+  theme(legend.position = &quot;none&quot;)
+
+
+bxp2&lt;-ggplot(d,aes(default, income))+
+  geom_boxplot(aes(fill=default))+
+  theme_light()+
+  scale_y_continuous(labels = dollar_format())+
+  scale_fill_manual(values = c(&quot;orange&quot;, &quot;darkgreen&quot;))+
+  theme(legend.position = &quot;none&quot;)
+
+
+
+5/8</code></pre>
 <pre><code>## [1] 0.625</code></pre>
+<pre class="r"><code>grid.arrange(bxp1, bxp2, nrow = 1)</code></pre>
 <p><img src="/post/2019-02-25-Logistic_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>Note la relación positiva entre las variables saldo e incumplimiento. Así mismo una relación inversa respecto al ingreso, aparentemente aquellos individuos de menor ingreso tiene mayor problema de incumplimiento.</p>
 <div id="preeliminares.-contraste-de-regresion-logistica-respecto-a-regresion-linear-con-ols." class="section level5">

@@ -85,7 +85,7 @@ p
 
 Distribución de los datos con un **Boxplot**.
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
 library(gridExtra)
 
 bxp1<-ggplot(d,aes(default, balance))+
