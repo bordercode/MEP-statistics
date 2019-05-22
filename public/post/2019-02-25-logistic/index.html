@@ -144,12 +144,24 @@ if (!doNotTrack) {
 <p>El primer paso para aproximar la solución de este problema de clasificación es representar las variables de interés.</p>
 <p>Note que la variable dependiente (<strong>Y</strong>) es <em>Default</em> y las explicativas (<strong>x_1,…,X_n</strong>) son <em>income</em> y <em>balance</em>.</p>
 <p><strong>Scatter plot</strong> entre las variables independientes (income y balance) para observar su interacción.</p>
+<pre class="r"><code>d&lt;-Default
+str(d)</code></pre>
 <pre><code>## &#39;data.frame&#39;:    10000 obs. of  4 variables:
 ##  $ default: Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ student: Factor w/ 2 levels &quot;No&quot;,&quot;Yes&quot;: 1 2 1 1 1 2 1 2 1 1 ...
 ##  $ balance: num  730 817 1074 529 786 ...
 ##  $ income : num  44362 12106 31767 35704 38463 ...</code></pre>
+<pre class="r"><code>names(d)</code></pre>
 <pre><code>## [1] &quot;default&quot; &quot;student&quot; &quot;balance&quot; &quot;income&quot;</code></pre>
+<pre class="r"><code>p&lt;-ggplot(d,aes(balance, income, colour=default, shape=default))+
+  geom_point()+
+  theme_light()+
+  scale_shape_manual(values=c(1,3))+
+  scale_colour_manual(values = c(&quot;orange&quot;, &quot;darkgreen&quot;))+
+  scale_x_continuous(labels = dollar_format())+
+  scale_y_continuous(labels = dollar_format())
+
+p</code></pre>
 <p><img src="/post/2019-02-25-Logistic_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>Distribución de los datos con un <strong>Boxplot</strong>.</p>
 <pre><code>## [1] 0.625</code></pre>
@@ -178,7 +190,7 @@ if (!doNotTrack) {
 <p>Antes de avanzar veamos un par de conceptos preeliminares. Momios y ratio de Momios.</p>
 <p>Qué son los <strong>Momios</strong> (chances de que algo ocurra, un ratio o cociente)(<strong>odds</strong>)? Suponga que tenemos un escenario en el que un equipo participa en 5 partidos. Gana uno y pierde 4 en este caso podemos calcular los <strong>Odds</strong> de ganar como el cociente:<span class="math display">\[1/4=.25\]</span></p>
 <p>En palabras tenemos un chance de ganar (odds) de 0.25.</p>
-<p><strong>Note que Odds no son probabilidades.</strong> Para llegar a estimar la probilidades que un evento ocurra dado un conjunto de variables explicativas el modelo de regresión logística considera una serie de supuestos adicionales, e especial es importante incorporar la función logit, que veremos enseguida.</p>
+<p><strong>Note que Odds no son probabilidades.</strong> Para llegar a estimar la probilidades que un evento ocurra dado un conjunto de variables explicativas el modelo de regresión logística considera una serie de supuestos adicionales, en especial es importante incorporar la función logit, que veremos enseguida.</p>
 <p>Las probabiliadades son la tasa (<strong>ratio</strong>) de que algo ocurran respecto a <strong>todo</strong> lo que podria suceder. En el caso previo tenemos un total de 5 juegos así que la probabilid de que mi equipo gane es: <span class="math display">\[1/5=.20\]</span></p>
 <p>Nuevamente suponga ahora que nuestro equipo participa en un total de 8 partidos. Gana 5 pierder 3. Igualmente podemos calcular los momios de ganar como <span class="math display">\[5/3=1.7\]</span> Pero la probabilidad de ganar es: <span class="math display">\[5/8=0.625\]</span></p>
 <p>Note que la probabilidad de que mi equipo gane es <strong>diferente</strong> a los <strong>Odds</strong> (Momios) de que mi equipo gane.</p>
@@ -193,7 +205,7 @@ if (!doNotTrack) {
 <p><strong>Note</strong> que si mi equipo es malo, los momios de ganar a medida que le número de partidos aumenta (a medida que el número de partidos tiende a inifnito (<span class="math inline">\(\infty\)</span>)), tienden a cero. de hecho si los Odds estan <strong>encontra</strong> de que mi equipo gane los momios se ubican en el intervalo cerrado [0,1]. Cero si pierde todos los partidos jugados, 1 si gana el mismo número de los que pierde.</p>
 <p>Ahora observemos qué sucede con los momios si estos estan a favor de ganar.</p>
 <p>Si juega 9 partidos y gana 6 <span class="math display">\[6/3=2\]</span> Si juega 17 partidos y gana 14 <span class="math display">\[14/3=4.6\]</span> Si juega 33 partidos y gana 30 <span class="math display">\[30/3=10\]</span></p>
-<p>Note que los momios a favor de ganar se incrementan a media que el número de juegos aumenta y de hecho tienden a <span class="math inline">\(\infty\)</span>. Pero esta vez se ubican en el intervalo <span class="math inline">\([1,\infty)\)</span>. Uno si al menos gana los mismos partidos de los que pierde y tiende a <span class="math inline">\(\infty\)</span> si gana todos los juegos jugados <span class="math inline">\(n/0\)</span> (no esta definido paro tiende a <strong>infinito</strong>).</p>
+<p>Note que los momios a favor de ganar se incrementan a media que el número de juegos aumenta y de hecho tienden a <span class="math inline">\(\infty\)</span>. Pero esta vez se ubican en el intervalo <span class="math inline">\([1,\infty)\)</span>. Uno si al menos gana los mismos partidos de los que pierde y tiende a <span class="math inline">\(\infty\)</span> si gana todos los juegos jugados <span class="math inline">\(n/0\)</span> (no esta definido pero tiende a <strong>infinito</strong>).</p>
 <p>Note que entre los momios a favor de perder y los de ganar se tiene una NOTABLE asimetría. Mientras los primeros se ubican en <span class="math inline">\([0,1]\)</span>, los segundos se ubican en el intervalo <span class="math inline">\([1,\infty)\)</span>. Una diferencia abismal en la magnitud !!!</p>
 <p>Por ejemplo Si tenemos 7 juegos. Los momios en contra por ejemplo son <span class="math inline">\(1/6=.16\)</span>, pero los momios a favor son: <span class="math inline">\(6/1=6\)</span>. Una magnitud completamente desproporcionada!!!</p>
 <p>A pesar de que en cada caso sólo se gana o se pierde un sólo juego.</p>
@@ -209,7 +221,7 @@ if (!doNotTrack) {
 <div id="funcion-logit.-derivacion" class="section level2">
 <h2>Función logit. derivación:</h2>
 <p>Sea <span class="math display">\[p(X)=Pr(Y=1|X)\]</span> y considerando una representación lineal <span class="math display">\[p(X)=\beta_0 +\beta_1 X\]</span></p>
-<p>Aplicando la definicón del log Odds, tenemos: <span class="math display">\[log\bigg(\frac{P(X)}{1-P(X)}\bigg)= \beta_0 +\beta_1 X\]</span> Donde el lago izquierdo es nombrado función <strong>logit</strong> o log Odds.</p>
+<p>Aplicando la definicón del log Odds, tenemos: <span class="math display">\[log\bigg(\frac{P(X)}{1-P(X)}\bigg)= \beta_0 +\beta_1 X\]</span> Donde el lado izquierdo es nombrado función <strong>logit</strong> o log Odds.</p>
 <p><span class="math display">\[\frac{P(X)}{1-P(X)}=e^{ \beta_0 +\beta_1 X}\]</span></p>
 <p>Note que eliminamos el logaritmo aplicando la operación inversa el <em>e</em> para ambos lados de la ecuación. En palabras, la estimación de los momios es igual a la exponencial de la ecuación lineal <span class="math inline">\(\beta_0+\beta_1X\)</span>.</p>
 <p>El lado izquierdo es el ratio de las probabilidades o de manera equivalente los <strong>momios</strong> (Odds).</p>
@@ -237,7 +249,7 @@ if (!doNotTrack) {
 </div>
 <div id="mcfaddens-pseudo-r2.-prueba-para-determinar-si-el-modelo-es-util." class="section level4">
 <h4>McFadden’s Pseudo R^2. Prueba para determinar si el modelo es útil.</h4>
-<p>Ahora como analogía de los modelos de RL MCO, es posible estimar una medida que nos indique en el modelos de <strong>RL</strong> es válido. Este ese el indicador Pseudo <span class="math inline">\(R^2\)</span> de McFadden. <span class="math display">\[R^2=\frac{ll(null )-ll(fit)}{ll(null)}\]</span> Donde: <span class="math display">\[ll(fit)=log(likelyhood) max\]</span> <span class="math display">\[ll(null)=overall prob=log(likelyhood|1)\]</span></p>
+<p>Ahora como analogía de los modelos de RL MCO, es posible estimar una medida que nos indique si el modelo de <strong>R-Logistica</strong> es válido. Este ese el indicador Pseudo <span class="math inline">\(R^2\)</span> de McFadden. <span class="math display">\[R^2=\frac{ll(null )-ll(fit)}{ll(null)}\]</span> Donde: <span class="math display">\[ll(fit)=log(likelyhood) max\]</span> <span class="math display">\[ll(null)=overall prob=log(likelyhood|1)\]</span></p>
 </div>
 <div id="ejemplo-1-modelo-de-regression-logistica." class="section level4">
 <h4>Ejemplo 1 Modelo de regressión logística.</h4>
@@ -267,22 +279,33 @@ summary(logistic)</code></pre>
 ## 
 ## Number of Fisher Scoring iterations: 8</code></pre>
 <p>Un incremento de una unidad en la variable <strong>Balance</strong> se relaciona con un incremento de .00549 en los <strong>log(odds)</strong> de la variable <em>default</em> y esta relación es estadísticamente significativa al 0.05.</p>
-<p>Hacemos ahora predicciones de rpobabilidades con base en los log(odds) estimados. Por ejemplo para un individuo cuyo balance=<span class="math inline">\(\$1,000\)</span></p>
+<p>Hacemos ahora predicciones de probabilidades con base en los log(odds) estimados. Por ejemplo para un individuo cuyo balance=<span class="math inline">\(\$1,000\)</span></p>
 <p><span class="math display">\[\hat {p}(X)=\frac{e^{ \hat{\beta_0} +\hat{\beta_1} X}}{1 + e^{\hat{ \beta_0} +\hat{\beta_1 }X}}=\frac{e^{−10.6513+0.0055×1,000}}{1+e^{−10.6513+0.0055×1,000}}=0.00576\]</span> Una probabilidad de default de <span class="math inline">\(0.57\%\)</span>.</p>
-<p>Ahora hacemos la preduicción para un individuo con un saldo (<em>balance</em>) de <span class="math inline">\(\$2,000\)</span>.</p>
+<p>Ahora hacemos la predicción para un individuo con un saldo (<em>balance</em>) de <span class="math inline">\(\$2,000\)</span>.</p>
 <p><span class="math display">\[\hat {p}(X)=\frac{e^{ \hat{\beta_0} +\hat{\beta_1} X}}{1 + e^{\hat{ \beta_0} +\hat{\beta_1 }X}}=\frac{e^{−10.6513+0.0055×2,000}}{1+e^{−10.6513+0.0055×2,000}}=0.586\]</span> Un individuo con un balance de 2000 en su tarjeta tiene una probabilidad de incumplimiento (<em>default</em>) <span class="math inline">\(58.6\%\)</span></p>
 <p>Estimamos el <span class="math inline">\(R^2\)</span> como :</p>
 <pre class="r"><code>## Calculamos el  &quot;Pseudo R-squared&quot; y su  p-value
-ll.null &lt;- logistic$null.deviance/-2
-ll.fit &lt;- logistic$deviance/-2
+
+(2920.6-1596.5)/1596.5</code></pre>
+<pre><code>## [1] 0.8293768</code></pre>
+<pre class="r"><code>ll.null &lt;- logistic$null.deviance
+ll.fit &lt;- logistic$deviance
+
+## Donde null.dev es el loglikelihood del modelo nulo (modelo solo con el intercepto)
 
 ## McFadden&#39;s Pseudo R^2 = [ LL(Null) - LL(fit) ] / LL(Null)
 (ll.null - ll.fit) / ll.null</code></pre>
 <pre><code>## [1] 0.4533916</code></pre>
-<pre class="r"><code>## El p-value para el  R^2 a partir de la distribución chi cuadrada.
+<pre class="r"><code>## Si el modelo es útil el r^2 es cercano a 1, no es común.
+#Valores aprox .40 son comunes en sc.
+
+
+## Especificación para el estadístico  chi cuadrada
+## El p-value para el  R^2 a partir de la distribución chi cuadrada.
 
 1 - pchisq(2*(ll.fit - ll.null), df=(length(logistic$coefficients)-1))</code></pre>
-<pre><code>## [1] 0</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>## df Coeficientes menos 1. en este caso 2 coef -1, df=1. </code></pre>
 <p>El <span class="math inline">\(R^2\)</span> es estadísticamente significativo, el modelo es útil.</p>
 <p>Graficamos la distribución de probabilidades estimada por el modelo.</p>
 <pre class="r"><code>pred&lt;- data.frame(
@@ -308,7 +331,7 @@ glimpse(pred)</code></pre>
   labs(color=&quot;Default&quot;)+
   geom_hline(yintercept=0,linetype=&quot;dashed&quot;, size=.5, , color=&quot;blue&quot;)+
    geom_hline(yintercept=1,linetype=&quot;dashed&quot;, size=.5, color=&quot;red&quot;)</code></pre>
-<p><img src="/post/2019-02-25-Logistic_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="/post/2019-02-25-Logistic_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <div id="ejemplo-2.-estimacion-de-modelo-de-regresion-logistica-con-una-variable-dicotomica." class="section level5">
 <h5>Ejemplo 2. Estimación de modelo de regresión logística con una variable dicotómica.</h5>
 <p>Considere el escenario de la variable dicotomica <em>student</em>. que toma los valores 1 si el individuo es estudiante y 0 en caso contrario. Estimaremos el modelo para la variable dependiente <strong>Default</strong> y ahora con la variable independiente dicotomica <strong>student</strong>.</p>

@@ -67,7 +67,7 @@ Note que la variable dependiente (**Y**) es *Default* y las explicativas (**x_1,
 
 **Scatter plot** entre las variables independientes (income y balance) para observar su interacción. 
 
-```{r, echo=FALSE, message=FALSE, warning=FALSE}
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
 d<-Default
 str(d)
 names(d)
@@ -156,7 +156,7 @@ Qué son los **Momios** (chances de que algo ocurra,  un ratio o cociente)(**odd
 
 En palabras tenemos un chance de ganar (odds) de 0.25.  
 
-**Note que Odds no son probabilidades.**  Para llegar a estimar la probilidades que  un evento ocurra dado un conjunto de variables explicativas el modelo de regresión logística considera una serie de supuestos adicionales, e especial es importante incorporar la función logit, que veremos enseguida. 
+**Note que Odds no son probabilidades.**  Para llegar a estimar la probilidades que  un evento ocurra dado un conjunto de variables explicativas el modelo de regresión logística considera una serie de supuestos adicionales, en especial es importante incorporar la función logit, que veremos enseguida. 
 
 Las probabiliadades son la tasa (**ratio**) de que algo ocurran respecto a **todo** lo que podria suceder. 
 En el caso previo tenemos un total de 5 juegos así que la probabilid de  que mi equipo gane es: $$1/5=.20$$
@@ -191,7 +191,7 @@ Si juega 9 partidos y gana 6  $$6/3=2$$
 Si juega 17 partidos y gana 14 $$14/3=4.6$$
 Si juega 33 partidos y gana 30 $$30/3=10$$
 
-Note que los momios a favor de ganar se incrementan a media que el número de juegos aumenta y de hecho  tienden a $\infty$. Pero esta vez se ubican en el intervalo $[1,\infty)$.  Uno si al menos gana los mismos partidos de los que pierde y tiende a $\infty$ si gana todos los juegos jugados $n/0$ (no esta definido paro tiende a **infinito**).
+Note que los momios a favor de ganar se incrementan a media que el número de juegos aumenta y de hecho  tienden a $\infty$. Pero esta vez se ubican en el intervalo $[1,\infty)$.  Uno si al menos gana los mismos partidos de los que pierde y tiende a $\infty$ si gana todos los juegos jugados $n/0$ (no esta definido pero tiende a **infinito**).
 
 Note que entre los momios a favor de perder  y los de ganar se tiene una NOTABLE asimetría.  Mientras los primeros se ubican en $[0,1]$, los segundos se ubican en el intervalo $[1,\infty)$. Una diferencia abismal en la magnitud !!!
 
@@ -221,7 +221,7 @@ Sea $$p(X)=Pr(Y=1|X)$$ y considerando una representación lineal  $$p(X)=\beta_0
 
 Aplicando la definicón del log Odds, tenemos: 
 $$log\bigg(\frac{P(X)}{1-P(X)}\bigg)= \beta_0 +\beta_1 X$$
-Donde el lago izquierdo es nombrado función **logit** o log Odds.
+Donde el lado izquierdo es nombrado función **logit** o log Odds.
 
 $$\frac{P(X)}{1-P(X)}=e^{ \beta_0 +\beta_1 X}$$
 
@@ -292,7 +292,7 @@ El valor del intercepto en el modelo permite el ajuste de las probabilidades a l
 
 #### McFadden's Pseudo R^2. Prueba para determinar si el modelo es útil.
 
-Ahora como analogía de los modelos de RL MCO, es posible estimar una medida que nos indique en el modelos de **RL** es válido. Este ese el indicador Pseudo $R^2$ de McFadden.
+Ahora como analogía de los modelos de RL MCO, es posible estimar una medida que nos indique si el modelo de **R-Logistica** es válido. Este ese el indicador Pseudo $R^2$ de McFadden.
 $$R^2=\frac{ll(null )-ll(fit)}{ll(null)}$$
 Donde:
 $$ll(fit)=log(likelyhood) max$$
@@ -301,19 +301,19 @@ $$ll(null)=overall prob=log(likelyhood|1)$$
 ####Ejemplo 1 Modelo de regressión logística.
 
 
-```{r}
+```{r, echo¿TRUE}
 logistic<-glm(default~balance, data=d,family=binomial)
 
 summary(logistic)
 ```
 Un incremento de una unidad en la variable **Balance** se relaciona con  un incremento de .00549 en los **log(odds)** de la variable *default* y esta relación es estadísticamente significativa al 0.05. 
 
-Hacemos ahora predicciones de rpobabilidades con base en los log(odds) estimados. Por ejemplo para un individuo cuyo balance=$\$1,000$
+Hacemos ahora predicciones de probabilidades con base en los log(odds) estimados. Por ejemplo para un individuo cuyo balance=$\$1,000$
   
 $$\hat {p}(X)=\frac{e^{ \hat{\beta_0} +\hat{\beta_1} X}}{1 + e^{\hat{ \beta_0} +\hat{\beta_1 }X}}=\frac{e^{−10.6513+0.0055×1,000}}{1+e^{−10.6513+0.0055×1,000}}=0.00576$$
 Una probabilidad de default de $0.57\%$. 
 
-Ahora hacemos la preduicción para un  individuo con un saldo (*balance*) de $\$2,000$.
+Ahora hacemos la predicción para un  individuo con un saldo (*balance*) de $\$2,000$.
 
 $$\hat {p}(X)=\frac{e^{ \hat{\beta_0} +\hat{\beta_1} X}}{1 + e^{\hat{ \beta_0} +\hat{\beta_1 }X}}=\frac{e^{−10.6513+0.0055×2,000}}{1+e^{−10.6513+0.0055×2,000}}=0.586$$
 Un individuo con un balance de 2000 en su tarjeta tiene una probabilidad de incumplimiento (*default*) $58.6\%$
@@ -321,17 +321,29 @@ Un individuo con un balance de 2000 en su tarjeta tiene una probabilidad de incu
 
 Estimamos el $R^2$ como :
 
-```{r}
+```{r, echo=TRUE}
 ## Calculamos el  "Pseudo R-squared" y su  p-value
-ll.null <- logistic$null.deviance/-2
-ll.fit <- logistic$deviance/-2
+
+(2920.6-1596.5)/1596.5
+
+ll.null <- logistic$null.deviance
+ll.fit <- logistic$deviance
+
+## Donde null.dev es el loglikelihood del modelo nulo (modelo solo con el intercepto)
 
 ## McFadden's Pseudo R^2 = [ LL(Null) - LL(fit) ] / LL(Null)
 (ll.null - ll.fit) / ll.null
 
+## Si el modelo es útil el r^2 es cercano a 1, no es común.
+#Valores aprox .40 son comunes en sc.
+
+
+## Especificación para el estadístico  chi cuadrada
 ## El p-value para el  R^2 a partir de la distribución chi cuadrada.
 
 1 - pchisq(2*(ll.fit - ll.null), df=(length(logistic$coefficients)-1))
+
+## df Coeficientes menos 1. en este caso 2 coef -1, df=1. 
 ```
 
 El $R^2$ es estadísticamente significativo,  el modelo es útil.

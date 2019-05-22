@@ -393,11 +393,13 @@ De lo contrario los **eigenvectores** resultantes en el proceso de estimación  
 ```{r, echo =TRUE}
 
 bc.pr <- prcomp(bc_matrix, scale = TRUE, center = TRUE)
+
+
 summary(bc.pr)
 
 ```
 
-```{r, echo=FALSE}
+```{r, echo=TRUE}
 
 # Definir el grid  1 x 2 para graficar. 
 par(mfrow = c(1, 2))
@@ -420,12 +422,15 @@ round(pve, 2)
 round(cumsum(pve), 2)
 ```
 
-El 89% de la varianza es explicada por los primeros 6 componentes. Adicionalmente vemos que  eigenvalores>1 para los 6 pc que explican el 89% de la varianza.  Este será el criterio de selección para retenter en este caso los pc (ej . si los eigenvalores>1).
+El 89% de la varianza es explicada por los primeros 6 componentes. Adicionalmente vemos que  eigenvalores>1 para los 6 pc que explican el 89% de la varianza.  
+
+
+Este será el criterio de selección para retenter en este caso los pc (ej . si los eigenvalores>1).
 
 
 Scree  plot para mostrar la varianza explicada por cada componente.
 
-```{r, echo=FALSE}
+```{r, echo=TRUE}
 
 # Plot variance explained for each principal component
 
