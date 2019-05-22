@@ -108,15 +108,15 @@ menu:
 <h5>Estimación de coeficientes en el modelo de regresión logistica.</h5>
 <p>Usamos el procedimiento de <strong>Máxima verosimilitud</strong> a diferencia del caso del modelo de regressión lineal en donde se aplicó <strong>MCO</strong></p>
 <p>Este permite seleccionar los coeficientes <span class="math inline">\(\beta_0 , \beta_1\)</span> que maximizan la <strong>función de verosimilitud</strong>.</p>
-<p><span class="math display">\[\ell ({\beta_0, \beta_1})=\prod_{i:y_{i}=1}p(x_i)\prod_{i&#39;:y_{i&#39;}=0}(1-p(x_{i&#39;}))\]</span> En palabras la función de máxima verosimilitud realiza un proceso interativo para seleccionar la linea que maximiza el log(likelihood) calculando el producto de cada probabilidad de que el evento ocurra por el producto de las probabilidades estimadas de que el evento no odurra.</p>
+<p><span class="math display">\[\ell ({\beta_0, \beta_1})=\prod_{i:y_{i}=1}p(x_i)\prod_{i&#39;:y_{i&#39;}=0}(1-p(x_{i&#39;}))\]</span> En palabras, la función de máxima verosimilitud realiza un proceso interativo para seleccionar la linea que maximiza el logaritmo de la función de verosimilitud ´-log(likelihood)- calculando el producto de cada probabilidad de que el evento ocurra por el producto de las probabilidades estimadas de que el evento no odurra.</p>
 <p><strong>Maximizar la función de verosimilitud</strong> quiere decir determinar aquella probabilidad <span class="math inline">\(\hat{p}(x_i)\)</span> que es lo más apegada posible al valor observado de los datos.</p>
 <p>En nuestro ejemplo con la base de datos sobre incumplimiento (<em>default</em>) del pago en tarjeta de crédito, buscamos los valores de <span class="math inline">\(\hat{\beta_0}, \hat{\beta_1}\)</span> que al substituirlos en la función <span class="math inline">\(p(X)\)</span>, resulten en un número lo mas cercano posible a 1 para los individuos en la catergoría default y cercano a cero en caso contrario.</p>
 </div>
-<div id="prueba-para-determinar-si-el-logodds-ratio-es-estadisticamente-significativo." class="section level5">
-<h5>Prueba para determinar si el log(odds ratio) es estadisticamente significativo.</h5>
+<div id="prueba-para-determinar-si-el-logodds-es-estadisticamente-significativo." class="section level5">
+<h5>Prueba para determinar si el log(odds) es estadísticamente significativo.</h5>
 <p>Usamos la prueba de Wald. (<strong>Wald´s test</strong>).</p>
 <p>Con esta obtenemos los intervalos de confianza así como los p-values para determinar la significancia estadística de los coeficientes.</p>
-<p>Importante recordar que los log odd (log de los momios) y los log(odd) (cociente de momios), se distribuyen acorde a la <strong>normal</strong> con: <span class="math inline">\(N\approx(\mu=0,\sigma=1)\)</span> y recordando los fundamentos del <strong>Teorema de limite Central</strong> podemos estimar <strong>intervalos de confianza</strong> y <em>p values</em> como areas de bajo de la curva de la distribución.</p>
+<p>Importante recordar que el log odds (el logaritmo de los momios) y los log(odd) (cociente de momios), se distribuyen acorde a la <strong>normal</strong> con: <span class="math inline">\(N\approx(\mu=0,\sigma=1)\)</span> y recordando los fundamentos del <strong>Teorema de limite Central</strong> podemos estimar <strong>intervalos de confianza</strong> y <em>p values</em> como areas de bajo de la curva de la distribución.</p>
 <p><img src="/post/2019-02-25-Logistic_files/figure-html/unnamed-chunk-3-1.png" width="672" /> <a href="https://www.r-bloggers.com/normal-distribution-functions/">Source:</a></p>
 <p>Regresando a la estimación de la prueba de <strong>Wald</strong> para determinar la significancia estadística de los coeficientes obtenidos en el modelo de regresión logística (log(odd) y log(odds ratios) observe que la hipótesis nula <span class="math inline">\(H_0: \hat{\beta_1}=0\)</span> lo que implica que:</p>
 <p><span class="math display">\[p(X)=\frac{e^{\beta_0}}{1+e^{\beta_0}}\]</span> O bien que las variables independientes no tienen impacto o son irrelevantes para explicar la variable dependiente.</p>
@@ -129,9 +129,6 @@ menu:
 </div>
 <div id="ejemplo-1-modelo-de-regression-logistica." class="section level4">
 <h4>Ejemplo 1 Modelo de regressión logística.</h4>
-<pre class="r"><code>logistic&lt;-glm(default~balance, data=d,family=binomial)
-
-summary(logistic)</code></pre>
 <pre><code>## 
 ## Call:
 ## glm(formula = default ~ balance, family = binomial, data = d)
@@ -155,7 +152,7 @@ summary(logistic)</code></pre>
 ## 
 ## Number of Fisher Scoring iterations: 8</code></pre>
 <p>Un incremento de una unidad en la variable <strong>Balance</strong> se relaciona con un incremento de .00549 en los <strong>log(odds)</strong> de la variable <em>default</em> y esta relación es estadísticamente significativa al 0.05.</p>
-<p>Hacemos ahora predicciones de probabilidades con base en los log(odds) estimados. Por ejemplo para un individuo cuyo balance=<span class="math inline">\(\$1,000\)</span></p>
+<p>Hacemos ahora predicciones de probabilidades con base en el logartimo de momios estimados log(odds). Por ejemplo para un individuo cuyo balance=<span class="math inline">\(\$1,000\)</span></p>
 <p><span class="math display">\[\hat {p}(X)=\frac{e^{ \hat{\beta_0} +\hat{\beta_1} X}}{1 + e^{\hat{ \beta_0} +\hat{\beta_1 }X}}=\frac{e^{−10.6513+0.0055×1,000}}{1+e^{−10.6513+0.0055×1,000}}=0.00576\]</span> Una probabilidad de default de <span class="math inline">\(0.57\%\)</span>.</p>
 <p>Ahora hacemos la predicción para un individuo con un saldo (<em>balance</em>) de <span class="math inline">\(\$2,000\)</span>.</p>
 <p><span class="math display">\[\hat {p}(X)=\frac{e^{ \hat{\beta_0} +\hat{\beta_1} X}}{1 + e^{\hat{ \beta_0} +\hat{\beta_1 }X}}=\frac{e^{−10.6513+0.0055×2,000}}{1+e^{−10.6513+0.0055×2,000}}=0.586\]</span> Un individuo con un balance de 2000 en su tarjeta tiene una probabilidad de incumplimiento (<em>default</em>) <span class="math inline">\(58.6\%\)</span></p>
@@ -174,7 +171,8 @@ Residual_deviance &lt;- logistic$deviance
 #Valores aprox .40 son comunes en sc.
 
 
-## Especificación para el estadístico  chi cuadrada
+## Especificación para el p-value con distribución chi cuadrada.
+
 ## El p-value para el  R^2 a partir de la distribución chi cuadrada.
 
 1 - pchisq(2*(Null_deviance-Residual_deviance ),df=(length(logistic$coefficients)-1))</code></pre>
@@ -182,13 +180,6 @@ Residual_deviance &lt;- logistic$deviance
 <pre class="r"><code>## df Coeficientes menos 1. en este caso 2 coef -1, df=1. </code></pre>
 <p>El <span class="math inline">\(R^2\)</span> es estadísticamente significativo, el modelo es útil.</p>
 <p>Graficamos la distribución de probabilidades estimada por el modelo.</p>
-<pre class="r"><code>pred&lt;- data.frame(
-  pr=logistic$fitted.values,
-  default=d$default, b=d$balance)
-
-pred&lt;-arrange(pred,pr)%&gt;%
-  mutate(id=1:nrow(pred))
-glimpse(pred)</code></pre>
 <pre><code>## Observations: 10,000
 ## Variables: 4
 ## $ pr      &lt;dbl&gt; 2.366877e-05, 2.366877e-05, 2.366877e-05, 2.366877e-05...
@@ -205,7 +196,7 @@ glimpse(pred)</code></pre>
   labs(color=&quot;Default&quot;)+
   geom_hline(yintercept=0,linetype=&quot;dashed&quot;, size=.5, , color=&quot;blue&quot;)+
    geom_hline(yintercept=1,linetype=&quot;dashed&quot;, size=.5, color=&quot;red&quot;)</code></pre>
-<p><img src="/post/2019-02-25-Logistic_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="/post/2019-02-25-Logistic_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <div id="ejemplo-2.-estimacion-de-modelo-de-regresion-logistica-con-una-variable-dicotomica." class="section level5">
 <h5>Ejemplo 2. Estimación de modelo de regresión logística con una variable dicotómica.</h5>
 <p>Considere el escenario de la variable dicotomica <em>student</em>. que toma los valores 1 si el individuo es estudiante y 0 en caso contrario. Estimaremos el modelo para la variable dependiente <strong>Default</strong> y ahora con la variable independiente dicotomica <strong>student</strong>.</p>

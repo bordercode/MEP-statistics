@@ -250,19 +250,19 @@ Usamos el procedimiento de **Máxima verosimilitud** a diferencia del caso del m
 Este permite seleccionar los coeficientes $\beta_0 , \beta_1$ que maximizan la **función de verosimilitud**. 
 
 $$\ell ({\beta_0, \beta_1})=\prod_{i:y_{i}=1}p(x_i)\prod_{i':y_{i'}=0}(1-p(x_{i'}))$$
-En palabras la función de máxima verosimilitud  realiza un proceso interativo para seleccionar la linea que maximiza el log(likelihood) calculando  el producto de  cada probabilidad de que el evento ocurra por el producto de las probabilidades estimadas de que el evento no odurra. 
+En palabras, la función de máxima verosimilitud  realiza un proceso interativo para seleccionar la linea que maximiza el logaritmo de la función de verosimilitud ´-log(likelihood)- calculando  el producto de  cada probabilidad de que el evento ocurra por el producto de las probabilidades estimadas de que el evento no odurra. 
 
 **Maximizar la función de verosimilitud** quiere decir determinar aquella  probabilidad $\hat{p}(x_i)$ que es lo más apegada posible al valor observado de los datos. 
 
 En nuestro ejemplo con la base de datos sobre incumplimiento (*default*) del pago en tarjeta de crédito, buscamos los valores de $\hat{\beta_0}, \hat{\beta_1}$ que al substituirlos en la función $p(X)$, resulten en un número lo mas cercano posible a 1 para los individuos en la catergoría default y cercano a cero en caso contrario. 
 
-##### Prueba para determinar si el log(odds ratio) es estadisticamente significativo. 
+##### Prueba para determinar si el log(odds) es estadísticamente significativo. 
 
 Usamos la prueba de Wald. (**Wald´s test**).
 
 Con esta obtenemos los intervalos de confianza así como los p-values para determinar la significancia estadística de los coeficientes. 
 
-Importante recordar que los log odd  (log de los momios) y los log(odd) (cociente de momios), se distribuyen acorde a la **normal** con:   $N\approx(\mu=0,\sigma=1)$ y recordando los fundamentos del **Teorema de limite Central**  podemos estimar **intervalos de confianza** y  *p values* como areas de bajo de la curva de la distribución. 
+Importante recordar que el log odds  (el logaritmo de los momios) y los log(odd) (cociente de momios), se distribuyen acorde a la **normal** con:   $N\approx(\mu=0,\sigma=1)$ y recordando los fundamentos del **Teorema de limite Central**  podemos estimar **intervalos de confianza** y  *p values* como areas de bajo de la curva de la distribución. 
 
 ```{r, echo=FALSE}
 
@@ -305,14 +305,14 @@ $$ll(null)=overall prob=log(likelyhood|1)$$
 ####Ejemplo 1 Modelo de regressión logística.
 
 
-```{r, echo¿TRUE}
+```{r, echo=FALSE}
 logistic<-glm(default~balance, data=d,family=binomial)
 
 summary(logistic)
 ```
 Un incremento de una unidad en la variable **Balance** se relaciona con  un incremento de .00549 en los **log(odds)** de la variable *default* y esta relación es estadísticamente significativa al 0.05. 
 
-Hacemos ahora predicciones de probabilidades con base en los log(odds) estimados. Por ejemplo para un individuo cuyo balance=$\$1,000$
+Hacemos ahora predicciones de probabilidades con base en el logartimo de momios estimados log(odds).  Por ejemplo para un individuo cuyo balance=$\$1,000$
   
 $$\hat {p}(X)=\frac{e^{ \hat{\beta_0} +\hat{\beta_1} X}}{1 + e^{\hat{ \beta_0} +\hat{\beta_1 }X}}=\frac{e^{−10.6513+0.0055×1,000}}{1+e^{−10.6513+0.0055×1,000}}=0.00576$$
 Una probabilidad de default de $0.57\%$. 
@@ -341,7 +341,8 @@ Residual_deviance <- logistic$deviance
 #Valores aprox .40 son comunes en sc.
 
 
-## Especificación para el estadístico  chi cuadrada
+## Especificación para el p-value con distribución chi cuadrada.
+
 ## El p-value para el  R^2 a partir de la distribución chi cuadrada.
 
 1 - pchisq(2*(Null_deviance-Residual_deviance ),df=(length(logistic$coefficients)-1))
@@ -354,7 +355,7 @@ El $R^2$ es estadísticamente significativo,  el modelo es útil.
 
 Graficamos la distribución de probabilidades estimada por el modelo.
 
-```{r}
+```{r, echo=FALSE}
 pred<- data.frame(
   pr=logistic$fitted.values,
   default=d$default, b=d$balance)
@@ -362,6 +363,10 @@ pred<- data.frame(
 pred<-arrange(pred,pr)%>%
   mutate(id=1:nrow(pred))
 glimpse(pred)
+```
+
+
+```{r, echo=TRUE}
 
 ggplot(pred, aes(b, pr)) +
   geom_point(aes(color=default), 
@@ -373,7 +378,6 @@ ggplot(pred, aes(b, pr)) +
   labs(color="Default")+
   geom_hline(yintercept=0,linetype="dashed", size=.5, , color="blue")+
    geom_hline(yintercept=1,linetype="dashed", size=.5, color="red")
-
 ```
 
 
