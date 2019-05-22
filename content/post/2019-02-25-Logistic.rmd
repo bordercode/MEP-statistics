@@ -153,7 +153,9 @@ Qué son los **Momios** (chances de que algo ocurra,  un ratio o cociente)(**odd
 
 En palabras tenemos un chance de ganar (odds) de 0.25.  
 
-**Note que Odds no son probabilidades.**  Para llegar a estimar la probilidades que  un evento ocurra dado un conjunto de variables explicativas el modelo de regresión logística considera una serie de supuestos adicionales, en especial es importante incorporar la función logit, que veremos enseguida. 
+**Note que Odds no son probabilidades.** pero indican el cociente entre que suceda algo respecto a que no suceda.
+
+Para llegar a estimar la probilidades que  un evento ocurra dado un conjunto de variables explicativas el modelo de regresión logística considera una serie de supuestos adicionales, en especial es importante incorporar la función logit, que veremos enseguida. 
 
 Las probabiliadades son la tasa (**ratio**) de que algo ocurra respecto a **todo** lo que podria suceder. 
 En el caso previo tenemos un total de 5 juegos así que la probabilid de  que mi equipo gane es: $$1/5=.20$$
@@ -239,7 +241,7 @@ Que de hecho incorpora la **función logit** y es lineal en x.
 
 ![](/img/kogplt.jpg)
 
-La estimación de los coeficientes del modelo que haremos genera precisamente el valor del **log(odds)**, no de la **probabilidad**. 
+La estimación de los **coeficientes del modelo que haremos** genera precisamente el valor de **logaritmo del ratio de momios** (momios entre dos variables, ej. ratio de momios de ser admitido a cursar un doctorado con beca en **UCLA** para Mujeres vs. hombres) **log(odds ratio)**, no de la **probabilidad**. 
 
 La probabilidad se obtiene a partir de substituir los coeficientes en la función de regresión logistica para valores específicos de las variables independientes **x**.
 
@@ -254,7 +256,7 @@ En palabras, la función de máxima verosimilitud  realiza un proceso interativo
 
 **Maximizar la función de verosimilitud** quiere decir determinar aquella  probabilidad $\hat{p}(x_i)$ que es lo más apegada posible al valor observado de los datos. 
 
-En nuestro ejemplo con la base de datos sobre incumplimiento (*default*) del pago en tarjeta de crédito, buscamos los valores de $\hat{\beta_0}, \hat{\beta_1}$ que al substituirlos en la función $p(X)$, resulten en un número lo mas cercano posible a 1 para los individuos en la catergoría default y cercano a cero en caso contrario. 
+En nuestro ejemplo con la base de datos sobre incumplimiento (*default*) del pago en tarjeta de crédito, buscamos los valores de $\hat{\beta_0}, \hat{\beta_1}$ que al substituirlos en la función $p(X)$, resulten en un número lo más cercano posible a 1 para los individuos en la catergoría default y cercano a cero en caso contrario. 
 
 ##### Prueba para determinar si el log(odds) es estadísticamente significativo. 
 
@@ -262,7 +264,7 @@ Usamos la prueba de Wald. (**Wald´s test**).
 
 Con esta obtenemos los intervalos de confianza así como los p-values para determinar la significancia estadística de los coeficientes. 
 
-Importante recordar que el log odds  (el logaritmo de los momios) y los log(odd) (cociente de momios), se distribuyen acorde a la **normal** con:   $N\approx(\mu=0,\sigma=1)$ y recordando los fundamentos del **Teorema de limite Central**  podemos estimar **intervalos de confianza** y  *p values* como areas de bajo de la curva de la distribución. 
+Importante recordar que el logaritmo del cociente de  momios log(odd ratios), se distribuyen acorde a la **normal** con:   $N\approx(\mu=0,\sigma=1)$ y recordando los fundamentos del **Teorema de limite Central**  podemos estimar **intervalos de confianza** y  *p values* como areas de bajo de la curva de la distribución. 
 
 ```{r, echo=FALSE}
 

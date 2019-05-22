@@ -62,7 +62,8 @@ menu:
 <p>Antes de avanzar veamos un par de conceptos preeliminares. Momios y ratio de Momios.</p>
 <p>Qué son los <strong>Momios</strong> (chances de que algo ocurra, un ratio o cociente)(<strong>odds</strong>)? Suponga que tenemos un escenario en el que un equipo participa en 5 partidos. Gana uno y pierde 4 en este caso podemos calcular los <strong>Odds</strong> de ganar como el cociente:<span class="math display">\[1/4=.25\]</span></p>
 <p>En palabras tenemos un chance de ganar (odds) de 0.25.</p>
-<p><strong>Note que Odds no son probabilidades.</strong> Para llegar a estimar la probilidades que un evento ocurra dado un conjunto de variables explicativas el modelo de regresión logística considera una serie de supuestos adicionales, en especial es importante incorporar la función logit, que veremos enseguida.</p>
+<p><strong>Note que Odds no son probabilidades.</strong> pero indican el cociente entre que suceda algo respecto a que no suceda.</p>
+<p>Para llegar a estimar la probilidades que un evento ocurra dado un conjunto de variables explicativas el modelo de regresión logística considera una serie de supuestos adicionales, en especial es importante incorporar la función logit, que veremos enseguida.</p>
 <p>Las probabiliadades son la tasa (<strong>ratio</strong>) de que algo ocurra respecto a <strong>todo</strong> lo que podria suceder. En el caso previo tenemos un total de 5 juegos así que la probabilid de que mi equipo gane es: <span class="math display">\[1/5=.20\]</span></p>
 <p>Nuevamente suponga ahora que nuestro equipo participa en un total de 8 partidos. Gana 5 pierde 3. Igualmente podemos calcular los momios de ganar como <span class="math display">\[5/3=1.7\]</span> Pero la probabilidad de ganar es: <span class="math display">\[5/8=0.625\]</span></p>
 <p>Note que la probabilidad de que mi equipo gane es <strong>diferente</strong> a los <strong>Odds</strong> (Momios) de que mi equipo gane.</p>
@@ -102,7 +103,7 @@ menu:
 <img src="/img/kogplt.jpg" />
 
 </div>
-<p>La estimación de los coeficientes del modelo que haremos genera precisamente el valor del <strong>log(odds)</strong>, no de la <strong>probabilidad</strong>.</p>
+<p>La estimación de los <strong>coeficientes del modelo que haremos</strong> genera precisamente el valor de <strong>logaritmo del ratio de momios</strong> (momios entre dos variables, ej. ratio de momios de ser admitido a cursar un doctorado con beca en <strong>UCLA</strong> para Mujeres vs. hombres) <strong>log(odds ratio)</strong>, no de la <strong>probabilidad</strong>.</p>
 <p>La probabilidad se obtiene a partir de substituir los coeficientes en la función de regresión logistica para valores específicos de las variables independientes <strong>x</strong>.</p>
 <div id="estimacion-de-coeficientes-en-el-modelo-de-regresion-logistica." class="section level5">
 <h5>Estimación de coeficientes en el modelo de regresión logistica.</h5>
@@ -110,13 +111,13 @@ menu:
 <p>Este permite seleccionar los coeficientes <span class="math inline">\(\beta_0 , \beta_1\)</span> que maximizan la <strong>función de verosimilitud</strong>.</p>
 <p><span class="math display">\[\ell ({\beta_0, \beta_1})=\prod_{i:y_{i}=1}p(x_i)\prod_{i&#39;:y_{i&#39;}=0}(1-p(x_{i&#39;}))\]</span> En palabras, la función de máxima verosimilitud realiza un proceso interativo para seleccionar la linea que maximiza el logaritmo de la función de verosimilitud ´-log(likelihood)- calculando el producto de cada probabilidad de que el evento ocurra por el producto de las probabilidades estimadas de que el evento no odurra.</p>
 <p><strong>Maximizar la función de verosimilitud</strong> quiere decir determinar aquella probabilidad <span class="math inline">\(\hat{p}(x_i)\)</span> que es lo más apegada posible al valor observado de los datos.</p>
-<p>En nuestro ejemplo con la base de datos sobre incumplimiento (<em>default</em>) del pago en tarjeta de crédito, buscamos los valores de <span class="math inline">\(\hat{\beta_0}, \hat{\beta_1}\)</span> que al substituirlos en la función <span class="math inline">\(p(X)\)</span>, resulten en un número lo mas cercano posible a 1 para los individuos en la catergoría default y cercano a cero en caso contrario.</p>
+<p>En nuestro ejemplo con la base de datos sobre incumplimiento (<em>default</em>) del pago en tarjeta de crédito, buscamos los valores de <span class="math inline">\(\hat{\beta_0}, \hat{\beta_1}\)</span> que al substituirlos en la función <span class="math inline">\(p(X)\)</span>, resulten en un número lo más cercano posible a 1 para los individuos en la catergoría default y cercano a cero en caso contrario.</p>
 </div>
 <div id="prueba-para-determinar-si-el-logodds-es-estadisticamente-significativo." class="section level5">
 <h5>Prueba para determinar si el log(odds) es estadísticamente significativo.</h5>
 <p>Usamos la prueba de Wald. (<strong>Wald´s test</strong>).</p>
 <p>Con esta obtenemos los intervalos de confianza así como los p-values para determinar la significancia estadística de los coeficientes.</p>
-<p>Importante recordar que el log odds (el logaritmo de los momios) y los log(odd) (cociente de momios), se distribuyen acorde a la <strong>normal</strong> con: <span class="math inline">\(N\approx(\mu=0,\sigma=1)\)</span> y recordando los fundamentos del <strong>Teorema de limite Central</strong> podemos estimar <strong>intervalos de confianza</strong> y <em>p values</em> como areas de bajo de la curva de la distribución.</p>
+<p>Importante recordar que el logaritmo del cociente de momios log(odd ratios), se distribuyen acorde a la <strong>normal</strong> con: <span class="math inline">\(N\approx(\mu=0,\sigma=1)\)</span> y recordando los fundamentos del <strong>Teorema de limite Central</strong> podemos estimar <strong>intervalos de confianza</strong> y <em>p values</em> como areas de bajo de la curva de la distribución.</p>
 <p><img src="/post/2019-02-25-Logistic_files/figure-html/unnamed-chunk-3-1.png" width="672" /> <a href="https://www.r-bloggers.com/normal-distribution-functions/">Source:</a></p>
 <p>Regresando a la estimación de la prueba de <strong>Wald</strong> para determinar la significancia estadística de los coeficientes obtenidos en el modelo de regresión logística (log(odd) y log(odds ratios) observe que la hipótesis nula <span class="math inline">\(H_0: \hat{\beta_1}=0\)</span> lo que implica que:</p>
 <p><span class="math display">\[p(X)=\frac{e^{\beta_0}}{1+e^{\beta_0}}\]</span> O bien que las variables independientes no tienen impacto o son irrelevantes para explicar la variable dependiente.</p>
