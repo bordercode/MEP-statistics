@@ -266,6 +266,7 @@ Con esta obtenemos los intervalos de confianza así como los p-values para deter
 
 Importante recordar que el logaritmo del cociente de  momios log(odd ratios), se distribuyen acorde a la **normal** con:   $N\approx(\mu=0,\sigma=1)$ y recordando los fundamentos del **Teorema de limite Central**  podemos estimar **intervalos de confianza** y  *p values* como areas de bajo de la curva de la distribución. 
 
+
 ```{r, echo=FALSE}
 
 
@@ -296,7 +297,11 @@ Tal como hacemos en cualquier prueba de hipótesis, rechazamos la **hipótesis n
 
 El valor del intercepto en el modelo permite el ajuste de las probabilidades a la proporción observada de valores positivos en los datos (ej. Y=1)
 
-#### McFadden's Pseudo R^2. Prueba para determinar si el modelo es útil.
+#### McFadden's Pseudo R^2. Prueba para determinar el poder predictivo del modelo  (ej. si el modelo es útil.)
+
+En términos empíricos Un estadístico en el rango .2-.4 es indicativo de un ajuste adecuado.
+
+
 
 Ahora como analogía de los modelos de RL MCO, es posible estimar una medida que nos indique si el modelo de **R-Logistica** es válido. Este ese el indicador Pseudo $R^2$ de McFadden.
 $$R^2=\frac{ll(Nulldeviance )-ll(Residualdeviance)}{ll(Nulldeviance)}$$
@@ -308,9 +313,15 @@ $$ll(null)=overall prob=log(likelyhood|1)$$
 
 
 ```{r, echo=FALSE}
-logistic<-glm(default~balance, data=d,family=binomial)
+library(DescTools)
+library(rms)
 
+logistic<-glm(default~balance, data=d,family=binomial)
 summary(logistic)
+
+PseudoR2(logistic)
+
+
 ```
 Un incremento de una unidad en la variable **Balance** se relaciona con  un incremento de .00549 en los **log(odds)** de la variable *default* y esta relación es estadísticamente significativa al 0.05. 
 

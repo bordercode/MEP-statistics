@@ -124,12 +124,36 @@ menu:
 <p>Tal como hacemos en cualquier prueba de hipótesis, rechazamos la <strong>hipótesis nula</strong> si el <span class="math inline">\(p-value&lt;\alpha\)</span> threshold de contraste, usualmente 0.05.</p>
 <p>El valor del intercepto en el modelo permite el ajuste de las probabilidades a la proporción observada de valores positivos en los datos (ej. Y=1)</p>
 </div>
-<div id="mcfaddens-pseudo-r2.-prueba-para-determinar-si-el-modelo-es-util." class="section level4">
-<h4>McFadden’s Pseudo R^2. Prueba para determinar si el modelo es útil.</h4>
+<div id="mcfaddens-pseudo-r2.-prueba-para-determinar-el-poder-predictivo-del-modelo-ej.-si-el-modelo-es-util." class="section level4">
+<h4>McFadden’s Pseudo R^2. Prueba para determinar el poder predictivo del modelo (ej. si el modelo es útil.)</h4>
+<p>En términos empíricos Un estadístico en el rango .2-.4 es indicativo de un ajuste adecuado.</p>
 <p>Ahora como analogía de los modelos de RL MCO, es posible estimar una medida que nos indique si el modelo de <strong>R-Logistica</strong> es válido. Este ese el indicador Pseudo <span class="math inline">\(R^2\)</span> de McFadden. <span class="math display">\[R^2=\frac{ll(Nulldeviance )-ll(Residualdeviance)}{ll(Nulldeviance)}\]</span> Donde: <span class="math display">\[ll(Residualdeviance)=log(likelyhood) max\]</span> <span class="math display">\[ll(null)=overall prob=log(likelyhood|1)\]</span></p>
 </div>
 <div id="ejemplo-1-modelo-de-regression-logistica." class="section level4">
 <h4>Ejemplo 1 Modelo de regressión logística.</h4>
+<pre><code>## Warning: package &#39;DescTools&#39; was built under R version 3.5.3</code></pre>
+<pre><code>## Warning: package &#39;rms&#39; was built under R version 3.5.3</code></pre>
+<pre><code>## Loading required package: Hmisc</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## Loading required package: survival</code></pre>
+<pre><code>## Loading required package: Formula</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Hmisc&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:DescTools&#39;:
+## 
+##     %nin%, Label, Mean, Quantile</code></pre>
+<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
+## 
+##     src, summarize</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     format.pval, units</code></pre>
+<pre><code>## Loading required package: SparseM</code></pre>
+<pre><code>## 
+## Attaching package: &#39;SparseM&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:base&#39;:
+## 
+##     backsolve</code></pre>
 <pre><code>## 
 ## Call:
 ## glm(formula = default ~ balance, family = binomial, data = d)
@@ -152,6 +176,8 @@ menu:
 ## AIC: 1600.5
 ## 
 ## Number of Fisher Scoring iterations: 8</code></pre>
+<pre><code>##  McFadden 
+## 0.4533916</code></pre>
 <p>Un incremento de una unidad en la variable <strong>Balance</strong> se relaciona con un incremento de .00549 en los <strong>log(odds)</strong> de la variable <em>default</em> y esta relación es estadísticamente significativa al 0.05.</p>
 <p>Hacemos ahora predicciones de probabilidades con base en el logartimo de momios estimados log(odds). Por ejemplo para un individuo cuyo balance=<span class="math inline">\(\$1,000\)</span></p>
 <p><span class="math display">\[\hat {p}(X)=\frac{e^{ \hat{\beta_0} +\hat{\beta_1} X}}{1 + e^{\hat{ \beta_0} +\hat{\beta_1 }X}}=\frac{e^{−10.6513+0.0055×1,000}}{1+e^{−10.6513+0.0055×1,000}}=0.00576\]</span> Una probabilidad de default de <span class="math inline">\(0.57\%\)</span>.</p>
