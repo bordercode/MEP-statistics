@@ -67,7 +67,7 @@ Note que la variable dependiente (**Y**) es *Default* y las explicativas (**x_1,
 
 **Scatter plot** entre las variables independientes (income y balance) para observar su interacción. 
 
-```{r, echo=TRUE, message=FALSE, warning=FALSE}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 d<-Default
 str(d)
 names(d)
@@ -85,7 +85,7 @@ p
 
 Distribución de los datos con un **Boxplot**.
 
-```{r, echo=TRUE, message=FALSE, warning=FALSE}
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
 library(gridExtra)
 
 bxp1<-ggplot(d,aes(default, balance))+
@@ -155,10 +155,10 @@ En palabras tenemos un chance de ganar (odds) de 0.25.
 
 **Note que Odds no son probabilidades.**  Para llegar a estimar la probilidades que  un evento ocurra dado un conjunto de variables explicativas el modelo de regresión logística considera una serie de supuestos adicionales, en especial es importante incorporar la función logit, que veremos enseguida. 
 
-Las probabiliadades son la tasa (**ratio**) de que algo ocurran respecto a **todo** lo que podria suceder. 
+Las probabiliadades son la tasa (**ratio**) de que algo ocurra respecto a **todo** lo que podria suceder. 
 En el caso previo tenemos un total de 5 juegos así que la probabilid de  que mi equipo gane es: $$1/5=.20$$
 
-Nuevamente suponga ahora que nuestro equipo participa en un total de  8 partidos. Gana 5 pierder 3. Igualmente podemos calcular los momios de ganar como $$5/3=1.7$$ Pero la probabilidad de ganar es: $$5/8=0.625$$
+Nuevamente suponga ahora que nuestro equipo participa en un total de  8 partidos. Gana 5 pierde 3. Igualmente podemos calcular los momios de ganar como $$5/3=1.7$$ Pero la probabilidad de ganar es: $$5/8=0.625$$
 
 Note que la probabilidad de que mi equipo gane es **diferente** a los **Odds** (Momios) de que mi equipo gane.  
 
@@ -172,7 +172,7 @@ $$\frac{5/8}{1-5/8}=\frac{5/8}{3/8}=5/3=1.7$$
 Podemos sintetizar la discusión anterior en la expresión. $$Odds=
 \frac{p}{1-p}$$
 
-**Log Odds** Por qué considerar el logaritmo de los Momios (**log Odds**). 
+**Log Odds** ¿Por qué considerar el logaritmo de los Momios (**log Odds**)? 
 
 Considermos nuestro ejemplo inicial. Nuestro equipo juega 5 partidos, gana 1. Entonces tiene Odds de ganar de $$1/4=0.25$$ de forma similar: 
 
@@ -180,7 +180,7 @@ Si juega 9 partidos y gana 1, los Odds de ganar son: $$1/8=0.125$$
 Si juega 17 partidos y gana 1, los Odds de ganar son: $$1/16=0.062$$
 Si juega 33 partidos y gana 1, los Odds de ganar son: $$1/32=0.031$$
 
-**Note** que si mi equipo es malo, los momios de ganar a medida que le número de partidos aumenta (a medida que el número de partidos tiende a inifnito ($\infty$)),  tienden a cero. de hecho si los Odds estan **encontra** de que mi equipo gane los momios se ubican en el intervalo cerrado [0,1]. Cero si pierde todos los partidos jugados, 1 si gana el mismo número de los que pierde.
+**Note** que si mi equipo es malo, los momios de ganar tienden a cero a medida que le número de partidos aumenta (a medida que el número de partidos tiende a inifnito ($\infty$)),  . de hecho si los Odds estan **encontra** de que mi equipo gane los momios se ubican en el intervalo cerrado [0,1]. Cero si pierde todos los partidos jugados, 1 si gana el mismo número de los que pierde.
 
 Ahora observemos qué sucede con los momios  si estos estan a favor de ganar. 
 
@@ -205,6 +205,9 @@ Ahora la magnitud en los momios es la misma, es **simetrica**!!
 **El log del ratio de probabilidades e.j. log(Odds) Se denomina la función  logit**. $$LOGIT=log(\frac{p}{1-p})$$ 
 
 **Importante** esta expresión tiene como distribución asociada  la clásica standard (NORMAL) y por lo tanto estimar probabilides como áreas debajo de la curva de esta distribución resulta pertinente.
+
+
+
 
 Un punto adicional, los Odds son un ratio un cociente entre dos eventos (las veces que ocurre un resultado entre las veces que **no** ocurre ese resultado).
 
@@ -232,6 +235,10 @@ Despejando  p(x), tenemos el **modelo de regresión  logística**
 $$p(X)=\frac{e^{ \beta_0 +\beta_1 X}}{1 + e^{ \beta_0 +\beta_1 X}}$$
 Que de hecho incorpora la **función logit** y es lineal en x.
 
+
+
+![](/img/kogplt.jpg)
+
 La estimación de los coeficientes del modelo que haremos genera precisamente el valor del **log(odds)**, no de la **probabilidad**. 
 
 La probabilidad se obtiene a partir de substituir los coeficientes en la función de regresión logistica para valores específicos de las variables independientes **x**.
@@ -245,7 +252,7 @@ Este permite seleccionar los coeficientes $\beta_0 , \beta_1$ que maximizan la *
 $$\ell ({\beta_0, \beta_1})=\prod_{i:y_{i}=1}p(x_i)\prod_{i':y_{i'}=0}(1-p(x_{i'}))$$
 En palabras la función de máxima verosimilitud  realiza un proceso interativo para seleccionar la linea que maximiza el log(likelihood) calculando  el producto de  cada probabilidad de que el evento ocurra por el producto de las probabilidades estimadas de que el evento no odurra. 
 
-Maximizar la función de verosimilitud implica determinar aquella  probabilidad $\hat{p}(x_i)$ que es lo más apegada posible al valor observado de los datos. 
+**Maximizar la función de verosimilitud** quiere decir determinar aquella  probabilidad $\hat{p}(x_i)$ que es lo más apegada posible al valor observado de los datos. 
 
 En nuestro ejemplo con la base de datos sobre incumplimiento (*default*) del pago en tarjeta de crédito, buscamos los valores de $\hat{\beta_0}, \hat{\beta_1}$ que al substituirlos en la función $p(X)$, resulten en un número lo mas cercano posible a 1 para los individuos en la catergoría default y cercano a cero en caso contrario. 
 
@@ -290,9 +297,9 @@ El valor del intercepto en el modelo permite el ajuste de las probabilidades a l
 #### McFadden's Pseudo R^2. Prueba para determinar si el modelo es útil.
 
 Ahora como analogía de los modelos de RL MCO, es posible estimar una medida que nos indique si el modelo de **R-Logistica** es válido. Este ese el indicador Pseudo $R^2$ de McFadden.
-$$R^2=\frac{ll(null )-ll(fit)}{ll(null)}$$
+$$R^2=\frac{ll(Nulldeviance )-ll(Residualdeviance)}{ll(Nulldeviance)}$$
 Donde:
-$$ll(fit)=log(likelyhood) max$$
+$$ll(Residualdeviance)=log(likelyhood) max$$
 $$ll(null)=overall prob=log(likelyhood|1)$$
 
 ####Ejemplo 1 Modelo de regressión logística.
