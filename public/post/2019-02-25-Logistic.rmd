@@ -103,9 +103,6 @@ bxp2<-ggplot(d,aes(default, income))+
   scale_fill_manual(values = c("orange", "darkgreen"))+
   theme(legend.position = "none")
 
-
-
-5/8
 grid.arrange(bxp1, bxp2, nrow = 1)
 
 ```
@@ -324,13 +321,14 @@ Estimamos el $R^2$ como :
 ```{r, echo=TRUE}
 ## Calculamos el  "Pseudo R-squared" y su  p-value
 
-ll.null <- logistic$null.deviance
-ll.fit <- logistic$deviance
+Null_deviance <- logistic$null.deviance
+Residual_deviance <- logistic$deviance
 
-## Donde null.dev es el loglikelihood del modelo nulo (modelo solo con el intercepto)
+## Donde Null_deviance es el loglikelihood del modelo nulo (modelo solo con el intercepto)
 
-## McFadden's Pseudo R^2 = [ LL(Null) - LL(fit) ] / LL(Null)
-(ll.null - ll.fit) / ll.null
+## McFadden's Pseudo R^2 = (Null_deviance - Residual_deviance) / Null_deviance
+(Null_deviance - Residual_deviance) / Null_deviance
+
 
 ## Si el modelo es útil el r^2 esta mas cercano a 1, (no es común).
 #Valores aprox .40 son comunes en sc.
@@ -339,7 +337,7 @@ ll.fit <- logistic$deviance
 ## Especificación para el estadístico  chi cuadrada
 ## El p-value para el  R^2 a partir de la distribución chi cuadrada.
 
-1 - pchisq(2*(ll.fit - ll.null), df=(length(logistic$coefficients)-1))
+1 - pchisq(2*(Null_deviance-Residual_deviance ),df=(length(logistic$coefficients)-1))
 
 ## df Coeficientes menos 1. en este caso 2 coef -1, df=1. 
 ```

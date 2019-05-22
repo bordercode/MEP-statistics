@@ -43,7 +43,6 @@ Consideremos ahora el esceario de la predicción de una **variable binaria** a p
 El modelo es:
 
 
-
 $$log\bigg(\frac{P(X)}{1-P(X)}\bigg)= \beta_0 +\beta_1 X+...+\beta_p X_p$$
 Donde $X=(X_1...,X_p)$ son *p* variables explicativas, independientes o regresores.
 
@@ -142,8 +141,14 @@ grid.arrange(p2, p1, nrow = 1)
 
 Note que la tasa de incumplimiento general (sin considerar la variable balance) es mayor para los estudiantes. Ej. el modelo simple muestra una probabilidad mayor de incumplimiento para los estudientes. De hecho vemos en la grafica 1 (der.) que la tasa de incumplimiento general (linea punteada) para estudiantes es del $4.3\%>2.9\%$ a la de los no estudiantes.
 
-Por su parte en el modelo que incluimos la variable balance, el **log(odds)** de inclumplimiento decrece para los estudinantes debido a que  si bien las variables estudiante y balance estan correlacionadas: los estudiantes tienden a registrar mayores niveles de deuda, ej. el saldo (balance) promedio de la deuda de los estudiantes es $\$987.8 > \$771.7$ de los no estudiantes.  (fig 1 izq. boxplot), Lo que a su vez esta relacionado positivamente con una probabilidad de incumplimeinto mayor, en realidad la tasa de incumplimiento para cada nivel de balance es inferior para los estudiantes!!  (linea verde  fig. derecha )
+Por su parte en el modelo que incluimos la variable balance, el **log(odds)** de inclumplimiento decrece para los estudinantes debido a que  si bien las variables estudiante y balance estan correlacionadas: los estudiantes tienden a registrar mayores niveles de deuda, ej. el saldo (balance) promedio de la deuda de los estudiantes es $\$987.8 > \$771.7$ de los no estudiantes.  (fig 1 izq. boxplot), Lo que a su vez esta relacionado positivamente con una probabilidad de incumplimeinto mayor, (MODELO 1 SIMPLE). 
 
+No obstante en realidad la tasa de incumplimiento para cada nivel de balance es inferior para los estudiantes!!  (linea verde  fig. derecha ) lo que se confirma en el coeficiente $\beta_2$ del modelo 2.
+
+Es decir cuando ya controlamos por otras variables como el saldo (balance), 
+el efecto de ser estudiante es negativo sobre las probabilidades de incumplimeinto.
+
+Resumen. La dirección de los  efectos estan en función de las variables por las que controlamos en el modelo. 
  
 
  

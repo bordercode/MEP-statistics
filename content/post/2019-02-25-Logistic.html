@@ -66,11 +66,7 @@ bxp2&lt;-ggplot(d,aes(default, income))+
   scale_fill_manual(values = c(&quot;orange&quot;, &quot;darkgreen&quot;))+
   theme(legend.position = &quot;none&quot;)
 
-
-
-5/8</code></pre>
-<pre><code>## [1] 0.625</code></pre>
-<pre class="r"><code>grid.arrange(bxp1, bxp2, nrow = 1)</code></pre>
+grid.arrange(bxp1, bxp2, nrow = 1)</code></pre>
 <p><img src="/post/2019-02-25-Logistic_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>Note la relación positiva entre las variables saldo e incumplimiento. Así mismo una relación inversa respecto al ingreso, aparentemente aquellos individuos de menor ingreso tiene mayor problema de incumplimiento.</p>
 <div id="preeliminares.-contraste-de-regresion-logistica-respecto-a-regresion-linear-con-ols." class="section level5">
@@ -192,13 +188,13 @@ summary(logistic)</code></pre>
 <p>Estimamos el <span class="math inline">\(R^2\)</span> como :</p>
 <pre class="r"><code>## Calculamos el  &quot;Pseudo R-squared&quot; y su  p-value
 
-ll.null &lt;- logistic$null.deviance
-ll.fit &lt;- logistic$deviance
+Null_deviance &lt;- logistic$null.deviance
+Residual_deviance &lt;- logistic$deviance
 
-## Donde null.dev es el loglikelihood del modelo nulo (modelo solo con el intercepto)
+## Donde Null_deviance es el loglikelihood del modelo nulo (modelo solo con el intercepto)
 
-## McFadden&#39;s Pseudo R^2 = [ LL(Null) - LL(fit) ] / LL(Null)
-(ll.null - ll.fit) / ll.null</code></pre>
+## McFadden&#39;s Pseudo R^2 = (Null_deviance - Residual_deviance) / Null_deviance
+(Null_deviance - Residual_deviance) / Null_deviance</code></pre>
 <pre><code>## [1] 0.4533916</code></pre>
 <pre class="r"><code>## Si el modelo es útil el r^2 esta mas cercano a 1, (no es común).
 #Valores aprox .40 son comunes en sc.
@@ -207,8 +203,8 @@ ll.fit &lt;- logistic$deviance
 ## Especificación para el estadístico  chi cuadrada
 ## El p-value para el  R^2 a partir de la distribución chi cuadrada.
 
-1 - pchisq(2*(ll.fit - ll.null), df=(length(logistic$coefficients)-1))</code></pre>
-<pre><code>## [1] 1</code></pre>
+1 - pchisq(2*(Null_deviance-Residual_deviance ),df=(length(logistic$coefficients)-1))</code></pre>
+<pre><code>## [1] 0</code></pre>
 <pre class="r"><code>## df Coeficientes menos 1. en este caso 2 coef -1, df=1. </code></pre>
 <p>El <span class="math inline">\(R^2\)</span> es estadísticamente significativo, el modelo es útil.</p>
 <p>Graficamos la distribución de probabilidades estimada por el modelo.</p>
