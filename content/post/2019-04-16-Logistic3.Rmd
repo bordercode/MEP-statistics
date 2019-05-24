@@ -73,6 +73,10 @@ A continuación la descripción de la información disponible y la codificación
   
 **hd** Variable dependiente (diagnosis of heart disease):  0 if less than or equal to 50% diameter narrowing  1 if greater than 50% diameter narrowing
 
+
+**Note** que el valor que toma la variable **target** es 1 cuando sucede el evento que estamos estudiando.
+
+
 **Instruccones:**
 
 Estime un modelo de regresión logistica simple para la variable  padecimiento cardiáco (variable hd) considerando como variable independiente  el **sexo** de la persona.
@@ -122,6 +126,7 @@ Para determinar las **probabilidades** a partir del logaritmo del cociente de mo
 
 
 ```{r, echo=FALSE}
+
 predic<- data.frame(
   prob.hd=logistic$fitted.values,
   sexo=data$sexo)
@@ -152,16 +157,30 @@ Estime el modelo de regresión logística para la siguiente especificación:
 
 $$\hat{p}(X)=\frac{e^{\beta_0+\beta_1age+\beta_2sexo+\beta_3cp+\beta_4ca+\beta_5thal}}{1+e^{\beta_0+\beta_1age+\beta_2sexo+\beta_3cp+\beta_4ca+\beta_5thal}}$$
 a) Indique el valor del cociente de momios para las variables independientes del modelo. 
-¿Qué variables son estadísticamente significativas? ¿Cual es el nivel de significancia para la variable sexo? Argumente sobre la rezón de este resultado.
+¿Qué variables son estadísticamente significativas? ¿Cual es el nivel de significancia para la variable sexo? Argumente sobre la razón de este resultado.
 
 b) Genera la predicción de las probabilidades de que los individuos tengan  padecimiento cardiáco, grafique.
 
 
 
-```{r}
+```{r, echo=FALSE}
 logistic2 <- glm(hd ~age+sexo+cp+ca+thal, data=data, family="binomial")
 summary(logistic2)
+
 ```
+Note que en la estimación la categoría (base por default) es el valor menor (o bien la primera en orden alfabético). Si bien, podemos definir otra categoria base de ser necesario. 
+
+**Ejemplo:**
+
+
+```{r }
+table(data$sexo)
+data<-mutate(data,sexo=as.factor(sexo))
+data$sexo<-relevel(data$sexo,ref="M")
+```
+
+
+
 Note que la variable **age** no es estadisticamente significativa. Un resultado contraintuitivo. Sin embargo, observando la distribución de los datos notamos  que la mayoria de las personas de la muestra son de edad avanzada (ej. mediana=56 años). 
 
 ```{r}

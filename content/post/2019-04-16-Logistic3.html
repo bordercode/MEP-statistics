@@ -32,6 +32,7 @@ menu:
 <p>3 = fixed defect (cold spots during rest and exercise)</p>
 <p>4 = reversible defect (when cold spots only appear during exercise)</p>
 <p><strong>hd</strong> Variable dependiente (diagnosis of heart disease): 0 if less than or equal to 50% diameter narrowing 1 if greater than 50% diameter narrowing</p>
+<p><strong>Note</strong> que el valor que toma la variable <strong>target</strong> es 1 cuando sucede el evento que estamos estudiando.</p>
 <p><strong>Instruccones:</strong></p>
 <p>Estime un modelo de regresión logistica simple para la variable padecimiento cardiáco (variable hd) considerando como variable independiente el <strong>sexo</strong> de la persona.</p>
 <p>Determine el log del ratio de los momios <strong>log(odds ratio)</strong> indique su magnitud, dirección y sin son estadísticamente significativos al <span class="math inline">\(0.05\%\)</span>.</p>
@@ -116,12 +117,10 @@ menu:
 <div id="ejercicio-2" class="section level5">
 <h5>Ejercicio 2</h5>
 <p>Estime el modelo de regresión logística para la siguiente especificación:</p>
-<p><span class="math display">\[\hat{p}(X)=\frac{e^{\beta_0+\beta_1age+\beta_2sexo+\beta_3cp+\beta_4ca+\beta_5thal}}{1+e^{\beta_0+\beta_1age+\beta_2sexo+\beta_3cp+\beta_4ca+\beta_5thal}}\]</span> a) Indique el valor del cociente de momios para las variables independientes del modelo. ¿Qué variables son estadísticamente significativas? ¿Cual es el nivel de significancia para la variable sexo? Argumente sobre la rezón de este resultado.</p>
+<p><span class="math display">\[\hat{p}(X)=\frac{e^{\beta_0+\beta_1age+\beta_2sexo+\beta_3cp+\beta_4ca+\beta_5thal}}{1+e^{\beta_0+\beta_1age+\beta_2sexo+\beta_3cp+\beta_4ca+\beta_5thal}}\]</span> a) Indique el valor del cociente de momios para las variables independientes del modelo. ¿Qué variables son estadísticamente significativas? ¿Cual es el nivel de significancia para la variable sexo? Argumente sobre la razón de este resultado.</p>
 <ol start="2" style="list-style-type: lower-alpha">
 <li>Genera la predicción de las probabilidades de que los individuos tengan padecimiento cardiáco, grafique.</li>
 </ol>
-<pre class="r"><code>logistic2 &lt;- glm(hd ~age+sexo+cp+ca+thal, data=data, family=&quot;binomial&quot;)
-summary(logistic2)</code></pre>
 <pre><code>## 
 ## Call:
 ## glm(formula = hd ~ age + sexo + cp + ca + thal, family = &quot;binomial&quot;, 
@@ -154,6 +153,14 @@ summary(logistic2)</code></pre>
 ## AIC: 247.49
 ## 
 ## Number of Fisher Scoring iterations: 5</code></pre>
+<p>Note que en la estimación la categoría (base por default) es el valor menor (o bien la primera en orden alfabético). Si bien, podemos definir otra categoria base de ser necesario.</p>
+<p><strong>Ejemplo:</strong></p>
+<pre class="r"><code>table(data$sexo)</code></pre>
+<pre><code>## 
+##   F   M 
+##  96 201</code></pre>
+<pre class="r"><code>data&lt;-mutate(data,sexo=as.factor(sexo))
+data$sexo&lt;-relevel(data$sexo,ref=&quot;M&quot;)</code></pre>
 <p>Note que la variable <strong>age</strong> no es estadisticamente significativa. Un resultado contraintuitivo. Sin embargo, observando la distribución de los datos notamos que la mayoria de las personas de la muestra son de edad avanzada (ej. mediana=56 años).</p>
 <pre class="r"><code>summary(data$age)</code></pre>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
@@ -176,7 +183,7 @@ ggplot(pred, aes(id, pr)) +
   theme_classic()+
   scale_color_manual(values =c(&quot;darkgreen&quot;,&quot;orange&quot;))+
   labs(color=&quot;Status&quot;)</code></pre>
-<p><img src="/post/2019-04-16-Logistic3_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="/post/2019-04-16-Logistic3_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>En una primera inspección general, el hecho de que la mayoria de los individuos con el padecimiento cardiáco se ubiquen con una pr&gt;.5, indica que el modelo de hecho funciona bien, sin embargo, para evaluar <strong>la precisión del modelo</strong> es necesario hacer el <strong>proceso de validación</strong> (ej. determinar cuantos casos que se predicen en la categoría 1, de hecho pertenecen a esa categoría).</p>
 <p>Dissclaimer: “Some of the figures in this presentation are taken from”An Introduction to Statistical Learning, with applications in R&quot; (Springer, 2013) with permission from the authors: G. James, D. Witten, T. Hastie and R. Tibshirani &quot;</p>
 </div>
