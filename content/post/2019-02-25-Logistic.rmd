@@ -68,7 +68,9 @@ Note que la variable dependiente (**Y**) es *Default* y las explicativas (**x_1,
 **Scatter plot** entre las variables independientes (income y balance) para observar su interacción. 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
 d<-Default
+
 str(d)
 names(d)
 
@@ -102,6 +104,8 @@ bxp2<-ggplot(d,aes(default, income))+
   scale_y_continuous(labels = dollar_format())+
   scale_fill_manual(values = c("orange", "darkgreen"))+
   theme(legend.position = "none")
+
+
 
 grid.arrange(bxp1, bxp2, nrow = 1)
 
@@ -241,6 +245,11 @@ Que de hecho incorpora la **función logit** y es lineal en x.
 
 ![](/img/kogplt.jpg)
 
+*Note* el modelo de regresión logisitca se estima a partir de una distribución de probabilidad discreta **binomial** (un proceso de **Bernoulli**) para el número de éxitos de ocurrencia en un conjunto de experimentos independientes.(ej. cuando sucede el evento que medimos con la variable target y se  denota  con el valor de 1  en el caso dicotómico).
+
+Un incremento de una unidad en la variable
+
+
 La estimación de los **coeficientes del modelo que haremos** genera precisamente el valor de **logaritmo del ratio de momios** (momios entre dos variables, ej. ratio de momios de ser admitido a cursar un doctorado con beca en **UCLA** para Mujeres vs. hombres) **log(odds ratio)**, no de la **probabilidad**. 
 
 La probabilidad se obtiene a partir de substituir los coeficientes en la función de regresión logistica para valores específicos de las variables independientes **x**.
@@ -314,16 +323,22 @@ $$ll(null)=overall prob=log(likelyhood|1)$$
 
 ```{r, echo=FALSE}
 library(DescTools)
+
 library(rms)
 
-logistic<-glm(default~balance, data=d,family=binomial)
+
+logistic<-glm(default~balance,data=d,family=binomial)
 summary(logistic)
 
+#Para estimar el MC fadden´s pseudo R^2
 PseudoR2(logistic)
 
+#  Hosmer Leamerhow test.
 
+lrm(default~balance, data=d)
 ```
-Un incremento de una unidad en la variable **Balance** se relaciona con  un incremento de .00549 en los **log(odds)** de la variable *default* y esta relación es estadísticamente significativa al 0.05. 
+
+ **Balance** se relaciona con  un incremento de .00549 en los **log(odds)** de la variable *default* y esta relación es estadísticamente significativa al 0.05. 
 
 Hacemos ahora predicciones de probabilidades con base en el logartimo de momios estimados log(odds).  Por ejemplo para un individuo cuyo balance=$\$1,000$
   
@@ -369,12 +384,12 @@ El $R^2$ es estadísticamente significativo,  el modelo es útil.
 Graficamos la distribución de probabilidades estimada por el modelo.
 
 ```{r, echo=FALSE}
-pred<- data.frame(
-  pr=logistic$fitted.values,
-  default=d$default, b=d$balance)
+pred<- data.frame(pr=logistic$fitted.values,
+                  default=d$default, b=d$balance)
 
 pred<-arrange(pred,pr)%>%
   mutate(id=1:nrow(pred))
+
 glimpse(pred)
 ```
 
@@ -401,8 +416,15 @@ ggplot(pred, aes(b, pr)) +
 Considere el escenario de la variable dicotomica *student*. que toma los valores 1 si el individuo es estudiante y 0 en caso contrario. Estimaremos el modelo  para la variable dependiente **Default** y ahora con la variable independiente dicotomica  **student**. 
 
 ```{r}
+
+
 l2<-glm(default~student, data=d, family=binomial)
 summary(l2)
+
+
+
+PseudoR2(l2)
+
 ```
 El resultado indica que de hecho el ser estudiante incrementa el  **log(odds)** de incumplimiento en .40. (**NO LA PROBABILID pero el log(odds)**).
 

@@ -103,6 +103,8 @@ menu:
 <img src="/img/kogplt.jpg" />
 
 </div>
+<p><em>Note</em> el modelo de regresión logisitca se estima a partir de una distribución de probabilidad discreta <strong>binomial</strong> (un proceso de <strong>Bernoulli</strong>) para el número de éxitos de ocurrencia en un conjunto de experimentos independientes.(ej. cuando sucede el evento que medimos con la variable target y se denota con el valor de 1 en el caso dicotómico).</p>
+<p>Un incremento de una unidad en la variable</p>
 <p>La estimación de los <strong>coeficientes del modelo que haremos</strong> genera precisamente el valor de <strong>logaritmo del ratio de momios</strong> (momios entre dos variables, ej. ratio de momios de ser admitido a cursar un doctorado con beca en <strong>UCLA</strong> para Mujeres vs. hombres) <strong>log(odds ratio)</strong>, no de la <strong>probabilidad</strong>.</p>
 <p>La probabilidad se obtiene a partir de substituir los coeficientes en la función de regresión logistica para valores específicos de las variables independientes <strong>x</strong>.</p>
 <div id="estimacion-de-coeficientes-en-el-modelo-de-regresion-logistica." class="section level5">
@@ -178,7 +180,23 @@ menu:
 ## Number of Fisher Scoring iterations: 8</code></pre>
 <pre><code>##  McFadden 
 ## 0.4533916</code></pre>
-<p>Un incremento de una unidad en la variable <strong>Balance</strong> se relaciona con un incremento de .00549 en los <strong>log(odds)</strong> de la variable <em>default</em> y esta relación es estadísticamente significativa al 0.05.</p>
+<pre><code>## Logistic Regression Model
+##  
+##  lrm(formula = default ~ balance, data = d)
+##  
+##                        Model Likelihood     Discrimination    Rank Discrim.    
+##                           Ratio Test           Indexes           Indexes       
+##  Obs         10000    LR chi2    1324.20    R2       0.490    C       0.948    
+##   No          9667    d.f.             1    g        3.024    Dxy     0.896    
+##   Yes          333    Pr(&gt; chi2) &lt;0.0001    gr      20.583    gamma   0.896    
+##  max |deriv| 9e-06                          gp       0.058    tau-a   0.058    
+##                                             Brier    0.022                     
+##  
+##            Coef     S.E.   Wald Z Pr(&gt;|Z|)
+##  Intercept -10.6513 0.3612 -29.49 &lt;0.0001 
+##  balance     0.0055 0.0002  24.95 &lt;0.0001 
+## </code></pre>
+<p><strong>Balance</strong> se relaciona con un incremento de .00549 en los <strong>log(odds)</strong> de la variable <em>default</em> y esta relación es estadísticamente significativa al 0.05.</p>
 <p>Hacemos ahora predicciones de probabilidades con base en el logartimo de momios estimados log(odds). Por ejemplo para un individuo cuyo balance=<span class="math inline">\(\$1,000\)</span></p>
 <p><span class="math display">\[\hat {p}(X)=\frac{e^{ \hat{\beta_0} +\hat{\beta_1} X}}{1 + e^{\hat{ \beta_0} +\hat{\beta_1 }X}}=\frac{e^{−10.6513+0.0055×1,000}}{1+e^{−10.6513+0.0055×1,000}}=0.00576\]</span> Una probabilidad de default de <span class="math inline">\(0.57\%\)</span>.</p>
 <p>Ahora hacemos la predicción para un individuo con un saldo (<em>balance</em>) de <span class="math inline">\(\$2,000\)</span>.</p>
@@ -251,6 +269,9 @@ summary(l2)</code></pre>
 ## AIC: 2912.7
 ## 
 ## Number of Fisher Scoring iterations: 6</code></pre>
+<pre class="r"><code>PseudoR2(l2)</code></pre>
+<pre><code>##    McFadden 
+## 0.004097255</code></pre>
 <p>El resultado indica que de hecho el ser estudiante incrementa el <strong>log(odds)</strong> de incumplimiento en .40. (<strong>NO LA PROBABILID pero el log(odds)</strong>).</p>
 <p>Note que el estadístico <strong>z</strong> tiene el mismo papel que el estadístico <strong>t</strong> en el modelo de <strong>RL</strong> Y se estima a partir del cociente <span class="math inline">\(\frac{\hat {\beta_1}}{SE\hat{\beta_1}}\)</span></p>
 <p>Ahora podemos estimar las probabilidades de incumplimiento para un individuo particular usando el coeficiente estimado y la ecuación del modelo de regresión logística que ya conocemos.</p>

@@ -32,6 +32,7 @@ Se usarán a lo largo del curso evaluaciones del conocimiento funcional de los m
 
 La calificación final estará compuesta de la siguiente manera:
 ---
+Fecha: Examen Parcial II. Junio 6 2019. Hora: 10:13:00 .
 
 Actividad | Ponderación
 |----------------------------------------|:---------------------:|

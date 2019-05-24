@@ -1,5 +1,5 @@
 ---
-title: "Logistic3"
+title: "Logistic"
 author: "JLMR"
 date: 2019-04-09T21:14:14-05:00
 categories: ["R"]
@@ -26,23 +26,19 @@ menu:
 <p>3 = non-anginal pain,</p>
 <p>4 = asymptomatic</p>
 <p><strong>trestbps</strong> Presión alterial. (resting blood pressure) (medida en mm Hg) (variable Contínua).</p>
-<p><strong>ca</strong>, number of major vessels colored by fluoroscopy. (2-5) (Marcador bimétrico sobre daño arterial)</p>
+<p><strong>ca</strong>, number of major vessels colored by fluoroscopy. (2-5) (Marcador biométrico sobre daño arterial)</p>
 <p><strong>thal</strong>, Short of thalium heart scan: A thallium heart scan is a test using a special camera and a small amount of radioactive substance injected into the bloodstream to make an image of the blood flow to the heart.</p>
 <p>2 = normal (no cold spots)</p>
 <p>3 = fixed defect (cold spots during rest and exercise)</p>
 <p>4 = reversible defect (when cold spots only appear during exercise)</p>
 <p><strong>hd</strong> Variable dependiente (diagnosis of heart disease): 0 if less than or equal to 50% diameter narrowing 1 if greater than 50% diameter narrowing</p>
 <p><strong>Instruccones:</strong></p>
-<p>Estime un modelo de regresión logistica simple para la variable padecimiento cardiaco (variable hd) considerando como variable independiente el <strong>sexo</strong> de la persona.</p>
+<p>Estime un modelo de regresión logistica simple para la variable padecimiento cardiáco (variable hd) considerando como variable independiente el <strong>sexo</strong> de la persona.</p>
 <p>Determine el log del ratio de los momios <strong>log(odds ratio)</strong> indique su magnitud, dirección y sin son estadísticamente significativos al <span class="math inline">\(0.05\%\)</span>.</p>
 <p><strong>Primero una observación básica de los datos </strong></p>
-<pre class="r"><code>data&lt;-readRDS(&quot;heartd.rds&quot;)
-
-names(data)</code></pre>
 <pre><code>##  [1] &quot;age&quot;      &quot;sexo&quot;     &quot;cp&quot;       &quot;trestbps&quot; &quot;chol&quot;     &quot;fbs&quot;     
 ##  [7] &quot;restecg&quot;  &quot;thalach&quot;  &quot;exang&quot;    &quot;oldpeak&quot;  &quot;slope&quot;    &quot;ca&quot;      
 ## [13] &quot;thal&quot;     &quot;hd&quot;</code></pre>
-<pre class="r"><code>glimpse(data)</code></pre>
 <pre><code>## Observations: 297
 ## Variables: 14
 ## $ age      &lt;dbl&gt; 63, 67, 67, 37, 41, 56, 62, 57, 63, 53, 57, 56, 56, 4...
@@ -59,15 +55,11 @@ names(data)</code></pre>
 ## $ ca       &lt;fct&gt; 2, 5, 4, 2, 2, 2, 4, 2, 3, 2, 2, 2, 3, 2, 2, 2, 2, 2,...
 ## $ thal     &lt;fct&gt; 3, 2, 4, 2, 2, 2, 2, 2, 4, 4, 3, 2, 3, 4, 4, 2, 4, 2,...
 ## $ hd       &lt;fct&gt; Healthy, Unhealthy, Unhealthy, Healthy, Healthy, Heal...</code></pre>
-<pre class="r"><code>xtabs(~ hd + sexo, data=data)</code></pre>
 <pre><code>##            sexo
 ## hd            F   M
 ##   Healthy    71  89
 ##   Unhealthy  25 112</code></pre>
 <p>Note que tenemos aparentemente un mayor problema para el sexo masculino.</p>
-<pre class="r"><code>logistic &lt;- glm(hd ~ sexo, data=data, family=&quot;binomial&quot;)
-
-summary(logistic)</code></pre>
 <pre><code>## 
 ## Call:
 ## glm(formula = hd ~ sexo, family = &quot;binomial&quot;, data = data)
@@ -90,8 +82,6 @@ summary(logistic)</code></pre>
 ## AIC: 390.12
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
-<pre class="r"><code>male.log.odds.ratio &lt;- log((112 / 89) / (25/71))
-male.log.odds.ratio</code></pre>
 <pre><code>## [1] 1.273667</code></pre>
 <p>Por su parte la prueba de Wald toma el cociente entre el log (odd ratio ) y la desviación estandar de la muesta <strong>SE</strong> en este caso <span class="math inline">\(1.2737/0.2725=4.674\)</span>. Este valor corresponde al estadístico de prueba <strong>Z</strong>.</p>
 <pre class="r"><code>1.2737/0.2725</code></pre>

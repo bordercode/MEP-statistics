@@ -4,11 +4,11 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Logistic3</title>
+	<title>Logistic</title>
 	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
 	<meta name="description" content="">
 	<meta name="generator" content="Hugo 0.54.0" />
-	<meta property="og:title" content="Logistic3" />
+	<meta property="og:title" content="Logistic" />
 <meta property="og:description" content="Ejecicio estime un modelo de regresión logística considerando el siguiente escenario.
 Se tienen una serie de características sociodemograficas (ej. sexo, edad, )incluidos marcadores clínicos para una muestra 297 individuos.
 El objetivo es determinar la probabilidad de que la persona tenga un padecimiento cardiáco (heart disease).
@@ -113,7 +113,7 @@ if (!doNotTrack) {
 <main class="main" role="main">
 	<article class="post">
 		<header class="post__header">
-			<h1 class="post__title">Logistic3</h1>
+			<h1 class="post__title">Logistic</h1>
 			<div class="post__meta meta">
 <div class="meta__item-datetime meta__item">
 	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 16 16"><path d="m8-.0000003c-4.4 0-8 3.6-8 8 0 4.4000003 3.6 8.0000003 8 8.0000003 4.4 0 8-3.6 8-8.0000003 0-4.4-3.6-8-8-8zm0 14.4000003c-3.52 0-6.4-2.88-6.4-6.4000003 0-3.52 2.88-6.4 6.4-6.4 3.52 0 6.4 2.88 6.4 6.4 0 3.5200003-2.88 6.4000003-6.4 6.4000003zm.4-10.4000003h-1.2v4.8l4.16 2.5600003.64-1.04-3.6-2.1600003z"/></svg>
@@ -142,23 +142,19 @@ if (!doNotTrack) {
 <p>3 = non-anginal pain,</p>
 <p>4 = asymptomatic</p>
 <p><strong>trestbps</strong> Presión alterial. (resting blood pressure) (medida en mm Hg) (variable Contínua).</p>
-<p><strong>ca</strong>, number of major vessels colored by fluoroscopy. (2-5) (Marcador bimétrico sobre daño arterial)</p>
+<p><strong>ca</strong>, number of major vessels colored by fluoroscopy. (2-5) (Marcador biométrico sobre daño arterial)</p>
 <p><strong>thal</strong>, Short of thalium heart scan: A thallium heart scan is a test using a special camera and a small amount of radioactive substance injected into the bloodstream to make an image of the blood flow to the heart.</p>
 <p>2 = normal (no cold spots)</p>
 <p>3 = fixed defect (cold spots during rest and exercise)</p>
 <p>4 = reversible defect (when cold spots only appear during exercise)</p>
 <p><strong>hd</strong> Variable dependiente (diagnosis of heart disease): 0 if less than or equal to 50% diameter narrowing 1 if greater than 50% diameter narrowing</p>
 <p><strong>Instruccones:</strong></p>
-<p>Estime un modelo de regresión logistica simple para la variable padecimiento cardiaco (variable hd) considerando como variable independiente el <strong>sexo</strong> de la persona.</p>
+<p>Estime un modelo de regresión logistica simple para la variable padecimiento cardiáco (variable hd) considerando como variable independiente el <strong>sexo</strong> de la persona.</p>
 <p>Determine el log del ratio de los momios <strong>log(odds ratio)</strong> indique su magnitud, dirección y sin son estadísticamente significativos al <span class="math inline">\(0.05\%\)</span>.</p>
 <p><strong>Primero una observación básica de los datos </strong></p>
-<pre class="r"><code>data&lt;-readRDS(&quot;heartd.rds&quot;)
-
-names(data)</code></pre>
 <pre><code>##  [1] &quot;age&quot;      &quot;sexo&quot;     &quot;cp&quot;       &quot;trestbps&quot; &quot;chol&quot;     &quot;fbs&quot;     
 ##  [7] &quot;restecg&quot;  &quot;thalach&quot;  &quot;exang&quot;    &quot;oldpeak&quot;  &quot;slope&quot;    &quot;ca&quot;      
 ## [13] &quot;thal&quot;     &quot;hd&quot;</code></pre>
-<pre class="r"><code>glimpse(data)</code></pre>
 <pre><code>## Observations: 297
 ## Variables: 14
 ## $ age      &lt;dbl&gt; 63, 67, 67, 37, 41, 56, 62, 57, 63, 53, 57, 56, 56, 4...
@@ -175,15 +171,11 @@ names(data)</code></pre>
 ## $ ca       &lt;fct&gt; 2, 5, 4, 2, 2, 2, 4, 2, 3, 2, 2, 2, 3, 2, 2, 2, 2, 2,...
 ## $ thal     &lt;fct&gt; 3, 2, 4, 2, 2, 2, 2, 2, 4, 4, 3, 2, 3, 4, 4, 2, 4, 2,...
 ## $ hd       &lt;fct&gt; Healthy, Unhealthy, Unhealthy, Healthy, Healthy, Heal...</code></pre>
-<pre class="r"><code>xtabs(~ hd + sexo, data=data)</code></pre>
 <pre><code>##            sexo
 ## hd            F   M
 ##   Healthy    71  89
 ##   Unhealthy  25 112</code></pre>
 <p>Note que tenemos aparentemente un mayor problema para el sexo masculino.</p>
-<pre class="r"><code>logistic &lt;- glm(hd ~ sexo, data=data, family=&quot;binomial&quot;)
-
-summary(logistic)</code></pre>
 <pre><code>## 
 ## Call:
 ## glm(formula = hd ~ sexo, family = &quot;binomial&quot;, data = data)
@@ -206,8 +198,6 @@ summary(logistic)</code></pre>
 ## AIC: 390.12
 ## 
 ## Number of Fisher Scoring iterations: 4</code></pre>
-<pre class="r"><code>male.log.odds.ratio &lt;- log((112 / 89) / (25/71))
-male.log.odds.ratio</code></pre>
 <pre><code>## [1] 1.273667</code></pre>
 <p>Por su parte la prueba de Wald toma el cociente entre el log (odd ratio ) y la desviación estandar de la muesta <strong>SE</strong> en este caso <span class="math inline">\(1.2737/0.2725=4.674\)</span>. Este valor corresponde al estadístico de prueba <strong>Z</strong>.</p>
 <pre class="r"><code>1.2737/0.2725</code></pre>
@@ -386,7 +376,7 @@ ggplot(pred, aes(id, pr)) +
 	<div class="widget__content">
 		<ul class="widget__list">
 			<li class="widget__item"><a class="widget__link" href="/post/2019-04-19-clustering_knn/">Clasifiación</a></li>
-			<li class="widget__item"><a class="widget__link" href="/post/2019-04-16-logistic3/">Logistic3</a></li>
+			<li class="widget__item"><a class="widget__link" href="/post/2019-04-16-logistic3/">Logistic</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/2019-04-15-logistic2/">Logistic2</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/2019-02-25-logistic/">Logistic</a></li>
 			<li class="widget__item"><a class="widget__link" href="/post/2019-02-05-rl6/">RL-Diagnóstico</a></li>

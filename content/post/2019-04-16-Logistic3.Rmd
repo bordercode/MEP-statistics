@@ -1,5 +1,5 @@
 ---
-title: "Logistic3"
+title: "Logistic"
 author: "JLMR"
 date: 2019-04-09T21:14:14-05:00
 categories: ["R"]
@@ -61,7 +61,7 @@ A continuación la descripción de la información disponible y la codificación
   
 **trestbps** Presión alterial. (resting blood pressure) (medida en mm Hg)  (variable Contínua).
 
-**ca**, number of major vessels  colored by fluoroscopy. (2-5) (Marcador bimétrico sobre daño arterial)
+**ca**, number of major vessels  colored by fluoroscopy. (2-5) (Marcador biométrico sobre daño arterial)
 
 **thal**,  Short of thalium heart scan: A thallium heart scan is a test using a special camera and a small amount of radioactive substance injected into the bloodstream to make an image of the blood flow to the heart.
 
@@ -75,12 +75,12 @@ A continuación la descripción de la información disponible y la codificación
 
 **Instruccones:**
 
-Estime un modelo de regresión logistica simple para la variable  padecimiento cardiaco (variable hd) considerando como variable independiente  el **sexo** de la persona.
+Estime un modelo de regresión logistica simple para la variable  padecimiento cardiáco (variable hd) considerando como variable independiente  el **sexo** de la persona.
 
 Determine el log del ratio de los momios **log(odds ratio)** indique su magnitud, dirección y sin son estadísticamente significativos al $0.05\%$.  
 
 **Primero una observación básica de los datos **
-```{r}
+```{r,echo=FALSE}
 data<-readRDS("heartd.rds")
 
 names(data)
@@ -90,7 +90,7 @@ xtabs(~ hd + sexo, data=data)
 ```
 Note que tenemos aparentemente un mayor problema para el sexo masculino. 
 
-```{r}
+```{r,echo=FALSE}
 logistic <- glm(hd ~ sexo, data=data, family="binomial")
 
 summary(logistic)
@@ -98,6 +98,7 @@ summary(logistic)
 male.log.odds.ratio <- log((112 / 89) / (25/71))
 male.log.odds.ratio
 ```
+
 
 Por su parte la prueba de Wald toma el cociente entre el log (odd ratio ) y  la desviación estandar de la muesta **SE** en este caso $1.2737/0.2725=4.674$. Este valor corresponde al estadístico de prueba  **Z**.
 
