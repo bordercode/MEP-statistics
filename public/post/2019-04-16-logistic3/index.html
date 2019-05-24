@@ -209,11 +209,6 @@ if (!doNotTrack) {
 <p>Para determinar las <strong>probabilidades</strong> a partir del logaritmo del cociente de momios (coef. de nuestro modelo), extraemos las predicciones (<em>fitted.values</em>) que estan almacenadas como parte de los resultados del modelo. La siguiente estimación muestra el cálculo.</p>
 <div id="prediccion-de-probabilidades." class="section level5">
 <h5>Predicción de probabilidades.</h5>
-<pre class="r"><code>predic&lt;- data.frame(
-  prob.hd=logistic$fitted.values,
-  sexo=data$sexo)
-
-glimpse(predic)</code></pre>
 <pre><code>## Observations: 297
 ## Variables: 2
 ## $ prob.hd &lt;dbl&gt; 0.5572139, 0.5572139, 0.5572139, 0.5572139, 0.2604167,...

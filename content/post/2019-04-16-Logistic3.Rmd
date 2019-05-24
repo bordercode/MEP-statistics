@@ -121,7 +121,7 @@ Para determinar las **probabilidades** a partir del logaritmo del cociente de mo
 ##### Predicción de probabilidades.
 
 
-```{r}
+```{r, echo=FALSE}
 predic<- data.frame(
   prob.hd=logistic$fitted.values,
   sexo=data$sexo)
