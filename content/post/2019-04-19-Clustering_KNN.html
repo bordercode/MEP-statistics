@@ -34,6 +34,8 @@ menu:
 <p>Un parámetro importante en la estimación de este modelo es el número <strong>K</strong> de observaciones que debemos considerar para determinar a qué categoría pertenece la observación sobre la que se hace la predicción.</p>
 <p>Una práctica común en términos empíricos es considerar <span class="math inline">\(k =\sqrt(n)\)</span>. Donde <strong>n</strong> es el número de observaciones del conjunto de datos de contraste.</p>
 <p>Como parte de la aplicación de este modelo validaremos <strong>la precisión</strong> mediante la estrategia de contraste entre un conjunto de datos de entrenamiento (<strong>train data set</strong>), que esta integrado por la proporción de datos que usaremos para estimar el modelo del total de los datos disponibles (generalmente <span class="math inline">\(80\%\)</span>). Y un conjunto de datos de validación (<strong>test data set</strong>, la proporción restante de datos ej. <span class="math inline">\(20\%\)</span>).</p>
+<div id="matriz-de-contraste-confusion-matrix" class="section level3">
+<h3>Matriz de Contraste (Confusión matrix)</h3>
 <p>Para aplicar la estrategia de validación y determinar el nivel de precisión alcanzado por el modelo, necesitamos constrir una <strong>matriz de contraste</strong> que nos indica cuantos casos son clasificados correctamente y cuantos son clasificados de forma incorrecta.</p>
 <div class="figure">
 <img src="/img/cfm.jpg" />
@@ -75,6 +77,7 @@ menu:
 <div class="figure">
 <img src="\img\roc.jpg" />
 
+</div>
 </div>
 </div>
 <div id="implementacion" class="section level2">
@@ -125,6 +128,6 @@ menu:
 <div id="linear-discriminant-analysis-lda." class="section level2">
 <h2>Linear Discriminant Analysis LDA.</h2>
 <p>Una ventaja de este <strong>método de clasificación</strong> respecto a otros como por ejemplo Modelos de <strong>regresión logística</strong> es que podemos aplicarlos a <span class="math inline">\(k&gt;2 target variables\)</span>.</p>
-<p>En el modelo de regresión logísitica generalmente nuestra variable target de predicción tenemos dos categorias (i.e la variable dependiente es dicotómica), si bien es posible estimar el modelo para k&gt;2, la especificación logit en esos casos suele no ser tan estable).</p>
-<p>El método de elección para esta tarea (<span class="math inline">\(k&gt;2\)</span>) es <strong>LDA</strong></p>
+<p>En el modelo de regresión logísitica generalmente nuestra variable target de predicción tenemos dos categorias (i.e la variable dependiente es dicotómica), si bien es posible estimar el modelo para k&gt;2, la especificación logit en esos casos suele no ser tan estable).<br />
+El método de elección para esta tarea (<span class="math inline">\(k&gt;2\)</span>) es <strong>LDA</strong></p>
 </div>

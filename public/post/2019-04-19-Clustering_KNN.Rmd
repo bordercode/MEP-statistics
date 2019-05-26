@@ -70,6 +70,9 @@ Una práctica común en términos empíricos es considerar $k =\sqrt(n)$. Donde 
 
 Como parte de la aplicación de este modelo validaremos **la precisión** mediante la estrategia de contraste entre un conjunto de datos de entrenamiento (**train data set**), que esta integrado por la proporción de datos que usaremos para estimar el modelo  del total de los datos disponibles (generalmente $80\%$).  Y un conjunto de datos de validación (**test data set**,  la proporción restante de datos ej. $20\%$).
 
+
+### Matriz de Contraste  (Confusión matrix)
+
 Para aplicar la estrategia de validación y determinar el nivel de precisión alcanzado por el modelo, necesitamos constrir una **matriz de contraste** que nos indica cuantos casos son clasificados correctamente y cuantos son clasificados de forma incorrecta.
 
 
@@ -195,5 +198,4 @@ d) Grafique sus resultados.
 Una ventaja de este **método de clasificación** respecto a otros como por ejemplo Modelos de **regresión  logística** es que podemos aplicarlos a $k>2 target variables$. 
 
 En el modelo de regresión logísitica generalmente nuestra variable target de predicción tenemos dos categorias (i.e la variable dependiente es dicotómica),  si bien es posible estimar el modelo para k>2, la especificación logit  en esos casos suele no ser tan estable).    
-
 El método de elección para esta tarea ($k>2$) es **LDA** 
