@@ -84,22 +84,29 @@ Estime un modelo de regresión logistica simple para la variable  padecimiento c
 Determine el log del ratio de los momios **log(odds ratio)** indique su magnitud, dirección y sin son estadísticamente significativos al $0.05\%$.  
 
 **Primero una observación básica de los datos **
+
 ```{r,echo=FALSE}
 data<-readRDS("heartd.rds")
 
 names(data)
+
 glimpse(data)
 
 xtabs(~ hd + sexo, data=data)
+
+
 ```
 Note que tenemos aparentemente un mayor problema para el sexo masculino. 
 
 ```{r,echo=FALSE}
+
 logistic <- glm(hd ~ sexo, data=data, family="binomial")
 
 summary(logistic)
 
 male.log.odds.ratio <- log((112 / 89) / (25/71))
+
+
 male.log.odds.ratio
 ```
 
@@ -167,6 +174,9 @@ b) Genera la predicción de las probabilidades de que los individuos tengan  pad
 logistic2 <- glm(hd ~age+sexo+cp+ca+thal, data=data, family="binomial")
 summary(logistic2)
 
+
+
+
 ```
 Note que en la estimación la categoría (base por default) es el valor menor (o bien la primera en orden alfabético). Si bien, podemos definir otra categoria base de ser necesario. 
 
@@ -174,9 +184,13 @@ Note que en la estimación la categoría (base por default) es el valor menor (o
 
 
 ```{r }
+
 table(data$sexo)
+
 data<-mutate(data,sexo=as.factor(sexo))
+
 data$sexo<-relevel(data$sexo,ref="M")
+
 ```
 
 

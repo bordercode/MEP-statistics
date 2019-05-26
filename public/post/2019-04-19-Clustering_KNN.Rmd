@@ -76,9 +76,17 @@ Para aplicar la estrategia de validación y determinar el nivel de precisión al
 ![](/img/cfm.jpg)
 
 
-Note los elementos de la diagonal (2, 4 )(son predicciones correctas.
+Note los elementos de la diagonal 2, 4 son predicciones correctas.
 
-Cuatro   indicadores  son de interés para la validación:
+Los elementos en la diagonal 1 y 3 corresponden a errores Tipo II y tipo I. 
+
+Recuerde que **Error tipo I** se presenta cuando tenemos un **falso negativo**. Ej Reject the Null, when in fact $\beta=0$ Por ejemplo No detectar que una variable tiene efecto cuando en ralidad si es significativa.
+
+
+Mientras el **error tipo II** corresponde a un **falso positivo**, ej. la predicción indica positivo cuando en realidad el valor que toma la observación es negativo. Ej reject the Null, $\beta=0$, cuando en realidad la variable no tiene efecto.   
+
+
+Cuatro indicadores  son de interés para la validación:
 
 
 1. El **precisión score** que  mide la fracción de la predicción que fue correcta **respecto a todas** las categorías. (max. val 100). 
@@ -93,6 +101,11 @@ $$Precision score=\frac{tp}{tp+fp}$$ Donde **tp**. fracción de observaciones cl
 
 ![](\img\sensitivity_recall.jpg)
 
+De forma complementaria tenemos la medida de **especificidad** definida como la proporción de casos con una predicción correcta negativa **verdadero negativo** respecto al total de casos negativos ej $\frac{tn}{tn+fn}$
+
+
+
+
 3. El *F score*, este indicador considera los dos anteriores al estimar una media armómica no aritmética. Ya que es posible tener modelos con valores elevados del sensitividad (recall) y valores pequeños de **precisión**. Esta medida pondera ambos.
 $$F1=\frac{2*recall*precision}{recall+ precision}$$
 
@@ -106,6 +119,17 @@ Entre el f1 el ACS, por definición tenemos que el $ACS>F1$ Así que en un escen
 
 En la práctica el uso de la medida de validación dependerá del problema estuduado (ej. de los costos de clasificar incorrectamente los datos.)
 
+Una herramienta gráfica que combina estas medidas de precesión y especificidad es la ROC. (*Receiver Operating Characteristic*).
+
+La curva **ROC** permite representar el escenario de clasificación puramente aleatorio (linea punteada) vs. la tasa de  clasifiación alcanzada por el modelo de regresión logistica. (linea sólida ). 
+
+El escenario ideal de clasificación es aquel en el que se tiene una tasa de verdadero positivo del 100 con una tasa de falso positivo = 0.
+
+En palabras considerando la gráfica entre más lejos tenemos la linea que representa la tasa de clasificaión  de la linea punteada tenemos un indicador de un modelo de mayor precisión.
+
+Usaremos esta herramienta para evaluar la precisión de los modelos de clasificación.
+
+![](\img\roc.jpg)
 
 
 ## Implementación:

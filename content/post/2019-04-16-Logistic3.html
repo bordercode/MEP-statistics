@@ -160,6 +160,7 @@ menu:
 ##   F   M 
 ##  96 201</code></pre>
 <pre class="r"><code>data&lt;-mutate(data,sexo=as.factor(sexo))
+
 data$sexo&lt;-relevel(data$sexo,ref=&quot;M&quot;)</code></pre>
 <p>Note que la variable <strong>age</strong> no es estadisticamente significativa. Un resultado contraintuitivo. Sin embargo, observando la distribución de los datos notamos que la mayoria de las personas de la muestra son de edad avanzada (ej. mediana=56 años).</p>
 <pre class="r"><code>summary(data$age)</code></pre>

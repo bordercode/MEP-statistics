@@ -152,7 +152,10 @@ if (!doNotTrack) {
 <img src="/img/cfm.jpg" />
 
 </div>
-<p>Note los elementos de la diagonal (2, 4 )(son predicciones correctas.</p>
+<p>Note los elementos de la diagonal 2, 4 son predicciones correctas.</p>
+<p>Los elementos en la diagonal 1 y 3 corresponden a errores Tipo II y tipo I.</p>
+<p>Recuerde que <strong>Error tipo I</strong> se presenta cuando tenemos un <strong>falso negativo</strong>. Ej Reject the Null, when in fact <span class="math inline">\(\beta=0\)</span> Por ejemplo No detectar que una variable tiene efecto cuando en ralidad si es significativa.</p>
+<p>Mientras el <strong>error tipo II</strong> corresponde a un <strong>falso positivo</strong>, ej. la predicción indica positivo cuando en realidad el valor que toma la observación es negativo. Ej reject the Null, <span class="math inline">\(\beta=0\)</span>, cuando en realidad la variable no tiene efecto.</p>
 <p>Cuatro indicadores son de interés para la validación:</p>
 <ol style="list-style-type: decimal">
 <li>El <strong>precisión score</strong> que mide la fracción de la predicción que fue correcta <strong>respecto a todas</strong> las categorías. (max. val 100).</li>
@@ -169,6 +172,7 @@ if (!doNotTrack) {
 <img src="\img\sensitivity_recall.jpg" />
 
 </div>
+<p>De forma complementaria tenemos la medida de <strong>especificidad</strong> definida como la proporción de casos con una predicción correcta negativa <strong>verdadero negativo</strong> respecto al total de casos negativos ej <span class="math inline">\(\frac{tn}{tn+fn}\)</span></p>
 <ol start="3" style="list-style-type: decimal">
 <li><p>El <em>F score</em>, este indicador considera los dos anteriores al estimar una media armómica no aritmética. Ya que es posible tener modelos con valores elevados del sensitividad (recall) y valores pequeños de <strong>precisión</strong>. Esta medida pondera ambos. <span class="math display">\[F1=\frac{2*recall*precision}{recall+ precision}\]</span></p></li>
 <li><p><strong>Accuracy score ACS</strong>, la fracción de observaciones clasificadas correctamente. Con valor máximo 1.</p></li>
@@ -176,6 +180,15 @@ if (!doNotTrack) {
 <p>Esta medida se calcula como la fracción de aciertos entre el valor de predicción y el observado respecto al total de datos en la muestra.</p>
 <p>Entre el f1 el ACS, por definición tenemos que el <span class="math inline">\(ACS&gt;F1\)</span> Así que en un escenario estricto de medición nos interesa el valor del F1 más que el ACS como medida de desempeño de modelo.</p>
 <p>En la práctica el uso de la medida de validación dependerá del problema estuduado (ej. de los costos de clasificar incorrectamente los datos.)</p>
+<p>Una herramienta gráfica que combina estas medidas de precesión y especificidad es la ROC. (<em>Receiver Operating Characteristic</em>).</p>
+<p>La curva <strong>ROC</strong> permite representar el escenario de clasificación puramente aleatorio (linea punteada) vs. la tasa de clasifiación alcanzada por el modelo de regresión logistica. (linea sólida ).</p>
+<p>El escenario ideal de clasificación es aquel en el que se tiene una tasa de verdadero positivo del 100 con una tasa de falso positivo = 0.</p>
+<p>En palabras considerando la gráfica entre más lejos tenemos la linea que representa la tasa de clasificaión de la linea punteada tenemos un indicador de un modelo de mayor precisión.</p>
+<p>Usaremos esta herramienta para evaluar la precisión de los modelos de clasificación.</p>
+<div class="figure">
+<img src="\img\roc.jpg" />
+
+</div>
 </div>
 <div id="implementacion" class="section level2">
 <h2>Implementación:</h2>
