@@ -56,6 +56,8 @@ Note que **este problema no causa que los estimados sean seasgados (*unbiased*),
   
 El primer paso, es detectar el problema, para esta tarea usaremos la prueba Breusch-Pagan   en dos especificaciones cuyos resultados son equivalentes:
 
+[Breusch-Pagan](http://sigma.iimas.unam.mx/jsantibanez/Cursos/Ciencias/2018_1/08_homocedasticidad.html)
+
 + Breusch-Pagan: Una prueba que detecta el problema de heterocedasticidad en un modelo de regresión  usando una distribución Pearson ($\chi^2$) (al observar si la varianza de los errores depende de los valores que toman las variables independientes).
 
 La prueba plantea como $H_0: Homocedasticidad$ vs. $Ha: Heterocedasticidad$

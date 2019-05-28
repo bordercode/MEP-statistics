@@ -120,7 +120,7 @@ Esta medida se calcula como la fracción de aciertos entre el valor de predicci�
 Entre el f1 el ACS, por definición tenemos que el $ACS>F1$ Así que en un escenario estricto de medición nos interesa el valor del F1  más que el ACS como medida de desempeño de modelo.  
 
 
-En la práctica el uso de la medida de validación dependerá del problema estuduado (ej. de los costos de clasificar incorrectamente los datos.)
+En la práctica el uso de la medida de validación dependerá del problema estudiado (ej. de los costos de clasificar incorrectamente los datos.)
 
 Una herramienta gráfica que combina estas medidas de precesión y especificidad es la ROC. (*Receiver Operating Characteristic*).
 
