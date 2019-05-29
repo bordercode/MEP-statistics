@@ -202,11 +202,10 @@ El método de elección para esta tarea ($k>2$) es **LDA**
 
 ### Exposición. 
 
-**Instruccione**  En ua escala del 1 al 10 donde 1 significa la calificaci[on menor y 10 la máxima, califique los siguientes aspectos:
+**Instrucciones**  En una escala del 1 al 10 donde 1 significa la calificación menor y 10 la máxima, califique los siguientes aspectos:
 
 
-1: Originalidad del  tema
-
+1. Originalidad del  tema
 
 2. Calidad de la base de datos.
 
