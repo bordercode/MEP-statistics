@@ -189,8 +189,6 @@ c) Determine el valor de cluster óptimo. (ie. el valor de k , para el que el sc
 d) Grafique sus resultados.
 
 
-#### Tarea.
-
 
 ## Linear Discriminant Analysis LDA.
 
@@ -199,3 +197,29 @@ Una ventaja de este **método de clasificación** respecto a otros como por ejem
 
 En el modelo de regresión logísitica generalmente nuestra variable target de predicción tenemos dos categorias (i.e la variable dependiente es dicotómica),  si bien es posible estimar el modelo para k>2, la especificación logit  en esos casos suele no ser tan estable).    
 El método de elección para esta tarea ($k>2$) es **LDA** 
+
+
+
+### Exposición. 
+
+**Instruccione**  En ua escala del 1 al 10 donde 1 significa la calificaci[on menor y 10 la máxima, califique los siguientes aspectos:
+
+
+1: Originalidad del  tema
+
+
+2. Calidad de la base de datos.
+
+3. Pertinencia del modelo seleccionadao para atender la relación entre variables seleccionadas.
+
+
+4. Capacidad expositiva (claridad, poder de persuación y dominio del tema).
+
+
+
+5.Uso de herramientas de visualización. 
+
+
+
+
+
